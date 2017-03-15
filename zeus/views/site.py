@@ -10,7 +10,6 @@ from random import randint
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
-from django.core.validators import email_re
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -23,6 +22,7 @@ from helios.view_utils import render_template
 from heliosauth.auth_systems.password import make_password
 from helios.models import User, Election
 from zeus.models import Institution
+from zeus.utils import email_is_valid
 
 from zeus.stv_count_reports import stv_count_and_report
 
@@ -267,7 +267,7 @@ def demo(request):
 
     email_address = request.POST.get('email', '')
 
-    if not email_re.match(email_address):
+    if not email_is_valid(email_address):
         msg = _("Invalid email address")
         messages.error(request, msg)
         return HttpResponseRedirect(reverse('home'))

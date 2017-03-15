@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.core.validators import validate_email, ValidationError
 
 
 def election_trustees_to_text(election):
@@ -454,3 +455,11 @@ def get_dialect(sample):
     except (csvError):
         dialect = excel
     return dialect
+
+
+def email_is_valid(email):
+    try:
+        validate_email(email)
+        return True
+    except ValidationError:
+        return False
