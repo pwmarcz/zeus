@@ -3,7 +3,6 @@ import logging
 import datetime
 import json
 
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext_lazy as _
@@ -182,7 +181,7 @@ def json_data(request, election, trustee):
         nr_excluded = voters.excluded().count()
         ciphers_url = reverse('election_poll_get_tally',
                               args=(election.uuid, poll.uuid))
-        post_decryption_url = reverse('election_poll_upload_decryption', 
+        post_decryption_url = reverse('election_poll_upload_decryption',
                                       args=(election.uuid, poll.uuid))
         data = {
             'uuid': poll.uuid,
@@ -210,7 +209,7 @@ def json_data(request, election, trustee):
             if include_tally:
                 data['encrypted_tally'] = poll.encrypted_tally.toJSONDict()
             else:
-                data['encrypted_tally'] = 'tally_excluded' 
+                data['encrypted_tally'] = 'tally_excluded'
         polls_data.append(data)
 
     data = {

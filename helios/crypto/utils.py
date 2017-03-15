@@ -4,10 +4,10 @@ Crypto Utils
 
 import hmac, base64
 
-from django.utils import simplejson
+import simplejson
 
 from hashlib import sha256
-  
+
 def hash_b64(s):
   """
   hash the string using sha1 and produce a base64 output

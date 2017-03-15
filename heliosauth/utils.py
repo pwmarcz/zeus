@@ -5,7 +5,7 @@ Some basic utils
 2010-08-17
 """
 
-from django.utils import simplejson
+import simplejson
 
 def force_utf8(s):
   if isinstance(s, unicode):

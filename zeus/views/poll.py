@@ -8,7 +8,6 @@ import base64
 
 from collections import OrderedDict
 
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -125,13 +124,13 @@ def _handle_batch(election, polls, vars, auto_link=False):
         polls_form_data.update(fields)
         new_refs.append(ref)
         i = i + 1
-    
+
     polls_form_data.update({
         'form-INITIAL_FORMS': initial_count,
         'form-MAX_NUM_FORMS': 200,
         'form-TOTAL_FORMS': len(polls)
     })
-    
+
     polls_formset = modelformset_factory(Poll, PollForm, extra=10,
                                          max_num=200, can_delete=False,
                                          formset=PollFormSet)
@@ -341,11 +340,11 @@ def voters_list(request, election, poll):
         voters_per_page = default_voters_per_page
     order_by = request.GET.get('order', 'voter_login_id')
     order_type = request.GET.get('order_type', 'desc')
-    
+
     table_headers = copy.copy(VOTER_TABLE_HEADERS)
-    if not order_by in table_headers: 
+    if not order_by in table_headers:
         order_by = 'voter_login_id'
-    
+
     if not poll.voters.filter(voter_weight__gt=1).count():
         table_headers.pop('voter_weight')
     display_weight_col = 'voter_weight' in table_headers
@@ -359,7 +358,7 @@ def voters_list(request, election, poll):
     else:
         order_by = '-%s' % order_by
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
-    
+
     voters = voters.filter(get_filters(q_param, VOTER_TABLE_HEADERS,
                                        VOTER_SEARCH_FIELDS,
                                        VOTER_BOOL_KEYS_MAP,
@@ -636,7 +635,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
     else:
         voters_filters = get_filters(q_param, VOTER_TABLE_HEADERS,
                                      VOTER_SEARCH_FIELDS,
-                                     VOTER_BOOL_KEYS_MAP, 
+                                     VOTER_BOOL_KEYS_MAP,
                                      VOTER_EXTRA_HEADERS)
         filtered_voters = filtered_voters.filter(voters_filters)
 
@@ -758,7 +757,7 @@ def voter_delete(request, election, poll, voter_uuid):
         try:
             voter = Voter.objects.get(poll=poll, voter_login_id=voter_id)
         except Voter.DoesNotExist:
-            poll.logger.error("Cannot remove voter '%s'. Does not exist.", 
+            poll.logger.error("Cannot remove voter '%s'. Does not exist.",
                              voter_uuid)
         if voter and voter.voted:
             raise PermissionDenied('36')
@@ -818,7 +817,7 @@ def voter_booth_linked_login(request, election, poll, voter_uuid):
     linked_voter = linked_poll.voters.get(voter_login_id=voter.voter_login_id)
     user = auth.ZeusUser(linked_voter)
     user.authenticate(request)
-    poll.logger.info("Poll voter '%s' logged in in linked poll '%s'", 
+    poll.logger.info("Poll voter '%s' logged in in linked poll '%s'",
                      voter.voter_login_id, poll.uuid)
     url = linked_poll.get_booth_url(request)
     return HttpResponseRedirect(url)
