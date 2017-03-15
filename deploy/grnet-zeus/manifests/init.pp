@@ -52,7 +52,9 @@ class zeus (
         'python-django-pagination',
         'python-django-south',
         'python-openid',
-        'python-gmpy'
+        'python-gmpy',
+        'python-simplejson',
+        'python-crypto',
     ]
 
     package { $packages: 
