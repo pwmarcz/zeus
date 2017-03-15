@@ -73,10 +73,3 @@ class JSONField(models.TextField):
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_prep_value(value)
-
-##
-## for schema migration, we have to tell South about JSONField
-## basically that it's the same as its parent class
-##
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^heliosauth\.jsonfield\.JSONField"])

@@ -99,7 +99,6 @@ INSTALLED_APPS = (
     'pagination',
     'djcelery',
     'djkombu',
-    'south',
     'heliosauth',
     'helios',
     'zeus',
@@ -250,8 +249,6 @@ COLLATION_LOCALE = 'el_GR.UTF-8'
 MIX_PART_SIZE = 104857600
 
 USE_X_SENDFILE = False
-
-SOUTH_TESTS_MIGRATE = False
 
 
 LOGGING = {

@@ -108,6 +108,9 @@ default_mixes_path = settings.MEDIA_ROOT + "/zeus_mixes/"
 ZEUS_MIXES_PATH = getattr(settings, 'ZEUS_MIXES_PATH', default_mixes_path)
 zeus_mixes_storage = storage.FileSystemStorage(location=ZEUS_MIXES_PATH)
 
+def dummy_upload_to(x):
+    return ''
+
 class PollMix(models.Model):
 
     MIX_REMOTE_TYPE_CHOICES = (('helios', 'Helios'),
@@ -135,7 +138,7 @@ class PollMix(models.Model):
     status = models.CharField(max_length=255, choices=MIX_STATUS_CHOICES,
                             default='pending')
     mix_error = models.TextField(null=True, blank=True)
-    mix_file = models.FileField(upload_to=lambda x:'',
+    mix_file = models.FileField(upload_to=dummy_upload_to,
                                 storage=zeus_mixes_storage,
                                 null=True, default=None)
 
@@ -250,8 +253,11 @@ class ElectionManager(models.Manager):
         return self.filter(admins__in=[user])
 
 
-_default_voting_starts_at = lambda: datetime.datetime.now()
-_default_voting_ends_at = lambda: datetime.datetime.now() + timedelta(hours=12)
+def _default_voting_starts_at(*args):
+    return datetime.datetime.now()
+
+def _default_voting_ends_at(*args):
+    return datetime.datetime.now() + timedelta(hours=12)
 
 
 class Election(ElectionTasks, HeliosModel, ElectionFeatures):
@@ -571,7 +577,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         for trustee in self.trustees.exclude(secret_key__isnull=False):
             if not trustee.last_notified_at or force:
                 trustee.send_url_via_mail()
-    
+
     _zeus = None
 
     @property
@@ -670,9 +676,9 @@ class PollManager(models.Manager):
 
 class Poll(PollTasks, HeliosModel, PollFeatures):
 
-  link_id = models.CharField(_('Poll link group'), max_length=255, 
+  link_id = models.CharField(_('Poll link group'), max_length=255,
                              default='')
-  linked_ref = models.CharField(_('Poll reference id'), max_length=255, 
+  linked_ref = models.CharField(_('Poll reference id'), max_length=255,
                                 default='')
   name = models.CharField(_('Poll name'), max_length=255)
   short_name = models.CharField(max_length=255)
@@ -788,7 +794,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     if self.election.linked_polls and self.link_id.strip():
         return self.election.polls.filter(link_id=self.link_id)
     return self.election.polls.filter(id=self.pk)
-    
+
   def next_linked_poll(self, voter_id=None):
       linked_next = self.linked_polls.filter(index__gte=self.index)
       if voter_id:
@@ -1340,8 +1346,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                   self.election.institution.name,
                   self.election.voting_starts_at, self.election.voting_ends_at,
                   self.election.voting_extended_until,
-                  [(self.name, json.dumps(results_json), 
-                    self.questions_data, 
+                  [(self.name, json.dumps(results_json),
+                    self.questions_data,
                     self.questions[0]['answers'])],
                   self.get_result_file_path('pdf', 'pdf'), score=True)
 
@@ -1357,8 +1363,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                   self.election.institution.name,
                   self.election.voting_starts_at, self.election.voting_ends_at,
                   self.election.voting_extended_until,
-                  [(self.name, json.dumps(results_json), 
-                    self.questions_data, 
+                  [(self.name, json.dumps(results_json),
+                    self.questions_data,
                     self.questions[0]['answers'])],
                   self.get_result_file_path('pdf', 'pdf'), parties=parties)
 
