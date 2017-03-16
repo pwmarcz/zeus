@@ -38,11 +38,11 @@
   <a href={% url "reset_password" %}?uid={{u_data.id}}>
   {% trans "Reset Password" %}</a>
   </br></br>
-  <a href={% url "create_user%}?edit_id={{u_data.id}}">{% trans "Edit" %}</a>
+  <a href={% url "create_user" %}?edit_id={{u_data.id}}">{% trans "Edit" %}</a>
   </br></br>
 {% endif %}
 {% endif %}
-<a href={% url "list_users%}">{% trans "Back" %}</a></br></br>
+<a href={% url "list_users" %}">{% trans "Back" %}</a></br></br>
 {% if u_data %}
   <table class="elections">
     <thead>
