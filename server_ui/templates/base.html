@@ -73,9 +73,9 @@
         <div id="wrapper" class="row">
                 <div class="twelve columns header">
             {% if election %}
-            <a href="{% url election_index election.uuid %}">
+            <a href="{% url "election_index" election.uuid %}">
                 {% else %}
-                <a href="{% url home %}">
+                <a href="{% url "home" %}">
                     {% endif %}
                     <img src="{{ THEME_HEADER_BG_URL }}_{{ LANGUAGE_CODE }}.jpg" alt="Zeus logo"/>
             </a>
@@ -122,17 +122,17 @@
             {% if settings.FOOTER_LOGO %}
             <img src="/static/footer-logo.gif" alt="Zeus logo" /> | 
             {% endif %}
-            <a href="{% url terms %}">{% trans "Terms of use" %}</a>
+            <a href="{% url "terms" %}">{% trans "Terms of use" %}</a>
           </span>
           {% if user and user.is_admin %}
           {% trans "You are logged in as election administrator" %}: {{ user.display_html_small|safe }}
-          <a href="{% url logout %}">{% trans "logout" %}</a> |
-          <a href="{% url admin_home %}">{% trans "manage" %}</a> 
+          <a href="{% url "logout" %}">{% trans "logout" %}</a> |
+          <a href="{% url "admin_home" %}">{% trans "manage" %}</a> 
           {% if user.is_manager or user.is_superadmin %}
-          | <a href={% url list_users %}>{% trans "accounts" %}</a>
+          | <a href={% url "list_users" %}>{% trans "accounts" %}</a>
           {% endif %}
               {% if user.user_type == "password" %}
-              | <a href="{% url heliosauth.views.change_password %}">{% trans "change password" %}</a>
+              | <a href="{% url "heliosauth.views.change_password" %}">{% trans "change password" %}</a>
               {% endif %}
               <br />
 
@@ -141,14 +141,14 @@
 	  {% trans "You are logged in as voter" %} <u>{{ voter.voter_surname }} {{voter.voter_name}}</u>:
 	  <u>{{voter.poll.name_display}}</u> | 
           <a onclick="return confirm('Επιθυμείτε να αποσυνδεθείτε;')"
-            href="{{settings.SECURE_URL_HOST}}{% url logout %}">{% trans "logout" %}</a>
+            href="{{settings.SECURE_URL_HOST}}{% url "logout" %}">{% trans "logout" %}</a>
           {% else %}
           {% if trustee %}
 	  {% trans "You are logged in as trustee" %} <u>{{trustee.name}}</u>:
 	  <u>{{ election.name }}</u>.
-	  <a href="{{settings.SECURE_URL_HOST}}{% url logout %}">{% trans "Logout" %}</a>
+	  <a href="{{settings.SECURE_URL_HOST}}{% url "logout" %}">{% trans "Logout" %}</a>
           {% else %}
-	  <a href="{{settings.SECURE_URL_HOST}}{% url login %}">{% trans "Login" %}</a>
+	  <a href="{{settings.SECURE_URL_HOST}}{% url "login" %}">{% trans "Login" %}</a>
           {% endif %}
           {% endif %}
           <br />

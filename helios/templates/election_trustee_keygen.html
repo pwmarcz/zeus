@@ -48,7 +48,7 @@ $(document).ready(function() {
     $('#generator').hide();
 
     // get some more server-side randomness for keygen
-    $.getJSON('{% url get_randomness %}', function(result) {
+    $.getJSON('{% url "get_randomness" %}', function(result) {
        sjcl.random.addEntropy(result.randomness);
        BigInt.setup(function() {
           ELGAMAL_PARAMS = ElGamal.Params.fromJSONObject({{eg_params_json|safe}});
@@ -123,7 +123,7 @@ function upload_show_pk() {
 
       success: function() {
         alert("{% trans "Your trustee key has been activated." %}");
-        window.location = '{% url logout %}'
+        window.location = '{% url "logout" %}'
       },
       error: function() {
         alert(" {% trans "Error in trustee key activation." %}");
@@ -245,7 +245,7 @@ $(document).ready(function(){
 </div>
 
 
-<form method="post" id="pk_form" action="{% url election_trustee_upload_pk election.uuid %}">
+<form method="post" id="pk_form" action="{% url "election_trustee_upload_pk" election.uuid %}">
 <h3>{% trans "The public part of your trustee key" %}</h3>
 <p>
 {% trans "Now you have to upload the public part of your trustee key to the Zeus servers." %}

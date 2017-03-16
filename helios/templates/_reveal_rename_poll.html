@@ -4,7 +4,7 @@
 <div id="rename-poll-{{ poll.short_name }}" class="reveal-modal rename-poll">
 <h3>{% trans "Rename poll" %}</h3>
 
-{% url election_poll_rename election.uuid poll.uuid as action %}
+{% url "election_poll_rename" election.uuid poll.uuid as action %}
 <form action="{{ action }}" method="POST" class="action-form">
 <label>{% trans "New name" %}</label>
 <input type="text" name="name" value="{{ poll.name }}" />

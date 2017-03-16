@@ -2,7 +2,7 @@
 
 {% block tabs_menu %}
 <dd class="active"><a 
-  href="{% url helios.views.one_election_view election.uuid %}">Οριστικοποίηση ψηφοφορίας</a></dd>
+  href="{% url "helios.views.one_election_view" election.uuid %}">Οριστικοποίηση ψηφοφορίας</a></dd>
 {% endblock %}
 
 {% block content %}
@@ -42,7 +42,7 @@
         <li>{{issue.action}}</li>
         {% endfor %}
     </ul>
-    <a href="{% url helios.views.one_election_view election.uuid %}">επιστροφή στην ψηφοφορία</a>
+    <a href="{% url "helios.views.one_election_view" election.uuid %}">επιστροφή στην ψηφοφορία</a>
 </p>
 {% else %}
 <form method="post" action="">

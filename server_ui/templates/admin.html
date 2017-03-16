@@ -14,7 +14,7 @@
                     <ul>
                         <li>
                         <a style="" class="foundicon-paper-clip" 
-                            href="{% url elections_report_csv %}?{{params}}">
+                            href="{% url "elections_report_csv" %}?{{params}}">
                             &nbsp;{% trans "to CSV" %}</a>
                         </li>
                     </ul>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="columns one">
                             <a class="button alert postfix" 
-                               href="{% url elections_report %}#elections-table" />✗</a>
+                               href="{% url "elections_report" %}#elections-table" />✗</a>
                         </div>
                     </div>
                 </form>

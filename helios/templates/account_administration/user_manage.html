@@ -28,21 +28,21 @@
 {% if u_data.management_p or u_data.superadmin_p %}
 {% if user_type == 'superadmin'%}
   <br>
-  <a href={% url user_management %}?uid={{u_data.id}}>{% trans "Reset Password" %}</a>
+  <a href={% url "user_management" %}?uid={{u_data.id}}>{% trans "Reset Password" %}</a>
   </br></br>
-  <a href={% url create_user %}?edit_id={{u_data.id}}>{% trans "Edit" %}</a>
+  <a href={% url "create_user" %}?edit_id={{u_data.id}}>{% trans "Edit" %}</a>
   </br></br>
 {% endif %}
 {%else%}
   <br>
-  <a href={% url reset_password %}?uid={{u_data.id}}>
+  <a href={% url "reset_password" %}?uid={{u_data.id}}>
   {% trans "Reset Password" %}</a>
   </br></br>
-  <a href={% url create_user%}?edit_id={{u_data.id}}>{% trans "Edit" %}</a>
+  <a href={% url "create_user%}?edit_id={{u_data.id}}">{% trans "Edit" %}</a>
   </br></br>
 {% endif %}
 {% endif %}
-<a href={% url list_users%}>{% trans "Back" %}</a></br></br>
+<a href={% url "list_users%}">{% trans "Back" %}</a></br></br>
 {% if u_data %}
   <table class="elections">
     <thead>
@@ -59,7 +59,7 @@
           <td>{{el.name}}</td>
           <td>{{el.voting_starts_at}}</td>
           <td>{{el.voting_ends_at}}</td>
-          <td><a href="{% url election_zip_results el.uuid el.short_name LANGUAGE_CODE %}">{% trans "Save results"%}</a></td>
+          <td><a href="{% url "election_zip_results" el.uuid el.short_name LANGUAGE_CODE %}">{% trans "Save results"%}</a></td>
         </tr>
       {% endfor %}
     </tbody>

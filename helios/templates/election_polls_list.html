@@ -16,11 +16,11 @@
         <div href="#" class="button medium dropdown" style="float:right;">
             {% trans "Batch polls actions" %}&nbsp;
             <ul>
-            {% url election_voters_email election.uuid as email_url %}
+            {% url "election_voters_email" election.uuid as email_url %}
             {% trans "Send voters email" as label %}
             <li>
             <a style="" class="foundicon-mail" 
-                href="{% url election_voters_email election.uuid %}">
+                href="{% url "election_voters_email" election.uuid %}">
                 &nbsp;{% trans "Send voters email" %}</a>
             </li>
           </ul>
@@ -56,21 +56,21 @@
               {% if poll.has_linked_polls %}
                   <em style="color: #ccc">linked</em>
               {% endif %}
-              <a href="{% url election_poll_edit election.uuid poll.uuid%}">
+              <a href="{% url "election_poll_edit" election.uuid poll.uuid%}">
                  {{poll.name}}</a>
           {% endif %}
       </td>
       <td>
           {{ poll.status_display }}
           {% if poll.feature_compute_results_finished %}
-          <a href="{% url election_poll_results election.uuid poll.uuid %}">
+          <a href="{% url "election_poll_results" election.uuid poll.uuid %}">
               {% trans "Results" %}</a>
           {% endif %}
       </td>
-      <td><a class="foundicon-edit" href="{% url election_poll_questions election.uuid poll.uuid %}">
+      <td><a class="foundicon-edit" href="{% url "election_poll_questions" election.uuid poll.uuid %}">
           {{ poll.questions_count }}
       </a></td>
-      <td><a class="foundicon-edit" href="{% url election_poll_voters election.uuid poll.uuid %}">
+      <td><a class="foundicon-edit" href="{% url "election_poll_voters" election.uuid poll.uuid %}">
           {{ poll.voters.count }}
       </a></td>
       <td>{{ poll.voters.filter.invited.count }}</td>
@@ -83,18 +83,18 @@
           <div href="#" class="button tiny dropdown" style="">
               {% trans "Actions" %}&nbsp;
           <ul>
-            {% url election_poll_edit election.uuid poll.uuid as edit_url %}
+            {% url "election_poll_edit" election.uuid poll.uuid as edit_url %}
             {% trans "Edit poll" as label %}
             {% menu_action label  edit_url "settings" %}
-            {% url election_poll_voters election.uuid poll.uuid as manage_url %}
+            {% url "election_poll_voters" election.uuid poll.uuid as manage_url %}
             {% trans "Manage voters" as label %}
             {% menu_action label manage_url "people" %}
             {% if poll.feature_can_manage_questions %}
-            {% url election_poll_questions_manage election.uuid poll.uuid as manage_url %}
+            {% url "election_poll_questions_manage" election.uuid poll.uuid as manage_url %}
             {% menu_action poll.get_module.manage_questions_title manage_url "edit" %}
             {% endif %}
             {% if poll.feature_can_remove %}
-            {% url election_poll_remove election.uuid poll.uuid as delete_url %}
+            {% url "election_poll_remove" election.uuid poll.uuid as delete_url %}
             {% trans "Delete poll" as label %}
             {% menu_confirm_action label delete_url poll_delete_confirm "remove" "POST" "alert" %}
             {% endif %}
@@ -129,7 +129,7 @@
 </table>
 {% endif %}
 {% if election.feature_can_add_poll %}
-<a class="button" href="{% url election_polls_add election.uuid %}">
+<a class="button" href="{% url "election_polls_add" election.uuid %}">
 {% trans "Add poll" %}</a>
 {% endif %}
 </div>

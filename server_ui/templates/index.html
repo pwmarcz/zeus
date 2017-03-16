@@ -38,7 +38,7 @@
                 <input class="button postfix" type="submit" value="✓"/>
             </div>
             <div class="columns one">
-                <a class="button alert postfix" href="{% url admin_home %}#elections-table" />✗</a>
+                <a class="button alert postfix" href="{% url "admin_home" %}#elections-table" />✗</a>
         </div>
     </div>
 </form>
@@ -82,14 +82,14 @@
                                 <b style="color:orange">[{% trans "PUBLIC" %}]</b><br />
                                 {% endif %}
                                 {% if user.superadmin_p %}
-                                    <a href="{% url helios.views.election_report election.uuid "html" %}">
+                                    <a href="{% url "helios.views.election_report" election.uuid "html" %}">
                                         {{election.name}}
                                     </a>
                                 {% endif %}
                                 {% if election.result %}
                                     <br />
                                     <a class="button small"
-                                      href="{% url helios.views.one_election_set_completed election.uuid %}">
+                                      href="{% url "helios.views.one_election_set_completed" election.uuid %}">
                                         {% if not election.is_completed %}
                                             {% trans "SET PUBLIC" %}
                                         {% else %}
@@ -97,7 +97,7 @@
                                         {% endif %}
                                     </a>
                                 {% else %}
-                                    <a href="{% url election_index election.uuid %}">
+                                    <a href="{% url "election_index" election.uuid %}">
                                         {{election.name}}
                                     </a>
                                 {% endif %}

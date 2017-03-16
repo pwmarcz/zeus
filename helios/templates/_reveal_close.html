@@ -4,7 +4,7 @@
 <div id="close-admin-action" class="reveal-modal freeze-issues">
 <h3>{% trans "Close election" %}</h3>
 
-{% url election_close election.uuid as action %}
+{% url "election_close" election.uuid as action %}
 <form action="{{ action }}" method="POST" class="action-form">
 <p class="election-admin-message">
 {% trans "Election close message" %}

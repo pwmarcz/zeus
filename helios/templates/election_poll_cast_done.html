@@ -12,7 +12,7 @@ Thank you for participating.{% endblocktrans %}
 
 <br>
 {% trans "A" %}
-<a target="_blank" href="{% url election_poll_download_signature election_uuid poll_uuid cast_vote.fingerprint %}"
+<a target="_blank" href="{% url "election_poll_download_signature" election_uuid poll_uuid cast_vote.fingerprint %}"
   >{% trans "submission receipt" %}</a> {% trans "for your vote has been sent to your email address" %}.
 </p>
 

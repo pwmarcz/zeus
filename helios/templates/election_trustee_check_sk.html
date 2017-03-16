@@ -43,7 +43,7 @@ function check_sk(sk_value) {
       var data = {'verified': true}
       data[CSRF_TOKEN_NAME] = CSRF_TOKEN;
       $.ajax({
-        "url": "{% url election_trustee_verify_key election.uuid %}",
+        "url": "{% url "election_trustee_verify_key" election.uuid %}",
         "type": "post",
         "data": data,
         "error": function() {
@@ -52,7 +52,7 @@ function check_sk(sk_value) {
         "success": function() {
             alert("{% trans "Your trustee key has been verified!" %}");
 	    var redirect = getURLParameter('redirect') 
-            redirect = redirect && redirect != "null" ? redirect : '{% url logout %}';
+            redirect = redirect && redirect != "null" ? redirect : '{% url "logout" %}';
             window.location = redirect;
         }
       })

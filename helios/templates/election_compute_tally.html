@@ -2,7 +2,7 @@
 
 {% block tabs_menu %}
 <dd class="active"><a 
-  href="{% url helios.views.one_election_view election.uuid %}">Λήξη της ψηφοφορίας</a></dd>
+  href="{% url "helios.views.one_election_view" election.uuid %}">Λήξη της ψηφοφορίας</a></dd>
 {% endblock %}
 
 {% block content %}

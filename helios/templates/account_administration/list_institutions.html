@@ -11,7 +11,7 @@
   <input id="inst_name" type='textfield' name='inst_name' value="{{inst_name|default_if_none:""}}">
   <label for"sub_button"></label>
   <input id="sub_button" type='submit' class="button tiny" value={% trans "Filter" %}>
-  <a href="{% url list_institutions %}">{% trans "Clear" %}</a>
+  <a href="{% url "list_institutions" %}">{% trans "Clear" %}</a>
 </form>
 <br />
 {% autopaginate institutions paginate_by %}
@@ -32,9 +32,9 @@
     <tr>
         <td>{{inst.id}}</td>
         <td>{{inst.name}}</td>
-        <td><a href={% url list_users%}?inst={{inst.name}}>{{inst.user_set.count}}</a></td>
-        <td><a href="{% url create_institution %}?id={{inst.id}}">{% trans "Edit" %}</td>
-        <td><a href={% url create_user %}?id={{inst.id}}>{% trans "Create User"%}</a>
+        <td><a href={% url "list_users%}?inst={{inst.name}}">{{inst.user_set.count}}</a></td>
+        <td><a href="{% url "create_institution" %}?id={{inst.id}}">{% trans "Edit" %}</td>
+        <td><a href={% url "create_user" %}?id={{inst.id}}>{% trans "Create User"%}</a>
         </td>
     </tr>
   {% empty %}

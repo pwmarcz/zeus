@@ -14,7 +14,7 @@
   Έχουν προστεθεί <b> {{ election.remote_mixes.count }}</b> εξωτερικές μίξεις.
 </div>
 {% if election.remote_mixes %}
-<a class="button small alert" style="float: right" href="{% url helios.views.election_remove_last_mix election.uuid %}">
+<a class="button small alert" style="float: right" href="{% url "helios.views.election_remove_last_mix" election.uuid %}">
   Αφαίρεση τελευταίας εξωτερικής μίξης.
 </a>
 <br /><br />
@@ -22,7 +22,7 @@
 
 <br /<br />
 <a class="button medium success"
-  href="{% url helios.views.election_stop_mixing election.uuid %}"
+  href="{% url "helios.views.election_stop_mixing" election.uuid %}"
   onclick="return confirm("Είστε σίγουρος; Δεν θα είναι δυνατόν να προσθέσετε νέες εξωτερικές μίξεις μετα το βήμα αυτό.")">
   Όλοκλήρωση διαδικασίας μίξης
 </a>

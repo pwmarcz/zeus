@@ -3,7 +3,7 @@
 You can use the following credentials to access a demo account as an
 election operator at:
 
-{% endblocktrans %}{{ settings.URL_HOST }}{% url home %}
+{% endblocktrans %}{{ settings.URL_HOST }}{% url "home" %}
 username: {{ username }}
 password: {{ password }}
 

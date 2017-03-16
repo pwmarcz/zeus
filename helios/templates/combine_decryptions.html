@@ -2,7 +2,7 @@
 
 {% block tabs_menu %}
 <dd class="active"><a 
-  href="{% url helios.views.one_election_view election.uuid %}">Υπολογισμός αποτελέσματος</a></dd>
+  href="{% url "helios.views.one_election_view" election.uuid %}">Υπολογισμός αποτελέσματος</a></dd>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
     <input type="hidden" name="csrf_token" value="{{csrf_token}}" class=""/>
     <input type="submit" value="Υπολογισμός αποτελέσματος" class="button
     success"/>
-<a class="button alert" href="{% url helios.views.one_election_view election.uuid %}">Ακύρωση</a>
+<a class="button alert" href="{% url "helios.views.one_election_view" election.uuid %}">Ακύρωση</a>
   </form>
 
 {% endblock %}

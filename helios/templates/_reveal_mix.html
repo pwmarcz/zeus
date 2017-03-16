@@ -41,7 +41,7 @@
   Are you certain?{% endblocktrans %}
 </p>
 <div class="actions">
-  {% url election_freeze election.uuid as action %}
+  {% url "election_freeze" election.uuid as action %}
   <form action="{{ action }}" method="POST" class="action-form">
     {% csrf_token %}
     <input type="submit" value="{% trans "Confirm freeze" %}"

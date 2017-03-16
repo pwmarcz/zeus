@@ -25,7 +25,7 @@
 ψήφου δεν θα είναι δυνατή.
   </p>
   <form class="prettyform" 
-    action="{% url helios.views.voter_exclude election.uuid voter_o.uuid %}" 
+    action="{% url "helios.views.voter_exclude" election.uuid voter_o.uuid %}" 
     method="POST" id="exclude_form">
     <input type="hidden" name="csrf_token" value="{{csrf_token}}" />
     <input type="hidden" name="confirm" value="1" />
@@ -34,7 +34,7 @@
   <div>
   <label for="">&nbsp;</label><input class="button alert medium" type="submit" value="Εξαίρεση" id="send_button" />
   <br /><Br /><a 
-    href="{% url helios.views.voters_list_pretty election.uuid %}" 
+    href="{% url "helios.views.voters_list_pretty" election.uuid %}" 
     class="button success medium">Άκυρο και επιστροφή</a>
   </div>
   </form>

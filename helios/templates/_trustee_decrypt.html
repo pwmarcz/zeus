@@ -43,7 +43,7 @@
         <tr class="poll" 
           data-poll-uuid="{{ poll.uuid }}"
           data-poll-finished="{% if factors %}1{% else %}0{% endif %}"
-          data-poll-url="{% url election_poll_index election.uuid poll.uuid %}">
+          data-poll-url="{% url "election_poll_index" election.uuid poll.uuid %}">
             <td>{{ poll.name }}</td>
             <td>
               <span class="status">    

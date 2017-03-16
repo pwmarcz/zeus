@@ -73,7 +73,7 @@
 {% endif %}
 <form 
     method="post"
-    action="{% url election_poll_voters_upload_cancel election.uuid poll.uuid %}">
+    action="{% url "election_poll_voters_upload_cancel" election.uuid poll.uuid %}">
     {% csrf_token %}
     <input type="submit" class="button alert small" 
     value="{% trans "Cancel voter enrollment" %}" />

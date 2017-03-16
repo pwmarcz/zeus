@@ -16,7 +16,7 @@
 <input id="uid" type='textfield' name='uid' value="{{uid|default_if_none:""}}" >
 <label for"sub_button"></label>
 <input id="sub_button" type='submit' class="button tiny" value={% trans "Filter" %}>
-<a href="{% url list_users  %}">{% trans "Clear" %}</a>
+<a href="{% url "list_users"  %}">{% trans "Clear" %}</a>
 </form>
 <br />
 
@@ -43,7 +43,7 @@
         <td>{{user.institution.name}}</td>
         <td>{{user.elections.all.count}}</td>
         <td>
-            <a href={% url user_management %}?uid={{user.id}}>
+            <a href={% url "user_management" %}?uid={{user.id}}>
 
             {% trans "Details" %}</a>
         </td>

@@ -26,7 +26,7 @@
     {% endif %}
     <p>Εισάγετε το μυστικό κωδικό ταυτοποίησης που σας έχει αποσταλεί.</p>
     
-    <form action="{% url election_email_show %}" method="post">
+    <form action="{% url "election_email_show" %}" method="post">
       <input type="hidden" name="uuid" value="{{ election_o.uuid }}">
       <label for="secret">Κωδικός Ταυτοποίησης</label>
       <div class="row">

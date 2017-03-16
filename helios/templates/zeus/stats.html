@@ -21,12 +21,12 @@
         <ul class="election-stats-list">
           {% for election in elections %}
           <li>
-          <a href="{% url zeus.views.site.stats %}?uuid={{ election.uuid }}">{{ election.institution.name }}
+          <a href="{% url "zeus.views.site.stats" %}?uuid={{ election.uuid }}">{{ election.institution.name }}
           {% if user.is_admin %}
           ({{ election.casts.distinct_voter.countable.count }} / {{ election.voters.count }})
           {% endif %}
           </a>
-          <a style="font-size: 0.8em; color:#aaa; padding-top:0" href="{% url zeus.views.site.stats %}?uuid={{ election.uuid }}">
+          <a style="font-size: 0.8em; color:#aaa; padding-top:0" href="{% url "zeus.views.site.stats" %}?uuid={{ election.uuid }}">
             {{ election.name }}
           </a>
           </li>
