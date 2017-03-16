@@ -31,7 +31,7 @@ from heliosauth.models import User
 from zeus.utils import extract_trustees, election_trustees_to_text
 from zeus.widgets import JqSplitDateTimeField, JqSplitDateTimeWidget
 from zeus import help_texts as help
-from zeus.utils import undecalize
+from zeus.utils import undecalize, ordered_dict_prepend
 
 from django.core.validators import validate_email
 
@@ -447,29 +447,33 @@ class StvForm(QuestionBaseForm):
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
                                               label=('Candidate'))
 
-        elig_help_text = _("set the eligibles count of the election")
-        label_text = _("Eligibles count")
-        self.fields.insert(0, 'eligibles', forms.CharField(
-                                                    label=label_text,
-                                                    help_text=elig_help_text))
-        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
-        limit_help_text = _("enable limiting the elections from the same constituency")
-        limit_label = _("Limit elected per constituency")
-        self.fields.insert(1,'has_department_limit',
-                            forms.BooleanField(
-                                                widget=widget,
-                                                help_text=limit_help_text,
-                                                label = limit_label,
-                                                required=False))
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
         dep_lim_label = _("Constituency limit")
-        self.fields.insert(2, 'department_limit',
-                            forms.CharField(
-                                            help_text=dep_lim_help_text,
-                                            label=dep_lim_label,
-                                            widget=widget,
-                                            required=False))
+        ordered_dict_prepend(self.fields, 'department_limit',
+                             forms.CharField(
+                                 help_text=dep_lim_help_text,
+                                 label=dep_lim_label,
+                                 widget=widget,
+                                 required=False))
+
+        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
+        limit_help_text = _("enable limiting the elections from the same constituency")
+        limit_label = _("Limit elected per constituency")
+        ordered_dict_prepend(self.fields, 'has_department_limit',
+                             forms.BooleanField(
+                                 widget=widget,
+                                 help_text=limit_help_text,
+                                 label = limit_label,
+                                 required=False))
+
+        elig_help_text = _("set the eligibles count of the election")
+        label_text = _("Eligibles count")
+        ordered_dict_prepend(self.fields, 'eligibles',
+                             forms.CharField(
+                                 label=label_text,
+                                 help_text=elig_help_text))
+
 
     min_answers = None
     max_answers = None
@@ -571,9 +575,10 @@ class PollForm(forms.ModelForm):
         )
 
 
-        self.fields.insert(3, 'jwt_file', forms.FileField(
-                                            label="JWT public keyfile",
-                                            required=False))
+        ordered_dict_prepend(self.fields, 'jwt_file',
+                             forms.FileField(
+                                 label="JWT public keyfile",
+                                 required=False))
         self.fields['jwt_file'].widget.attrs['accept'] = '.pem'
         self.fields['jwt_public_key'] = forms.CharField(required=False,
                                                         widget=forms.Textarea)
