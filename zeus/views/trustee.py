@@ -1,4 +1,4 @@
-import simplejson
+import json
 import logging
 import datetime
 import json
@@ -58,7 +58,7 @@ def login(request, election, trustee_email, trustee_secret):
 @auth.requires_election_features('trustee_can_generate_key')
 @require_http_methods(['GET'])
 def keygen(request, election, trustee):
-    eg_params_json = simplejson.dumps(ELGAMAL_PARAMS_LD_OBJECT.toJSONDict(),
+    eg_params_json = json.dumps(ELGAMAL_PARAMS_LD_OBJECT.toJSONDict(),
                                       sort_keys=True)
     context = {
         'eg_params_json': eg_params_json,
