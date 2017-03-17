@@ -238,7 +238,6 @@ def endnow(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_close')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def close(request, election):
     election.close_voting()
@@ -249,7 +248,6 @@ def close(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_validate_voting')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def validate_voting(request, election):
     tasks.election_validate_voting(election_id=election.id)
@@ -259,7 +257,6 @@ def validate_voting(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_mix')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def start_mixing(request, election):
     tasks.start_mixing.delay(election_id=election.id)

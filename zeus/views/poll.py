@@ -1049,7 +1049,6 @@ def audited_ballots(request, election, poll):
 
 @auth.trustee_view
 @auth.requires_poll_features('can_do_partial_decrypt')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def upload_decryption(request, election, poll, trustee):
     factors_and_proofs = crypto_utils.from_json(
