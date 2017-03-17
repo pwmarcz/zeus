@@ -6,7 +6,7 @@ Ben Adida (12-30-2008)
 
 from django.template import Context, Template, loader
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 import utils
 
@@ -18,7 +18,6 @@ from functools import update_wrapper
 import helios
 
 from django.conf import settings
-from django.template import RequestContext
 
 ##
 ## BASICS
@@ -46,7 +45,7 @@ def prepare_vars(request, vars):
   vars_with_user['TEMPLATE_BASE'] = helios.TEMPLATE_BASE
   vars_with_user['CURRENT_URL'] = request.path
   vars_with_user['SECURE_URL_HOST'] = settings.SECURE_URL_HOST
-  vars_with_user['voter'] = request.session.get('CURRENT_VOTER')
+  #vars_with_user['voter'] = request.session.get('CURRENT_VOTER')
 
   trustee = None
   if request.session.has_key('helios_trustee_uuid') and not 'trustee' in vars:
@@ -65,22 +64,22 @@ def prepare_vars(request, vars):
   return vars_with_user
 
 def render_template(request, template_name, vars = {}, include_user=True):
-  vars_with_user = RequestContext(request, prepare_vars(request, vars))
-  
+  vars_with_user = prepare_vars(request, vars)
+
   language = request.LANGUAGE_CODE
   if not include_user:
     del vars_with_user['user']
-    
+
   i18n_tpl = 'helios/templates/i18n/%s/%s.html' % (language, template_name)
   template_name = 'helios/templates/%s.html' % template_name
-    
+
   try:
     loader.get_template(i18n_tpl)
     template_name = i18n_tpl
   except:
     pass
-    
-  return render_to_response(template_name, vars_with_user)
+
+  return render(request, template_name, vars_with_user)
 
 def render_template_raw(request, template_name, vars={}):
   t = loader.get_template(template_name)
