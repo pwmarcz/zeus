@@ -791,7 +791,7 @@ def voter_exclude(request, election, poll, voter_uuid):
 @require_http_methods(["GET"])
 def voters_csv(request, election, poll, fname):
     q_param = request.GET.get('q', None)
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(content_type='text/csv')
     filename = smart_unicode("voters-%s.csv" % election.short_name)
     if fname:
         filename = fname
@@ -893,7 +893,7 @@ def to_json(request, election, poll):
     data = poll.get_booth_dict()
     data['token'] = unicode(csrf(request)['csrf_token'])
     return HttpResponse(json.dumps(data, default=common_json_handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.poll_voter_required
@@ -959,7 +959,7 @@ def cast(request, election, poll):
         request.session['audit_password'] = audit_password
         token = request.session.get('csrf_token')
         return HttpResponse('{"audit": 1, "token":"%s"}' % token,
-                            mimetype="application/json")
+                            content_type="application/json")
     else:
         # notify user
         tasks.send_cast_vote_email.delay(poll.pk, voter.pk, signature)
@@ -969,7 +969,7 @@ def cast(request, election, poll):
                              fingerprint)
 
         return HttpResponse('{"cast_url": "%s"}' % url,
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 @auth.election_view(check_access=False)
@@ -1022,7 +1022,7 @@ def audited_ballots(request, election, poll):
         b = get_object_or_404(AuditedBallot, poll=poll, vote_hash=vote_hash)
         b = AuditedBallot.objects.get(poll=poll,
                                       vote_hash=request.GET['vote_hash'])
-        return HttpResponse(b.raw_vote, mimetype="text/plain")
+        return HttpResponse(b.raw_vote, content_type="text/plain")
 
     audited_ballots = AuditedBallot.objects.filter(is_request=False,
                                                    poll=poll)
@@ -1083,7 +1083,7 @@ def get_tally(request, election, poll):
     return HttpResponse(json.dumps({
         'poll': params,
         'tally': tally}, default=common_json_handler),
-        mimetype="application/json")
+        content_type="application/json")
 
 
 @auth.election_view()
@@ -1134,7 +1134,7 @@ def results_file(request, election, poll, language, ext):
         return response
     else:
         zip_data = file(fname, 'r')
-        response = HttpResponse(zip_data.read(), mimetype='application/%s' % ext)
+        response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
         zip_data.close()
         basename = os.path.basename(fname)
         response['Content-Dispotition'] = 'attachment; filename=%s' % basename
@@ -1156,7 +1156,7 @@ def zeus_proofs(request, election, poll):
         return response
     else:
         zip_data = file(poll.zeus_proofs_path())
-        response = HttpResponse(zip_data.read(), mimetype='application/zip')
+        response = HttpResponse(zip_data.read(), content_type='application/zip')
         zip_data.close()
         response['Content-Dispotition'] = 'attachment; filename=%s_proofs.zip' % election.uuid
         return response
@@ -1168,7 +1168,7 @@ def zeus_proofs(request, election, poll):
 def results_json(request, election, poll):
     data = poll.zeus.get_results()
     return HttpResponse(json.dumps(data, default=common_json_handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @csrf_exempt

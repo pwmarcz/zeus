@@ -282,7 +282,7 @@ def public_stats(request, election):
         raise TypeError
 
     return HttpResponse(json.dumps(stats, default=handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.election_admin_required
@@ -316,7 +316,7 @@ def report(request, election, format):
             raise TypeError
 
         return HttpResponse(json.dumps(_reports, default=handler),
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 @auth.election_admin_required
@@ -334,7 +334,7 @@ def public_stats(request, election):
         raise TypeError
 
     return HttpResponse(json.dumps(stats, default=handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.election_admin_required
@@ -367,7 +367,7 @@ def results_file(request, election, ext='pdf', shortname='',
         return response
     else:
         data = file(fpath, 'r')
-        response = HttpResponse(data.read(), mimetype='application/%s' % ext)
+        response = HttpResponse(data.read(), content_type='application/%s' % ext)
         data.close()
         basename = os.path.basename(fpath)
         response['Content-Dispotition'] = 'attachment; filename=%s' % basename
@@ -390,7 +390,7 @@ def json_data(request, election):
                                                    polls_json,
                                                    trustees_json,
                                                    voters_json)
-    return HttpResponse(json, mimetype="application/json")
+    return HttpResponse(json, content_type="application/json")
 
 
 def test_cookie(request):

@@ -14,5 +14,5 @@ def get_randomness(request, *args, **kwargs):
     }
     if token:
         data['token'] = unicode(csrf(request)['csrf_token'])
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
 

@@ -232,4 +232,4 @@ def json_data(request, election, trustee):
         }
     }
     json_data = json.dumps(data)
-    return HttpResponse(json_data, mimetype="application/json")
+    return HttpResponse(json_data, content_type="application/json")
