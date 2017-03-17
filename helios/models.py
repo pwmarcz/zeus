@@ -244,13 +244,13 @@ class MixPart(models.Model):
 class ElectionManager(models.Manager):
 
     def get_queryset(self):
-        return self.filter(deleted=False)
+        return super(ElectionManager, self).get_queryset().filter(deleted=False)
 
     def administered_by(self, user):
         if user.superadmin_p:
-            return self.filter()
+            return super(ElectionManager, self).get_queryset().filter()
 
-        return self.filter(admins__in=[user])
+        return super(ElectionManager, self).get_queryset().filter(admins__in=[user])
 
 
 def _default_voting_starts_at(*args):
