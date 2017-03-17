@@ -10,19 +10,20 @@ RUN mkdir -p /srv/data/
 RUN mkdir -p /srv/static/
 
 # cache site rules for fast docker builds
-COPY deploy/grnet-zeus /etc/puppet/modules/zeus
 RUN puppet module install puppetlabs-apache 
 RUN puppet module install puppetlabs-postgresql
 RUN puppet module install "stankevich/python"
 
-ADD deploy/zeus-pre.pp /srv/deploy/zeus-pre.pp
-ADD deploy/zeus.pp /srv/deploy/zeus.pp
 ADD deploy/hiera.yaml /etc/puppet/hiera.yaml
 ADD deploy/config.yaml /etc/puppet/hieraconf/common.yaml
 
 RUN mkdir /srv/media
+RUN mkdir /srv/zeus_app
 
-RUN cd /srv/deploy && puppet apply -v zeus-pre.pp
+COPY deploy/grnet-zeus /etc/puppet/modules/zeus
+ADD deploy/zeus.pp /srv/deploy/zeus.pp
+
+RUN cd /srv/deploy && puppet apply -v zeus.pp
 
 ADD deploy/boot.sh /srv/deploy/boot.sh
 RUN chmod +x /srv/deploy/boot.sh

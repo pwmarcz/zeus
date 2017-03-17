@@ -36,7 +36,8 @@
 class zeus (
     $dbname,
     $dbpassword,
-    $dbusername
+    $dbusername,
+    $appdir = '/srv/zeus_app'
 ) {
 
     $packages = [
@@ -50,19 +51,30 @@ class zeus (
         'gunicorn',
         'python-pyicu',
         'python-django-pagination',
-        'python-django-south',
         'python-openid',
         'python-gmpy',
         'python-simplejson',
         'python-crypto',
+        'python-reportlab',
+        'ttf-dejavu',
+        'ttf-dejavu-core',
+        'ttf-dejavu-extra'
     ]
 
-    package { $packages: 
-        ensure => 'installed'
+    $dev_packages = [
+        'python-pytest'
+    ]
+
+    package { $packages: ensure => 'installed' }
+    package { $dev_packages: ensure => 'installed' }
+
+    # south is not compatible with django1.7
+    package { 'python-django-south':
+        ensure => 'absent'
     }
 
-    $test1 = "testfile var:${dbname}"
-    file { '/srv/code/local_settings.py': 
+    file { 'zeus_settings':
+        path => "${appdir}/local_settings.py",
         content => template('zeus/local_settings.py.erb')
     }
 }

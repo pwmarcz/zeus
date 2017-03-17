@@ -5,7 +5,7 @@ docker rm -f zeus-legacy
 docker run \
     -P -v `pwd`/deploy/grnet-zeus:/etc/puppet/modules/zeus \
     -v `pwd`/deploy:/srv/deploy \
-    -v `pwd`/:/srv/code \
+    -v `pwd`/:/srv/zeus_app \
     -v `pwd`/deploy/config.yaml:/etc/puppet/hieraconf/common.yaml \
     -v zeus-legacy-data:/srv/data \
     --name zeus-legacy -d grnet/zeus-legacy
