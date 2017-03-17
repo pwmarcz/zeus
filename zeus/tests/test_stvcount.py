@@ -49,14 +49,14 @@ class TestSTVCountView(TestCase):
             'voting_ends': '25/12/2014 19:03',
             'candidates': CANDIDATES,
             'eligibles_count': '3',
-            'has_limit': 'on',
+            'elected_limit': '2',
             'ballots_count': '4'
         })
 
         resp = self.client.post(self.form_url, data)
         assert resp.status_code == 200
         assert resp.context['form'].errors == {}
-        assert resp.context['form'].cleaned_data.get('has_limit') is True
+        assert resp.context['form'].cleaned_data.get('elected_limit') is 2
         assert resp.context['ballots_form'] is not None
 
         data['submit_ballots'] = "1"
