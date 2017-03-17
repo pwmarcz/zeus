@@ -134,6 +134,12 @@ class TaskModel(models.Model):
                 e = self.election
             e.notify_admins(msg=msg, subject=subject, send_anyway=True)
 
+    def _select_for_update(self, obj=None):
+        obj = obj or self
+        if obj.pk:
+            return obj.__class__.objects.select_for_update().get(pk=obj.pk)
+        return obj
+
     class Meta:
         abstract = True
 
@@ -161,12 +167,13 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
                 self.save()
 
             try:
-                with transaction.atomic():
-                    if lock:
-                        self._select_for_update()
-                    func(self, *args, **kwargs)
-
+                # in order to manually track task method error status
                 transaction.set_autocommit(False)
+
+                if lock:
+                    self._select_for_update()
+                func(self, *args, **kwargs)
+
                 finished = False
                 if not is_recurrent:
                     finished = True
@@ -239,12 +246,6 @@ class PollTasks(TaskModel):
 
     class Meta:
         abstract = True
-
-    def _select_for_update(self, obj=None):
-        obj = obj or self
-        if obj.pk:
-            return obj.__class__.objects.select_for_update().get(pk=obj.pk)
-        return obj
 
     @poll_task('validate_create', ('frozen',))
     def validate_create(self):
