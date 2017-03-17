@@ -122,7 +122,7 @@ def send_cast_vote_email(poll_pk, voter_pk, signature):
 
 %(election_name)s
 %(poll_name)s
-    
+
 as
 
 %(voter_name)s %(voter_surname)s
@@ -149,17 +149,18 @@ you can find your encrypted vote attached in this mail.
 
 @poll_task(ignore_result=True)
 def poll_validate_create(poll_id):
-    poll = Poll.objects.select_for_update().get(id=poll_id)
+    poll = Poll.objects.get(id=poll_id)
     poll.validate_create()
 
 
 @task(ignore_result=True)
 def election_validate_create(election_id):
-    election = Election.objects.select_for_update().get(id=election_id)
-    election.logger.info("Spawning validate create poll tasks")
-    if election.polls_feature_frozen:
-        election.frozen_at = datetime.datetime.now()
-        election.save()
+    with transaction.atomic():
+        election = Election.objects.select_for_update().get(id=election_id)
+        election.logger.info("Spawning validate create poll tasks")
+        if election.polls_feature_frozen:
+            election.frozen_at = datetime.datetime.now()
+            election.save()
 
     for poll in election.polls.all():
         if not poll.feature_can_validate_create:
@@ -172,7 +173,7 @@ def election_validate_create(election_id):
 
 @task(ignore_result=True)
 def election_validate_voting(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning validate voting poll tasks")
     for poll in election.polls.all():
         if poll.feature_can_validate_voting:
@@ -181,7 +182,7 @@ def election_validate_voting(election_id):
 
 @poll_task(ignore_result=True)
 def poll_validate_voting(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.validate_voting()
     if poll.election.polls_feature_validate_voting_finished:
         subject = "Validate voting finished"
@@ -192,7 +193,7 @@ def poll_validate_voting(poll_id):
 
 @task(ignore_result=True)
 def election_mix(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning mix poll tasks")
     for poll in election.polls.all():
         if poll.feature_can_mix:
@@ -201,7 +202,7 @@ def election_mix(election_id):
 
 @poll_task(ignore_result=True)
 def poll_mix(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.mix()
     if poll.election.polls_feature_mix_finished:
         subject = "Mixing finished"
@@ -212,7 +213,7 @@ def poll_mix(poll_id):
 
 @task(ignore_result=True)
 def election_validate_mixing(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning validate mix poll tasks")
     for poll in election.polls.all():
         if poll.feature_can_validate_mixing:
@@ -221,7 +222,7 @@ def election_validate_mixing(election_id):
 
 @poll_task(ignore_result=True)
 def poll_validate_mixing(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.validate_mixing()
     if poll.election.polls_feature_validate_mixing_finished:
         subject = "Validate mixing finished"
@@ -239,7 +240,7 @@ def notify_trustees(election_id):
 
 @task(ignore_result=True)
 def election_zeus_partial_decrypt(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning zeus partial decrypt poll tasks")
     notify_trustees.delay(election.pk)
     for poll in election.polls.all():
@@ -249,7 +250,7 @@ def election_zeus_partial_decrypt(election_id):
 
 @poll_task(ignore_result=True)
 def poll_zeus_partial_decrypt(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.zeus_partial_decrypt()
     if poll.election.trustees.filter().no_secret().count() == 0:
         poll.partial_decrypt_started_at = datetime.datetime.now()
@@ -261,7 +262,7 @@ def poll_zeus_partial_decrypt(poll_id):
 
 @poll_task(ignore_result=True)
 def poll_add_trustee_factors(poll_id, trustee_id, factors, proofs):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     trustee = poll.election.trustees.get(pk=trustee_id)
     poll.partial_decrypt(trustee, factors, proofs)
     if poll.election.polls_feature_partial_decryptions_finished:
@@ -270,7 +271,7 @@ def poll_add_trustee_factors(poll_id, trustee_id, factors, proofs):
 
 @task(ignore_result=True)
 def election_decrypt(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning decrypt poll tasks")
     subject = "Trustees partial decryptions finished"
     msg = "Trustees partial decryptions finished"
@@ -282,7 +283,7 @@ def election_decrypt(election_id):
 
 @poll_task(ignore_result=True)
 def poll_decrypt(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.decrypt()
     if poll.election.polls_feature_decrypt_finished:
         subject = "Decryption finished"
@@ -293,7 +294,7 @@ def poll_decrypt(poll_id):
 
 @task(ignore_result=True)
 def election_compute_results(election_id):
-    election = Election.objects.select_for_update().get(pk=election_id)
+    election = Election.objects.get(pk=election_id)
     election.logger.info("Spawning compute results poll tasks")
     for poll in election.polls.all():
         if poll.feature_can_compute_results:
@@ -302,7 +303,7 @@ def election_compute_results(election_id):
 
 @poll_task(ignore_result=True)
 def poll_compute_results(poll_id):
-    poll = Poll.objects.select_for_update().get(pk=poll_id)
+    poll = Poll.objects.get(pk=poll_id)
     poll.compute_results()
     if poll.election.polls_feature_compute_results_finished:
         e = poll.election
