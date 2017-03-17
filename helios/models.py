@@ -521,7 +521,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     def questions_count(self):
         count = 0
         for poll in self.polls.filter().only('questions_data'):
-            count += len(poll.questions_data)
+            count += len(poll.questions_data or [])
         return count
 
     def generate_mix_key(self):
