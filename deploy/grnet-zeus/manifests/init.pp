@@ -47,6 +47,7 @@ class zeus (
         'python-psycopg2',
         'python-celery',
         'python-django-celery',
+        'celeryd',
         'python-kombu',
         'gunicorn',
         'python-pyicu',
@@ -62,7 +63,8 @@ class zeus (
     ]
 
     $dev_packages = [
-        'python-pytest'
+        'python-pytest',
+        'curl', 'vim'
     ]
 
     package { $packages: ensure => 'installed' }
@@ -75,6 +77,29 @@ class zeus (
 
     file { 'zeus_settings':
         path => "${appdir}/local_settings.py",
-        content => template('zeus/local_settings.py.erb')
+        content => template('zeus/local_settings.py.erb'),
+        notify  => Service['gunicorn']
     }
+
+    file { 'zeus_gunicorn_conf':
+        path => "/etc/gunicorn.d/zeus",
+        content => template('zeus/zeus.gunicorn.erb'),
+        notify  => Service['gunicorn']
+    }
+
+    file { 'zeus_app_dir':
+        name => $appdir,
+        ensure => 'directory',
+        owner => 'www-data',
+        group => 'celery',
+        recurse => true
+    }
+
+    file { '/srv/zeus-data':
+        ensure => 'directory',
+        owner => 'www-data',
+        group => 'celery',
+        recurse => true
+    }
+
 }

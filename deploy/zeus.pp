@@ -29,6 +29,11 @@ postgresql::server::role { $dbusername:
   createdb => true
 }
 
+service { "gunicorn":
+    ensure  => "running",
+    enable  => "true",
+}
+
 class { 'zeus': 
     dbusername => hiera('dbusername'),
     dbpassword => hiera('dbpassword'),
