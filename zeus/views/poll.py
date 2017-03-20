@@ -57,7 +57,7 @@ def list(request, election):
     return render_template(request, "election_polls_list", context)
 
 @auth.election_admin_required
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def rename(request, election, poll):
     newname = request.POST.get('name', '').strip()
@@ -69,7 +69,7 @@ def rename(request, election, poll):
     url = election_reverse(election, 'polls_list')
     return HttpResponseRedirect(url)
 
-@transaction.commit_on_success
+@transaction.atomic
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
     existing = election.polls.filter()
@@ -385,7 +385,7 @@ def voters_list(request, election, poll):
 
 @auth.election_admin_required
 @auth.requires_poll_features('can_clear_voters')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def voters_clear(request, election, poll):
     polls = poll.linked_polls
@@ -940,7 +940,7 @@ def cast(request, election, poll):
     cursor = connection.cursor()
     try:
         cursor.execute("SELECT pg_advisory_lock(1)")
-        with transaction.commit_on_success():
+        with transaction.atomic():
             cast_result = poll.cast_vote(voter, vote, audit_password)
             poll.logger.info("Poll cast")
     finally:

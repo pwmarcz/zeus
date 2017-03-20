@@ -31,7 +31,7 @@ from helios.view_utils import render_template
 from helios.models import Election, Poll, CastVote, Voter
 
 
-@transaction.commit_on_success
+@transaction.atomic
 @auth.election_admin_required
 @require_http_methods(["GET", "POST"])
 def add_or_update(request, election=None):
@@ -46,7 +46,7 @@ def add_or_update(request, election=None):
                                      instance=election)
 
     if election_form.is_valid():
-        with transaction.commit_on_success():
+        with transaction.atomic():
             election = election_form.save()
             if not election.admins.filter(pk=user.pk).count():
                 election.admins.add(user)
@@ -116,7 +116,7 @@ def trustee_send_url(request, election, trustee_uuid):
 
 @auth.election_admin_required
 @auth.requires_election_features('delete_trustee')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def trustee_delete(request, election, trustee_uuid):
     election.zeus.invalidate_election_public()
@@ -207,7 +207,7 @@ def freeze(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_cancel')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def cancel(request, election):
 

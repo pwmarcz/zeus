@@ -205,7 +205,7 @@ class PollMix(models.Model):
         for part in self.mix_parts_iter(mix):
             self.parts.create(data=part)
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def _do_mix(self):
         zeus_mix = self.poll.zeus.get_last_mix()
         new_mix = self.poll.zeus.mix(zeus_mix)
@@ -552,7 +552,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     def has_helios_trustee(self):
         return self.get_zeus_trustee() != None
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def update_trustees(self, trustees):
         for name, email in trustees:
             trustee, created = self.trustees.get_or_create(email=email)
@@ -1178,7 +1178,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         error = traceback.format_exc()
 
     try:
-        with transaction.commit_on_success():
+        with transaction.atomic():
             mix = self.mixes.create(name=mix_name,
                                     mix_order=mix_order,
                                     mix_type='remote',
@@ -1192,7 +1192,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         logging.exception("Remote mix creation failed.")
         return e
 
-    with transaction.commit_on_success():
+    with transaction.atomic():
         if not Poll.objects.get(pk=self.pk).tallying_finished_at:
             mixnet.save()
         else:
@@ -1516,7 +1516,7 @@ class VoterFile(models.Model):
     return iter_voter_data(voter_data, email_validator=email_validator,
                            preferred_encoding=preferred_encoding)
 
-  @transaction.commit_on_success
+  @transaction.atomic
   def process(self, linked=True, check_dupes=True, preferred_encoding=None):
     demo_voters = 0
     poll = self.poll
@@ -1751,7 +1751,7 @@ class Voter(HeliosModel, VoterFeatures):
     return False
 
   @classmethod
-  @transaction.commit_on_success
+  @transaction.atomic
   def register_user_in_election(cls, user, election):
     voter_uuid = str(uuid.uuid4())
     voter = Voter(uuid= voter_uuid, user = user, election = election)
