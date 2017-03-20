@@ -254,6 +254,9 @@ class ZeusUser(object):
     def is_authenticated(self):
         return bool(self._user)
 
+    def is_anonymous(self):
+        return not bool(self._user)
+
     def authenticate(self, request):
         session = request.session
 
