@@ -15,16 +15,26 @@ from zeus.core import V_CAST_VOTE, V_PUBLIC_AUDIT, V_AUDIT_REQUEST, \
 
 from django.conf import settings
 
-from helios.crypto import electionalgs
+from helios.crypto import electionalgs, elgamal
 from helios.crypto import utils
 from helios import models as helios_models
-from helios.views import ELGAMAL_PARAMS
 from helios import datatypes
 from stv.stv import count_stv, Ballot
 
 from django.db import connection
 from hashlib import sha256
 
+
+# Parameters for everything
+ELGAMAL_PARAMS = elgamal.Cryptosystem()
+
+DEFAULT_CRYPTOSYSTEM_PARAMS = getattr(settings,
+                                      'HELIOS_CRYPTOSYSTEM_PARAMS', False)
+
+# trying new ones from OlivierP
+ELGAMAL_PARAMS.p = DEFAULT_CRYPTOSYSTEM_PARAMS['p']
+ELGAMAL_PARAMS.q = DEFAULT_CRYPTOSYSTEM_PARAMS['q']
+ELGAMAL_PARAMS.g = DEFAULT_CRYPTOSYSTEM_PARAMS['g']
 
 MIXNET_NR_PARALLEL = getattr(settings, 'ZEUS_MIXNET_NR_PARALLEL', 2)
 MIXNET_NR_ROUNDS = getattr(settings, 'ZEUS_MIXNET_NR_ROUNDS', 128)
@@ -616,7 +626,7 @@ class ZeusDjangoElection(ZeusCoreElection):
         for count, party in results['party_counts']:
             if party is None:
                 continue
-                
+
             party_candidates = results['parties'][party]
             candidate_keys = filter(lambda x: isinstance(x, int),
                                     party_candidates.keys())
