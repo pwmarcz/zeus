@@ -8,7 +8,6 @@ ADMINS = (
 # A list of people to receive broken link notifications
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
-SEND_BROKEN_LINK_EMAILS = True
 
 # A list of people to receive elections status notifications
 ELECTION_ADMINS = (
@@ -83,15 +82,11 @@ CELERY_ALWAYS_EAGER = False
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = False
 CELERY_RESULT_DBURI = DATABASES['default']
 CELERY_SEND_TASK_ERROR_EMAILS = True
-BROKER_BACKEND = "amqplib"
-BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'django://'
 
-# Some additional django settings
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
-)
 MEDIA_ROOT = '/usr/share/zeus/'
 
 # If True apache mod_xsendfile should be configured
@@ -109,14 +104,10 @@ logging.basicConfig(
 
 # A random string
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SECRET_KEY
-SECRET_KEY = "<RANDOM_STRING>"
+SECRET_KEY = None
 
 # Other django settings
 # https://docs.djangoproject.com/en/dev/ref/settings/
 
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'en-us'
 LANGUAGES = (('en', 'English'), ('gr', 'Greek'))
-
-from settings import INSTALLED_APPS
-INSTALLED_APPS = list(INSTALLED_APPS)
-INSTALLED_APPS.remove('djkombu')

@@ -96,9 +96,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'pagination',
     'djcelery',
-    'djkombu',
+    'kombu.transport.django',
     'heliosauth',
     'helios',
     'zeus',
@@ -216,7 +217,7 @@ EMAIL_USE_TLS = False
 # set up django-celery
 import djcelery
 djcelery.setup_loader()
-BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
+BROKER_URL = 'django://'
 CELERY_RESULT_DBURI = DATABASES['default']
 
 # for testing
@@ -296,6 +297,9 @@ DEFAULT_BOLD_FONT = "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans-Bold.ttf"
 
 ZEUS_RESULTS_FONT_REGULAR_PATH = DEFAULT_REGULAR_FONT
 ZEUS_RESULTS_FONT_BOLD_PATH = DEFAULT_BOLD_FONT
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # useful trick for custom settings
 try:
