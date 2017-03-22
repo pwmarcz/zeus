@@ -100,7 +100,7 @@ class PollMixQuerySet(QuerySet):
 
 class PollMixManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return PollMixQuerySet(self.model)
 
 from django.core.files import storage
@@ -669,7 +669,7 @@ class PollQuerySet(QuerySet):
 
 class PollManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return PollQuerySet(self.model).defer('encrypted_tally')
 
 
@@ -1637,7 +1637,7 @@ class VoterQuerySet(QuerySet):
 
 class VoterManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return VoterQuerySet(self.model)
 
 
@@ -1918,7 +1918,7 @@ class CastVoteQuerySet(QuerySet):
 
 class CastVoteManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return CastVoteQuerySet(self.model)
 
 
@@ -2014,7 +2014,7 @@ class AuditedBallotQuerySet(QuerySet):
 
 class AuditedBallotManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return AuditedBallotQuerySet(self.model)
 
 
@@ -2087,7 +2087,7 @@ class TrusteeDecryptionFactorsQuerySet(QuerySet):
 
 class TrusteeDecryptionFactorsManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return TrusteeDecryptionFactorsQuerySet(self.model)
 
 
@@ -2119,7 +2119,7 @@ class TrusteeQuerySet(QuerySet):
 
 class TrusteeManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return TrusteeQuerySet(self.model)
 
 
