@@ -764,6 +764,8 @@ def voter_delete(request, election, poll, voter_uuid):
         if voter:
             voter.delete()
             poll.logger.info("Poll voter '%s' removed", voter.voter_login_id)
+            message = _("Voter removed successfully")
+            messages.success(request, message)
 
     url = poll_reverse(poll, 'voters')
     return HttpResponseRedirect(url)
@@ -886,6 +888,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         user.authenticate(request)
         poll.logger.info("Poll voter '%s' logged in", voter.voter_login_id)
         return HttpResponseRedirect(poll_reverse(poll, 'index'))
+
 
 @auth.election_view(check_access=False)
 @require_http_methods(["GET"])
