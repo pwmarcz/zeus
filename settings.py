@@ -37,7 +37,7 @@ TIME_ZONE = 'Europe/Athens'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'el'
+LANGUAGE_CODE = 'el-gr'
 LANGUAGES = (('el', 'Greek'),)
 
 SITE_ID = 1
@@ -119,6 +119,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "zeus.context_processors.user",
   "zeus.context_processors.confirm_messages",
   "zeus.context_processors.theme",
+  "zeus.context_processors.lang",
   "zeus.context_processors.prefix"
 )
 

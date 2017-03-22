@@ -45,3 +45,8 @@ def prefix(request):
     return {
         'SERVER_PREFIX': prefix
     }
+
+def lang(request):
+    return {
+        'LANG': settings.LANGUAGE_CODE.split('-')[0]
+    }
