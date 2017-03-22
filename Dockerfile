@@ -25,6 +25,8 @@ ADD deploy/zeus.pp /srv/deploy/zeus.pp
 
 RUN cd /srv/deploy && puppet apply -v zeus.pp
 
+ADD . /srv/zeus_app
+
 ADD deploy/boot.sh /srv/deploy/boot.sh
 RUN chmod +x /srv/deploy/boot.sh
 
