@@ -860,7 +860,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
   def get_booth_url(self, request, preview=False):
     url_params = {
-        'token': csrf(request)['csrf_token'],
+        'token': unicode(csrf(request)['csrf_token']),
         'poll_url': "%s%s" % (settings.SECURE_URL_HOST,
                                 self.get_absolute_url()),
         'poll_json_url': "%s%s" % (settings.SECURE_URL_HOST,
