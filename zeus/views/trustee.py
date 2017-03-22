@@ -92,10 +92,10 @@ def verify_key(request, election, trustee):
 
 
 @auth.trustee_view
-@transaction.commit_manually
 @auth.requires_election_features('trustee_can_upload_pk')
 @require_http_methods(['POST'])
 def upload_pk(request, election, trustee):
+    transaction.set_autocommit(False)
     try:
         public_key_and_proof = \
                 utils.from_json(request.POST['public_key_json'])
@@ -108,6 +108,7 @@ def upload_pk(request, election, trustee):
         election.logger.exception(e)
         transaction.rollback()
         messages.error(request, "Cannot upload public key")
+    transaction.set_autocommit(True)
 
     return HttpResponseRedirect(reverse('election_trustee_home',
                                         args=[election.uuid]))
