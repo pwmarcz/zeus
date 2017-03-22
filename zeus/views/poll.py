@@ -12,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
-from django.db.models.query import EmptyQuerySet
+from django.db.models.query import QuerySet
 from django.db.models import Q, Max
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -631,7 +631,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         filtered_voters = poll.voters.filter()
 
     if not q_param:
-        filtered_voters = EmptyQuerySet()
+        filtered_voters = filtered_voters.none()
     else:
         voters_filters = get_filters(q_param, VOTER_TABLE_HEADERS,
                                      VOTER_SEARCH_FIELDS,
