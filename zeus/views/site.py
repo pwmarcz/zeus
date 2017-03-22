@@ -23,6 +23,7 @@ from heliosauth.auth_systems.password import make_password
 from helios.models import User, Election
 from zeus.models import Institution
 from zeus.utils import email_is_valid
+from zeus.auth import ZeusUser
 
 from zeus.stv_count_reports import stv_count_and_report
 
@@ -318,7 +319,7 @@ def demo(request):
 
 
 def error(request, code=None, message=None, type='error'):
-    user = request.zeususer
+    user = getattr(request, 'zeususer', ZeusUser.from_request(request))
     messages_len = len(messages.get_messages(request))
     if not messages_len and not message:
         return HttpResponseRedirect(reverse('home'))

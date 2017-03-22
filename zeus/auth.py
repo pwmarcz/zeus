@@ -15,7 +15,6 @@ from django.conf import settings
 from helios.models import Election, Poll, Trustee, Voter
 from heliosauth.models import User
 
-from zeus.views.site import error as error_view
 from zeus.log import init_election_logger, init_poll_logger, _locals
 
 import logging
@@ -151,6 +150,7 @@ def election_admin_required(func):
 
 
 def unauthenticated_user_required(func):
+    from zeus.views.site import error as error_view
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         if request.zeususer.is_authenticated():
@@ -311,7 +311,7 @@ class ZeusUser(object):
 
 
 def get_users_from_request(request):
-    session = request.session
+    session = getattr(request, 'session', {})
     user, admin, trustee, voter = None, None, None, None
 
     # identify user and admin
@@ -325,7 +325,7 @@ def get_users_from_request(request):
             pass
 
     # idenitfy voter
-    if request.session.has_key(VOTER_SESSION_KEY):
+    if session.has_key(VOTER_SESSION_KEY):
         voter = request.session[VOTER_SESSION_KEY]
 
         try:
@@ -339,7 +339,7 @@ def get_users_from_request(request):
             #TODO: move this in middleware ??? raise PermissionDenied
 
     # idenitfy trustee
-    if request.session.get(TRUSTEE_SESSION_KEY, None):
+    if session.get(TRUSTEE_SESSION_KEY, None):
         try:
             trustee_pk = session.get(TRUSTEE_SESSION_KEY, None)
             if trustee_pk:

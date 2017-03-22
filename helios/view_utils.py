@@ -33,11 +33,12 @@ FAILURE = HttpResponse("FAILURE")
 ##
 def prepare_vars(request, vars):
   vars_with_user = vars.copy()
-  vars_with_user['user'] = request.zeususer
+  vars_with_user['user'] = getattr(request, 'zeususer', None)
 
+  session = getattr(request, 'session', {})
   # csrf protection
-  if request.session.has_key('csrf_token'):
-    vars_with_user['csrf_token'] = request.session['csrf_token']
+  if session.has_key('csrf_token'):
+    vars_with_user['csrf_token'] = session['csrf_token']
 
   vars_with_user['utils'] = utils
   vars_with_user['settings'] = settings
@@ -48,14 +49,14 @@ def prepare_vars(request, vars):
   #vars_with_user['voter'] = request.session.get('CURRENT_VOTER')
 
   trustee = None
-  if request.session.has_key('helios_trustee_uuid') and not 'trustee' in vars:
+  if session.has_key('helios_trustee_uuid') and not 'trustee' in vars:
     try:
         from helios.models import Trustee
-        trustee = Trustee.objects.get(uuid=request.session.get('helios_trustee_uuid'))
+        trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))
         election = trustee.election
     except:
         try:
-            del request.session['helios_trustee_uuid']
+            del session['helios_trustee_uuid']
         except:
             pass
 
@@ -66,7 +67,7 @@ def prepare_vars(request, vars):
 def render_template(request, template_name, vars = {}, include_user=True):
   vars_with_user = prepare_vars(request, vars)
 
-  language = request.LANGUAGE_CODE
+  language = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
   if not include_user:
     del vars_with_user['user']
 
