@@ -1,19 +1,16 @@
 # List of people to receive site error notifications (5XX error tracebacks)
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ('Zeus admin', 'admin@zeus-server.gr'),
-    ('Zeus admin 2', 'admin2@zeus-server.gr'),
+    ('Zeus admin', '<%= @admin_email %>'),
 )
 
 # A list of people to receive broken link notifications
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
-SEND_BROKEN_LINK_EMAILS = True
 
 # A list of people to receive elections status notifications
 ELECTION_ADMINS = (
-    ('Elections admin', 'elections-admin@zeus-server.gr'),
-    ('Elections admin 2', 'elections-admin2@zeus-server.gr'),
+    ('Elections admin', '<%= @admin_email %>'),
 )
 
 # Database configuration
@@ -37,17 +34,22 @@ HELIOS_VOTERS_EMAIL = True
 ZEUS_VOTER_EMAIL_RATE = '120/m'
 
 # Email and domain configuration
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '<USERNAME>@gmail.com'
-EMAIL_HOST_PASSWORD = '<PASSWORD>'
-EMAIL_PORT = 587
+EMAIL_USE_TLS = <% if @emailtls %>True<% else %>False<% end %>
+EMAIL_HOST = '<%= @emailhost %>'
+EMAIL_HOST_USER = <% if @emailhostuser %>'<%= @emailhostuser %>'<% else %>None<% end %>
+EMAIL_HOST_PASSWORD = <% if @emailhostpass %>'<%= @emailhostpass %>'<% else %>None<% end %>
+EMAIL_PORT = <% if @emailport %><%= @emailport %><% else %>None<% end %>
 
-DEFAULT_FROM_EMAIL = 'elections@zeus-server.gr'
+<% if @debugemail %>
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/srv/zeus-data/emails' # change this to a proper location
+<% end %>
+
+DEFAULT_FROM_EMAIL = 'elections@<%= @host %>'
 DEFAULT_FROM_NAME = 'Zeus'
 SERVER_EMAIL = '%s %s' % (DEFAULT_FROM_NAME, DEFAULT_FROM_EMAIL)
 
-SITE_DOMAIN = "zeus-server.gr"
+SITE_DOMAIN = "<%= @host %><% if @port != 443 %>:<%= @port %><% end %>"
 URL_HOST = "https://%s" % SITE_DOMAIN
 SECURE_URL_HOST = "https://%s" % SITE_DOMAIN
 
@@ -83,8 +85,8 @@ CELERY_ALWAYS_EAGER = False
 CELERY_EAGER_PROPAGATES_EXCEPTIONS = False
 CELERY_RESULT_DBURI = DATABASES['default']
 CELERY_SEND_TASK_ERROR_EMAILS = True
-BROKER_BACKEND = "amqplib"
-BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+CELERY_RESULT_DBURI = DATABASES['default']
 
 
 # Some additional django settings
@@ -92,13 +94,12 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader'
 )
-MEDIA_ROOT = '/srv/media/'
 
 # If True apache mod_xsendfile should be configured
 USE_X_SENDFILE = True
 
 # Always False in production environments
-DEBUG = False
+DEBUG = <% if @debug %>True<% else %>False<% end %>
 
 # set up logging
 import logging
@@ -109,16 +110,26 @@ logging.basicConfig(
 
 # A random string
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SECRET_KEY
-SECRET_KEY = "<RANDOM_STRING>"
+import os
+SECRET_KEY = '<%= @secretkey %>'
 
 # Other django settings
 # https://docs.djangoproject.com/en/dev/ref/settings/
 
-LANGUAGE_CODE = 'en'
-LANGUAGES = (('en', 'English'), ('gr', 'Greek'))
+LANGUAGE_CODE = 'en-us'
+LANGUAGES = (('en', 'English'), ('el', 'Greek'))
 
-from settings import INSTALLED_APPS, LOGGING
-INSTALLED_APPS = list(INSTALLED_APPS)
-INSTALLED_APPS.remove('djkombu')
-
+from settings import LOGGING
 LOGGING['handlers']['file']['filename'] = '/srv/zeus-data/zeus.log'
+
+SERVER_PREFIX = 'zeus'
+STATIC_URL = '/zeus/media/'
+MEDIA_URL = '/zeus/static/'
+
+STATIC_ROOT           = '/srv/zeus-data/static'
+MEDIA_ROOT            = '/srv/zeus-data/media'
+ZEUS_ELECTION_LOG_DIR = '/srv/zeus-data/election_logs/'
+ZEUS_PROOFS_PATH      = '/srv/zeus-data/proofs/'
+ZEUS_RESULTS_PATH     = '/srv/zeus-data/results/'
+
+ALLOWED_HOSTS = ['<%= @host %>', '<%= @host %>:<%= @port %>']

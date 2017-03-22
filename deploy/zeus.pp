@@ -1,5 +1,5 @@
 class { 'apache': 
-    default_mods => ['autoindex', 'mime', 'deflate', 'setenvif', 'dir', 'env', 'reqtimeout']
+    default_mods => ['autoindex', 'mime', 'deflate', 'setenvif', 'dir', 'env', 'reqtimeout', 'proxy', 'proxy_http', 'rewrite', 'xsendfile', 'headers']
 }
 class { 'apache::mod::ssl': }
 
@@ -10,23 +10,25 @@ class { 'postgresql::globals':
 }->
 class { 'postgresql::server': }
 
-$dbname = hiera('dbname')
-$dbusername = hiera('dbusername')
-$dbpassword = hiera('dbpassword')
+$dbname = hiera('zeus::dbname')
+$dbusername = hiera('zeus::dbusername')
+$dbpassword = hiera('zeus::dbpassword')
+
+postgresql::server::role { $dbusername:
+  password_hash => postgresql_password($dbusername, $dbpassword),
+  createdb => true
+}
 
 postgresql::server::db { $dbname:
-  user     => $dbusername,
+  owner => $dbusername,
+  user => $dbusername,
   password => postgresql_password($dbusername, $dbpassword),
-  owner    => $dbusername
-}
-postgresql::server::db { "test_${dbname}":
-  user     => $dbusername,
-  password => postgresql_password($dbusername, $dbpassword),
-  owner    => $dbusername
 }
 
-postgresql::server::role { $dbusername: 
-  createdb => true
+postgresql::server::db { "test_${dbname}":
+  owner => $dbusername,
+  user => $dbusername,
+  password => postgresql_password($dbusername, $dbpassword)
 }
 
 service { "gunicorn":
@@ -34,8 +36,4 @@ service { "gunicorn":
     enable  => "true",
 }
 
-class { 'zeus': 
-    dbusername => hiera('dbusername'),
-    dbpassword => hiera('dbpassword'),
-    dbname => hiera('dbname'),
-}
+class { 'zeus': }

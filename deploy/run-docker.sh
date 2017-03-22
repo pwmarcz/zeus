@@ -8,4 +8,5 @@ docker run \
     -v `pwd`/:/srv/zeus_app \
     -v `pwd`/deploy/config.yaml:/etc/puppet/hieraconf/common.yaml \
     -v zeus-legacy-data:/srv/data \
+    -p 8000:8000 \
     --name zeus-legacy -d grnet/zeus-legacy

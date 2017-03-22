@@ -1,17 +1,13 @@
 CONFIG = {
-    'mode': 'wsgi',
     'environment': {
-      'DJANGO_SETTINGS_MODULE': 'settings',
+        'PYTHONPATH': '.',
+        'DJANGO_SETTINGS_MODULE': 'settings',
     },
-    'user': 'www-data',
-    'group': 'celery',
+    'mode': 'wsgi',
     'working_dir': '/srv/zeus_app',
     'args': (
-        '--bind=[::]:8080',
-        '--log-file=/var/log/zeus-gunicorn.log',
+        '--bind=0.0.0.0:<%= @gunicornport %>',
         '--workers=8',
-        '--worker-connections=512',
-        '--umask=0077',
         '--timeout=43200',
         'wsgi:application'
     ),

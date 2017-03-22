@@ -1,3 +1,6 @@
-dbname: appdbname
-dbusername: db_user_name
-dbpassword: db_password
+zeus::dbname: appdbname
+zeus::dbusername: db_user_name
+zeus::dbpassword: db_password
+zeus::debug: true
+zeus::host: 127.0.0.1
+zeus::port: 8000
