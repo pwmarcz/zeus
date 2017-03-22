@@ -174,6 +174,9 @@ def cast_vote(voter_url, choices=None):
     conn, headers, poll_info = get_poll_info(voter_url)
     csrf_token = poll_info['token']
     headers['Cookie'] += "; csrftoken=%s" % csrf_token
+    headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    headers['Referer'] = voter_url
+
     voter_path = conn.path
     poll_data = poll_info['poll_data']
     pk = poll_data['public_key']
