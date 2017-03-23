@@ -9,6 +9,7 @@ CONFIG = {
         '--bind=0.0.0.0:<%= @gunicornport %>',
         '--workers=8',
         '--timeout=43200',
+        '--umask=002',
         'wsgi:application'
     ),
 }

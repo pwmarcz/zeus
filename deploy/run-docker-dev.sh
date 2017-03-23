@@ -6,5 +6,5 @@ docker run \
     -v `pwd`/deploy:/srv/deploy \
     -v `pwd`/:/srv/zeus_app \
     -v `pwd`/deploy/config.yaml:/etc/puppet/hieraconf/common.yaml \
-    -p 8001:8001 \
+    -p 8000:8000 \
     --name zeus-dev -d grnet/zeus

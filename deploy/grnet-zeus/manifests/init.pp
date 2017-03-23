@@ -175,7 +175,7 @@ class zeus (
         command => "python manage.py collectstatic --noinput",
         cwd     => $appdir,
         path    => ["/usr/bin", "/usr/sbin"],
-        require => File['zeus_settings'],
+        require => [File['zeus_settings'], File['/srv/zeus-data/zeus.log']],
         notify  => File['zeus_static']
     }
 
@@ -211,7 +211,7 @@ class zeus (
         path => "/srv/zeus-data/zeus.log",
         owner => 'www-data',
         group => 'celery',
-        require => [Service['gunicorn'], Package['celeryd']]
+        require => [Service['gunicorn'], Package['celeryd'], Exec['init_user']]
     }
 
     file { 'celeryd_defaults': 
@@ -232,14 +232,14 @@ class zeus (
       start => "/etc/init.d/python-celery start",
       stop => "/etc/init.d/python-celery stop",
       pattern => "/srv/zeus_app/manage.py celery worker",
-      require => [File['celeryd_init'], File['celeryd_defaults']]
+      require => [File['celeryd_init'], File['celeryd_defaults'], File['/srv/zeus-data/zeus.log']]
     }
 
     exec {'init_user':
         command => "python deploy/init.py ${institution} ${adminuser} ${adminpassword}",
         cwd => $appdir,
         path => ["/usr/bin", "/usr/sbin"],
-        require => File['zeus_settings']
+        require => [File['zeus_settings'], Exec['zeus_migrations']]
     }
 
     apache::listen { $port: }

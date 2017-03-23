@@ -5,8 +5,7 @@ class { 'apache::mod::ssl': }
 
 class { 'postgresql::globals':
   needs_initdb => true,
-  encoding => 'UTF-8',
-  datadir => '/srv/data/database'
+  encoding => 'UTF-8'
 }->
 class { 'postgresql::server': }
 

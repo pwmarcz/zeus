@@ -3,4 +3,4 @@
 cd /srv/deploy
 puppet apply -v zeus.pp
 
-tail -f /var/log/dmesg
+tail -f /srv/zeus-data/*log /srv/zeus-data/election_logs/*
