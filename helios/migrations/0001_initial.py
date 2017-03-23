@@ -14,8 +14,8 @@ import helios.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('heliosauth', '__first__'),
         ('zeus', '0001_initial'),
+        ('heliosauth', '0001_initial'),
     ]
 
     operations = [
@@ -214,7 +214,7 @@ class Migration(migrations.Migration):
                 ('mixing_finished_at', models.DateTimeField(null=True)),
                 ('status', models.CharField(default=b'pending', max_length=255, choices=[(b'pending', b'Pending'), (b'mixing', b'Mixing'), (b'validating', b'Validating'), (b'error', b'Error'), (b'finished', b'Finished')])),
                 ('mix_error', models.TextField(null=True, blank=True)),
-                ('mix_file', models.FileField(default=None, storage=django.core.files.storage.FileSystemStorage(location=b'/srv/media//zeus_mixes/'), null=True, upload_to=helios.models.dummy_upload_to)),
+                ('mix_file', models.FileField(default=None, storage=django.core.files.storage.FileSystemStorage(location=b'/srv/zeus-data/media/zeus_mixes/'), null=True, upload_to=helios.models.dummy_upload_to)),
                 ('poll', models.ForeignKey(related_name='mixes', to='helios.Poll')),
             ],
             options={
