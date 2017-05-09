@@ -2463,8 +2463,8 @@ def reencrypt(modulus, generator, order, public, alpha, beta, secret=None):
     new_alpha = (alpha * pow(generator, key, modulus)) % modulus
     new_beta = (beta * pow(public, key, modulus)) % modulus
     if secret is None:
-        return [alpha, beta, key]
-    return [alpha, beta]
+        return [new_alpha, new_beta, key]
+    return [new_alpha, new_beta]
 
 def prove_reencryption(modulus, generator, order, public,
                        a0, b0, a1, b1, secret):
