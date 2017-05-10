@@ -25,7 +25,7 @@ from django.core.urlresolvers import reverse
 
 from heliosauth.models import User, AUTH_SYSTEMS
 
-from zeus.core import (numbers_hash, mix_ciphers, gamma_encoding_max,
+from zeus.core import (numbers_hash, gamma_encoding_max,
                        gamma_decode, to_absolute_answers, to_canonical)
 
 ELECTION_MODEL_VERSION = 1

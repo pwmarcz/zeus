@@ -173,6 +173,8 @@ HELIOS_ADMIN_ONLY = False
 HELIOS_VOTERS_UPLOAD = True
 HELIOS_VOTERS_EMAIL = True
 
+SHUFFLE_MODULE = 'zeus.zeus_sk'
+
 # are elections private by default?
 HELIOS_PRIVATE_DEFAULT = False
 

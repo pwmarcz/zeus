@@ -54,7 +54,7 @@ from heliosauth.models import User, AUTH_SYSTEMS
 from heliosauth.jsonfield import JSONField
 from helios.datatypes import LDObject
 
-from zeus.core import (numbers_hash, mix_ciphers, gamma_encoding_max,
+from zeus.core import (numbers_hash, gamma_encoding_max,
                        gamma_decode, to_absolute_answers, to_canonical)
 from zeus.slugify import slughifi
 from zeus.election_modules import ELECTION_MODULES_CHOICES, get_poll_module, \
@@ -176,14 +176,6 @@ class PollMix(models.Model):
         for part in self.parts.order_by("pk"):
             filled_mix += part.data
         return marshal.loads(filled_mix)
-
-    def get_original_ciphers(self):
-        if self.mix_order == 0:
-          return self.election.zeus.extract_votes_for_mixing()
-        else:
-          prev_mix = PollMix.objects.get(election=election,
-                                         mix_order__lt=self.mix_order)
-          return prev_mix.mixed_answers.get().zeus_mix()
 
     def mix_parts_iter(self, mix):
         size = len(mix)
@@ -1188,7 +1180,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     with transaction.commit_on_success():
         if not Poll.objects.get(pk=self.pk).tallying_finished_at:
-            mixnet.save()
+            mix.save()
         else:
             return "Mixing finished"
 
