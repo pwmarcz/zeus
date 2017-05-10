@@ -96,3 +96,4 @@ if os.path.exists("/usr/share/fonts/truetype/ubuntu-font-family/"):
     ZEUS_RESULTS_FONT_BOLD_PATH = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 
 USE_X_SENDFILE = False
+SERVER_PREFIX = ''

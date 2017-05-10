@@ -16,11 +16,11 @@ from django.core import mail
 from helios import datatypes
 from helios.crypto.elgamal import DLog_challenge_generator
 from helios.crypto import algs
-from helios.views import ELGAMAL_PARAMS
 from helios.models import Election, Voter, Poll, Trustee
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
+from zeus.views.common import ELGAMAL_PARAMS
 
 pytestmark = pytest.mark.django_db(transaction=True)
 
