@@ -9,7 +9,7 @@ from django.utils.datastructures import SortedDict
 from django.utils.translation import ugettext_lazy as _
 
 from zeus.core import ZeusCoreElection, Teller, sk_from_args, \
-    mix_ciphers, TellerStream, gamma_count_parties, gamma_count_range
+    TellerStream, gamma_count_parties, gamma_count_range
 from zeus.core import V_CAST_VOTE, V_PUBLIC_AUDIT, V_AUDIT_REQUEST, \
     gamma_decode, to_absolute_answers, ZeusError
 
@@ -38,6 +38,10 @@ ELGAMAL_PARAMS.g = DEFAULT_CRYPTOSYSTEM_PARAMS['g']
 
 MIXNET_NR_PARALLEL = getattr(settings, 'ZEUS_MIXNET_NR_PARALLEL', 2)
 MIXNET_NR_ROUNDS = getattr(settings, 'ZEUS_MIXNET_NR_ROUNDS', 128)
+SHUFFLE_MODULE = getattr(settings, 'SHUFFLE_MODULE', 'zeus.zeus_sk')
+
+import importlib
+shuffle_module = importlib.import_module(SHUFFLE_MODULE)
 
 
 class NullStream(object):
@@ -63,6 +67,10 @@ class ZeusDjangoElection(ZeusCoreElection):
     """
     Implement required core do_store/do_get methods.
     """
+    def __init__(self, **kwargs):
+        kwargs['shuffle_module'] = shuffle_module
+        ZeusCoreElection.__init__(self, **kwargs)
+
     @classmethod
     def from_election(self, election):
         return ZeusDjangoElection(election=election, poll=None)
@@ -478,18 +486,19 @@ class ZeusDjangoElection(ZeusCoreElection):
         return mixnet[0].zeus_mix()
 
     def do_store_mix(self, mix):
-      pass
+        pass
 
     def do_get_all_mixes(self):
         mixes = [self.extract_votes_for_mixing()[0]]
         for mixnet in self.poll.mixes.filter(status='finished').order_by('mix_order'):
-          mixes.append(mixnet.zeus_mix())
+            mixes.append(mixnet.zeus_mix())
         return mixes
 
     def mix(self, ciphers):
-      return mix_ciphers(ciphers, teller=self.teller,
-                            nr_rounds=MIXNET_NR_ROUNDS,
-                           nr_parallel=self.get_option('parallel'))
+        return shuffle_module.mix_ciphers(
+            ciphers, teller=self.teller,
+            nr_rounds=MIXNET_NR_ROUNDS,
+            nr_parallel=self.get_option('parallel'))
 
     def _get_zeus_factors(self, trustee):
         trustee_factors = []

@@ -14,7 +14,6 @@ from zeus.core import (c2048, get_random_selection,
                        decrypt_with_randomness,
                        compute_decryption_factors,
                        verify_vote_signature,
-                       mix_ciphers,
                        parties_from_candidates,
                        gamma_decode_to_party_ballot,
                        FormatError)
@@ -370,7 +369,7 @@ def do_upload_factors(outfile, url):
         curr_file = outfile + ".%d" % poll_index
 
 
-def do_mix(mixfile, newfile, nr_rounds, nr_parallel):
+def do_mix(mixfile, newfile, nr_rounds, nr_parallel, module):
     if exists(newfile):
         m = "file '%s' already exists, will not overwrite" % (newfile,)
         raise ValueError(m)
@@ -378,7 +377,7 @@ def do_mix(mixfile, newfile, nr_rounds, nr_parallel):
     with open(mixfile) as f:
         mix = from_canonical(f)
 
-    new_mix = mix_ciphers(mix, nr_rounds=nr_rounds,
+    new_mix = module.mix_ciphers(mix, nr_rounds=nr_rounds,
                           nr_parallel=nr_parallel)
     with open(newfile, "w") as f:
         to_canonical(new_mix, out=f)
@@ -490,7 +489,8 @@ def main(argv):
     elif cmd == 'mix':
         if argc < 6:
             main_help()
-        do_mix(argv[2], argv[3], int(argv[4]), int(argv[5]))
+        import zeus_sk as shuffle_module
+        do_mix(argv[2], argv[3], int(argv[4]), int(argv[5]), shuffle_module)
     elif cmd == 'decrypt':
         if argc < 6:
             main_help()
