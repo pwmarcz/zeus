@@ -30,7 +30,8 @@ MIXNET_NR_PARALLEL = getattr(settings, 'ZEUS_MIXNET_NR_PARALLEL', 2)
 MIXNET_NR_ROUNDS = getattr(settings, 'ZEUS_MIXNET_NR_ROUNDS', 128)
 SHUFFLE_MODULE = getattr(settings, 'SHUFFLE_MODULE', 'zeus.zeus_sk')
 
-shuffle_module = __import__(SHUFFLE_MODULE)
+import importlib
+shuffle_module = importlib.import_module(SHUFFLE_MODULE)
 
 
 class NullStream(object):
