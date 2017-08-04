@@ -5,6 +5,7 @@ import re
 import sys
 import os
 import time
+import ssl
 
 from zeus.core import (c2048, get_random_selection,
                        gamma_encode, gamma_decode, gamma_encoding_max,
@@ -43,7 +44,7 @@ def get_http_connection(url):
     if not port:
         port = default_port
     netloc = host + ':' + port
-    conn = Conn(netloc)
+    conn = Conn(netloc, context=ssl._create_unverified_context())
     conn.path = parsed.path
     return conn
 
