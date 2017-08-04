@@ -6,9 +6,9 @@ RUN apt-get -y install vim git lsb-release wget multitail
 RUN wget https://apt.puppetlabs.com/puppetlabs-release-pc1-jessie.deb
 RUN apt-get -y install puppet puppet-module-puppetlabs-apt puppet-module-puppetlabs-stdlib
 
-RUN puppet module install puppetlabs-apache 
-RUN puppet module install puppetlabs-postgresql
-RUN puppet module install "stankevich/python"
+RUN puppet module install puppetlabs-apache --version 1.11.0
+RUN puppet module install puppetlabs-postgresql --version 4.9.0
+RUN puppet module install "stankevich/python" --version 1.18.2
 
 ADD deploy/packages.pp /srv/deploy/packages.pp
 RUN cd /srv/deploy && puppet apply -v packages.pp
