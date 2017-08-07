@@ -1193,7 +1193,7 @@ def sms_delivery(request, election, poll):
             "Mobile delivery status received from '%r': %r" % (ip_addr, resp))
         status = resp.get('status', 'unknown')
         if error:
-            status = "%s:%r:r" % ("ERROR", status, resp)
+            status = "%s:%r:%r" % ("ERROR", status, resp)
         voter.last_sms_status = status
         voter.save()
     except Voter.DoesNotExist:
