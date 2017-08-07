@@ -1184,6 +1184,8 @@ def sms_delivery(request, election, poll):
 
     ip_addr = request.META.get('REMOTE_ADDR', '')
     error = resp.get('error', None) or None
+    if error == '0':
+        error = None
     code = "mybsms:" + resp['id']
     try:
         voter = poll.voters.get(last_sms_code=code)
