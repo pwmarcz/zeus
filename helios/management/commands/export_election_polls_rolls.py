@@ -26,7 +26,7 @@ class Command(BaseCommand):
         data = []
         for poll in election.polls.all():
             voters = []
-            poll_data = {'uuid': str(poll.uuid), 'voters': voters}
+            poll_data = {'uuid': str(poll.uuid), 'voters': voters, 'name': poll.name}
             for voter in poll.voters.filter(excluded_at__isnull=True):
                 voters.append(u'{},{},{},{},{},{},{}'.format(
                     voter.voter_login_id,
