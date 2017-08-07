@@ -56,5 +56,5 @@ class Command(BaseCommand):
 
             existing = poll.voters.all()
             for voter in existing.exclude(voter_login_id__in=ids):
-                print u"Stray voter: {}: {}".format(poll.uuid, voter.zeus_string)
+                print voter.zeus_string.encode('utf8')
 

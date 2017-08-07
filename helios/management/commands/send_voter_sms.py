@@ -201,7 +201,7 @@ class Command(BaseCommand):
         for voter in voters:
             send_to = send_to_arg
             if list:
-                print voter.voter_email, voter.zeus_string
+                print voter.voter_email, voter.zeus_string.encode('utf8')
                 continue
 
             task = tasks.send_voter_sms
