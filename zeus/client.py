@@ -34,9 +34,11 @@ p, g, q, x, y = c2048()
 
 def get_http_connection(url):
     parsed = urlparse(url)
+    kwargs = {}
     if parsed.scheme == 'https':
             default_port = '443'
             Conn = HTTPSConnection
+            kwargs['context'] = ssl._create_unverified_context()
     else:
             default_port = '80'
             Conn = HTTPConnection
@@ -44,7 +46,7 @@ def get_http_connection(url):
     if not port:
         port = default_port
     netloc = host + ':' + port
-    conn = Conn(netloc, context=ssl._create_unverified_context())
+    conn = Conn(netloc, **kwargs)
     conn.path = parsed.path
     return conn
 
