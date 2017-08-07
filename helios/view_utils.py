@@ -4,7 +4,8 @@ Utilities for all views
 Ben Adida (12-30-2008)
 """
 
-from django.template import Context, Template, loader
+from django.template import Context, Template, loader, TemplateSyntaxError, \
+    TemplateDoesNotExist
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 
@@ -71,16 +72,26 @@ def render_template(request, template_name, vars = {}, include_user=True):
   if not include_user:
     del vars_with_user['user']
 
+  dyn_tpl = '%s.html' % template_name
+  dyn_tpl_i18n = 'i18n/%s/%s.html' % (language, template_name)
   i18n_tpl = 'helios/templates/i18n/%s/%s.html' % (language, template_name)
   template_name = 'helios/templates/%s.html' % template_name
 
-  try:
-    loader.get_template(i18n_tpl)
-    template_name = i18n_tpl
-  except:
-    pass
+  tpls = [dyn_tpl_i18n, dyn_tpl, i18n_tpl, template_name]
+  tpls.reverse()
+  tpl = None
 
-  return render(request, template_name, vars_with_user)
+  while not tpl:
+    try:
+        tpl = tpls.pop()
+        loader.get_template(tpl)
+    except (TemplateDoesNotExist, TemplateSyntaxError), e:
+        tpl = None
+        last_exc = e
+    except IndexError:
+        raise last_exc
+
+  return render(request, tpl, vars_with_user)
 
 def render_template_raw(request, template_name, vars={}):
   t = loader.get_template(template_name)
