@@ -142,6 +142,8 @@ class Command(BaseCommand):
         if puuid:
             voters = voters.filter(poll__uuid=puuid)
             election = Poll.objects.select_related().get(uuid=puuid).election
+        if voters_not_voted:
+            voters = voters.filter(cast_at__isnull=True)
 
         if voter_id:
             voters = voters.filter(voter_login_id=voter_id)
