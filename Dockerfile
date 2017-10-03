@@ -1,6 +1,7 @@
 FROM debian:jessie
 MAINTAINER Kostas Papadimitriou "kpap@grnet.gr"
 
+RUN find /var/lib/apt -type f -exec rm {} \+
 RUN apt-get -y update
 RUN apt-get -y install vim git lsb-release wget multitail
 RUN wget https://apt.puppetlabs.com/puppetlabs-release-pc1-jessie.deb
