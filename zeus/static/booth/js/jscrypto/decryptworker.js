@@ -3,6 +3,7 @@
  */
 
 // import needed resources
+window = {};
 importScripts("../underscore-min.js");
 
 importScripts("jsbn.js",
@@ -25,6 +26,8 @@ var ELECTION = null;
 var VOTE = null;
 
 function do_decrypt(message) {
+    sjcl.random.addEntropy(message.entropy);
+    sjcl.random.__entropySet = true;
     var console = {
         'log' : function(msg) {
           self.postMessage({'type':'log','msg':msg});
@@ -46,8 +49,8 @@ function do_decrypt(message) {
 
     // send the result back
     self.postMessage({
-	    'type': 'result',
-		'result': result
+      'type': 'result',
+      'result': result
     });
 }
 

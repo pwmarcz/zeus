@@ -1,3 +1,5 @@
+window.WORKER_ENTROPY = '';
+
 function show(q) {
   return $("<span></span>").text(q).text().replace(/\n/g, "<br />");
 }
@@ -122,7 +124,8 @@ BOOTH.setup_workers = function(election_raw_json) {
         new_worker.postMessage({
           'type': 'setup',
           'election' : election_raw_json,
-          'question_num' : q_num
+          'question_num' : q_num,
+          'entropy': window.WORKER_ENTROPY
         });
 
         new_worker.onmessage = function(event) {
@@ -436,33 +439,38 @@ BOOTH.load_and_setup_election = function(election_url, messages_url) {
       'url': election_url,
       'dataType': 'html',
       'success': function(raw_json) {
-          BOOTH.setup_election(raw_json);
-          BOOTH.show_election();
-          BOOTH.election_url = election_url;
-          BOOTH.setup_help_link()
+          function prep() {
+            BOOTH.setup_election(raw_json);
+            BOOTH.show_election();
+            BOOTH.election_url = election_url;
+            BOOTH.setup_help_link()
+          }
+          if (USE_SJCL) {
+            // get more randomness from server
+            $.ajax({
+              'url': election_url + "/get-randomness?token=1", 
+              'data': {}, 
+              'success': function(result) {
+                sjcl.random.addEntropy(result.randomness);
+                sjcl.random.__entropySet = true
+                sjcl.random.startCollectors();
+                window.WORKER_ENTROPY = result.randomness;
+                BOOTH.csrf = result.token;
+                prep();
+              }, 
+              'error': function(err){ 
+                //window.location = '/';
+              }
+            });
+          } else { prep(); }
       },
       'error': function(err) {
         alert(gettext("ELECTION_INIT_ERROR"));
-        window.location = 'mailto:elections@zeus.minedu.gov.gr';
+        window.location = 'mailto:elections@zeus.grnet.gr';
       }
     });
 
 
-    if (USE_SJCL) {
-      // get more randomness from server
-      $.ajax({
-        
-        'url': election_url + "/get-randomness?token=1", 
-        'data': {}, 
-        'success': function(result) {
-          sjcl.random.addEntropy(result.randomness);
-          BOOTH.csrf = result.token;
-        }, 
-        'error': function(err){ 
-          //window.location = '/';
-        }
-      });
-    }
 };
 
 BOOTH.hide_progress = function() {
