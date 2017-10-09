@@ -34,12 +34,12 @@ function do_decrypt(message) {
         }
     };
     console.log("decrypting!");
-    
+
     var d = new Date;
     var secret_key = ElGamal.SecretKey.fromJSONObject(message.sk);
     var choice_tally = ElGamal.Ciphertext.fromJSONObject(message.choice);
     var one_choice_result = secret_key.decryptionFactorAndProof(choice_tally, 
-                                                ElGamal.fiatshamir_challenge_generator);
+                                                ElGamal.fiatshamir_zeus_challenge_generator);
 
     var result = {};
     result['factor'] = one_choice_result['decryption_factor'].toJSONObject();

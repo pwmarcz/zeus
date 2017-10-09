@@ -137,7 +137,7 @@ ElGamal.SecretKey = Class.extend({
     
     // the DH tuple we need to prove, given the secret key x, is:
     // g, alpha, y, beta/m
-    var proof = ElGamal.Proof.generate(this.pk.g, ciphertext.alpha, this.x, this.pk.p, this.pk.q, challenge_generator);
+    var proof = ElGamal.Proof.generate(this.pk.g, ciphertext.alpha, this.x, this.pk.p, this.pk.y, this.pk.q, challenge_generator);
     
     return {
       'decryption_factor' : decryption_factor,
@@ -146,19 +146,24 @@ ElGamal.SecretKey = Class.extend({
   },
   
   // generate a proof of knowledge of the secret exponent x
-  proveKnowledge: function(challenge_generator) {
+  proveKnowledge: function(challenge_generator, extra_args) {
     // generate random w
     var w = Random.getRandomInteger(this.pk.q);
 
     // compute s = g^w for random w.
+    // commitment
     var s = this.pk.g.modPow(w, this.pk.p);
     
-    // get challenge
-    var challenge = challenge_generator(s);
-    
+    if (extra_args === undefined) { extra_args = [] };
+
+    // [modulus, generator, order, public, commitment]
+    var challenge_args = [this.pk.p, this.pk.g, this.pk.q, this.pk.y, s];
+    for (var i=1; i<extra_args.length; i++) {
+      challenge_args.push(extra_args[i-1]);
+    }
+    var challenge = challenge_generator(challenge_args);
     // compute response = w +  x * challenge
     var response = w.add(this.x.multiply(challenge).mod(this.pk.q));
-    
     return new ElGamal.DLogProof(s, challenge, response);
   }
 });
@@ -416,22 +421,22 @@ ElGamal.Proof.fromJSONObject = function(d) {
 // challenge generator takes a commitment, whose subvalues are A and B
 // all modulo p, with group order q, which we provide just in case.
 // as it turns out, G and H are not necessary to generate this proof, given that they're implied by x.
-ElGamal.Proof.generate = function(little_g, little_h, x, p, q, challenge_generator) {
+ElGamal.Proof.generate = function(generator, message, exponent, modulus, base_power, order, challenge_generator) {
   // generate random w
-  var w = Random.getRandomInteger(q);
+  var randomness = Random.getRandomInteger(order);
+  var message_power = message.modPow(exponent, modulus)
   
   // create a proof instance
   var proof = new ElGamal.Proof();
-  
   // compute A=little_g^w, B=little_h^w
-  proof.commitment.A = little_g.modPow(w, p);
-  proof.commitment.B = little_h.modPow(w, p);
+  proof.commitment.A = generator.modPow(randomness, modulus);
+  proof.commitment.B = message.modPow(randomness, modulus);
   
   // Get the challenge from the callback that generates it
-  proof.challenge = challenge_generator(proof.commitment);
+  proof.challenge = challenge_generator(proof.commitment, modulus, generator, order, base_power, message, message_power);
   
   // Compute response = w + x * challenge
-  proof.response = w.add(x.multiply(proof.challenge).mod(q));
+  proof.response = randomness.add(exponent.multiply(proof.challenge).mod(order));
   
   return proof;
 };
@@ -479,15 +484,35 @@ ElGamal.DisjunctiveProof.fromJSONObject = function(d) {
   );
 };
 
-ElGamal.encrypt = function(pk, plaintext, r) {
-  if (plaintext.getM().equals(BigInt.ZERO))
-    throw "Can't encrypt 0 with El Gamal"
+ElGamal.encrypt = function(pk, plaintext, r, encode_message) {
+  encode_message = encode_message == undefined ? true: encode_message;
 
   if (!r)
     r = Random.getRandomInteger(pk.q);
   
+        //# make sure m is in the right subgroup
+        //if encode_message:
+          //y = plaintext.m + 1
+          //if pow(y, self.q, self.p) == 1:
+            //m = y
+          //else:
+            //m = -y % self.p
+        //else:
+          //m = plaintext.m
+
+  // make sure m is in the right subgroup
+  m = plaintext.getM();
+  if (encode_message) {
+    y = plaintext.m.add(new BigInt(''+1));
+    if (y.modPow(pk.q, pk.p) == 1) {
+      m = y;
+    } else {
+      m = y.negate().mod(pk.p);
+    }
+  }
+  
   var alpha = pk.g.modPow(r, pk.p);
-  var beta = (pk.y.modPow(r, pk.p)).multiply(plaintext.m).mod(pk.p);
+  var beta = (pk.y.modPow(r, pk.p)).multiply(m).mod(pk.p);
   
   return new ElGamal.Ciphertext(alpha, beta, pk);
 };
@@ -523,16 +548,58 @@ ElGamal.disjunctive_challenge_generator = function(commitments) {
     strings_to_hash[strings_to_hash.length] = commitment.B.toJSONObject();
   });
   
-  // console.log(strings_to_hash);
-  // STRINGS = strings_to_hash;
   return new BigInt(hex_sha1(strings_to_hash.join(",")), 16);
 };
+
+ElGamal.zeus_challenge_generator = function(commitment, modulus, generator, order, base_power, message, message_power) {
+  var base_commitment = commitment.A;
+  var message_commitment = commitment.B;
+  var args = [modulus, generator, order, base_power, base_commitment, message, message_power, message_commitment];
+  var hash = numbers_hash.apply(this, args)
+  var element = generator.modPow(hash, modulus)
+  return element;
+}
 
 // a challenge generator for Fiat-Shamir
 ElGamal.fiatshamir_challenge_generator = function(commitment) {
   return ElGamal.disjunctive_challenge_generator([commitment]);
 };
 
+// zeus challenge generator using sha256 instead of sha1
+ElGamal.fiatshamir_zeus_challenge_generator = function() {
+  var args = Array.prototype.slice.call(arguments);
+  return ElGamal.zeus_challenge_generator.apply(this, args);
+};
+
 ElGamal.fiatshamir_dlog_challenge_generator = function(commitment) {
   return new BigInt(hex_sha1(commitment.toJSONObject()), 16);
 };
+
+ElGamal.zeus_dlog_challenge_generator = function(arguments) {
+  var args = Array.prototype.slice.call(arguments);
+  var data = "";
+  for (var i=0; i < args.length; i++) {
+    data = data + args[i].toRadix(16) + ":";
+  }
+  var number = strbin_to_int(hex_sha256(data));
+  return args[1].modPow(number.mod(args[2]), args[0]);
+};
+
+function numbers_hash() {
+  var args = Array.prototype.slice.call(arguments);
+  var data = "";
+  for (var i=0; i < args.length; i++) {
+    data = data + args[i].toRadix(16) + ":";
+  }
+  return strbin_to_int(hex_sha256(data));
+}
+
+function strbin_to_int(str) {
+  var result = new BigInt("0");
+  var base = new BigInt("1");
+  for (var i=0; i < str.length; i++) {
+    result = result.add(base.multiply(new BigInt("" + str.charCodeAt(i))));
+    base = base.multiply(new BigInt("256")); 
+  }
+  return result;
+}

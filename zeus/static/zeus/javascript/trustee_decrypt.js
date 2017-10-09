@@ -1,6 +1,7 @@
 var running_workers = [];
 var available_workers = [];
 
+
 if(!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(what, i) {
         i = i || 0;
@@ -125,7 +126,7 @@ Poll.prototype = {
     this.hide_actions();
     this.decryption = data;
     this.set_status("Uploading...");
-    
+
     var post_data = {'factors_and_proofs': $.toJSON(data)};
     post_data[CSRF_TOKEN_NAME] = CSRF_TOKEN;
 
