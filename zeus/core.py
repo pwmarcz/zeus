@@ -2423,8 +2423,8 @@ def verify_ddh_tuple_helios(modulus, generator, order,
 
     return 1
 
-prove_ddh_tuple = prove_ddh_tuple_helios
-verify_ddh_tuple = verify_ddh_tuple_helios
+prove_ddh_tuple = prove_ddh_tuple_zeus
+verify_ddh_tuple = verify_ddh_tuple_zeus
 
 def prove_encryption(modulus, generator, order, alpha, beta, secret):
     """Prove ElGamal encryption"""
