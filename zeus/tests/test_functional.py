@@ -14,7 +14,6 @@ from django.conf import settings
 from django.core import mail
 
 from helios import datatypes
-from helios.crypto.elgamal import DLog_challenge_generator
 from helios.crypto import algs
 from helios.models import Election, Voter, Poll, Trustee
 from zeus.tests.utils import SetUpAdminAndClientMixin
@@ -150,7 +149,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                                                      q=t1_kp.pk.q,
                                                      g=t1_kp.pk.g,
                                                      y=t1_kp.pk.y))
-                pok = t1_kp.sk.prove_sk(DLog_challenge_generator)
+                pok = t1_kp.sk.prove_sk()
                 post_data = {
                     'public_key_json': [
                         json.dumps({
