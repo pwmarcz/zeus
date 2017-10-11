@@ -489,18 +489,7 @@ ElGamal.encrypt = function(pk, plaintext, r, encode_message) {
 
   if (!r)
     r = Random.getRandomInteger(pk.q);
-  
-        //# make sure m is in the right subgroup
-        //if encode_message:
-          //y = plaintext.m + 1
-          //if pow(y, self.q, self.p) == 1:
-            //m = y
-          //else:
-            //m = -y % self.p
-        //else:
-          //m = plaintext.m
 
-  // make sure m is in the right subgroup
   m = plaintext.getM();
   if (encode_message) {
     y = plaintext.m.add(new BigInt(''+1));
@@ -536,21 +525,6 @@ ElGamal.DLogProof.fromJSONObject = function(d) {
   return new ElGamal.DLogProof(BigInt.fromJSONObject(d.commitment || d.s), BigInt.fromJSONObject(d.challenge), BigInt.fromJSONObject(d.response));
 };
 
-// a challenge generator based on a list of commitments of
-// proofs of knowledge of plaintext. Just appends A and B with commas.
-ElGamal.disjunctive_challenge_generator = function(commitments) {
-  var strings_to_hash = [];
-
-  // go through all proofs and append the commitments
-  _(commitments).each(function(commitment) {
-    // toJSONObject instead of toString because of IE weirdness.
-    strings_to_hash[strings_to_hash.length] = commitment.A.toJSONObject();
-    strings_to_hash[strings_to_hash.length] = commitment.B.toJSONObject();
-  });
-  
-  return new BigInt(hex_sha1(strings_to_hash.join(",")), 16);
-};
-
 ElGamal.zeus_challenge_generator = function(commitment, modulus, generator, order, base_power, message, message_power) {
   var base_commitment = commitment.A;
   var message_commitment = commitment.B;
@@ -559,11 +533,6 @@ ElGamal.zeus_challenge_generator = function(commitment, modulus, generator, orde
   var element = generator.modPow(hash, modulus)
   return element;
 }
-
-// a challenge generator for Fiat-Shamir
-ElGamal.fiatshamir_challenge_generator = function(commitment) {
-  return ElGamal.disjunctive_challenge_generator([commitment]);
-};
 
 // zeus challenge generator using sha256 instead of sha1
 ElGamal.fiatshamir_zeus_challenge_generator = function() {

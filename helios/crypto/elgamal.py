@@ -14,7 +14,7 @@ import randpool, number
 import numtheory
 
 from algs import Utils
-from zeus.core import prove_dlog
+from zeus.core import prove_dlog, prove_ddh_tuple
 
 class Cryptosystem(object):
     def __init__(self):
@@ -161,19 +161,20 @@ class SecretKey:
         """
         return pow(ciphertext.alpha, self.x, self.pk.p)
 
-    def decryption_factor_and_proof(self, ciphertext, challenge_generator=None):
-        """
-        challenge generator is almost certainly
-        EG_fiatshamir_challenge_generator
-        """
-        if not challenge_generator:
-            challenge_generator = fiatshamir_challenge_generator
-
+    def decryption_factor_and_proof(self, ciphertext):
         dec_factor = self.decryption_factor(ciphertext)
 
-        proof = ZKProof.generate(self.pk.g, ciphertext.alpha, self.x, self.pk.p, self.pk.q, challenge_generator)
+        modulus = self.pk.p
+        generator = self.pk.g
+        order = self.pk.q
+        public = self.pk.y
+        secret = self.x
 
-        return dec_factor, proof
+        factor = pow(ciphertext.alpha, secret, modulus)
+        proof = ZKProof.generate(modulus, generator, order, ciphertext.alpha,
+                                 public, factor, secret)
+
+        return factor, proof
 
     def decrypt(self, ciphertext, dec_factor = None, decode_m=False):
         """
@@ -195,38 +196,7 @@ class SecretKey:
         else:
           return Plaintext(m, self.pk)
 
-    def prove_decryption(self, ciphertext):
-        """
-        given g, y, alpha, beta/(encoded m), prove equality of discrete log
-        with Chaum Pedersen, and that discrete log is x, the secret key.
-
-        Prover sends a=g^w, b=alpha^w for random w
-        Challenge c = sha1(a,b) with and b in decimal form
-        Prover sends t = w + xc
-
-        Verifier will check that g^t = a * y^c
-        and alpha^t = b * beta/m ^ c
-        """
-
-        m = (Utils.inverse(pow(ciphertext.alpha, self.x, self.pk.p), self.pk.p) * ciphertext.beta) % self.pk.p
-        beta_over_m = (ciphertext.beta * Utils.inverse(m, self.pk.p)) % self.pk.p
-
-        # pick a random w
-        w = Utils.random_mpz_lt(self.pk.q)
-        a = pow(self.pk.g, w, self.pk.p)
-        b = pow(ciphertext.alpha, w, self.pk.p)
-
-        c = int(hashlib.sha1(str(a) + "," + str(b)).hexdigest(),16)
-
-        t = (w + self.x * c) % self.pk.q
-
-        return m, {
-            'commitment' : {'A' : str(a), 'B': str(b)},
-            'challenge' : str(c),
-            'response' : str(t)
-          }
-
-    def prove_sk(self, challenge_generator):
+    def prove_sk(self):
       res = prove_dlog(self.pk.p, self.pk.g, self.pk.q, self.pk.y, self.x)
       return DLogProof(res[0], res[1], res[2])
 
@@ -394,36 +364,6 @@ class Ciphertext:
       # print "1,2: %s %s " % (first_check, second_check)
       return (first_check and second_check)
 
-    def verify_disjunctive_encryption_proof(self, plaintexts, proof, challenge_generator):
-      """
-      plaintexts and proofs are all lists of equal length, with matching.
-
-      overall_challenge is what all of the challenges combined should yield.
-      """
-      for i in range(len(plaintexts)):
-        # if a proof fails, stop right there
-        if not self.verify_encryption_proof(plaintexts[i], proof.proofs[i]):
-          print "bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i])
-          return False
-
-      # logging.info("made it past the two encryption proofs")
-
-      # check the overall challenge
-      return (challenge_generator([p.commitment for p in proof.proofs]) == (sum([p.challenge for p in proof.proofs]) % self.pk.q))
-
-    def verify_decryption_proof(self, plaintext, proof):
-      """
-      Checks for the DDH tuple g, alpha, y, beta/plaintext
-      (PoK of secret key x.)
-      """
-      return False
-
-    def verify_decryption_factor(self, dec_factor, dec_proof, public_key):
-      """
-      when a ciphertext is decrypted by a dec factor, the proof needs to be checked
-      """
-      pass
-
     def decrypt(self, decryption_factors, public_key):
       """
       decrypt a ciphertext given a list of decryption factors (from multiple trustees)
@@ -446,6 +386,7 @@ class Ciphertext:
         split = str.split(",")
         return cls.from_dict({'alpha' : split[0], 'beta' : split[1]})
 
+
 class ZKProof(object):
   def __init__(self):
     self.commitment = {'A':None, 'B':None}
@@ -453,48 +394,22 @@ class ZKProof(object):
     self.response = None
 
   @classmethod
-  def generate(cls, little_g, little_h, x, p, q, challenge_generator):
+  def generate(cls, modulus, generator, order,
+                                alpha, public, factor, secret):
       """
       generate a DDH tuple proof, where challenge generator is
       almost certainly EG_fiatshamir_challenge_generator
       """
 
-      # generate random w
-      w = Utils.random_mpz_lt(q)
-
-      # create proof instance
+      base_commitment, message_commitment, challenge, response = \
+          prove_ddh_tuple(modulus, generator, order, alpha, public, factor,
+                        secret)
       proof = cls()
-
-      # compute A = little_g^w, B=little_h^w
-      proof.commitment['A'] = pow(little_g, w, p)
-      proof.commitment['B'] = pow(little_h, w, p)
-
-      # get challenge
-      proof.challenge = challenge_generator(proof.commitment)
-
-      # compute response
-      proof.response = (w + (x * proof.challenge)) % q
-
-      # return proof
+      proof.commitment['A'] = base_commitment
+      proof.commitment['B'] = message_commitment
+      proof.challenge = challenge
+      proof.response = response
       return proof
-
-  def verify(self, little_g, little_h, big_g, big_h, p, q, challenge_generator=None):
-    """
-    Verify a DH tuple proof
-    """
-    # check that little_g^response = A * big_g^challenge
-    first_check = (pow(little_g, self.response, p) == ((pow(big_g, self.challenge, p) * self.commitment['A']) % p))
-
-    # check that little_h^response = B * big_h^challenge
-    second_check = (pow(little_h, self.response, p) == ((pow(big_h, self.challenge, p) * self.commitment['B']) % p))
-
-    # check the challenge?
-    third_check = True
-
-    if challenge_generator:
-      third_check = (self.challenge == challenge_generator(self.commitment))
-
-    return (first_check and second_check and third_check)
 
 class ZKDisjunctiveProof:
   def __init__(self, proofs = None):
@@ -505,21 +420,3 @@ class DLogProof(object):
     self.commitment = commitment
     self.challenge = challenge
     self.response = response
-
-def disjunctive_challenge_generator(commitments):
-  array_to_hash = []
-  for commitment in commitments:
-    array_to_hash.append(str(commitment['A']))
-    array_to_hash.append(str(commitment['B']))
-
-  string_to_hash = ",".join(array_to_hash)
-  return int(hashlib.sha1(string_to_hash).hexdigest(),16)
-
-# a challenge generator for Fiat-Shamir with A,B commitment
-def fiatshamir_challenge_generator(commitment):
-  return disjunctive_challenge_generator([commitment])
-
-def DLog_challenge_generator(commitment):
-  string_to_hash = str(commitment)
-  return int(hashlib.sha1(string_to_hash).hexdigest(),16)
-
