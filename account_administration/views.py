@@ -3,13 +3,14 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.shortcuts import get_object_or_404
 
 from helios.view_utils import render_template
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup
 from heliosauth.auth_systems.password import make_password
 from zeus.models.zeus_models import Institution
-from zeus.auth import manager_or_superadmin_required
-from account_administration.forms import userForm, institutionForm
+from zeus.auth import manager_or_superadmin_required, superadmin_required
+from account_administration.forms import userForm, institutionForm, userGroupForm
 from utils import random_password, can_do, sanitize_get_param, \
     get_user, get_institution
 
@@ -56,6 +57,15 @@ def list_institutions(request):
         'account_administration/list_institutions',
         context)
 
+
+@superadmin_required
+def list_usergroups(request):
+    groups = UserGroup.objects.filter().order_by('name')
+    context = {'paginate_by': 10, 'groups': groups}
+    return render_template(request, 'account_administration/list_usergroups',
+                           context)
+
+
 @manager_or_superadmin_required
 def create_user(request):
     users = User.objects.all()
@@ -76,7 +86,7 @@ def create_user(request):
     form = None
 
     if request.method == 'POST':
-        form = userForm(request.POST, initial=initial, instance=edit_user)
+        form = userForm(logged_user, request.POST, initial=initial, instance=edit_user)
         if form.is_valid():
             user, password = form.save()
             if edit_user:
@@ -91,7 +101,7 @@ def create_user(request):
             return redirect(url)
 
     if request.method == 'GET':
-        form = userForm(initial=initial, instance=edit_user)
+        form = userForm(logged_user, initial=initial, instance=edit_user)
 
     tpl = 'account_administration/create_user',
     context = {'form': form}
@@ -112,7 +122,7 @@ def create_institution(request):
                 message= _("Institution created.")
             messages.success(request, message)
             return redirect(reverse('list_institutions'))
-    if request.method == 'GET': 
+    if request.method == 'GET':
         form = institutionForm(instance=edit_inst)
     context = {'form': form}
     return render_template(
@@ -120,6 +130,33 @@ def create_institution(request):
         'account_administration/create_institution',
         context
         )
+
+@superadmin_required
+def create_usergroup(request):
+    groups = UserGroup.objects.all()
+    edit_id = sanitize_get_param(request.GET.get('edit_id'))
+    edit_group = None
+    if edit_id:
+        edit_group = get_object_or_404(UserGroup, id=edit_id)
+    logged_user = request.zeususer._user
+    if request.method == 'POST':
+        form = userGroupForm(request.POST, instance=edit_group)
+        if form.is_valid():
+            group = form.save()
+            if edit_group:
+                message = _("Changes on user group were successfully saved")
+            else:
+                message = _("Group %s was created" % (group.name))
+            messages.success(request, message)
+            url = reverse('list_usergroups')
+            return redirect(url)
+
+    if request.method == 'GET':
+        form = userGroupForm(instance=edit_group)
+
+    tpl = 'account_administration/create_usergroup',
+    context = {'form': form}
+    return render_template(request, tpl, context)
 
 @manager_or_superadmin_required
 def manage_user(request):
@@ -129,7 +166,7 @@ def manage_user(request):
 
     if request.zeususer._user.management_p:
         user_type = 'manager'
-    else:
+    if request.zeususer._user.superadmin_p:
         user_type = 'superadmin'
     user = get_user(uid)
     if not user:

@@ -1,0 +1,22 @@
+{% extends TEMPLATE_BASE %} 
+
+{% load remember_filters %}
+{% load i18n %}
+
+{% block tabs_menu%}
+{% include "account_administration/nav.html"%}
+{% endblock %}
+
+{% block content %}
+{{messages.error}}
+<form action='' method='POST'>
+{% csrf_token %}
+{{form}}
+<br>
+<br>
+<label id="sub_button"></label>
+<input id="sub_button" type='submit' class="button tiny" value={% trans "Save" %}>
+</form>
+</br>
+</br>
+{% endblock content%}

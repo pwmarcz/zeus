@@ -39,10 +39,10 @@ def add_or_update(request, election=None):
     institution = user.institution
 
     if request.method == "GET":
-        election_form = ElectionForm(institution, instance=election,
+        election_form = ElectionForm(user, institution, instance=election,
                                      lang=request.LANGUAGE_CODE)
     else:
-        election_form = ElectionForm(institution, request.POST,
+        election_form = ElectionForm(user, institution, request.POST,
                                      instance=election)
 
     if election_form.is_valid():

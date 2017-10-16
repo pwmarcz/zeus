@@ -1,0 +1,43 @@
+{% extends TEMPLATE_BASE %}
+
+{% load i18n pagination_tags %}
+{% load remember_filters %}
+
+{% block tabs_menu%}
+{% include "account_administration/nav.html" %}
+{% endblock%}
+
+{% block content %}
+
+{% autopaginate groups paginate_by %}
+{% paginate %}
+
+<table class="elections">
+  <thead>
+    <tr>
+        <th>{% trans "Name" %}</th>
+        <th>{% trans "Election types" %}</td>
+        <th>{% trans "Users count" %}</td>
+        <th>{% trans "Actions" %}</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for group in groups %}
+    <tr>
+        <td>{{group.name}}</td>
+        <td>{{group.election_types_display}}</td>
+        <td>{{group.users_count_display}}</td>
+        <td>
+            <a href={% url "create_usergroup" %}?edit_id={{group.id}}>
+            {% trans "Edit" %}</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan=7>{% trans "No results found" %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% paginate %}
+{% endblock content %}

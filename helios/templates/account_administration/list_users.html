@@ -30,6 +30,8 @@
         <th>User ID</b></td>
         <th>{% trans "Name" %}</th>
         <th>{% trans "Institution" %}</th>
+        <th>{% trans "User Groups" %}</th>
+        <th>{% trans "Is helpdesk user" %}</th>
         <th>{% trans "Elections Held" %}</th>
         <th>{% trans "Details" %}</th>
     </tr>
@@ -41,6 +43,8 @@
         <td>{{user.user_id}}</td>
         <td>{{user.name}}</td>
         <td>{{user.institution.name}}</td>
+        <td>{{user.groups_display}}</td>
+        <td>{{user.management_p}}</td>
         <td>{{user.elections.all.count}}</td>
         <td>
             <a href={% url "user_management" %}?uid={{user.id}}>

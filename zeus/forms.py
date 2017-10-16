@@ -34,6 +34,7 @@ from zeus import help_texts as help
 from zeus.utils import undecalize, ordered_dict_prepend
 
 from django.core.validators import validate_email
+from zeus.election_modules import ELECTION_MODULES_CHOICES
 
 
 LOG_CHANGED_FIELDS = [
@@ -98,8 +99,10 @@ class ElectionForm(forms.ModelForm):
                   'trustees', 'help_email', 'help_phone',
                   'communication_language', 'linked_polls')
 
-    def __init__(self, institution, *args, **kwargs):
+    def __init__(self, owner, institution, *args, **kwargs):
         self.institution = institution
+        self.owner = owner
+
         if kwargs.get('lang'):
             lang = kwargs.pop('lang')
         else:
@@ -120,6 +123,14 @@ class ElectionForm(forms.ModelForm):
             for field in LOG_CHANGED_FIELDS:
                 self._initial_data[field] = self.initial[field]
             self.creating = False
+
+        eligible_types = owner.eligible_election_types
+        if not self.creating:
+            eligible_types.add(self.intsance.election_module)
+        eligible_types_choices = filter(lambda x: x[0] in eligible_types,
+                                        ELECTION_MODULES_CHOICES)
+
+        self.fields['election_module'].choices = eligible_types_choices
         if 'election_module' in self.data:
             if self.data['election_module'] != 'stv':
                 self.fields['departments'].required = False
