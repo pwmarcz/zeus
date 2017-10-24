@@ -117,7 +117,7 @@ class SimpleElection(ElectionModuleBase):
             answers = answers + q_answers
         self.poll._init_questions(len(answers))
         self.poll.questions[0]['answers'] = answers
-    
+
     def compute_results(self):
         self.generate_json_file()
         for lang in settings.LANGUAGES:
@@ -126,7 +126,7 @@ class SimpleElection(ElectionModuleBase):
 
     def compute_election_results(self):
         for lang in settings.LANGUAGES:
-            self.generate_election_csv_file(lang)   
+            self.generate_election_csv_file(lang)
             self.generate_election_result_docs(lang)
             self.generate_election_zip_file(lang)
 

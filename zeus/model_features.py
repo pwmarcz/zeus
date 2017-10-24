@@ -332,7 +332,9 @@ class PollFeatures(FeaturesMixin):
 
     @poll_feature()
     def _feature_can_delete_voter(self):
-        return not self.election.feature_closed
+        if self.election.feature_closed:
+            return False
+        return self.get_module().can_delete_poll_voters()
 
     @poll_feature()
     def _feature_can_mix(self):

@@ -125,8 +125,8 @@ class ElectionForm(forms.ModelForm):
             self.creating = False
 
         eligible_types = owner.eligible_election_types
-        if not self.creating:
-            eligible_types.add(self.intsance.election_module)
+        if not self.creating and self.instance:
+            eligible_types.add(self.instance.election_module)
         eligible_types_choices = filter(lambda x: x[0] in eligible_types,
                                         ELECTION_MODULES_CHOICES)
 

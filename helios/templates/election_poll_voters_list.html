@@ -102,7 +102,7 @@
 <table id="voters-table" class="info-table" width="100%">
   <thead>
     <tr>
-      {% for key, value  in voter_table_headers %}
+      {% for key, value  in voter_table_headers_iter %}
         <th>
           {% if key != 'actions' %}
           <a href="?order={{key}}{% complete_get_parameters request.GET key "voter_login_id" %}" 
@@ -135,11 +135,12 @@
     <td>
         {% if voter.voter_mobile %}{{ voter.voter_mobile }}{% endif %}
     </td>
-    {% if display_weight_col %}
+    {% if display_weight_col and 'voter_weight' in voter_table_headers %}
     <td>
         {{ voter.voter_weight }}
     </td>
     {% endif %}
+    {% if admin.management_p or 'cast_vote__id' in voter_table_headers %}
     <td>
       {% if voter.voted %}
       {% trans "YES" %} {% if voter.excluded_at %}<b style="color:red">{% trans "(Excluded)" %}</b>{% endif %}
@@ -148,12 +149,27 @@
       {% endif %}
 
     </td>
+    {% endif %}
     {% if admin %}
+        {% if admin.management_p or 'last_booth_invitation_send_at' in voter_table_headers %}
+        <td>
+        {{ voter.last_booth_invitation_send_at }}
+        </td>
+        {% endif %}
+        {% if admin.management_p or 'last_visit' in voter_table_headers %}
+        <td>
+        {{ voter.last_visit }}
+        </td>
+        {% endif %}
+    {% endif %}
+
+    {% if admin.management_p or 'excluded_at' in voter_table_headers %}
     <td>
-      {{ voter.last_booth_invitation_send_at }}
-    </td>
-    <td>
-      {{ voter.last_visit }}
+      {% if voter.excluded_at %}
+      {% trans "YES" %}
+      {% else %}
+      {% trans "NO" %}
+      {% endif %}
     </td>
     {% endif %}
 {% if admin %}

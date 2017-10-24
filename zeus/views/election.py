@@ -46,6 +46,7 @@ def add_or_update(request, election=None):
                                      instance=election)
 
     if election_form.is_valid():
+        creating = election is None
         with transaction.atomic():
             election = election_form.save()
             if not election.admins.filter(pk=user.pk).count():
@@ -55,7 +56,6 @@ def add_or_update(request, election=None):
                 msg = "New election created"
                 subject = "New Zeus election"
                 election.notify_admins(msg=msg, subject=subject)
-            # TODO, make this optional ?
             if not election.has_helios_trustee():
                 election.generate_trustee()
             if election.polls.count() == 0:
@@ -69,7 +69,12 @@ def add_or_update(request, election=None):
 
             election.zeus.compute_election_public()
             election.logger.info("Public key updated")
-            return HttpResponseRedirect(url)
+            hook_url = None
+            if creating:
+                hook_url = election.get_module().run_hook('post_create')
+            else:
+                hook_url = election.get_module().run_hook('post_update')
+            return HttpResponseRedirect(hook_url or url)
 
     context = {'election_form': election_form, 'election': election}
     set_menu('election_edit', context)

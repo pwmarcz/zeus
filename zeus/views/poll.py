@@ -341,7 +341,8 @@ def voters_list(request, election, poll):
     order_by = request.GET.get('order', 'voter_login_id')
     order_type = request.GET.get('order_type', 'desc')
 
-    table_headers = copy.copy(VOTER_TABLE_HEADERS)
+    module = election.get_module()
+    table_headers = copy.copy(module.get_voters_list_headers(request))
     if not order_by in table_headers:
         order_by = 'voter_login_id'
 
@@ -359,10 +360,7 @@ def voters_list(request, election, poll):
         order_by = '-%s' % order_by
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
 
-    voters = voters.filter(get_filters(q_param, VOTER_TABLE_HEADERS,
-                                       VOTER_SEARCH_FIELDS,
-                                       VOTER_BOOL_KEYS_MAP,
-                                       VOTER_EXTRA_HEADERS))
+    voters = module.filter_voters(voters, q_param, request)
     voters_count = Voter.objects.filter(poll=poll).count()
     voted_count = poll.voters_cast_count()
     nr_voters_excluded = voters.excluded().count()
@@ -377,7 +375,8 @@ def voters_list(request, election, poll):
         'voters_list_count': voters.count(),
         'voters_per_page': voters_per_page,
         'display_weight_col': display_weight_col,
-        'voter_table_headers': table_headers.iteritems(),
+        'voter_table_headers': table_headers,
+        'voter_table_headers_iter': table_headers.iteritems(),
         'nr_voters_excluded': nr_voters_excluded,
     }
     set_menu('voters', context)
@@ -397,10 +396,7 @@ def voters_clear(request, election, poll):
     for p in polls:
         voters = p.voters.all()
         if q_param:
-            voters = voters.filter(get_filters(q_param, VOTER_TABLE_HEADERS,
-                                               VOTER_SEARCH_FIELDS,
-                                               VOTER_BOOL_KEYS_MAP,
-                                               VOTER_EXTRA_HEADERS))
+            voters = election.get_module().filter_voters(voters, q_param, request)
 
         for voter in voters:
             if not voter.cast_votes.count():
@@ -571,14 +567,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         TEMPLATES.pop(0)
         default_template = 'info'
 
-    if election.voting_extended_until and not election.voting_ended_at:
-        TEMPLATES.append(('extension', _('Voting end date extended')))
-
-    template = request.REQUEST.get('template', default_template)
-
-    if not template in [t[0] for t in TEMPLATES]:
-        raise Exception("bad template")
-
     polls = [poll]
     if not poll:
         polls = election.polls_by_link_id
@@ -596,6 +584,19 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         if not voter:
             url = election_reverse(election, 'index')
             return HttpResponseRedirect(url)
+
+        if voter.excluded_at:
+            TEMPLATES.pop(0)
+            default_template = 'info'
+
+    if election.voting_extended_until and not election.voting_ended_at:
+        if not voter or (voter and not voter.excluded_at):
+            TEMPLATES.append(('extension', _('Voting end date extended')))
+
+    template = request.REQUEST.get('template', default_template)
+
+    if not template in [t[0] for t in TEMPLATES]:
+        raise Exception("bad template")
 
     election_url = election.get_absolute_url()
 
@@ -633,11 +634,8 @@ def voters_email(request, election, poll=None, voter_uuid=None):
     if not q_param:
         filtered_voters = filtered_voters.none()
     else:
-        voters_filters = get_filters(q_param, VOTER_TABLE_HEADERS,
-                                     VOTER_SEARCH_FIELDS,
-                                     VOTER_BOOL_KEYS_MAP,
-                                     VOTER_EXTRA_HEADERS)
-        filtered_voters = filtered_voters.filter(voters_filters)
+        filter_voters = election.get_module().filter_voters
+        filtered_voters = filter_voters.filter(filtered_voters, q_param, request)
 
         if not filtered_voters.count():
             message = _("No voters were found.")
@@ -1094,6 +1092,10 @@ def get_tally(request, election, poll):
 def results(request, election, poll):
     if not request.zeususer.is_admin and not poll.feature_public_results:
         raise PermissionDenied('41')
+
+    if not poll.get_module().display_poll_results:
+        url = election_reverse(election, 'index')
+        return HttpResponseRedirect(url)
 
     context = {
         'poll': poll,

@@ -283,12 +283,14 @@ def parse_q_param(q):
             args.append(special_arg)
     return q, args
 
-def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_headers=[]):
+def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_headers=[], exclude_fields=[]):
 
     q = Q()
     if q_param != '':
         q_parsed, extra_filters = parse_q_param(q_param)
         for search_field in search_fields:
+            if search_field in exclude_fields:
+                continue
             kwargs = {'%s__icontains' % search_field: q_parsed.strip()}
             q = q | Q(**kwargs)
         for arg in extra_filters:

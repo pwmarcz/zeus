@@ -17,7 +17,8 @@ class Command(BaseCommand):
             voters = Voter.objects.all()
 
         for v in voters:
-            print v.get_quick_login_url()
+            if not v.excluded_at:
+                print v.get_quick_login_url()
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify
 
