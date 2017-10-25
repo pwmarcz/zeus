@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-19 17:05+0300\n"
+"POT-Creation-Date: 2017-10-25 10:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -546,6 +546,21 @@ msgstr "Δημιουργία Χρήστη"
 msgid "No results found"
 msgstr "Δεν βρέθηκαν αποτελέσματα"
 
+msgid "Election types"
+msgstr "Τύποι ψηφοφορίας"
+
+msgid "Users count"
+msgstr "Αριθμός χρηστών"
+
+msgid "Actions"
+msgstr "Επιλογές"
+
+msgid "User Groups"
+msgstr "Ομάδες χρηστών"
+
+msgid "Is helpdesk user"
+msgstr "Χρήστης helpdesk"
+
 msgid "Elections Held"
 msgstr "Αριθμός Εκλογών"
 
@@ -554,6 +569,12 @@ msgstr "Λεπτομέρειες"
 
 msgid "Institutions"
 msgstr "Ιδρύματα"
+
+msgid "Groups"
+msgstr "Ομάδες"
+
+msgid "Create Group"
+msgstr "Δημιουργία ομάδας χρηστών"
 
 msgid "Please confirm the password reset of user "
 msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
@@ -891,9 +912,6 @@ msgstr "τελευταία ψήφος"
 
 msgid "select action"
 msgstr "επιλογές"
-
-msgid "Actions"
-msgstr "Επιλογές"
 
 msgid "Manage voters"
 msgstr "Διαχείριση ψηφοφόρων"

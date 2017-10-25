@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-19 17:05+0300\n"
+"POT-Creation-Date: 2017-10-25 10:21+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,6 +66,18 @@ msgstr "Ψηφοφορία με ταξινομική ψήφο"
 
 msgid "Candidates List"
 msgstr "Λίστα υποψηφίων"
+
+msgid "Electors: Group A"
+msgstr "Εκλέκτορες: Ομάδα Α"
+
+msgid "Electors: Group B"
+msgstr "Εκλέκτορες: Ομάδα Β"
+
+msgid "Greek Universities single governing bodies election"
+msgstr "Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
+
+msgid "Voter excluded"
+msgstr "Έχει εξαιρεθεί"
 
 #, python-format
 msgid "%s is not a valid character."
@@ -458,6 +470,18 @@ msgstr "Διαχειριστής"
 
 msgid "Official"
 msgstr "Επίσημη"
+
+msgid "Total"
+msgstr "Σύνολο"
+
+msgid "Total rounded"
+msgstr "Σύνολο ψηφοδελτίων"
+
+msgid "GROUP"
+msgstr "Ομάδα"
+
+msgid "QUESTION"
+msgstr "Υποψήφιος"
 
 #, python-format
 msgid "Total votes: %d"

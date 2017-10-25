@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 22:56+0200\n"
+"POT-Creation-Date: 2017-10-25 10:22+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,9 @@ msgstr "ίδρυμα"
 
 msgid "Disable account"
 msgstr "Απενεργοποίηση Λογαριασμού"
+
+msgid "Helpdesk user"
+msgstr "Χρήστης helpdesk"
 
 msgid "User already exists"
 msgstr "Ο χρήστης υπάρχει ήδη!"
@@ -47,6 +50,13 @@ msgstr "Οι αλλαγές αποθηκεύθηκαν επιτυχώς"
 
 msgid "Institution created."
 msgstr "To ίδρυμα δημιουργήθηκε."
+
+msgid "Changes on user group were successfully saved"
+msgstr "Οι αλλαγές στην ομάδα χρηστών αποθηκεύθηκαν επιτυχώς"
+
+#, python-format
+msgid "Group %s was created"
+msgstr "Η ομάδα χρηστών %s δημιουργήθηκε"
 
 msgid "You didn't choose a user"
 msgstr "Δεν επιλέχθηκε χρήστης"
