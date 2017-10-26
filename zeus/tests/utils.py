@@ -4,7 +4,7 @@ from django.test.client import Client
 from django.contrib.auth.hashers import make_password
 
 from helios.models import *
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
 pytestmark = pytest.mark.django_db(transaction=True)
@@ -16,6 +16,7 @@ class SetUpAdminAndClientMixin():
         self.institution.delete()
 
     def setUp(self):
+        self.group = UserGroup.objects.create(name="ZEUS")
         self.institution = Institution.objects.create(name="test_inst")
         self.admin = User.objects.create(
             user_type="password",
@@ -24,6 +25,7 @@ class SetUpAdminAndClientMixin():
             admin_p=True,
             institution=self.institution
             )
+        self.admin.user_groups.add(self.group)
         self.locations = {
             'home': '/',
             'logout': '/auth/auth/logout',
