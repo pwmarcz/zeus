@@ -1904,6 +1904,9 @@ class CastVoteQuerySet(QuerySet):
     def excluded(self):
         return self.filter(voter__excluded_at__isnull=False)
 
+    def not_excluded(self):
+        return self.filter(voter__excluded_at__isnull=True)
+
 
 class CastVoteManager(models.Manager):
 
