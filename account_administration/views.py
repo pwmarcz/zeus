@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -76,7 +77,7 @@ def create_user(request):
     logged_user = request.zeususer._user
     if edit_user:
         if not can_do(logged_user, edit_user):
-            edit_user = None
+            raise PermissionDenied
     if edit_user:
         initial = {'institution': edit_user.institution.name}
     elif institution:
