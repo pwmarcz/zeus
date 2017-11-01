@@ -250,6 +250,8 @@ def make_results(elements, styles, total_votes, blank_votes,
         (party, count) = party_result
         if (len(parties_results) > 1):
             make_party_list_heading(elements, styles, party, count)
+        if party not in candidates_results and not isinstance(party, unicode):
+            party = party.decode('utf-8')
         if party in candidates_results:
             make_party_list_table(elements, styles, candidates_results[party])
 
