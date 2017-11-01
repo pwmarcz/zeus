@@ -40,6 +40,9 @@
 {% trans "Save results" %} (ZIP)</a>
 <br /><br />
   {% endif %}
+  {% if module.election_results_partial %}
+    {% include module.election_results_partial %}
+  {% endif %}
 {% endwith %}
 {% endif %}
 </div>

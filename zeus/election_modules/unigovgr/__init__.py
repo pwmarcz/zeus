@@ -152,6 +152,7 @@ class UniGovGr(SimpleElection):
     csv_result = True
 
     display_poll_results = False
+    election_results_partial = "election_modules/unigovgr/election_results.html"
 
     def compute_results(self):
         self.generate_json_file()

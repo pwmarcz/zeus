@@ -56,6 +56,7 @@ class ElectionModuleBase(ElectionHooks):
     election_hooks_cls = ElectionHooks
     poll_hooks_cls = PollHooks
     display_poll_results = True
+    election_results_partial = None
 
     module_params = {}
 
