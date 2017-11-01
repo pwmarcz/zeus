@@ -186,11 +186,10 @@ class ElectionModuleBase(ElectionHooks):
         all_docs_zip.write(election_csvpath, basename)
         election_pdfpath = self.get_election_result_file_path('pdf', 'pdf',
                                                                 lang[0])
-        if not self.module_id in ['unigovgr']:
-            if not os.path.exists(election_pdfpath):
-                module.generate_election_result_docs(lang)
-            basename = os.path.basename(election_pdfpath)
-            all_docs_zip.write(election_pdfpath, basename)
+        if not os.path.exists(election_pdfpath):
+            module.generate_election_result_docs(lang)
+        basename = os.path.basename(election_pdfpath)
+        all_docs_zip.write(election_pdfpath, basename)
 
         poll_docpaths = []
         for poll in self.election.polls.all():

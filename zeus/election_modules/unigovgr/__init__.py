@@ -65,7 +65,7 @@ class UniGovGrResults():
     def __init__(self, poll_a, poll_b):
         self.group_a = poll_a
         self.group_b = poll_b
-        self.questions = {}
+        self.questions = OrderedDict()
         for q in self.group_a.questions_data:
             self.questions[q['question']] = q['answers']
 
@@ -77,8 +77,8 @@ class UniGovGrResults():
         }
 
         for g in ['totals', 'group_a', 'group_b']:
-            results[g]['counts'] = {}
-            results[g]['counts_rounded'] = {}
+            results[g]['counts'] = OrderedDict()
+            results[g]['counts_rounded'] = OrderedDict()
             for question, answers in self.questions.iteritems():
                 results[g]['counts'][question] = {}
                 results[g]['counts_rounded'][question] = {}
@@ -148,7 +148,7 @@ class UniGovGr(SimpleElection):
     election_hooks_cls = UniElectionHooks
     poll_hooks_cls = UniPollHooks
     booth_module_id = 'simple'
-    pdf_result = False
+    pdf_result = True
     csv_result = True
 
     display_poll_results = False
@@ -174,6 +174,7 @@ class UniGovGr(SimpleElection):
         results = self._count_election_results()
         for lang in settings.LANGUAGES:
             self.generate_election_csv_file(results, lang)
+            self.generate_election_result_docs(results, lang)
             self.generate_election_zip_file(lang)
 
     def questions_update_view(self, request, election, poll):
@@ -202,3 +203,13 @@ class UniGovGr(SimpleElection):
 
     def can_edit_polls(self):
         return self.election.polls.count() < 2
+
+    def generate_election_result_docs(self, results, lang):
+        from zeus.results_report import build_unigov_doc
+        results = self._count_election_results()
+        pdfpath = self.get_election_result_file_path('pdf', 'pdf', lang[0])
+        build_unigov_doc(_(u'Results'), self.election.name,
+                  self.election.institution.name,
+                  self.election.voting_starts_at, self.election.voting_ends_at,
+                  self.election.voting_extended_until, results, lang,
+                  pdfpath)
