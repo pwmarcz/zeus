@@ -299,14 +299,17 @@ class QuestionForm(QuestionBaseForm):
     min_answers = forms.ChoiceField(label=_("Min answers"))
     max_answers = forms.ChoiceField(label=_("Max answers"))
 
+    min_limit = None
+    max_limit = None
+
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
-        max_choices = map(lambda x: (x,x), range(1, answers+1))
-        min_choices = map(lambda x: (x,x), range(0, answers+1))
+        max_choices = map(lambda x: (x,x), range(1, self.max_limit or answers+1))
+        min_choices = map(lambda x: (x,x), range(0, answers+1 if self.min_limit is None else self.min_limit))
 
         self.fields['max_answers'].choices = max_choices
-        self.fields['max_answers'].initial = self._answers
+        self.fields['max_answers'].initial = min(map(lambda x:x[1], max_choices))
         self.fields['min_answers'].choices = max_choices
         self.fields['min_answers'].initial = 0
 
