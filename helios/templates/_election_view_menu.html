@@ -45,7 +45,7 @@
 </a></dd>
 
 
-<dd class="{% if menu_active == "polls" %}active{% endif %}"><a 
+<dd class="{% if menu_active == "polls" or poll%}active{% endif %}"><a 
   href="{% url "election_polls_list" election.uuid %}">
   {% trans "Polls" %}
 </a>
