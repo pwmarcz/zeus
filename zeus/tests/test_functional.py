@@ -608,9 +608,13 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             (e_uuid, p_uuid)
         r = client.get(address)
         response_data = dict(r.items())
-        self.assertTrue(
-            response_data['Content-Type'] == 'application/zip'
-            )
+        self.assertTrue(response_data['Content-Type'] == 'application/zip')
+
+    def view_returns_poll_results(self, client, e_uuid, p_uuid):
+        address = '/elections/%s/polls/%s/results' % \
+            (e_uuid, p_uuid)
+        r = client.get(address)
+        self.assertEqual(r.status_code, 200)
 
     def view_returns_result_files(self, ext_dict):
         p_exts = ext_dict['poll']
@@ -621,6 +625,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for lang in settings.LANGUAGES:
             for poll in e.polls.all():
                 self.view_returns_poll_proofs_file(self.c, e.uuid, poll.uuid)
+                self.view_returns_poll_results(self.c, e.uuid, poll.uuid)
                 for ext in p_exts:
                     if ext is not 'json':
                         address = ('/elections/%s/polls/%s/results-%s.%s'
@@ -1442,3 +1447,9 @@ class TestUniGovGrElection(TestSimpleElection):
         e = Election.objects.get(uuid=self.e_uuid)
         results = e.get_module()._count_election_results()
         self.assertTrue(results)
+
+    def view_returns_poll_results(self, client, e_uuid, p_uuid):
+        address = '/elections/%s/polls/%s/results' % \
+            (e_uuid, p_uuid)
+        r = client.get(address)
+        self.assertEqual(r.status_code, 302)
