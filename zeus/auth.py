@@ -56,7 +56,10 @@ def election_view(check_access=True):
             _check_access = check_access
             user = request.zeususer
             if user.is_authenticated():
-                _locals.user_id = user.user_id
+                try:
+                    _locals.user_id = user.user_id
+                except Exception:
+                    raise PermissionDenied("Election cannot be accessed by you")
             _locals.ip = get_ip(request)
 
             if allow_manager and user.is_manager:
