@@ -117,7 +117,7 @@ class ElectionForm(forms.ModelForm):
                                                     initial=lang,
                                                     help_text = help_text)
         self.creating = True
-        self._inital_data = {}
+        self._initial_data = {}
         if self.instance and self.instance.pk:
             self._initial_data = {}
             for field in LOG_CHANGED_FIELDS:
