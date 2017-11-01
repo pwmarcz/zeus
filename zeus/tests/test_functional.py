@@ -303,12 +303,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        form = r.context['form']
-        data = form.initial
-        data['name'] = 'changed_poll_name_after_freeze'
-        r = self.c.post(edit_url, data)
-        self.assertFormError(r, 'form', None, "Poll name cannot be changed\
-                                               after freeze")
+        self.assertEqual(r.status_code, 403, "Poll name cannot be changed after \
+                         freeze")
 
     def submit_questions(self):
         for p_uuid in self.p_uuids:
@@ -1412,7 +1408,15 @@ class TestUniGovGrElection(TestSimpleElection):
         self.verbose('- Poll was not created - duplicate poll names')
 
     def edit_poll_name_before_freeze(self):
-        pass
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        e = Election.objects.all()[0]
+        p_uuid = self.p_uuids[0]
+        edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
+        r = self.c.get(edit_url)
+        self.assertEqual(r.status_code, 403)
+        r = self.c.post(edit_url)
+        self.assertEqual(r.status_code, 403)
 
     def save_poll_without_name_change(self):
         # help track bug where saving poll without changing name
@@ -1423,11 +1427,9 @@ class TestUniGovGrElection(TestSimpleElection):
         p_uuid = self.p_uuids[0]
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        form = r.context['form']
-        data = form.initial
-        r = self.c.post(edit_url, data)
-        expected_url = '/elections/{}/polls/'.format(self.e_uuid)
-        self.assertRedirects(r, expected_url)
+        self.assertEqual(r.status_code, 403)
+        r = self.c.post(edit_url)
+        self.assertEqual(r.status_code, 403)
 
     def check_results(self):
         # check if results exist

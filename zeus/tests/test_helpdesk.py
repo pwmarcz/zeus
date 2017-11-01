@@ -2,10 +2,10 @@
 import pytest
 
 from django.test import TestCase
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.utils import translation
 
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
 from utils import SetUpAdminAndClientMixin, get_messages_from_response
@@ -318,9 +318,10 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'test_admin',
             'institution': 'test_inst',
+            'user_groups': [1],
             'is_disabled': 'on',
             }
-        self.c.post(
+        r = self.c.post(
             '/account_administration/user_creation/?edit_id=%s'
             % uid,
             post_data,
@@ -343,13 +344,15 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
                 'user_id': u.user_id,
                 'institution': u.institution.name,
                 'is_disabled': 'on',
+                'user_groups': [1]
             }
-            self.c.post(
+            r = self.c.post(
                 '/account_administration/user_creation/?edit_id=%s'
                 % uid,
                 post_data,
                 follow=True
                 )
+            self.assertEqual(r.status_code, 403)
             u = User.objects.get(user_id=user_id)
             self.assertFalse(u.is_disabled)
 
@@ -367,6 +370,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
                 'user_id': u.user_id,
                 'institution': u.institution.name,
                 'is_disabled': 'on',
+                'user_groups': [1]
             }
             self.c.post(
                 '/account_administration/user_creation/?edit_id=%s'
@@ -387,6 +391,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': '',
             'name': 'test_name',
+            'user_groups': [1],
             'institution': 'test_inst',
             }
         r = self.c.post(
@@ -456,13 +461,15 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
         post_data = {
             'user_id': 'new_test_user',
-            'institution': 'test_inst'
+            'institution': 'test_inst',
+            'user_groups': [1]
             }
         self.c.post(
             '/account_administration/user_creation/',
             post_data
             )
         self.assertEqual(User.objects.all().count(), 4)
+        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "default")
 
     def test_superadmin_can_create_user_with_post(self):
         # there are already 3 users
@@ -474,13 +481,15 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             )
         post_data = {
             'user_id': 'new_test_user',
-            'institution': 'test_inst'
+            'institution': 'test_inst',
+            'user_groups': [1]
             }
         self.c.post(
             '/account_administration/user_creation/',
             post_data
             )
         self.assertEqual(User.objects.all().count(), 4)
+        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "default")
 
     def test_edit_user(self):
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
@@ -489,6 +498,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'test_admin',
             'name': 'test_name',
+            'user_groups': [1],
             'institution': 'test_inst'
             }
         r = self.c.post(
@@ -524,7 +534,8 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         self.assertEqual(User.objects.all().count(), 3)
         post_data = {
             'user_id': 'test_admin',
-            'institution': 'test_inst'
+            'institution': 'test_inst',
+            'user_groups': [1]
             }
         r = self.c.post(
             '/account_administration/user_creation/',
@@ -658,3 +669,29 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         insts = r.context['institutions']
         for i in insts:
             self.assertTrue(filter_string in i.name)
+
+    def test_user_groups(self):
+        group_id = UserGroup.objects.create(election_types=["parties"], name="party user").pk
+        self.c.post(self.locations['login'], self.manager_creds, follow=True)
+        u = User.objects.get(user_id='test_admin')
+        self.assertEqual(u.name, None)
+        post_data = {
+            'user_id': 'test_user_groups',
+            'name': 'test_name',
+            'user_groups': [group_id],
+            'institution': 'test_inst'
+            }
+        r = self.c.post(
+            '/account_administration/user_creation/',
+            post_data,
+            follow=True
+            )
+        u = User.objects.get(user_id='test_user_groups')
+        u.info['password'] = make_password("1234")
+        u.save()
+        creds = {"username": "test_user_groups", "password": "1234"}
+        self.c.get(self.locations['logout'])
+        r = self.c.post(self.locations['login'], creds, follow=True)
+        field = r.context['form'].fields['election_module']
+        self.assertEqual(len(field.choices), 1)
+        self.assertEqual(field.choices[0][0], "parties")
