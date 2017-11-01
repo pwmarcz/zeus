@@ -248,6 +248,8 @@ def _add_batch(request, election):
 def add_edit(request, election, poll=None):
     if not poll and not election.feature_can_add_poll:
         raise PermissionDenied
+    if poll and not poll.feature_can_edit:
+        raise PermissionDenied
     if election.linked_polls and request.FILES.has_key('batch_file'):
         return _add_batch(request, election)
     if poll:

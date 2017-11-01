@@ -145,7 +145,7 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_can_add_poll(self):
-        return not self.feature_frozen
+        return (not self.feature_frozen) and self.get_module().can_edit_polls()
 
     @election_feature()
     def _feature_can_rename_poll(self):
@@ -252,6 +252,10 @@ class PollFeatures(FeaturesMixin):
     features_ns = 'poll'
 
     @poll_feature()
+    def _feature_can_edit(self):
+        return (not self.feature_frozen) and self.get_module().can_edit_polls()
+
+    @poll_feature()
     def _feature_can_manage_questions(self):
         return not self.feature_voting_started
 
@@ -261,7 +265,7 @@ class PollFeatures(FeaturesMixin):
 
     @poll_feature()
     def _feature_can_remove(self):
-        return not self.feature_frozen
+        return (not self.feature_frozen) and self.get_module().can_edit_polls()
 
     @poll_feature()
     def _feature_can_add_voter(self):

@@ -190,3 +190,6 @@ class UniGovGr(SimpleElection):
 
     def can_delete_poll_voters(self):
         return not self.election.feature_voting_started
+
+    def can_edit_polls(self):
+        return self.election.polls.count() < 2

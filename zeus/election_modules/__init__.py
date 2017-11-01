@@ -291,6 +291,9 @@ class ElectionModuleBase(ElectionHooks):
     def can_delete_poll_voters(self):
         return True
 
+    def can_edit_polls(self):
+        return True
+
 
 
 from zeus.election_modules.simple import *
