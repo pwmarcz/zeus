@@ -133,6 +133,11 @@ class UniGovGrResults():
 
         return results
 
+    def questions_formset(self, extra=1):
+        from zeus.forms import QuestionForm
+        return formset_factory(QuestionForm, extra=extra,
+                               can_delete=True, can_order=True)
+
 
 @election_module
 class UniGovGr(SimpleElection):
