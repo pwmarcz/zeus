@@ -121,7 +121,10 @@ class UniGovGrResults():
                 B = group_b['counts'][q][candidate]
                 # Γ: το σύνολο των μελών της δεύτερης ομάδας εκλεκτόρων
                 G = group_b['voters']
-                result, rounded = UNIGOV_COUNT(A, B, G, S)
+                if G == 0:
+                    result, rounded = -1, -1
+                else:
+                    result, rounded = UNIGOV_COUNT(A, B, G, S)
                 totals['counts'][q][candidate] = result
                 totals['counts_rounded'][q][candidate] = rounded
 
