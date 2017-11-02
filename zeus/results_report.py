@@ -135,6 +135,8 @@ def load_parties_results(data, repr_data, qdata):
     for candidate_result in jsondata['candidate_counts']:
         (result, full_candidate) = candidate_result
         (party, candidate) = full_candidate.split(PARTY_SEPARATOR, 1)
+        party = party.decode("utf8")
+        full_candidate = full_candidate.decode("utf8")
         party = parties_indexes[qdata.index(party)]
         candidate = candidates_indexes[qdata.index(full_candidate)]
         if party in candidates_results:
@@ -614,12 +616,15 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             elements.append(Spacer(1, 12))
             elements.append(Spacer(1, 12))
 
+            group_a_name = group_a['name'].split(" ", 1)[1] if " " in group_a['name'] else group_a['name']
+            group_b_name = group_b['name'].split(" ", 1)[1] if " " in group_b['name'] else group_b['name']
+
             candidates_table = [
                 [
                     Paragraph(escape(_("Candidate")), styles['ZeusBold']),
                     Paragraph(escape(_("Total")), styles['ZeusBold']),
-                    Paragraph(escape(group_a['name'].split(" ", 1)[1]), styles['ZeusBold']),
-                    Paragraph(escape(group_b['name'].split(" ", 1)[1]), styles['ZeusBold'])
+                    Paragraph(escape(group_a_name), styles['ZeusBold']),
+                    Paragraph(escape(group_b_name), styles['ZeusBold'])
                 ]
             ]
             table_data = []
