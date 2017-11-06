@@ -193,7 +193,7 @@ class UniGovGr(SimpleElection):
         for key, val in headers.iteritems():
             if key in ['last_visit', 'cast_votes__id'] and not is_manager:
                 continue
-            if key == 'actions':
+            if key == 'actions' and not is_manager:
                 new_headers['excluded_at'] = _('Voter excluded')
             new_headers[key] = val
         return new_headers
