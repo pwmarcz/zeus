@@ -798,8 +798,11 @@ def voters_csv(request, election, poll, fname):
     if fname:
         filename = fname
     response['Content-Dispotition'] = \
-            'attachment; filename="%s.csv"' % filename
-    poll.voters_to_csv(q_param, response)
+           'attachment; filename="%s.csv"' % filename
+
+    headers = poll.get_module().get_voters_list_headers(request)
+    include_vote_field = poll.feature_mixing_finished or request.zeususer.is_manager or 'cast_votes__id' in headers
+    poll.voters_to_csv(q_param, response, include_vote_field)
     return response
 
 

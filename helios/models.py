@@ -1080,7 +1080,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     OPTIONAL_STEPS = ['voters_not_voted_notified', 'extended']
 
 
-  def voters_to_csv(self, q_param=None, to=None):
+  def voters_to_csv(self, q_param=None, to=None, include_vote_field=True):
     if not to:
       to = StringIO.StringIO()
 
@@ -1096,15 +1096,17 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
       if voter.excluded_at:
         vote_field += unicode(_("(EXCLUDED)"))
 
-      writer.writerow(map(force_utf8, [voter.voter_login_id,
+      fields = [voter.voter_login_id,
                                        voter.voter_email,
                                        voter.voter_name or '',
                                        voter.voter_surname or '',
                                        voter.voter_fathername or '',
                                        voter.voter_mobile or '',
-                                       str(voter.voter_weight),
-                                       vote_field
-                                       ]))
+                                       str(voter.voter_weight)
+                                       ]
+      if include_vote_field:
+          fields.append(vote_field)
+      writer.writerow(map(force_utf8, fields))
     return to
 
   def last_voter_visit(self):
