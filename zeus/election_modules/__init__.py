@@ -1,12 +1,15 @@
 import copy
 import json
-import os 
+import os
+import logging
 
-from django.conf import settings 
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from zeus.reports import csv_from_polls, csv_from_score_polls,\
                          csv_from_stv_polls
+from zeus.utils import get_filters, VOTER_TABLE_HEADERS, VOTER_SEARCH_FIELDS, \
+    VOTER_BOOL_KEYS_MAP, VOTER_EXTRA_HEADERS
 
 
 ELECTION_MODULES_CHOICES = []
@@ -28,12 +31,32 @@ def get_poll_module(poll):
                                                                poll)
 
 
-class ElectionModuleBase(object):
+class PollHooks(object):
+
+    def __init__(self, module):
+        self.module = module
+
+
+class ElectionHooks(object):
+
+    def __init__(self, module):
+        self.module = module
+
+    def post_create(self, election):
+        pass
+
+
+class ElectionModuleBase(ElectionHooks):
 
     module_id =  None
     pdf_result = True
     csv_result = True
     json_result = True
+
+    election_hooks_cls = ElectionHooks
+    poll_hooks_cls = PollHooks
+    display_poll_results = True
+    election_results_partial = None
 
     module_params = {}
 
@@ -54,8 +77,11 @@ class ElectionModuleBase(object):
     count_empty_question = False
 
     def __init__(self, election, poll=None):
+        self.logger = election.logger
         self.election = election
         self.poll = poll
+        self.election_hooks = self.election_hooks_cls(self)
+        self.poll_hooks = self.poll_hooks_cls(self)
 
         self._messages = copy.copy(self.default_messages)
         self._messages.update(self.messages)
@@ -185,7 +211,7 @@ class ElectionModuleBase(object):
         for path in poll_docpaths:
             basename = os.path.basename(path)
             all_docs_zip.write(path, basename)
-        
+
         all_docs_zip.close()
 
     def generate_result_docs(self, lang):
@@ -215,7 +241,7 @@ class ElectionModuleBase(object):
         parties = self.election.election_module == "parties"
 
         for poll in self.election.polls.filter():
-            polls_data.append((poll.name, 
+            polls_data.append((poll.name,
                                poll.zeus.get_results(),
                                poll.questions_data,
                                poll.questions[0]['answers'],
@@ -228,8 +254,51 @@ class ElectionModuleBase(object):
                 lang,
                 pdfpath, score=score, parties=parties)
 
+    def run_hook(self, name, *args, **kwargs):
+        if self.poll:
+            args = [self.poll] + list(args)
+            hooks = self.poll_hooks
+        else:
+            args = [self.election] + list(args)
+            hooks = self.election_hooks
+
+        hook = getattr(hooks, name, None)
+        if hook and callable(hook):
+            self.logger.debug("Run %s hook for %s", name, self.module_id)
+            return hook(*args, **kwargs)
+
+        self.logger.info("Missing %s hook for %s", name, self.module_id)
+
+    def get_voters_list_headers(self, request=None):
+        return VOTER_TABLE_HEADERS
+
+    def get_voters_search_fields(self, request=None):
+        return VOTER_SEARCH_FIELDS
+
+    def get_voters_bool_keys_map(self, request=None):
+        return VOTER_BOOL_KEYS_MAP
+
+    def get_voters_extra_headers(self, request=None):
+        return VOTER_EXTRA_HEADERS
+
+    def filter_voters(self, voters, q_param, request=None):
+        headers = self.get_voters_list_headers(request)
+        search = self.get_voters_search_fields(request)
+        bool_keys = self.get_voters_bool_keys_map(request)
+        extra = self.get_voters_extra_headers(request)
+        filters = get_filters( q_param, headers, search, bool_keys, extra)
+        return voters.filter(filters)
+
+    def can_delete_poll_voters(self):
+        return True
+
+    def can_edit_polls(self):
+        return True
+
+
 
 from zeus.election_modules.simple import *
 from zeus.election_modules.parties import *
 from zeus.election_modules.score import *
 from zeus.election_modules.stv import *
+from zeus.election_modules.unigovgr import *

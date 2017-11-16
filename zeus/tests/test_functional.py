@@ -14,13 +14,12 @@ from django.conf import settings
 from django.core import mail
 
 from helios import datatypes
-from helios.crypto.elgamal import DLog_challenge_generator
 from helios.crypto import algs
-from helios.views import ELGAMAL_PARAMS
 from helios.models import Election, Voter, Poll, Trustee
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
+from zeus.views.common import ELGAMAL_PARAMS
 
 pytestmark = pytest.mark.django_db(transaction=True)
 
@@ -150,7 +149,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                                                      q=t1_kp.pk.q,
                                                      g=t1_kp.pk.g,
                                                      y=t1_kp.pk.y))
-                pok = t1_kp.sk.prove_sk(DLog_challenge_generator)
+                pok = t1_kp.sk.prove_sk()
                 post_data = {
                     'public_key_json': [
                         json.dumps({
@@ -223,6 +222,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.assertNotEqual(e.voting_extended_until, None)
 
     def create_duplicate_polls(self):
+        e = Election.objects.all()[0]
+        polls_count = e.polls.count()
         self.c.get(self.locations['logout'])
         self.c.post(self.locations['login'], self.login_data)
         location = '/elections/%s/polls/add' % self.e_uuid
@@ -232,11 +233,11 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         post_data.update(self._get_poll_params(self.polls_number+1))
         self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), 1)
+        self.assertEqual(e.polls.all().count(), polls_count + 1)
         # try to create poll with same name
         self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), 1)
+        self.assertEqual(e.polls.all().count(), polls_count + 1)
         self.verbose('- Poll was not created - duplicate poll names')
         # clean - delete polls
         polls = Poll.objects.all()
@@ -302,12 +303,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        form = r.context['form']
-        data = form.initial
-        data['name'] = 'changed_poll_name_after_freeze'
-        r = self.c.post(edit_url, data)
-        self.assertFormError(r, 'form', None, "Poll name cannot be changed\
-                                               after freeze")
+        self.assertEqual(r.status_code, 403, "Poll name cannot be changed after \
+                         freeze")
 
     def submit_questions(self):
         for p_uuid in self.p_uuids:
@@ -611,9 +608,13 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             (e_uuid, p_uuid)
         r = client.get(address)
         response_data = dict(r.items())
-        self.assertTrue(
-            response_data['Content-Type'] == 'application/zip'
-            )
+        self.assertTrue(response_data['Content-Type'] == 'application/zip')
+
+    def view_returns_poll_results(self, client, e_uuid, p_uuid):
+        address = '/elections/%s/polls/%s/results' % \
+            (e_uuid, p_uuid)
+        r = client.get(address)
+        self.assertEqual(r.status_code, 200)
 
     def view_returns_result_files(self, ext_dict):
         p_exts = ext_dict['poll']
@@ -624,6 +625,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for lang in settings.LANGUAGES:
             for poll in e.polls.all():
                 self.view_returns_poll_proofs_file(self.c, e.uuid, poll.uuid)
+                self.view_returns_poll_results(self.c, e.uuid, poll.uuid)
                 for ext in p_exts:
                     if ext is not 'json':
                         address = ('/elections/%s/polls/%s/results-%s.%s'
@@ -1309,3 +1311,145 @@ class TestThirdPartyShibboleth(TestSimpleElection):
             'shibboleth_auth': True,
             'shibboleth_constraints': '{"assert_idp_key": "MAIL"}'
         }
+
+
+class TestUniGovGrElection(TestSimpleElection):
+
+    def setUp(self):
+        self.doc_exts = {
+            'poll': ['pdf', 'csv', 'json'],
+            'el': ['csv', 'zip']
+            }
+        super(TestSimpleElection, self).setUp()
+        self.election_type = 'unigovgr'
+        if self.local_verbose:
+            print '* Starting unigovgr election *'
+
+    def create_questions(self):
+        max_nr_questions = 1
+        max_nr_answers = 10
+        nr_questions = randint(1, max_nr_questions)
+
+        post_data = {
+            'form-TOTAL_FORMS': nr_questions,
+            'form-INITIAL_FORMS': 1,
+            'form-MAX_NUM_FORMS': "",
+            }
+
+        post_data_with_duplicate_answers = post_data.copy()
+
+        for num in range(0, nr_questions):
+            nr_answers = randint(1, max_nr_answers)
+            min_choices = 1
+            max_choices = 1
+            duplicate_extra_data = {}
+            extra_data = {}
+            extra_data = {
+                'form-%s-ORDER' % num: num,
+                'form-%s-choice_type' % num: 'choice',
+                'form-%s-question' % num: 'test_question_%s' % num,
+                'form-%s-min_answers' % num: min_choices,
+                'form-%s-max_answers' % num: max_choices,
+                }
+            duplicate_extra_data = extra_data.copy()
+            for ans_num in range(0, nr_answers):
+                extra_data['form-%s-answer_%s' % (num, ans_num)] = \
+                    u'test γιούνικουάντ %s' % ans_num
+                duplicate_extra_data['form-%s-answer_%s' % (num, ans_num)] = \
+                    'test answer 0'
+                #make sure we have at least 2 answers so there can be duplicate
+                duplicate_extra_data['form-%s-answer_%s' % (num, ans_num+1)] =\
+                    'test answer 0'
+            post_data_with_duplicate_answers.update(duplicate_extra_data)
+            post_data.update(extra_data)
+        return post_data, nr_questions, post_data_with_duplicate_answers
+
+    def create_polls(self):
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        e = Election.objects.all()[0]
+        # there shouldn't be any polls before we create them
+        self.assertEqual(e.polls.all().count(), 2)
+        self.p_uuids = []
+        for poll in e.polls.all():
+            self.p_uuids.append(poll.uuid)
+
+    def submit_questions(self):
+        p_uuid = self.p_uuids[0]
+        post_data, nr_questions, duplicate_post_data = \
+            self.create_questions()
+        questions_location = '/elections/%s/polls/%s/questions/manage' % \
+            (self.e_uuid, p_uuid)
+        resp = self.c.post(questions_location, duplicate_post_data)
+        self.assertTrue(resp.context['form'].errors)
+        p = Poll.objects.get(uuid=p_uuid)
+        self.assertEqual(p.questions_count, 0)
+        self.verbose('- Duplicate answers were not allowed in poll %s'
+                        % p.name)
+        resp = self.c.post(questions_location, post_data)
+        self.assertFalse(resp.context)
+
+        p1 = Poll.objects.get(uuid=p_uuid)
+        self.assertEqual(p1.questions_count, nr_questions)
+
+        p2 = Poll.objects.get(uuid=self.p_uuids[1])
+        self.assertEqual(p2.questions_count, nr_questions)
+        self.assertEqual(p1.questions, p2.questions)
+        self.verbose('+ Questions were created')
+
+    def create_duplicate_polls(self):
+        e = Election.objects.all()[0]
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        location = '/elections/%s/polls/add' % self.e_uuid
+        post_data = {
+            'name': e.polls.all()[0].name
+            }
+        self.assertEqual(e.polls.all().count(), 2)
+        # try to create poll with same name
+        self.c.post(location, post_data)
+        e = Election.objects.all()[0]
+        self.assertEqual(e.polls.all().count(), 2)
+        self.verbose('- Poll was not created - duplicate poll names')
+
+    def edit_poll_name_before_freeze(self):
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        e = Election.objects.all()[0]
+        p_uuid = self.p_uuids[0]
+        edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
+        r = self.c.get(edit_url)
+        self.assertEqual(r.status_code, 403)
+        r = self.c.post(edit_url)
+        self.assertEqual(r.status_code, 403)
+
+    def save_poll_without_name_change(self):
+        # help track bug where saving poll without changing name
+        # ends in duplicate name form error
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        e = Election.objects.all()[0]
+        p_uuid = self.p_uuids[0]
+        edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
+        r = self.c.get(edit_url)
+        self.assertEqual(r.status_code, 403)
+        r = self.c.post(edit_url)
+        self.assertEqual(r.status_code, 403)
+
+    def check_results(self):
+        # check if results exist
+        for p_uuid in self.p_uuids:
+            p = Poll.objects.get(uuid=p_uuid)
+            self.assertTrue(len(p.result[0]) > 0)
+            self.verbose('+ Results generated for poll %s' % p.name)
+            self.assertIsNone(p.compute_results_error)
+
+        e = Election.objects.get(uuid=self.e_uuid)
+        results = e.get_module()._count_election_results()
+        self.assertTrue(results)
+
+    def view_returns_poll_results(self, client, e_uuid, p_uuid):
+        address = '/elections/%s/polls/%s/results' % \
+            (e_uuid, p_uuid)
+        r = client.get(address)
+        self.assertEqual(r.status_code, 302)

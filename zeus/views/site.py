@@ -10,7 +10,6 @@ from random import randint
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
-from django.core.validators import email_re
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -22,7 +21,10 @@ from django.forms.formsets import formset_factory
 from helios.view_utils import render_template
 from heliosauth.auth_systems.password import make_password
 from helios.models import User, Election
+from heliosauth.models import UserGroup
 from zeus.models import Institution
+from zeus.utils import email_is_valid
+from zeus.auth import ZeusUser
 
 from zeus.stv_count_reports import stv_count_and_report
 
@@ -245,6 +247,11 @@ def _get_demo_user(email_address):
     if tries <= 0:
         return None, ''
 
+    demogroup = None
+    try:
+        demogroup = UserGroup.objects.get(name="demo")
+    except UserGroup.DoesNotExist:
+        pass
     newuser = User()
     newuser.user_type = "password"
     newuser.admin_p = True
@@ -256,6 +263,9 @@ def _get_demo_user(email_address):
     newuser.institution = inst
     newuser.ecounting_account = False
     newuser.save()
+    if demogroup:
+        newuser.user_groups.add(demogroup)
+        newuser.save()
     return newuser, password
 
 
@@ -267,7 +277,7 @@ def demo(request):
 
     email_address = request.POST.get('email', '')
 
-    if not email_re.match(email_address):
+    if not email_is_valid(email_address):
         msg = _("Invalid email address")
         messages.error(request, msg)
         return HttpResponseRedirect(reverse('home'))
@@ -318,7 +328,7 @@ def demo(request):
 
 
 def error(request, code=None, message=None, type='error'):
-    user = request.zeususer
+    user = getattr(request, 'zeususer', ZeusUser.from_request(request))
     messages_len = len(messages.get_messages(request))
     if not messages_len and not message:
         return HttpResponseRedirect(reverse('home'))

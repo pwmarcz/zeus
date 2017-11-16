@@ -145,7 +145,7 @@ def elections_report_csv(request):
     report.make_output(fd)
     fd.seek(0)
 
-    response = HttpResponse(fd, mimetype='application/csv')
+    response = HttpResponse(fd, content_type='application/csv')
     response['Content-Disposition'] = 'attachment; filename=%s.csv' % filename
     return response
 

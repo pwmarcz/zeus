@@ -1,10 +1,11 @@
 from django.conf import settings
+from zeus.auth import ZeusUser
 
 from zeus import messages
 
 def user(request):
     data = {}
-    user = request.zeususer
+    user = getattr(request, 'zeususer', ZeusUser.from_request(request))
     key = None
     if not user.is_authenticated():
         return data
@@ -43,4 +44,9 @@ def prefix(request):
 
     return {
         'SERVER_PREFIX': prefix
+    }
+
+def lang(request):
+    return {
+        'LANG': settings.LANGUAGE_CODE.split('-')[0]
     }

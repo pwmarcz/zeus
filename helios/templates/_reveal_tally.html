@@ -4,7 +4,7 @@
 <div id="compute-tally-admin-action" class="reveal-modal freeze-issues">
 <h3>{% trans "Compute tally" %}</h3>
 
-{% url election_compute_tally election.uuid as action %}
+{% url "election_compute_tally" election.uuid as action %}
 <form action="{{ action }}" method="POST" class="action-form">
 <p class="election-admin-message">
 {% trans "Compute tally message" %}

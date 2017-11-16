@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+from functools import partial
 
 from cStringIO import StringIO
 from helios.models import *
@@ -252,7 +253,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
             outfile = StringIO()
         csvout = csv.writer(outfile, dialect='excel', delimiter=',')
         writerow = csvout.writerow
-        
+
         make_csv_intro(writerow, election, lang)
         actions_desc = {
             'elect': _('Elect'),
@@ -272,7 +273,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
 
             results_winners = poll.stv_results[0]
             results_all = poll.stv_results[1]
-            result_steps = poll.stv_results[2] 
+            result_steps = poll.stv_results[2]
             stv = STVParser(result_steps)
             rounds = list(stv.rounds())
             writerow([])
@@ -300,7 +301,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     action = None
                     if len(actions):
                         action = actions_desc.get(actions[-1])
-                    votes = cand['votes']  
+                    votes = cand['votes']
                     cand_name = indexed_cands[str(name)]
                     cand_name = cand_name.split(':')[0]
                     writerow([strforce(cand_name),strforce(votes),\
@@ -474,3 +475,101 @@ class ElectionsReportCSV(ElectionsReport):
                             else row[k] for k in keys])
         if close:
             fd.close()
+
+
+def csv_from_unigovgr_results(election, results, lang, outfile=None):
+    with translation.override(lang):
+        if outfile is None:
+            outfile = StringIO()
+        csvout = csv.writer(outfile, dialect='excel', delimiter=',')
+        writerow = csvout.writerow
+        make_csv_intro(writerow, election, lang)
+
+
+        def get(g, key):
+            keys = key.split('.')
+            obj = results[g]
+            while len(keys):
+                obj = obj[keys.pop(0)]
+            return obj
+
+        T = partial(get, 'totals')
+        A = partial(get, 'group_a')
+        B = partial(get, 'group_b')
+
+        def ROW(label, key):
+            return [strforce(label), strforce(T(key)), strforce(A(key)), strforce(B(key))]
+
+        writerow([])
+        writerow([])
+        writerow([])
+        writerow([])
+        writerow([])
+        writerow(['',strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+        writerow(ROW(_("Voters"), 'voters'))
+        if T('excluded') > 0:
+            writerow(ROW(_("Excluded voters"), 'excluded'))
+        writerow([])
+        writerow([strforce(_('RESULTS'))])
+        writerow(ROW(_('TOTAL VOTES'), 'voted'))
+        writerow(ROW(_('VALID VOTES'), 'valid'))
+        writerow(ROW(_('INVALID VOTES'), 'invalid'))
+        writerow(ROW(_('BLANK VOTES'), 'blank'))
+
+        writerow([])
+        writerow([strforce(_('RESULTS'))])
+        for question, answers in T('counts').items():
+            writerow([])
+            writerow([strforce(question)])
+            writerow(['',strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+            for answer in answers:
+                key = u'counts.%s.%s' % (question, answer)
+                key_round = u'counts_rounded.%s.%s' % (question, answer)
+                writerow([
+                    strforce(answer),
+                    strforce(T(key_round)),
+                    strforce(T(key)),
+                    strforce(A(key)),
+                    strforce(B(key))
+                ])
+
+        writerow([])
+        writerow([strforce(_('BALLOTS'))])
+        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),\
+            strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
+        counter = 0
+        valid = strforce(_('VALID'))
+        invalid = strforce(_('INVALID'))
+        blank = strforce(_('BLANK'))
+        empty = '---'
+        for ballot in T('ballots'):
+            unigov_group = strforce(ballot['unigov_group'])
+            party = empty
+            counter += 1
+            if not ballot['valid']:
+                writerow([unigov_group, counter, empty, empty, invalid])
+                continue
+            ballot_parties = ballot['parties']
+            if not ballot_parties:
+                writerow([unigov_group, counter, empty, empty, blank])
+            else:
+                for party in ballot_parties:
+                    if party is None:
+                        writerow([unigov_group, counter, empty, empty, empty])
+                        continue
+                    else:
+                        party = strforce(party)
+
+            candidates = ballot['candidates']
+            if not candidates:
+                writerow([unigov_group, counter, party, empty, valid])
+                continue
+
+            for candidate in candidates:
+                writerow([unigov_group, counter, party, strforce(": ".join(candidate)), valid])
+
+        try:
+            outfile.seek(0)
+            return outfile.read()
+        except:
+            return None

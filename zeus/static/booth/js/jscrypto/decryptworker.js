@@ -3,6 +3,7 @@
  */
 
 // import needed resources
+window = {};
 importScripts("../underscore-min.js");
 
 importScripts("jsbn.js",
@@ -25,18 +26,20 @@ var ELECTION = null;
 var VOTE = null;
 
 function do_decrypt(message) {
+    sjcl.random.addEntropy(message.entropy);
+    sjcl.random.__entropySet = true;
     var console = {
         'log' : function(msg) {
           self.postMessage({'type':'log','msg':msg});
         }
     };
     console.log("decrypting!");
-    
+
     var d = new Date;
     var secret_key = ElGamal.SecretKey.fromJSONObject(message.sk);
     var choice_tally = ElGamal.Ciphertext.fromJSONObject(message.choice);
     var one_choice_result = secret_key.decryptionFactorAndProof(choice_tally, 
-                                                ElGamal.fiatshamir_challenge_generator);
+                                                ElGamal.fiatshamir_zeus_challenge_generator);
 
     var result = {};
     result['factor'] = one_choice_result['decryption_factor'].toJSONObject();
@@ -46,8 +49,8 @@ function do_decrypt(message) {
 
     // send the result back
     self.postMessage({
-	    'type': 'result',
-		'result': result
+      'type': 'result',
+      'result': result
     });
 }
 

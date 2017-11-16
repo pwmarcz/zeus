@@ -8,7 +8,7 @@
 {% if election.feature_can_add_poll or poll %}
 
 {% if election.linked_polls %}
-    <form action="{% url election_polls_add election.uuid %}" method="post"
+    <form action="{% url "election_polls_add" election.uuid %}" method="post"
      enctype="multipart/form-data">
         {% csrf_token %}
         <label>{% trans "Batch polls update" %}</label>
@@ -24,7 +24,7 @@
             {% include "foundation_form.html" %}
         {% endwith %}
         </table>
-        <a class="button" href="{% url election_polls_list  election.uuid %}">
+        <a class="button" href="{% url "election_polls_list"  election.uuid %}">
         {% trans "Cancel" %}</a>
         <input class="button" type="submit" value="{% trans "Save" %}"/>
     </form>

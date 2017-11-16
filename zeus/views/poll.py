@@ -8,12 +8,11 @@ import base64
 
 from collections import OrderedDict
 
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
-from django.db.models.query import EmptyQuerySet
+from django.db.models.query import QuerySet
 from django.db.models import Q, Max
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -58,7 +57,7 @@ def list(request, election):
     return render_template(request, "election_polls_list", context)
 
 @auth.election_admin_required
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def rename(request, election, poll):
     newname = request.POST.get('name', '').strip()
@@ -70,7 +69,7 @@ def rename(request, election, poll):
     url = election_reverse(election, 'polls_list')
     return HttpResponseRedirect(url)
 
-@transaction.commit_on_success
+@transaction.atomic
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
     existing = election.polls.filter()
@@ -125,13 +124,13 @@ def _handle_batch(election, polls, vars, auto_link=False):
         polls_form_data.update(fields)
         new_refs.append(ref)
         i = i + 1
-    
+
     polls_form_data.update({
         'form-INITIAL_FORMS': initial_count,
         'form-MAX_NUM_FORMS': 200,
         'form-TOTAL_FORMS': len(polls)
     })
-    
+
     polls_formset = modelformset_factory(Poll, PollForm, extra=10,
                                          max_num=200, can_delete=False,
                                          formset=PollFormSet)
@@ -249,6 +248,8 @@ def _add_batch(request, election):
 def add_edit(request, election, poll=None):
     if not poll and not election.feature_can_add_poll:
         raise PermissionDenied
+    if poll and not poll.feature_can_edit:
+        raise PermissionDenied
     if election.linked_polls and request.FILES.has_key('batch_file'):
         return _add_batch(request, election)
     if poll:
@@ -341,11 +342,12 @@ def voters_list(request, election, poll):
         voters_per_page = default_voters_per_page
     order_by = request.GET.get('order', 'voter_login_id')
     order_type = request.GET.get('order_type', 'desc')
-    
-    table_headers = copy.copy(VOTER_TABLE_HEADERS)
-    if not order_by in table_headers: 
+
+    module = election.get_module()
+    table_headers = copy.copy(module.get_voters_list_headers(request))
+    if not order_by in table_headers:
         order_by = 'voter_login_id'
-    
+
     if not poll.voters.filter(voter_weight__gt=1).count():
         table_headers.pop('voter_weight')
     display_weight_col = 'voter_weight' in table_headers
@@ -359,11 +361,8 @@ def voters_list(request, election, poll):
     else:
         order_by = '-%s' % order_by
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
-    
-    voters = voters.filter(get_filters(q_param, VOTER_TABLE_HEADERS,
-                                       VOTER_SEARCH_FIELDS,
-                                       VOTER_BOOL_KEYS_MAP,
-                                       VOTER_EXTRA_HEADERS))
+
+    voters = module.filter_voters(voters, q_param, request)
     voters_count = Voter.objects.filter(poll=poll).count()
     voted_count = poll.voters_cast_count()
     nr_voters_excluded = voters.excluded().count()
@@ -378,7 +377,8 @@ def voters_list(request, election, poll):
         'voters_list_count': voters.count(),
         'voters_per_page': voters_per_page,
         'display_weight_col': display_weight_col,
-        'voter_table_headers': table_headers.iteritems(),
+        'voter_table_headers': table_headers,
+        'voter_table_headers_iter': table_headers.iteritems(),
         'nr_voters_excluded': nr_voters_excluded,
     }
     set_menu('voters', context)
@@ -386,7 +386,7 @@ def voters_list(request, election, poll):
 
 @auth.election_admin_required
 @auth.requires_poll_features('can_clear_voters')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def voters_clear(request, election, poll):
     polls = poll.linked_polls
@@ -398,10 +398,7 @@ def voters_clear(request, election, poll):
     for p in polls:
         voters = p.voters.all()
         if q_param:
-            voters = voters.filter(get_filters(q_param, VOTER_TABLE_HEADERS,
-                                               VOTER_SEARCH_FIELDS,
-                                               VOTER_BOOL_KEYS_MAP,
-                                               VOTER_EXTRA_HEADERS))
+            voters = election.get_module().filter_voters(voters, q_param, request)
 
         for voter in voters:
             if not voter.cast_votes.count():
@@ -572,14 +569,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         TEMPLATES.pop(0)
         default_template = 'info'
 
-    if election.voting_extended_until and not election.voting_ended_at:
-        TEMPLATES.append(('extension', _('Voting end date extended')))
-
-    template = request.REQUEST.get('template', default_template)
-
-    if not template in [t[0] for t in TEMPLATES]:
-        raise Exception("bad template")
-
     polls = [poll]
     if not poll:
         polls = election.polls_by_link_id
@@ -597,6 +586,19 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         if not voter:
             url = election_reverse(election, 'index')
             return HttpResponseRedirect(url)
+
+        if voter.excluded_at:
+            TEMPLATES.pop(0)
+            default_template = 'info'
+
+    if election.voting_extended_until and not election.voting_ended_at:
+        if not voter or (voter and not voter.excluded_at):
+            TEMPLATES.append(('extension', _('Voting end date extended')))
+
+    template = request.REQUEST.get('template', default_template)
+
+    if not template in [t[0] for t in TEMPLATES]:
+        raise Exception("bad template")
 
     election_url = election.get_absolute_url()
 
@@ -632,13 +634,10 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         filtered_voters = poll.voters.filter()
 
     if not q_param:
-        filtered_voters = EmptyQuerySet()
+        filtered_voters = filtered_voters.none()
     else:
-        voters_filters = get_filters(q_param, VOTER_TABLE_HEADERS,
-                                     VOTER_SEARCH_FIELDS,
-                                     VOTER_BOOL_KEYS_MAP, 
-                                     VOTER_EXTRA_HEADERS)
-        filtered_voters = filtered_voters.filter(voters_filters)
+        filter_voters = election.get_module().filter_voters
+        filtered_voters = filter_voters.filter(filtered_voters, q_param, request)
 
         if not filtered_voters.count():
             message = _("No voters were found.")
@@ -758,13 +757,15 @@ def voter_delete(request, election, poll, voter_uuid):
         try:
             voter = Voter.objects.get(poll=poll, voter_login_id=voter_id)
         except Voter.DoesNotExist:
-            poll.logger.error("Cannot remove voter '%s'. Does not exist.", 
+            poll.logger.error("Cannot remove voter '%s'. Does not exist.",
                              voter_uuid)
         if voter and voter.voted:
             raise PermissionDenied('36')
         if voter:
             voter.delete()
             poll.logger.info("Poll voter '%s' removed", voter.voter_login_id)
+            message = _("Voter removed successfully")
+            messages.success(request, message)
 
     url = poll_reverse(poll, 'voters')
     return HttpResponseRedirect(url)
@@ -792,13 +793,16 @@ def voter_exclude(request, election, poll, voter_uuid):
 @require_http_methods(["GET"])
 def voters_csv(request, election, poll, fname):
     q_param = request.GET.get('q', None)
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(content_type='text/csv')
     filename = smart_unicode("voters-%s.csv" % election.short_name)
     if fname:
         filename = fname
     response['Content-Dispotition'] = \
-            'attachment; filename="%s.csv"' % filename
-    poll.voters_to_csv(q_param, response)
+           'attachment; filename="%s.csv"' % filename
+
+    headers = poll.get_module().get_voters_list_headers(request)
+    include_vote_field = poll.feature_mixing_finished or request.zeususer.is_manager or 'cast_votes__id' in headers
+    poll.voters_to_csv(q_param, response, include_vote_field)
     return response
 
 
@@ -818,7 +822,7 @@ def voter_booth_linked_login(request, election, poll, voter_uuid):
     linked_voter = linked_poll.voters.get(voter_login_id=voter.voter_login_id)
     user = auth.ZeusUser(linked_voter)
     user.authenticate(request)
-    poll.logger.info("Poll voter '%s' logged in in linked poll '%s'", 
+    poll.logger.info("Poll voter '%s' logged in in linked poll '%s'",
                      voter.voter_login_id, poll.uuid)
     url = linked_poll.get_booth_url(request)
     return HttpResponseRedirect(url)
@@ -888,13 +892,14 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         poll.logger.info("Poll voter '%s' logged in", voter.voter_login_id)
         return HttpResponseRedirect(poll_reverse(poll, 'index'))
 
+
 @auth.election_view(check_access=False)
 @require_http_methods(["GET"])
 def to_json(request, election, poll):
     data = poll.get_booth_dict()
     data['token'] = unicode(csrf(request)['csrf_token'])
     return HttpResponse(json.dumps(data, default=common_json_handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.poll_voter_required
@@ -941,7 +946,7 @@ def cast(request, election, poll):
     cursor = connection.cursor()
     try:
         cursor.execute("SELECT pg_advisory_lock(1)")
-        with transaction.commit_on_success():
+        with transaction.atomic():
             cast_result = poll.cast_vote(voter, vote, audit_password)
             poll.logger.info("Poll cast")
     finally:
@@ -960,7 +965,7 @@ def cast(request, election, poll):
         request.session['audit_password'] = audit_password
         token = request.session.get('csrf_token')
         return HttpResponse('{"audit": 1, "token":"%s"}' % token,
-                            mimetype="application/json")
+                            content_type="application/json")
     else:
         # notify user
         tasks.send_cast_vote_email.delay(poll.pk, voter.pk, signature)
@@ -970,7 +975,7 @@ def cast(request, election, poll):
                              fingerprint)
 
         return HttpResponse('{"cast_url": "%s"}' % url,
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 @auth.election_view(check_access=False)
@@ -1023,7 +1028,7 @@ def audited_ballots(request, election, poll):
         b = get_object_or_404(AuditedBallot, poll=poll, vote_hash=vote_hash)
         b = AuditedBallot.objects.get(poll=poll,
                                       vote_hash=request.GET['vote_hash'])
-        return HttpResponse(b.raw_vote, mimetype="text/plain")
+        return HttpResponse(b.raw_vote, content_type="text/plain")
 
     audited_ballots = AuditedBallot.objects.filter(is_request=False,
                                                    poll=poll)
@@ -1050,7 +1055,6 @@ def audited_ballots(request, election, poll):
 
 @auth.trustee_view
 @auth.requires_poll_features('can_do_partial_decrypt')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def upload_decryption(request, election, poll, trustee):
     factors_and_proofs = crypto_utils.from_json(
@@ -1084,7 +1088,7 @@ def get_tally(request, election, poll):
     return HttpResponse(json.dumps({
         'poll': params,
         'tally': tally}, default=common_json_handler),
-        mimetype="application/json")
+        content_type="application/json")
 
 
 @auth.election_view()
@@ -1093,6 +1097,10 @@ def get_tally(request, election, poll):
 def results(request, election, poll):
     if not request.zeususer.is_admin and not poll.feature_public_results:
         raise PermissionDenied('41')
+
+    if not poll.get_module().display_poll_results:
+        url = election_reverse(election, 'index')
+        return HttpResponseRedirect(url)
 
     context = {
         'poll': poll,
@@ -1135,7 +1143,7 @@ def results_file(request, election, poll, language, ext):
         return response
     else:
         zip_data = file(fname, 'r')
-        response = HttpResponse(zip_data.read(), mimetype='application/%s' % ext)
+        response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
         zip_data.close()
         basename = os.path.basename(fname)
         response['Content-Dispotition'] = 'attachment; filename=%s' % basename
@@ -1157,7 +1165,7 @@ def zeus_proofs(request, election, poll):
         return response
     else:
         zip_data = file(poll.zeus_proofs_path())
-        response = HttpResponse(zip_data.read(), mimetype='application/zip')
+        response = HttpResponse(zip_data.read(), content_type='application/zip')
         zip_data.close()
         response['Content-Dispotition'] = 'attachment; filename=%s_proofs.zip' % election.uuid
         return response
@@ -1169,7 +1177,7 @@ def zeus_proofs(request, election, poll):
 def results_json(request, election, poll):
     data = poll.zeus.get_results()
     return HttpResponse(json.dumps(data, default=common_json_handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @csrf_exempt
@@ -1183,6 +1191,8 @@ def sms_delivery(request, election, poll):
 
     ip_addr = request.META.get('REMOTE_ADDR', '')
     error = resp.get('error', None) or None
+    if error == '0':
+        error = None
     code = "mybsms:" + resp['id']
     try:
         voter = poll.voters.get(last_sms_code=code)
@@ -1190,7 +1200,7 @@ def sms_delivery(request, election, poll):
             "Mobile delivery status received from '%r': %r" % (ip_addr, resp))
         status = resp.get('status', 'unknown')
         if error:
-            status = "%s:%r:r" % ("ERROR", status, resp)
+            status = "%s:%r:%r" % ("ERROR", status, resp)
         voter.last_sms_status = status
         voter.save()
     except Voter.DoesNotExist:

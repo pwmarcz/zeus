@@ -5,6 +5,7 @@ import re
 import sys
 import os
 import time
+import ssl
 
 from zeus.core import (c2048, get_random_selection,
                        gamma_encode, gamma_decode, gamma_encoding_max,
@@ -33,9 +34,11 @@ p, g, q, x, y = c2048()
 
 def get_http_connection(url):
     parsed = urlparse(url)
+    kwargs = {}
     if parsed.scheme == 'https':
             default_port = '443'
             Conn = HTTPSConnection
+            kwargs['context'] = ssl._create_unverified_context()
     else:
             default_port = '80'
             Conn = HTTPConnection
@@ -43,7 +46,7 @@ def get_http_connection(url):
     if not port:
         port = default_port
     netloc = host + ':' + port
-    conn = Conn(netloc)
+    conn = Conn(netloc, **kwargs)
     conn.path = parsed.path
     return conn
 
@@ -173,6 +176,9 @@ def cast_vote(voter_url, choices=None):
     conn, headers, poll_info = get_poll_info(voter_url)
     csrf_token = poll_info['token']
     headers['Cookie'] += "; csrftoken=%s" % csrf_token
+    headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    headers['Referer'] = voter_url
+
     voter_path = conn.path
     poll_data = poll_info['poll_data']
     pk = poll_data['public_key']

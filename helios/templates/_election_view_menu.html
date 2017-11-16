@@ -2,30 +2,30 @@
 <dt></dt>
 {% if poll and voter %}
 <dd class="{% if menu_active == "election" %}active{% endif %}"><a 
-  href="{% url election_poll_index election.uuid poll.uuid %}">
+  href="{% url "election_poll_index" election.uuid poll.uuid %}">
   {% trans "Election information" %}
 </a></dd>
 
 {% if election.feature_completed and not election.feature_canceled and poll.feature_public_results %}
 <dd class="{% if menu_active == "results" %}active{% endif %}"><a 
-  href="{% url election_poll_results election.uuid poll.uuid %}">
+  href="{% url "election_poll_results" election.uuid poll.uuid %}">
   {% trans "Results" %}
 </a></dd>
 {% endif %}
 
 <dd class="{% if menu_active == "questions" %}active{% endif %}"><a 
-  href="{% url election_poll_questions election.uuid poll.uuid %}">
+  href="{% url "election_poll_questions" election.uuid poll.uuid %}">
   {{ poll.get_module.questions_title_message }}
 </a></dd>
 
 <dd class="{% if menu_active == "trustees" %}active{% endif %}"><a 
-  href="{% url election_trustees_list election.uuid %}">
+  href="{% url "election_trustees_list" election.uuid %}">
   {% trans "Trustees list" %}
 </a></dd>
 
 {% if poll and poll.audits_cast > 0 %}
 <dd class="{% if menu_active == "audited_ballots" %}active{% endif %}"><a 
-  href="{% url election_poll_audited_ballots election.uuid poll.uuid %}">
+  href="{% url "election_poll_audited_ballots" election.uuid poll.uuid %}">
   {% trans "Audited ballots" %}
 </a></dd>
 {% endif %}
@@ -33,33 +33,33 @@
 {% else %}
 {% if admin and election.feature_can_edit %}
 <dd class="{% if menu_active == "election_edit" %}active{% endif %}"><a 
-  href="{% url election_edit election.uuid %}">
+  href="{% url "election_edit" election.uuid %}">
   {% trans "Edit election" %}
 </a></dd>
 {% endif %}
 
 <dd class="{% if menu_active == "election" %}active{% endif %}"><a 
-  href="{% url election_index election.uuid %}">
+  href="{% url "election_index" election.uuid %}">
   {% if user.is_admin %}{% trans "Election admin actions" %}{% else %}
   {% trans "Information" %}{% endif %}
 </a></dd>
 
 
-<dd class="{% if menu_active == "polls" %}active{% endif %}"><a 
-  href="{% url election_polls_list election.uuid %}">
+<dd class="{% if menu_active == "polls" or poll%}active{% endif %}"><a 
+  href="{% url "election_polls_list" election.uuid %}">
   {% trans "Polls" %}
 </a>
 </dd>
 
 <dd class="{% if menu_active == "trustees" %}active{% endif %}"><a 
-  href="{% url election_trustees_list election.uuid %}">
+  href="{% url "election_trustees_list" election.uuid %}">
   {% trans "Trustees list" %}
 </a></dd>
 
 {% endif %}
 {% if poll and poll.audited_ballots.filter.confirmed.count > 0 %}
 <dd class="{% if menu_active == "audited_ballots" %}active{% endif %}"><a 
-  href="{% url election_poll_audited_ballots election.uuid poll.uuid %}">
+  href="{% url "election_poll_audited_ballots" election.uuid poll.uuid %}">
   {% trans "Audited ballots" %}
 </a></dd>
 {% endif %}

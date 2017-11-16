@@ -13,7 +13,7 @@ class Command(BaseCommand):
     args = ''
     help = "List authcodes for (a subset of voters of) a poll"
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def handle(self, *args, **options):
         argc = len(args)
         if argc < 1:

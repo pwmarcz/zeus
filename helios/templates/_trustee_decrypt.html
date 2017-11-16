@@ -3,7 +3,7 @@
   window.TRUSTEE = {
     'name': 'trustee.name',
     'filename': '{% trans "Partial decryption" %} {{ trustee.name }}.txt',
-    'worker': '/static/zeus/booth/js/jscrypto/decryptworker.js'
+    'worker': '{{ ZEUS_MEDIA_URL }}/jscrypto/decryptworker.js?10102017'
   }
 
   window.MESSAGES = {
@@ -14,7 +14,11 @@
     'upload_failed': '{% trans "Upload failed" %}',
     'decrpyting': '{% trans "Decrypting" %}'
   }
+
 </script>
+
+{% include "zeus/crypto_init_randomness.html" %}
+
 {% if trustee.pending_partial_decryptions_len %}
   <h5>{% trans "The final ballots are ready to be decrypted." %}</h5>
 
@@ -43,7 +47,7 @@
         <tr class="poll" 
           data-poll-uuid="{{ poll.uuid }}"
           data-poll-finished="{% if factors %}1{% else %}0{% endif %}"
-          data-poll-url="{% url election_poll_index election.uuid poll.uuid %}">
+          data-poll-url="{% url "election_poll_index" election.uuid poll.uuid %}">
             <td>{{ poll.name }}</td>
             <td>
               <span class="status">    

@@ -9,6 +9,7 @@ Ben Adida
 
 from django.db import models
 from jsonfield import JSONField
+from helios.fields import SeparatedValuesField
 
 import datetime, logging
 
@@ -18,11 +19,37 @@ from auth_systems import AUTH_SYSTEMS, can_check_constraint, can_list_categories
 class AuthenticationExpired(Exception):
   pass
 
+
+def default_election_types_modules():
+    from zeus.election_modules import ELECTION_MODULES_CHOICES
+    return map(lambda s: s[0], ELECTION_MODULES_CHOICES)
+
+def election_types_choices():
+    from zeus.election_modules import ELECTION_MODULES_CHOICES
+    return map(lambda s: (s[0], s[0]), ELECTION_MODULES_CHOICES)
+
+
+class UserGroup(models.Model):
+    name = models.CharField(max_length=255)
+    election_types = SeparatedValuesField(max_length=255, default=default_election_types_modules)
+
+    @property
+    def election_types_display(self):
+        return ",".join(self.election_types)
+
+    @property
+    def users_count_display(self):
+        return self.user_set.count()
+
+    def __unicode__(self):
+        return self.name
+
+
 class User(models.Model):
   user_type = models.CharField(max_length=50)
   user_id = models.CharField(max_length=100, unique=True)
   institution = models.ForeignKey('zeus.Institution', null=True)
-
+  user_groups = models.ManyToManyField(UserGroup)
   name = models.CharField(max_length=200, null=True)
 
   # other properties
@@ -31,17 +58,28 @@ class User(models.Model):
   # access token information
   token = JSONField(null = True)
 
+  @property
+  def eligible_election_types(self):
+      valid = set()
+      for group in self.user_groups.all():
+          map(valid.add, group.election_types)
+      return valid
+
   # administrator
   admin_p = models.BooleanField(default=False)
   superadmin_p = models.BooleanField(default=False)
   management_p = models.BooleanField(default=False)
   ecounting_account = models.BooleanField(default=True)
 
-  is_disabled = models.BooleanField(default=False) 
+  is_disabled = models.BooleanField(default=False)
   _is_authenticated = False
 
   class Meta:
     unique_together = (('user_type', 'user_id'),)
+
+  @property
+  def groups_display(self):
+      return ",".join(map(lambda g: g.name, self.user_groups.filter()))
 
   @property
   def election(self):

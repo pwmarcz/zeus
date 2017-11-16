@@ -31,7 +31,7 @@ from helios.view_utils import render_template
 from helios.models import Election, Poll, CastVote, Voter
 
 
-@transaction.commit_on_success
+@transaction.atomic
 @auth.election_admin_required
 @require_http_methods(["GET", "POST"])
 def add_or_update(request, election=None):
@@ -39,14 +39,15 @@ def add_or_update(request, election=None):
     institution = user.institution
 
     if request.method == "GET":
-        election_form = ElectionForm(institution, instance=election,
+        election_form = ElectionForm(user, institution, instance=election,
                                      lang=request.LANGUAGE_CODE)
     else:
-        election_form = ElectionForm(institution, request.POST,
+        election_form = ElectionForm(user, institution, request.POST,
                                      instance=election)
 
     if election_form.is_valid():
-        with transaction.commit_on_success():
+        creating = election is None
+        with transaction.atomic():
             election = election_form.save()
             if not election.admins.filter(pk=user.pk).count():
                 election.admins.add(user)
@@ -55,7 +56,6 @@ def add_or_update(request, election=None):
                 msg = "New election created"
                 subject = "New Zeus election"
                 election.notify_admins(msg=msg, subject=subject)
-            # TODO, make this optional ?
             if not election.has_helios_trustee():
                 election.generate_trustee()
             if election.polls.count() == 0:
@@ -69,7 +69,12 @@ def add_or_update(request, election=None):
 
             election.zeus.compute_election_public()
             election.logger.info("Public key updated")
-            return HttpResponseRedirect(url)
+            hook_url = None
+            if creating:
+                hook_url = election.get_module().run_hook('post_create')
+            else:
+                hook_url = election.get_module().run_hook('post_update')
+            return HttpResponseRedirect(hook_url or url)
 
     context = {'election_form': election_form, 'election': election}
     set_menu('election_edit', context)
@@ -116,7 +121,7 @@ def trustee_send_url(request, election, trustee_uuid):
 
 @auth.election_admin_required
 @auth.requires_election_features('delete_trustee')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def trustee_delete(request, election, trustee_uuid):
     election.zeus.invalidate_election_public()
@@ -207,7 +212,7 @@ def freeze(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_cancel')
-@transaction.commit_on_success
+@transaction.atomic
 @require_http_methods(["POST"])
 def cancel(request, election):
 
@@ -238,7 +243,6 @@ def endnow(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_close')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def close(request, election):
     election.close_voting()
@@ -249,7 +253,6 @@ def close(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_validate_voting')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def validate_voting(request, election):
     tasks.election_validate_voting(election_id=election.id)
@@ -259,7 +262,6 @@ def validate_voting(request, election):
 
 @auth.election_admin_required
 @auth.requires_election_features('can_mix')
-@transaction.commit_on_success
 @require_http_methods(["POST"])
 def start_mixing(request, election):
     tasks.start_mixing.delay(election_id=election.id)
@@ -282,7 +284,7 @@ def public_stats(request, election):
         raise TypeError
 
     return HttpResponse(json.dumps(stats, default=handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.election_admin_required
@@ -316,7 +318,7 @@ def report(request, election, format):
             raise TypeError
 
         return HttpResponse(json.dumps(_reports, default=handler),
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 @auth.election_admin_required
@@ -334,7 +336,7 @@ def public_stats(request, election):
         raise TypeError
 
     return HttpResponse(json.dumps(stats, default=handler),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @auth.election_admin_required
@@ -367,7 +369,7 @@ def results_file(request, election, ext='pdf', shortname='',
         return response
     else:
         data = file(fpath, 'r')
-        response = HttpResponse(data.read(), mimetype='application/%s' % ext)
+        response = HttpResponse(data.read(), content_type='application/%s' % ext)
         data.close()
         basename = os.path.basename(fpath)
         response['Content-Dispotition'] = 'attachment; filename=%s' % basename
@@ -390,7 +392,7 @@ def json_data(request, election):
                                                    polls_json,
                                                    trustees_json,
                                                    voters_json)
-    return HttpResponse(json, mimetype="application/json")
+    return HttpResponse(json, content_type="application/json")
 
 
 def test_cookie(request):

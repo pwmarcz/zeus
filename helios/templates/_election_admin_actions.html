@@ -29,13 +29,19 @@
 {% if election.feature_compute_results_finished %}
 {% with election.get_module as module %}
   {% if module.pdf_result %}
-    <a href="{% url election_pdf_results election.uuid election.short_name LANGUAGE_CODE %}">{% trans "Save results" %} (PDF)</a>
+    <a href="{% url "election_pdf_results" election.uuid election.short_name LANGUAGE_CODE %}">{% trans "Save results" %} (PDF)</a>
 <br /><br />
   {% endif %}
   {% if module.csv_result%}
-    <a href="{% url election_zip_results election.uuid election.short_name LANGUAGE_CODE%}">
+    <a href="{% url "election_csv_results" election.uuid election.short_name LANGUAGE_CODE %}">{% trans "Save results" %} (CSV)</a>
+    <br />
+    <br />
+    <a href="{% url "election_zip_results" election.uuid election.short_name LANGUAGE_CODE%}">
 {% trans "Save results" %} (ZIP)</a>
 <br /><br />
+  {% endif %}
+  {% if module.election_results_partial %}
+    {% include module.election_results_partial %}
   {% endif %}
 {% endwith %}
 {% endif %}

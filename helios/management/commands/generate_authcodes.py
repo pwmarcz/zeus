@@ -13,7 +13,7 @@ class Command(BaseCommand):
     args = ''
     help = "Generate authcodes for (a subset of voters of) an election"
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def handle(self, *args, **options):
         argc = len(args)
         if argc < 1:

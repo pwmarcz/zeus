@@ -47,9 +47,9 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
 
     csrf_token = ""
     if 'csrf_token' in context:
-        csrf_token = """<input type="hidden" """ + \
-                     """value="%s" """ % context['csrf_token'] + \
-                     """name="csrfmiddlewaretoken" />"""
+        csrf_token = u"""<input type="hidden" """ + \
+                     u"""value="%s" """ % unicode(context['csrf_token']) + \
+                     u"""name="csrfmiddlewaretoken" />"""
     if "nocsrf" in cls:
         csrf_token = ""
 
@@ -177,13 +177,13 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
 
     csrf_token = ""
     if 'csrf_token' in context:
-        csrf_token = """<input type="hidden" """ + \
-                     """value="%s" """ % context['csrf_token'] + \
-                     """name="csrfmiddlewaretoken" />"""
+        csrf_token = u"""<input type="hidden" """ + \
+                     u"""value="%s" """ % unicode(context['csrf_token']) + \
+                     u"""name="csrfmiddlewaretoken" />"""
     if "nocsrf" in cls:
         csrf_token = ""
-    
-    q_field = "" 
+
+    q_field = ""
     if q:
         q_field = """<input type="hidden" """ + \
                   """value="%s" """ % q + \
@@ -274,7 +274,7 @@ def complete_get_parameters(context, GET, new_order,
         order_type = 'desc'
     elif order_type == None:
         order_type = 'asc'
-  
+
     order_param = ''
     if order_by == new_order:
         context['ordering_cls'] = order_type

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import include, patterns, url
 from django.conf import settings
 
 from zeus.urls.trustee import election_patterns

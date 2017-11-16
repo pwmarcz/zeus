@@ -65,8 +65,7 @@ from zeus.model_features import ElectionFeatures, PollFeatures, \
 from zeus.model_tasks import TaskModel, PollTasks, ElectionTasks
 from zeus import help_texts as help
 from zeus.log import init_election_logger, init_poll_logger
-from zeus.utils import decalize, get_filters, VOTER_SEARCH_FIELDS, \
-    VOTER_BOOL_KEYS_MAP, VOTER_EXTRA_HEADERS, VOTER_TABLE_HEADERS, CSVReader
+from zeus.utils import decalize, CSVReader
 
 
 logger = logging.getLogger(__name__)
@@ -100,13 +99,16 @@ class PollMixQuerySet(QuerySet):
 
 class PollMixManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return PollMixQuerySet(self.model)
 
 from django.core.files import storage
 default_mixes_path = settings.MEDIA_ROOT + "/zeus_mixes/"
 ZEUS_MIXES_PATH = getattr(settings, 'ZEUS_MIXES_PATH', default_mixes_path)
 zeus_mixes_storage = storage.FileSystemStorage(location=ZEUS_MIXES_PATH)
+
+def dummy_upload_to(x):
+    return ''
 
 class PollMix(models.Model):
 
@@ -135,7 +137,7 @@ class PollMix(models.Model):
     status = models.CharField(max_length=255, choices=MIX_STATUS_CHOICES,
                             default='pending')
     mix_error = models.TextField(null=True, blank=True)
-    mix_file = models.FileField(upload_to=lambda x:'',
+    mix_file = models.FileField(upload_to=dummy_upload_to,
                                 storage=zeus_mixes_storage,
                                 null=True, default=None)
 
@@ -194,7 +196,7 @@ class PollMix(models.Model):
         for part in self.mix_parts_iter(mix):
             self.parts.create(data=part)
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def _do_mix(self):
         zeus_mix = self.poll.zeus.get_last_mix()
         new_mix = self.poll.zeus.mix(zeus_mix)
@@ -233,17 +235,20 @@ class MixPart(models.Model):
 class ElectionManager(models.Manager):
 
     def get_queryset(self):
-        return self.filter(deleted=False)
+        return super(ElectionManager, self).get_queryset().filter(deleted=False)
 
     def administered_by(self, user):
         if user.superadmin_p:
-            return self.filter()
+            return super(ElectionManager, self).get_queryset().filter()
 
-        return self.filter(admins__in=[user])
+        return super(ElectionManager, self).get_queryset().filter(admins__in=[user])
 
 
-_default_voting_starts_at = lambda: datetime.datetime.now()
-_default_voting_ends_at = lambda: datetime.datetime.now() + timedelta(hours=12)
+def _default_voting_starts_at(*args):
+    return datetime.datetime.now()
+
+def _default_voting_ends_at(*args):
+    return datetime.datetime.now() + timedelta(hours=12)
 
 
 class Election(ElectionTasks, HeliosModel, ElectionFeatures):
@@ -507,7 +512,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     def questions_count(self):
         count = 0
         for poll in self.polls.filter().only('questions_data'):
-            count += len(poll.questions_data)
+            count += len(poll.questions_data or [])
         return count
 
     def generate_mix_key(self):
@@ -538,7 +543,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     def has_helios_trustee(self):
         return self.get_zeus_trustee() != None
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def update_trustees(self, trustees):
         for name, email in trustees:
             trustee, created = self.trustees.get_or_create(email=email)
@@ -563,7 +568,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         for trustee in self.trustees.exclude(secret_key__isnull=False):
             if not trustee.last_notified_at or force:
                 trustee.send_url_via_mail()
-    
+
     _zeus = None
 
     @property
@@ -655,16 +660,16 @@ class PollQuerySet(QuerySet):
 
 class PollManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return PollQuerySet(self.model).defer('encrypted_tally')
 
 
 
 class Poll(PollTasks, HeliosModel, PollFeatures):
 
-  link_id = models.CharField(_('Poll link group'), max_length=255, 
+  link_id = models.CharField(_('Poll link group'), max_length=255,
                              default='')
-  linked_ref = models.CharField(_('Poll reference id'), max_length=255, 
+  linked_ref = models.CharField(_('Poll reference id'), max_length=255,
                                 default='')
   name = models.CharField(_('Poll name'), max_length=255)
   short_name = models.CharField(max_length=255)
@@ -780,7 +785,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     if self.election.linked_polls and self.link_id.strip():
         return self.election.polls.filter(link_id=self.link_id)
     return self.election.polls.filter(id=self.pk)
-    
+
   def next_linked_poll(self, voter_id=None):
       linked_next = self.linked_polls.filter(index__gte=self.index)
       if voter_id:
@@ -846,7 +851,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
   def get_booth_url(self, request, preview=False):
     url_params = {
-        'token': csrf(request)['csrf_token'],
+        'token': unicode(csrf(request)['csrf_token']),
         'poll_url': "%s%s" % (settings.SECURE_URL_HOST,
                                 self.get_absolute_url()),
         'poll_json_url': "%s%s" % (settings.SECURE_URL_HOST,
@@ -958,7 +963,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
           'public_key': public_key,
           'questions': self.questions,
           'questions_data': self.questions_data,
-          'election_module': module.module_id,
+          'election_module': getattr(module, 'booth_module_id', module.module_id),
           'module_params': module.params,
           'uuid': self.uuid,
           'election_uuid': election.uuid,
@@ -1075,7 +1080,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     OPTIONAL_STEPS = ['voters_not_voted_notified', 'extended']
 
 
-  def voters_to_csv(self, q_param=None, to=None):
+  def voters_to_csv(self, q_param=None, to=None, include_vote_field=True):
     if not to:
       to = StringIO.StringIO()
 
@@ -1083,25 +1088,25 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     voters = self.voters.all()
     if q_param:
-        voters = voters.filter(get_filters(q_param,VOTER_TABLE_HEADERS,
-                                           VOTER_SEARCH_FIELDS,
-                                           VOTER_BOOL_KEYS_MAP,
-                                           VOTER_EXTRA_HEADERS))
+        voters = self.get_module().filter_voters(voters, q_param)
+
     for voter in voters:
       vote_field = unicode(_("YES")) if voter.cast_votes.count() else \
                        unicode(_("NO"))
       if voter.excluded_at:
         vote_field += unicode(_("(EXCLUDED)"))
 
-      writer.writerow(map(force_utf8, [voter.voter_login_id,
+      fields = [voter.voter_login_id,
                                        voter.voter_email,
                                        voter.voter_name or '',
                                        voter.voter_surname or '',
                                        voter.voter_fathername or '',
                                        voter.voter_mobile or '',
-                                       str(voter.voter_weight),
-                                       vote_field
-                                       ]))
+                                       str(voter.voter_weight)
+                                       ]
+      if include_vote_field:
+          fields.append(vote_field)
+      writer.writerow(map(force_utf8, fields))
     return to
 
   def last_voter_visit(self):
@@ -1164,7 +1169,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         error = traceback.format_exc()
 
     try:
-        with transaction.commit_on_success():
+        with transaction.atomic():
             mix = self.mixes.create(name=mix_name,
                                     mix_order=mix_order,
                                     mix_type='remote',
@@ -1178,7 +1183,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         logging.exception("Remote mix creation failed.")
         return e
 
-    with transaction.commit_on_success():
+    with transaction.atomic():
         if not Poll.objects.get(pk=self.pk).tallying_finished_at:
             mix.save()
         else:
@@ -1332,8 +1337,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                   self.election.institution.name,
                   self.election.voting_starts_at, self.election.voting_ends_at,
                   self.election.voting_extended_until,
-                  [(self.name, json.dumps(results_json), 
-                    self.questions_data, 
+                  [(self.name, json.dumps(results_json),
+                    self.questions_data,
                     self.questions[0]['answers'])],
                   self.get_result_file_path('pdf', 'pdf'), score=True)
 
@@ -1349,8 +1354,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                   self.election.institution.name,
                   self.election.voting_starts_at, self.election.voting_ends_at,
                   self.election.voting_extended_until,
-                  [(self.name, json.dumps(results_json), 
-                    self.questions_data, 
+                  [(self.name, json.dumps(results_json),
+                    self.questions_data,
                     self.questions[0]['answers'])],
                   self.get_result_file_path('pdf', 'pdf'), parties=parties)
 
@@ -1502,7 +1507,7 @@ class VoterFile(models.Model):
     return iter_voter_data(voter_data, email_validator=email_validator,
                            preferred_encoding=preferred_encoding)
 
-  @transaction.commit_on_success
+  @transaction.atomic
   def process(self, linked=True, check_dupes=True, preferred_encoding=None):
     demo_voters = 0
     poll = self.poll
@@ -1623,7 +1628,7 @@ class VoterQuerySet(QuerySet):
 
 class VoterManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return VoterQuerySet(self.model)
 
 
@@ -1658,7 +1663,7 @@ class Voter(HeliosModel, VoterFeatures):
 
   last_sms_send_at = models.DateTimeField(null=True)
   last_sms_code = models.CharField(max_length=100, blank=True, null=True)
-  last_sms_status = models.CharField(max_length=100, blank=True, null=True)
+  last_sms_status = models.CharField(max_length=255, blank=True, null=True)
   last_email_send_at = models.DateTimeField(null=True)
   last_booth_invitation_send_at = models.DateTimeField(null=True)
   last_visit = models.DateTimeField(null=True)
@@ -1737,7 +1742,7 @@ class Voter(HeliosModel, VoterFeatures):
     return False
 
   @classmethod
-  @transaction.commit_on_success
+  @transaction.atomic
   def register_user_in_election(cls, user, election):
     voter_uuid = str(uuid.uuid4())
     voter = Voter(uuid= voter_uuid, user = user, election = election)
@@ -1901,10 +1906,13 @@ class CastVoteQuerySet(QuerySet):
     def excluded(self):
         return self.filter(voter__excluded_at__isnull=False)
 
+    def not_excluded(self):
+        return self.filter(voter__excluded_at__isnull=True)
+
 
 class CastVoteManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return CastVoteQuerySet(self.model)
 
 
@@ -2000,7 +2008,7 @@ class AuditedBallotQuerySet(QuerySet):
 
 class AuditedBallotManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return AuditedBallotQuerySet(self.model)
 
 
@@ -2073,7 +2081,7 @@ class TrusteeDecryptionFactorsQuerySet(QuerySet):
 
 class TrusteeDecryptionFactorsManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return TrusteeDecryptionFactorsQuerySet(self.model)
 
 
@@ -2105,7 +2113,7 @@ class TrusteeQuerySet(QuerySet):
 
 class TrusteeManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return TrusteeQuerySet(self.model)
 
 

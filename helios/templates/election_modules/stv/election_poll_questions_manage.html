@@ -282,7 +282,7 @@ $(document).ready(function(){
       this.tabs().removeClass("active");
       newtab.addClass("active");
       newq.show();
-      newq.find("input:visible").first().focus();
+      newq.find("textarea:visible,input:visible").first().focus();
       this.update_management_form();
       if (this.forms().length > 1) {
         this.remove_button.show();
@@ -307,7 +307,7 @@ $(document).ready(function(){
       var reset_field = function(f) {
         var newname = f.attr('name').replace('form-'+curindex, 'form-'+newindex);
         var newid = f.attr('id').replace('form-'+curindex, 'form-'+newindex);
-        if (f.attr('type') == "text" && reset) {
+        if ((f.prop("tagName") == "TEXTAREA" || f.attr('type') == "text") && reset) {
           f.val('');
         };
         f.attr({
@@ -320,6 +320,9 @@ $(document).ready(function(){
         reset_field($(f));
       })
       el.find("select").each(function(i,f) {
+        reset_field($(f));
+      })
+      el.find("textarea").each(function(i,f) {
         reset_field($(f));
       })
       el.find("label").each(function(i,f) {

@@ -1,6 +1,7 @@
 var running_workers = [];
 var available_workers = [];
 
+
 if(!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(what, i) {
         i = i || 0;
@@ -125,7 +126,7 @@ Poll.prototype = {
     this.hide_actions();
     this.decryption = data;
     this.set_status("Uploading...");
-    
+
     var post_data = {'factors_and_proofs': $.toJSON(data)};
     post_data[CSRF_TOKEN_NAME] = CSRF_TOKEN;
 
@@ -295,6 +296,10 @@ function initLayout() {
 }
 
 $(document).ready(function() {
+    $.getJSON(window.RANDOMNESS_URL, function(result) {
+      window.WORKER_ENTROPY = result.randomness;
+    });
+
     initLayout();
 
     try {
@@ -321,7 +326,11 @@ $(document).ready(function() {
           }
       });
       // DEBUG
-      var secret_key = get_secret_key();
+      var secret_key = null;
+      try {
+        var secret_key = get_secret_key();
+      } catch(e) {}
+
       if (secret_key) {
             $(".sk-form").hide();
             window.pollsView = new TrusteeDecrypt({
@@ -494,6 +503,7 @@ function decrypt_and_prove_tally(tally, public_key, secret_key, progress_callbac
         }
         //console.log("WORKER", id,  "POST", index);
       worker.postMessage({
+        'entropy': window.WORKER_ENTROPY,
         'type': 'decrypt',
         'sk' : _sk,
         'choice' : tally.tally[0][index].toJSONObject(),
@@ -570,43 +580,14 @@ function batch_complete_callback(batch, batch_index, time, median_time,
 
 function get_secret_key() {
     try {
+      var val = $('#sk-textarea').val();
+      if (!val || !val.trim().length) { return undefined; }
       return ElGamal.SecretKey.fromJSONObject(
-          $.secureEvalJSON($('#sk-textarea').val()));
+          $.secureEvalJSON(val));
     } catch (err) {
         console.error(err);
         return undefined;
     }
-}
-
-
-function submit_result() {
-  $('#result_div').hide();
-  $('#waiting_submit_div').show();
-
-  var result = $('#result_textarea').val();
-    
-  data = {'factors_and_proofs': result}
-  data[CSRF_TOKEN_NAME] = CSRF_TOKEN;
-  // do the post
-  $.ajax({
-      type: 'POST',
-      url: "./upload-decryption",
-      timeout: 300000,
-      data: data,
-      success: function(result) {
-        $('#waiting_submit_div').hide();
-        if (result != "FAILURE") {
-          $('#done_div').show();
-        } else {
-          alert('Η επαλήθευση απέτυχε. Πιθανώς δώσατε εσφαλμένο Κωδικό.');
-          reset();
-        }
-      },
-      error: function(error) {
-          $('#waiting_submit_div').hide();
-          $('#error_div').show();
-      }
-  });
 }
 
 function skip_to_second_step() {

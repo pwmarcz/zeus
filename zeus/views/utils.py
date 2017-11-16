@@ -1,4 +1,3 @@
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 
 

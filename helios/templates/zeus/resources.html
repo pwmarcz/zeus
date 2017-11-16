@@ -24,6 +24,13 @@
               </a>
           </li>
           {% endwith %}
+          {% with file="zeus_admin_manual_unigov" %}
+          <li><a href="{{ STATIC_URL }}manuals/admin/{{ file }}.pdf">
+                Οδηγός διαχειριστή για "Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
+              </a>
+              [<a href="{{ STATIC_URL }}manuals/admin/{{ file }}.docx">doc</a>]
+          </li>
+          {% endwith %}
         </ul>
       </li>
       <li>Οδηγίες για τους ψηφοφόρους

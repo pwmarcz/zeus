@@ -1,0 +1,56 @@
+<IfModule mod_headers.c>
+    <FilesMatch "vote\.html$">
+            Header set Content-Security-Policy "script-src 'self' 'unsafe-eval' 'unsafe-inline'; object-src 'self'"
+    </FilesMatch>
+</IfModule>
+
+<VirtualHost _default_:80>
+    Include sites-available/zeus-common.conf
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/server-status.* [NC]
+    RewriteCond %{HTTPS} off
+    RewriteRule ^/(.*) https://<%= @host %><% if @port != 443 %>:<%= @port %><% end %>/$1 [L,R]
+</VirtualHost>
+
+<VirtualHost _default_:<%= @port %>>
+    SSLEngine on
+    Include sites-available/zeus-common.conf
+
+    SSLCACertificatePath    /etc/ssl/certs/
+    SSLCertificateFile      /etc/ssl/zeus.crt
+    SSLCertificateKeyFile   /etc/ssl/private/zeus.key
+
+    RedirectMatch permanent ^/$     https://<%= @host %><% if @port != 443 %><%= @port %><% end %>/zeus/
+    RedirectMatch permanent ^/en/?$     https://<%= @host %>/zeus/?lang=en
+
+    # xsendfile support
+    XSendFile On
+    XSendFilePath /srv/zeus-data/
+
+    RequestHeader set X-Forwarded-Proto 'https' env=HTTPS
+
+    ProxyPass               /server/zeus/   http://127.0.0.1:<%= @gunicornport %>/ retry=0
+    ProxyPassReverse        /        http://127.0.0.1:<%= @gunicornport %>/
+
+    RewriteEngine On
+    RewriteCond %{HTTP_REQUEST} ^.*$
+    RewriteRule ^(/zeus/static/.*)$ - [L]
+    RewriteRule ^(/zeus/booth/.*)$ - [L]
+    RewriteRule ^(/emails/.*)$ - [L]
+    RewriteRule ^(/zeus/.*)$ /server/zeus/$1 [PT]
+
+    <% if @debugemail %>
+    Alias /emails /srv/zeus-data/emails
+    <Directory /srv/zeus-data/emails>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+    <% end %>
+
+    Alias /zeus/static/ /srv/zeus-data/static/
+    Alias /zeus/booth/ /srv/zeus-data/static/booth/
+    Alias /static/ /srv/zeus-data/static/
+    Alias /booth/ /srv/zeus-data/static/booth/
+</VirtualHost>

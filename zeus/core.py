@@ -2321,21 +2321,6 @@ def verify_dlog_power_zeus(modulus, generator, order, power,
     return (pow(generator, response, modulus)
             == ((commitment * pow(power, challenge, modulus)) % modulus))
 
-def prove_dlog_helios(modulus, generator, order, power, dlog):
-    randomness = get_random_int(2, order)
-    commitment = pow(generator, randomness, modulus)
-    challenge = int(sha1(str(commitment)).hexdigest(), 16) % order
-    response = (randomness + challenge * dlog) % order
-    return [commitment, challenge, response]
-
-def verify_dlog_power_helios(modulus, generator, order, power,
-                             commitment, challenge, response):
-    _challenge = int(sha1(str(commitment)).hexdigest(), 16) % order
-    if _challenge != challenge:
-        return 0
-    return (pow(generator, response, modulus)
-            == ((commitment * pow(power, challenge, modulus)) % modulus))
-
 prove_dlog = prove_dlog_zeus
 verify_dlog_power = verify_dlog_power_zeus
 
@@ -2392,39 +2377,8 @@ def verify_ddh_tuple_zeus(modulus, generator, order,
 
     return 1
 
-def prove_ddh_tuple_helios(modulus, generator, order,
-                    message, base_power, message_power, exponent):
-    randomness = get_random_int(2, order)
-
-    base_commitment = pow(generator, randomness, modulus)
-    message_commitment = pow(message, randomness, modulus)
-
-    args = (str(base_commitment), str(message_commitment))
-    challenge = int(sha1(','.join(args)).hexdigest(), 16) % order
-    response = (randomness + challenge * exponent) % order
-    return [base_commitment, message_commitment, challenge, response]
-
-def verify_ddh_tuple_helios(modulus, generator, order,
-                     message, base_power, message_power,
-                     base_commitment, message_commitment,
-                     challenge, response):
-    args = (str(base_commitment), str(message_commitment))
-    _challenge = int(sha1(','.join(args)).hexdigest(), 16) % order
-    if _challenge != challenge:
-        return 0
-
-    b = (base_commitment * pow(base_power, challenge, modulus)) % modulus
-    if b != pow(generator, response, modulus):
-        return 0
-
-    m = (message_commitment * pow(message_power, challenge, modulus)) % modulus
-    if m != pow(message, response, modulus):
-        return 0
-
-    return 1
-
-prove_ddh_tuple = prove_ddh_tuple_helios
-verify_ddh_tuple = verify_ddh_tuple_helios
+prove_ddh_tuple = prove_ddh_tuple_zeus
+verify_ddh_tuple = verify_ddh_tuple_zeus
 
 def prove_encryption(modulus, generator, order, alpha, beta, secret):
     """Prove ElGamal encryption"""

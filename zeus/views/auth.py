@@ -10,7 +10,6 @@ except ImportError:
     jwt = None
     JWT_SUPPORT = False
 
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest

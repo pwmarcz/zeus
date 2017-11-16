@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import include, patterns, url
 
 poll_patterns = patterns('',
     url(r'^get-randomness$', 'zeus.views.shared.get_randomness'),

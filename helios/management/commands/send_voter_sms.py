@@ -142,6 +142,8 @@ class Command(BaseCommand):
         if puuid:
             voters = voters.filter(poll__uuid=puuid)
             election = Poll.objects.select_related().get(uuid=puuid).election
+        if voters_not_voted:
+            voters = voters.filter(cast_at__isnull=True)
 
         if voter_id:
             voters = voters.filter(voter_login_id=voter_id)
@@ -201,7 +203,7 @@ class Command(BaseCommand):
         for voter in voters:
             send_to = send_to_arg
             if list:
-                print voter.voter_email, voter.zeus_string
+                print voter.voter_email, voter.zeus_string.encode('utf8')
                 continue
 
             task = tasks.send_voter_sms

@@ -31,9 +31,10 @@ from heliosauth.models import User
 from zeus.utils import extract_trustees, election_trustees_to_text
 from zeus.widgets import JqSplitDateTimeField, JqSplitDateTimeWidget
 from zeus import help_texts as help
-from zeus.utils import undecalize
+from zeus.utils import undecalize, ordered_dict_prepend
 
 from django.core.validators import validate_email
+from zeus.election_modules import ELECTION_MODULES_CHOICES
 
 
 LOG_CHANGED_FIELDS = [
@@ -98,8 +99,10 @@ class ElectionForm(forms.ModelForm):
                   'trustees', 'help_email', 'help_phone',
                   'communication_language', 'linked_polls')
 
-    def __init__(self, institution, *args, **kwargs):
+    def __init__(self, owner, institution, *args, **kwargs):
         self.institution = institution
+        self.owner = owner
+
         if kwargs.get('lang'):
             lang = kwargs.pop('lang')
         else:
@@ -114,12 +117,20 @@ class ElectionForm(forms.ModelForm):
                                                     initial=lang,
                                                     help_text = help_text)
         self.creating = True
-        self._inital_data = {}
+        self._initial_data = {}
         if self.instance and self.instance.pk:
             self._initial_data = {}
             for field in LOG_CHANGED_FIELDS:
                 self._initial_data[field] = self.initial[field]
             self.creating = False
+
+        eligible_types = owner.eligible_election_types
+        if not self.creating and self.instance:
+            eligible_types.add(self.instance.election_module)
+        eligible_types_choices = filter(lambda x: x[0] in eligible_types,
+                                        ELECTION_MODULES_CHOICES)
+
+        self.fields['election_module'].choices = eligible_types_choices
         if 'election_module' in self.data:
             if self.data['election_module'] != 'stv':
                 self.fields['departments'].required = False
@@ -288,14 +299,17 @@ class QuestionForm(QuestionBaseForm):
     min_answers = forms.ChoiceField(label=_("Min answers"))
     max_answers = forms.ChoiceField(label=_("Max answers"))
 
+    min_limit = None
+    max_limit = None
+
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
-        max_choices = map(lambda x: (x,x), range(1, answers+1))
-        min_choices = map(lambda x: (x,x), range(0, answers+1))
+        max_choices = map(lambda x: (x,x), range(1, self.max_limit or answers+1))
+        min_choices = map(lambda x: (x,x), range(0, answers+1 if self.min_limit is None else self.min_limit))
 
         self.fields['max_answers'].choices = max_choices
-        self.fields['max_answers'].initial = self._answers
+        self.fields['max_answers'].initial = min(map(lambda x:x[1], max_choices))
         self.fields['min_answers'].choices = max_choices
         self.fields['min_answers'].initial = 0
 
@@ -449,29 +463,33 @@ class StvForm(QuestionBaseForm):
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
                                               label=('Candidate'))
 
-        elig_help_text = _("set the eligibles count of the election")
-        label_text = _("Eligibles count")
-        self.fields.insert(0, 'eligibles', forms.CharField(
-                                                    label=label_text,
-                                                    help_text=elig_help_text))
-        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
-        limit_help_text = _("enable limiting the elections from the same constituency")
-        limit_label = _("Limit elected per constituency")
-        self.fields.insert(1,'has_department_limit',
-                            forms.BooleanField(
-                                                widget=widget,
-                                                help_text=limit_help_text,
-                                                label = limit_label,
-                                                required=False))
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
         dep_lim_label = _("Constituency limit")
-        self.fields.insert(2, 'department_limit',
-                            forms.CharField(
-                                            help_text=dep_lim_help_text,
-                                            label=dep_lim_label,
-                                            widget=widget,
-                                            required=False))
+        ordered_dict_prepend(self.fields, 'department_limit',
+                             forms.CharField(
+                                 help_text=dep_lim_help_text,
+                                 label=dep_lim_label,
+                                 widget=widget,
+                                 required=False))
+
+        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
+        limit_help_text = _("enable limiting the elections from the same constituency")
+        limit_label = _("Limit elected per constituency")
+        ordered_dict_prepend(self.fields, 'has_department_limit',
+                             forms.BooleanField(
+                                 widget=widget,
+                                 help_text=limit_help_text,
+                                 label = limit_label,
+                                 required=False))
+
+        elig_help_text = _("set the eligibles count of the election")
+        label_text = _("Eligibles count")
+        ordered_dict_prepend(self.fields, 'eligibles',
+                             forms.CharField(
+                                 label=label_text,
+                                 help_text=elig_help_text))
+
 
     min_answers = None
     max_answers = None
@@ -573,9 +591,10 @@ class PollForm(forms.ModelForm):
         )
 
 
-        self.fields.insert(3, 'jwt_file', forms.FileField(
-                                            label="JWT public keyfile",
-                                            required=False))
+        ordered_dict_prepend(self.fields, 'jwt_file',
+                             forms.FileField(
+                                 label="JWT public keyfile",
+                                 required=False))
         self.fields['jwt_file'].widget.attrs['accept'] = '.pem'
         self.fields['jwt_public_key'] = forms.CharField(required=False,
                                                         widget=forms.Textarea)

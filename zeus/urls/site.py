@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import include, patterns, url
 
 urlpatterns = patterns('zeus.views.site',
     url(r'^$', 'home', name='home'),

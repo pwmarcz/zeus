@@ -37,7 +37,7 @@ TIME_ZONE = 'Europe/Athens'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'el'
+LANGUAGE_CODE = 'el-gr'
 LANGUAGES = (('el', 'Greek'),)
 
 SITE_ID = 1
@@ -96,10 +96,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'pagination',
     'djcelery',
-    'djkombu',
-    'south',
+    'kombu.transport.django',
     'heliosauth',
     'helios',
     'zeus',
@@ -120,6 +120,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "zeus.context_processors.user",
   "zeus.context_processors.confirm_messages",
   "zeus.context_processors.theme",
+  "zeus.context_processors.lang",
   "zeus.context_processors.prefix"
 )
 
@@ -218,7 +219,7 @@ EMAIL_USE_TLS = False
 # set up django-celery
 import djcelery
 djcelery.setup_loader()
-BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
+BROKER_URL = 'django://'
 CELERY_RESULT_DBURI = DATABASES['default']
 
 # for testing
@@ -252,8 +253,6 @@ COLLATION_LOCALE = 'el_GR.UTF-8'
 MIX_PART_SIZE = 104857600
 
 USE_X_SENDFILE = False
-
-SOUTH_TESTS_MIGRATE = False
 
 
 LOGGING = {
@@ -300,6 +299,11 @@ DEFAULT_BOLD_FONT = "/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans-Bold.ttf"
 
 ZEUS_RESULTS_FONT_REGULAR_PATH = DEFAULT_REGULAR_FONT
 ZEUS_RESULTS_FONT_BOLD_PATH = DEFAULT_BOLD_FONT
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 # useful trick for custom settings
 try:

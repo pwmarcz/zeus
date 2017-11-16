@@ -19,6 +19,9 @@ importScripts("js/jscrypto/jsbn.js",
 var console = {
     'log' : function(msg) {
 	self.postMessage({'type':'log','msg':msg});
+    },
+    'error' : function(msg) {
+	self.postMessage({'type':'error','msg':msg});
     }
 };
 
@@ -28,6 +31,8 @@ var Q_NUM = null;
 function do_setup(message) {
     ELECTION = HELIOS.Election.fromJSONString(message.election);
     Q_NUM = message.question_num;
+    sjcl.random.addEntropy(message.entropy);
+    sjcl.random.__entropySet = true;
 }
 
 function do_encrypt(message) {
@@ -35,8 +40,8 @@ function do_encrypt(message) {
     // send the result back
     self.postMessage({
 	    'type': 'result',
-		'encrypted_answer': encrypted_answer.toJSONObject(true),
-		'id':message.id
+		  'encrypted_answer': encrypted_answer.toJSONObject(true),
+		  'id':message.id
 		});
 }
 

@@ -37,24 +37,24 @@
             {% if poll.feature_can_add_voter %}
             <li>
             <a style="" class="foundicon-plus" 
-                href="{% url election_poll_voters_upload election.uuid poll.uuid%}">
+                href="{% url "election_poll_voters_upload" election.uuid poll.uuid%}">
                 &nbsp;{% trans "Import voters" %}</a>
             </li>
             {% endif %}
             {% if poll.feature_can_send_voter_mail %}
             <li>
             <a style="" class="foundicon-mail voters-action" 
-            href="{% url election_poll_voters_email election.uuid poll.uuid %}{% if q %}?q={{q|escape|escape_plus}}{% endif %}">
+            href="{% url "election_poll_voters_email" election.uuid poll.uuid %}{% if q %}?q={{q|escape|escape_plus}}{% endif %}">
                 &nbsp;{% trans "Send voters email" %}</a>
             </li>
             {% endif %}
             <li>
             <a style="" class="foundicon-down-arrow voters-action"
-            href="{% url election_poll_voters_csv election.uuid poll.uuid poll.short_name%}{% if q %}?q={{q|escape|escape_plus}}{% endif %}">
+            href="{% url "election_poll_voters_csv" election.uuid poll.uuid poll.short_name%}{% if q %}?q={{q|escape|escape_plus}}{% endif %}">
                 &nbsp;{% trans "Export voter list to CSV" %}</a>
             </li>
             {% if poll.feature_can_clear_voters %}
-            {% url election_poll_voters_clear election.uuid poll.uuid as clear_url %}
+            {% url "election_poll_voters_clear" election.uuid poll.uuid as clear_url %}
             {% trans "Delete all voters" as label %}
             {% menu_confirm_action label clear_url voters_clear_confirm "remove" "POST" "alert voters-action" q|escape|escape_plus %}
             {% endif %}
@@ -87,7 +87,7 @@
                         </div>
                         <div class="columns one">
                             <a class="button alert postfix" 
-                               href="{% url election_poll_voters election.uuid poll.uuid %}#voters-table" />✗</a>
+                               href="{% url "election_poll_voters" election.uuid poll.uuid %}#voters-table" />✗</a>
                         </div>
                     </div>
                 </form>
@@ -102,7 +102,7 @@
 <table id="voters-table" class="info-table" width="100%">
   <thead>
     <tr>
-      {% for key, value  in voter_table_headers %}
+      {% for key, value  in voter_table_headers_iter %}
         <th>
           {% if key != 'actions' %}
           <a href="?order={{key}}{% complete_get_parameters request.GET key "voter_login_id" %}" 
@@ -135,11 +135,12 @@
     <td>
         {% if voter.voter_mobile %}{{ voter.voter_mobile }}{% endif %}
     </td>
-    {% if display_weight_col %}
+    {% if display_weight_col and 'voter_weight' in voter_table_headers %}
     <td>
         {{ voter.voter_weight }}
     </td>
     {% endif %}
+    {% if user.is_manager or 'cast_vote__id' in voter_table_headers %}
     <td>
       {% if voter.voted %}
       {% trans "YES" %} {% if voter.excluded_at %}<b style="color:red">{% trans "(Excluded)" %}</b>{% endif %}
@@ -148,12 +149,27 @@
       {% endif %}
 
     </td>
+    {% endif %}
     {% if admin %}
+        {% if user.is_manager or 'last_booth_invitation_send_at' in voter_table_headers %}
+        <td>
+        {{ voter.last_booth_invitation_send_at }}
+        </td>
+        {% endif %}
+        {% if user.is_manager or 'last_visit' in voter_table_headers %}
+        <td>
+        {{ voter.last_visit }}
+        </td>
+        {% endif %}
+    {% endif %}
+
+    {% if not user.is_manager and 'excluded_at' in voter_table_headers %}
     <td>
-      {{ voter.last_booth_invitation_send_at }}
-    </td>
-    <td>
-      {{ voter.last_visit }}
+      {% if voter.excluded_at %}
+      {% trans "YES" %}
+      {% else %}
+      {% trans "NO" %}
+      {% endif %}
     </td>
     {% endif %}
 {% if admin %}
@@ -164,17 +180,17 @@
 
 {% if poll.feature_can_send_voter_mail %}
     {% trans "Send voter email" as label %}
-    {% url election_poll_voter_email election.uuid poll.uuid voter.uuid as email_url %}
+    {% url "election_poll_voter_email" election.uuid poll.uuid voter.uuid as email_url %}
     {% menu_action label email_url "mail" %}
 {% endif %}
 
 {% if not voter.voted and poll.feature_can_delete_voter %}
-    {% url election_poll_voter_delete election.uuid poll.uuid voter.uuid as delete_url %}
+    {% url "election_poll_voter_delete" election.uuid poll.uuid voter.uuid as delete_url %}
     {% trans "Delete voter" as label %}
     {% menu_confirm_action label delete_url voter_remove_confirm "remove" "POST" "alert"%}
 {% else %}
     {% if not voter.excluded_at and poll.feature_can_exclude_voter %}
-        {% url election_poll_voter_exclude election.uuid poll.uuid voter.uuid as exclude_url%}
+        {% url "election_poll_voter_exclude" election.uuid poll.uuid voter.uuid as exclude_url%}
         {% trans "Exclude voter" as label %}
         {% menu_confirm_action label exclude_url voter_exclude_confirm "remove" %}
     {% endif %}

@@ -380,7 +380,7 @@ class Command(NoArgsCommand):
 "--locale or --all options.")
 
     requires_model_validation = False
-    can_import_settings = False
+    can_import_settings = True
 
     def handle_noargs(self, *args, **options):
         # booth dir

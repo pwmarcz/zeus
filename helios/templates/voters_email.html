@@ -78,7 +78,7 @@ Subject: {{default_subject}}
   </div>
   
   <div id="done" style="display:none;">
-    {% trans "Sending complete." %} <a href="{% url election_index election.uuid %}">{% trans "Back to the polls" %}</a>.
+    {% trans "Sending complete." %} <a href="{% url "election_index" election.uuid %}">{% trans "Back to the polls" %}</a>.
   </div>
 
   <div id="error" style="display:none;">

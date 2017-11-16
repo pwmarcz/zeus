@@ -26,7 +26,7 @@
 {% endif %}
 
 <form class="prettyform" 
-      action="{% url heliosauth.auth_systems.password.password_login_view %}" 
+      action="{% url "heliosauth.auth_systems.password.password_login_view" %}" 
       method="POST" 
       id="login_form">
   {{form.as_p}}

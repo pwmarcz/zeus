@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.test.client import Client
 
 from zeus.models.zeus_models import Institution
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup
 from helios.models import *
 
 from utils import SetUpAdminAndClientMixin
@@ -51,17 +51,19 @@ class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):
 
 
 class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
-    
+
     def setUp(self):
         super(TestAdminsPermissions, self).setUp()
         #one admin exists, we need another one
+        group = UserGroup.objects.get(name="default")
         self.admin2 = User.objects.create(user_type="password",
                                          user_id="test_admin2",
                                          info={"password": make_password("test_admin2")},
                                          admin_p=True,
                                          institution=self.institution)
+        self.admin2.user_groups.add(group)
         self.login_data2 = {'username': 'test_admin2', 'password': 'test_admin2'}
-        trustees_num = 2 
+        trustees_num = 2
         trustees = "\n".join(",".join(['testName%x testSurname%x' %(x,x),
                                        'test%x@mail.com' %x]) for x in range(0,trustees_num))
         date1 = datetime.datetime.now() + timedelta(hours=48)
@@ -84,8 +86,8 @@ class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
 
     def login_and_create_election(self, login_data):
         self.c.post(self.locations['login'], login_data)
-        r = self.c.post(self.locations['create'], self.election_form, follow=False)
-        self.assertEqual(r.status_code, 302)
+        r = self.c.post(self.locations['create'], self.election_form, follow=True)
+        self.assertEqual(r.status_code, 200)
         self.c.get(self.locations['logout'])
 
     def create_elections_with_different_admins(self):

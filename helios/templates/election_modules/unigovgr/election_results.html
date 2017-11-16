@@ -1,0 +1,7 @@
+{% load i18n %}
+<h5>{% trans "Save proof data" %}</h5>
+{% for poll in election.polls.filter %}
+<a href="{% url "election_poll_zeus_proofs" election.uuid poll.uuid %}">{{ poll.name }}</a>
+<br />
+<br />
+{% endfor %}

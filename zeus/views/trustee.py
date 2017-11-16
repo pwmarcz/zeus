@@ -1,9 +1,8 @@
-import simplejson
+import json
 import logging
 import datetime
 import json
 
-from django.conf.urls.defaults import *
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext_lazy as _
@@ -59,7 +58,7 @@ def login(request, election, trustee_email, trustee_secret):
 @auth.requires_election_features('trustee_can_generate_key')
 @require_http_methods(['GET'])
 def keygen(request, election, trustee):
-    eg_params_json = simplejson.dumps(ELGAMAL_PARAMS_LD_OBJECT.toJSONDict(),
+    eg_params_json = json.dumps(ELGAMAL_PARAMS_LD_OBJECT.toJSONDict(),
                                       sort_keys=True)
     context = {
         'eg_params_json': eg_params_json,
@@ -93,10 +92,10 @@ def verify_key(request, election, trustee):
 
 
 @auth.trustee_view
-@transaction.commit_manually
 @auth.requires_election_features('trustee_can_upload_pk')
 @require_http_methods(['POST'])
 def upload_pk(request, election, trustee):
+    transaction.set_autocommit(False)
     try:
         public_key_and_proof = \
                 utils.from_json(request.POST['public_key_json'])
@@ -109,6 +108,7 @@ def upload_pk(request, election, trustee):
         election.logger.exception(e)
         transaction.rollback()
         messages.error(request, "Cannot upload public key")
+    transaction.set_autocommit(True)
 
     return HttpResponseRedirect(reverse('election_trustee_home',
                                         args=[election.uuid]))
@@ -182,7 +182,7 @@ def json_data(request, election, trustee):
         nr_excluded = voters.excluded().count()
         ciphers_url = reverse('election_poll_get_tally',
                               args=(election.uuid, poll.uuid))
-        post_decryption_url = reverse('election_poll_upload_decryption', 
+        post_decryption_url = reverse('election_poll_upload_decryption',
                                       args=(election.uuid, poll.uuid))
         data = {
             'uuid': poll.uuid,
@@ -210,7 +210,7 @@ def json_data(request, election, trustee):
             if include_tally:
                 data['encrypted_tally'] = poll.encrypted_tally.toJSONDict()
             else:
-                data['encrypted_tally'] = 'tally_excluded' 
+                data['encrypted_tally'] = 'tally_excluded'
         polls_data.append(data)
 
     data = {
@@ -233,4 +233,4 @@ def json_data(request, election, trustee):
         }
     }
     json_data = json.dumps(data)
-    return HttpResponse(json_data, mimetype="application/json")
+    return HttpResponse(json_data, content_type="application/json")

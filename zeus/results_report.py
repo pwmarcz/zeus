@@ -10,6 +10,7 @@ try:
 except ImportError:
     def _(x):
         return x
+from collections import OrderedDict
 
 from xml.sax.saxutils import escape
 
@@ -134,6 +135,8 @@ def load_parties_results(data, repr_data, qdata):
     for candidate_result in jsondata['candidate_counts']:
         (result, full_candidate) = candidate_result
         (party, candidate) = full_candidate.split(PARTY_SEPARATOR, 1)
+        party = party.decode("utf8")
+        full_candidate = full_candidate.decode("utf8")
         party = parties_indexes[qdata.index(party)]
         candidate = candidates_indexes[qdata.index(full_candidate)]
         if party in candidates_results:
@@ -154,7 +157,7 @@ def load_score_results(data, repr_data, qdata):
     parties_results = [('', len(jsondata['ballots']))]
     total_votes = len(jsondata['ballots'])
     blank_votes = len([b for b in jsondata['ballots'] if not b['candidates']])
-    candidates_results = {'': [(c.replace("{newline}", " "), t) for t, c in jsondata['totals']]} 
+    candidates_results = {'': [(c.replace("{newline}", " "), t) for t, c in jsondata['totals']]}
     return (total_votes, blank_votes, parties_results, candidates_results)
 
 
@@ -199,11 +202,11 @@ def make_intro(elements, styles, contents):
     elements.append(Spacer(1, 12))
 
 def make_poll_voters(elements, styles, poll_voters):
-    elements.append(Paragraph(escape(_("Voters") + ": " 
+    elements.append(Paragraph(escape(_("Voters") + ": "
         + str(poll_voters.count())),styles['Zeus']))
     if poll_voters.excluded().count() > 0:
         nr_excluded = poll_voters.excluded().count()
-        elements.append(Paragraph(escape(_("Excluded voters") + ": " 
+        elements.append(Paragraph(escape(_("Excluded voters") + ": "
             + str(nr_excluded)),styles['Zeus']))
 
 def make_election_voters(elements, styles, polls_data, stv=False):
@@ -218,7 +221,7 @@ def make_election_voters(elements, styles, polls_data, stv=False):
         total_voters += poll_voters.count()
         if poll_voters.excluded().count() > 0:
             excluded_voters += poll_voters.excluded().count()
-    elements.append(Paragraph(escape(_("Voters") + ": " 
+    elements.append(Paragraph(escape(_("Voters") + ": "
         + str(total_voters)), styles['Zeus']))
     if excluded_voters > 0:
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
@@ -249,6 +252,8 @@ def make_results(elements, styles, total_votes, blank_votes,
         (party, count) = party_result
         if (len(parties_results) > 1):
             make_party_list_heading(elements, styles, party, count)
+        if party not in candidates_results and not isinstance(party, unicode):
+            party = party.decode('utf-8')
         if party in candidates_results:
             make_party_list_table(elements, styles, candidates_results[party])
 
@@ -286,6 +291,11 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
         styles = getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Zeus',
                                   fontName='LinLibertine',
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+        styles.add(ParagraphStyle(name='ZeusBold',
+                                  fontName='LinLibertineBd',
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
@@ -428,6 +438,12 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
+        styles.add(ParagraphStyle(name='ZeusBold',
+                                  fontName='LinLibertineBd',
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+
         styles.add(ParagraphStyle(name='ZeusSubHeading',
                                   fontName='LinLibertineBd',
                                   fontSize=14,
@@ -482,6 +498,163 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
                   onLaterPages = make_later_pages_hf(pageinfo))
 
 
+def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
+              extended_until, results, language, filename="election_results.pdf",
+              new_page=True, score=False, parties=False):
+    with translation.override(language[0]):
+        pageinfo = _("Zeus Elections - Poll Results")
+        title = _('Results')
+        DATE_FMT = "%d/%m/%Y %H:%M"
+        if isinstance(voting_start, datetime.datetime):
+            voting_start = _('Start: %(date)s') % {'date':
+            voting_start.strftime(DATE_FMT)}
+
+        if isinstance(voting_end, datetime.datetime):
+            voting_end = _('End: %(date)s') % {'date':
+            voting_end.strftime(DATE_FMT)}
+
+        if extended_until and isinstance(extended_until, datetime.datetime):
+            extended_until = _('Extension: %(date)s') % {'date':
+            extended_until.strftime(DATE_FMT)}
+        else:
+            extended_until = ""
+
+
+        # reset pdfdoc timestamp in order to force a fresh one to be used in
+        # pdf document metadata.
+        pdfdoc._NOWT = None
+
+        elements = []
+
+        doc = SimpleDocTemplate(filename, pagesize=A4)
+
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='Zeus',
+                                  fontName='LinLibertine',
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+
+        styles.add(ParagraphStyle(name='ZeusBold',
+                                  fontName='LinLibertineBd',
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+
+        styles.add(ParagraphStyle(name='ZeusSubHeading',
+                                  fontName='LinLibertineBd',
+                                  fontSize=14,
+                                  alignment=TA_JUSTIFY,
+                                  spaceAfter=16))
+
+        styles.add(ParagraphStyle(name='ZeusHeading',
+                                  fontName='LinLibertineBd',
+                                  fontSize=16,
+                                  alignment=TA_CENTER,
+                                  spaceAfter=16))
+        intro_contents = [
+            voting_start,
+            voting_end,
+            extended_until
+        ]
+
+        make_heading(elements, styles, [title, name, institution_name])
+        make_intro(elements, styles, intro_contents)
+
+        group_a = results['group_a']
+        group_b = results['group_b']
+        totals = results['totals']
+
+        elements.append(Spacer(1, 12))
+        elements.append(Spacer(1, 12))
+        elements.append(Spacer(1, 12))
+
+        groups_table = []
+        for g in [group_a, group_b]:
+            group_elements = []
+            make_subheading(group_elements, styles, [g['name']])
+            _total_voters = g['voters']
+            _excluded_voters = g['excluded']
+            group_elements.append(Paragraph(escape(_("Voters") + ": "
+                + str(_total_voters)), styles['Zeus']))
+            group_elements.append(Paragraph(escape(_('Total votes: %d') % g['voted']), styles['Zeus']))
+            group_elements.append(Paragraph(escape(_('Blank: %d') % g['blank']), styles['Zeus']))
+            if _excluded_voters > 0:
+                group_elements.append(Paragraph(escape(_("Excluded voters") + ": "
+                    + str(_excluded_voters)), styles['Zeus']))
+            group_elements.append(Spacer(1, 12))
+            group_elements.append(Spacer(1, 12))
+            group_elements.append(Spacer(1, 12))
+            group_elements.append(Spacer(1, 12))
+            group_elements.append(Spacer(1, 12))
+            groups_table.append(group_elements)
+
+        t = Table(zip(*groups_table))
+        table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'LinLibertine')])
+        t.setStyle(table_style)
+        elements.append(t)
+
+        questions = OrderedDict()
+        for q in results['totals']['counts'].keys():
+            total_counts = totals['counts'][q]
+            total_counts_rounded = totals['counts_rounded'][q]
+            group_a_counts = group_a['counts'][q]
+            group_b_counts = group_b['counts'][q]
+            questions[q] = {}
+            for candidate in totals['counts'][q].keys():
+                questions[q][candidate] = {
+                    'total': total_counts[candidate],
+                    'total_rounded': int(total_counts_rounded[candidate]),
+                    'group_a': group_a_counts[candidate],
+                    'group_b': group_b_counts[candidate],
+                }
+
+        elements.append(PageBreak())
+        for question, candidates in questions.iteritems():
+            make_heading(elements, styles, [question])
+            elements.append(Spacer(1, 12))
+            elements.append(Spacer(1, 12))
+            elements.append(Spacer(1, 12))
+
+            group_a_name = group_a['name'].split(" ", 1)[1] if " " in group_a['name'] else group_a['name']
+            group_b_name = group_b['name'].split(" ", 1)[1] if " " in group_b['name'] else group_b['name']
+
+            candidates_table = [
+                [
+                    Paragraph(escape(_("Candidate")), styles['ZeusBold']),
+                    Paragraph(escape(_("Total")), styles['ZeusBold']),
+                    Paragraph(escape(group_a_name), styles['ZeusBold']),
+                    Paragraph(escape(group_b_name), styles['ZeusBold'])
+                ]
+            ]
+            table_data = []
+            for candidate, counts in candidates.iteritems():
+                table_data.append([
+                    Paragraph(escape(candidate), styles['Zeus']),
+                    counts['total_rounded'],
+                    counts['group_a'],
+                    counts['group_b'],
+                ])
+            candidates_table += sorted(table_data, key=lambda x: -x[1])
+
+            from reportlab.lib.units import inch
+
+            t = Table(candidates_table, colWidths=[4*inch] + [1.2*inch] * 3)
+            table_style = TableStyle([
+                ('FONT', (0, 0), (-1, -1), 'LinLibertine'),
+                ('ALIGN',(1,1),(-2,-2),'RIGHT'),
+            ])
+            table_style = TableStyle([('FONT', (0, 0), (-1, -1),'LinLibertine'),
+                                         ('ALIGN',(1,1),(-2,-2),'LEFT'),
+                                         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                                         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                         ])
+            t.setStyle(table_style)
+            elements.append(t)
+            elements.append(PageBreak())
+
+        doc.build(elements, onFirstPage = make_first_page_hf,
+                  onLaterPages = make_later_pages_hf(pageinfo))
 def main():
     import sys
     title = 'Αποτελέσματα'

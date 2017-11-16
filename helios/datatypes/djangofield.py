@@ -7,10 +7,10 @@ and adapted to LDObject
 """
 
 import datetime
+import json
 from django.db import models
 from django.db.models import signals
 from django.conf import settings
-from django.utils import simplejson as json
 from django.core.serializers.json import DjangoJSONEncoder
 
 from . import LDObject
@@ -72,10 +72,3 @@ class LDObjectField(models.TextField):
     def value_to_string(self, obj, *args, **kwargs):
         value = self._get_val_from_obj(obj)
         return self.get_prep_value(value, *args, **kwargs)
-
-##
-## for schema migration, we have to tell South about JSONField
-## basically that it's the same as its parent class
-##
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^helios\.datatypes\.djangofield.LDObjectField"])

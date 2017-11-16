@@ -3,28 +3,49 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 
-from heliosauth.models import User
+from heliosauth.models import User, UserGroup, election_types_choices
 from heliosauth.auth_systems.password import make_password
 from zeus.models.zeus_models import Institution
 
 from utils import random_password
 
+
+class userGroupForm(ModelForm):
+
+    class Meta:
+        model = UserGroup
+        fields = ['name', 'election_types']
+
+    election_types = forms.MultipleChoiceField(
+        choices=election_types_choices(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+
 class userForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ['user_id', 'name', 'institution', 'is_disabled']
+        fields = ['user_id', 'name', 'institution', 'is_disabled', 'user_groups', 'management_p']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, logged_user, *args, **kwargs):
         super(userForm, self).__init__(*args, **kwargs)
+        self.logged_user = logged_user
         self.fields['user_id'].label = "User ID"
         self.fields['name'].label = _("Name")
         self.fields['institution'].label = _("Institution")
         self.fields['is_disabled'].label = _("Disable account")
+        self.fields['management_p'].label = _("Helpdesk user")
+
         if not kwargs['instance']:
-            self.fields.pop('is_disabled') 
+            self.fields.pop('is_disabled')
     name = forms.CharField(required=False)
     institution = forms.CharField(required=True)
+    user_groups = forms.ModelMultipleChoiceField(
+        queryset=UserGroup.objects.filter(),
+        initial=[UserGroup.objects.get(name="default")],
+        widget=forms.CheckboxSelectMultiple
+    )
 
     def clean_user_id(self):
         user_id = self.cleaned_data['user_id']
@@ -50,26 +71,31 @@ class userForm(ModelForm):
 
     def save(self, commit=True):
         instance = super(userForm, self).save(commit=False)
+
         try:
             User.objects.get(id=instance.id)
             if commit:
                 instance.save()
+                self.save_m2m()
             return instance, None
+
         except(User.DoesNotExist):
             instance.name = self.cleaned_data['name']
             password = random_password()
             instance.info = {'name': instance.name or instance.user_id,
                         'password': make_password(password)}
             instance.institution = self.cleaned_data['institution']
-            instance.management_p = False
+            if self.logged_user.superadmin_p:
+                instance.management_p = self.cleaned_data.get('management_p')
             instance.admin_p = True
             instance.user_type = 'password'
             instance.superadmin_p = False
             instance.ecounting_account = False
             if commit:
                 instance.save()
+                self.save_m2m()
             return instance, password
-            
+
 
 class institutionForm(ModelForm):
 

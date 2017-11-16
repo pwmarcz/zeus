@@ -134,12 +134,18 @@ class TaskModel(models.Model):
                 e = self.election
             e.notify_admins(msg=msg, subject=subject, send_anyway=True)
 
+    def _select_for_update(self, obj=None):
+        obj = obj or self
+        if obj.pk:
+            return obj.__class__.objects.select_for_update().get(pk=obj.pk)
+        return obj
+
     class Meta:
         abstract = True
 
 
 def task(name, required_features=(), is_recurrent=False, completed_cb=None,
-         features_key=''):
+         features_key='', lock=True):
     status_field = '%s_status' % name
     error_field = '%s_error' % name
     started_field = '%s_started_at' % name
@@ -147,48 +153,57 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
 
     def wrapper(func):
         def inner(self, *args, **kwargs):
+
             status = getattr(self, status_field)
             if status == 'finished':
                 #raise Exception('Cannot rerun')
                 return
 
-            with transaction.commit_on_success():
+            with transaction.atomic():
+                self._select_for_update()
                 setattr(self, started_field, datetime.datetime.now())
                 setattr(self, status_field, 'running')
                 self.notify_task(name, 'starting')
                 self.save()
 
-            with transaction.commit_manually():
-                try:
-                    func(self, *args, **kwargs)
-                    finished = False
-                    if not is_recurrent:
-                        finished = True
-                    else:
-                        if completed_cb and completed_cb(self):
-                            finished = True
+            try:
+                # in order to manually track task method error status
+                transaction.set_autocommit(False)
 
-                    if finished:
-                        self.__setattr__(finished_field,
-                                     datetime.datetime.now())
-                        setattr(self, status_field, 'finished')
-                        setattr(self, error_field, None)
-                        self.notify_task(name, 'finished')
-                    else:
-                        self.notify_task(name, 'waiting')
-                        setattr(self, status_field, 'waiting')
+                if lock:
+                    self._select_for_update()
+                func(self, *args, **kwargs)
+
+                finished = False
+                if not is_recurrent:
+                    finished = True
+                else:
+                    if completed_cb and completed_cb(self):
+                        finished = True
+
+                if finished:
+                    self.__setattr__(finished_field,
+                                    datetime.datetime.now())
+                    setattr(self, status_field, 'finished')
+                    setattr(self, error_field, None)
+                    self.notify_task(name, 'finished')
+                else:
+                    self.notify_task(name, 'waiting')
+                    setattr(self, status_field, 'waiting')
+                self.save()
+                transaction.commit()
+                transaction.set_autocommit(True)
+            except Exception, e:
+                error = str(e)
+                self.notify_task(name, 'error', error)
+                self.notify_exception(e)
+                transaction.rollback()
+                transaction.set_autocommit(True)
+                with transaction.atomic():
+                    setattr(self, error_field, error)
+                    setattr(self, started_field, None)
+                    setattr(self, status_field, 'pending')
                     self.save()
-                    transaction.commit()
-                except Exception, e:
-                    error = str(e)
-                    self.notify_task(name, 'error', error)
-                    self.notify_exception(e)
-                    transaction.rollback()
-                    with transaction.commit_on_success():
-                        setattr(self, error_field, error)
-                        setattr(self, started_field, None)
-                        setattr(self, status_field, 'pending')
-                        self.save()
 
         setattr(inner, '_task', True)
         setattr(inner, '_task_name', name)
@@ -234,8 +249,7 @@ class PollTasks(TaskModel):
 
     @poll_task('validate_create', ('frozen',))
     def validate_create(self):
-        e = self.election.__class__.objects.select_for_update().get(
-            pk=self.election.pk)
+        e = self._select_for_update(self.election)
         Random.atfork()
         self.zeus.validate_creating()
         self.frozen_at = datetime.datetime.now()
@@ -266,6 +280,7 @@ class PollTasks(TaskModel):
 
     @poll_task('validate_voting', ('closed',))
     def validate_voting(self):
+        self._select_for_update()
         self.zeus.validate_voting()
         self.save()
 
