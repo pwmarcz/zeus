@@ -21,6 +21,7 @@ from django.forms.formsets import formset_factory
 from helios.view_utils import render_template
 from heliosauth.auth_systems.password import make_password
 from helios.models import User, Election
+from heliosauth.models import UserGroup
 from zeus.models import Institution
 from zeus.utils import email_is_valid
 from zeus.auth import ZeusUser
@@ -246,6 +247,11 @@ def _get_demo_user(email_address):
     if tries <= 0:
         return None, ''
 
+    demogroup = None
+    try:
+        demogroup = UserGroup.objects.get(name="demo")
+    except UserGroup.DoesNotExist:
+        pass
     newuser = User()
     newuser.user_type = "password"
     newuser.admin_p = True
@@ -257,6 +263,9 @@ def _get_demo_user(email_address):
     newuser.institution = inst
     newuser.ecounting_account = False
     newuser.save()
+    if demogroup:
+        newuser.user_groups.add(demogroup)
+        newuser.save()
     return newuser, password
 
 
