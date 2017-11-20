@@ -140,7 +140,7 @@
         {{ voter.voter_weight }}
     </td>
     {% endif %}
-    {% if user.is_manager or 'cast_vote__id' in voter_table_headers %}
+    {% if user.is_manager or 'cast_votes__id' in voter_table_headers %}
     <td>
       {% if voter.voted %}
       {% trans "YES" %} {% if voter.excluded_at %}<b style="color:red">{% trans "(Excluded)" %}</b>{% endif %}
