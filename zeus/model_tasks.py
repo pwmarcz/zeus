@@ -70,9 +70,12 @@ def task_fields(task):
     def feat_error(self):
         return bool(getattr(self, error_field))
 
-    def reset(self):
+    def reset(self, force=False):
         self.logger.info("Resetting '%s' task state from '%s'." % \
                          (task_name, getattr(self, status_field)))
+        status = getattr(self, status_field)
+        if not force and status != 'error':
+            raise Exception("Cannot reset task in %r status" % status)
         setattr(self, status_field, 'pending')
         setattr(self, started_field, None)
         setattr(self, finished_field, None)
