@@ -157,13 +157,20 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
     def wrapper(func):
         def inner(self, *args, **kwargs):
 
-            status = getattr(self, status_field)
-            if status == 'finished':
-                #raise Exception('Cannot rerun')
-                return
-
             with transaction.atomic():
-                self._select_for_update()
+                _obj = self._select_for_update()
+                status = getattr(_obj, status_field)
+                task_name = name
+                if status == 'running':
+                    self.logger.info("Skip already running '%s (%s)' task." % \
+                            (task_name, status))
+                    return
+
+                if status == 'finished':
+                    self.logger.info("Skip already finished '%s (%s)' task." % \
+                            (task_name, status))
+                    return
+
                 setattr(self, started_field, datetime.datetime.now())
                 setattr(self, status_field, 'running')
                 self.notify_task(name, 'starting')
