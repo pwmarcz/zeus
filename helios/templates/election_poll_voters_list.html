@@ -45,7 +45,7 @@
             <li>
             <a style="" class="foundicon-mail voters-action" 
             href="{% url "election_poll_voters_email" election.uuid poll.uuid %}{% if q %}?q={{q|escape|escape_plus}}{% endif %}">
-                &nbsp;{% trans "Send voters email" %}</a>
+                &nbsp;{% trans "Notify voters" %}</a>
             </li>
             {% endif %}
             <li>
@@ -179,7 +179,7 @@
 <ul>
 
 {% if poll.feature_can_send_voter_mail %}
-    {% trans "Send voter email" as label %}
+    {% trans "Notify voters" as label %}
     {% url "election_poll_voter_email" election.uuid poll.uuid voter.uuid as email_url %}
     {% menu_action label email_url "mail" %}
 {% endif %}

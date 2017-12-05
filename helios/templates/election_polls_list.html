@@ -17,11 +17,11 @@
             {% trans "Batch polls actions" %}&nbsp;
             <ul>
             {% url "election_voters_email" election.uuid as email_url %}
-            {% trans "Send voters email" as label %}
+            {% trans "Notify voters" as label %}
             <li>
             <a style="" class="foundicon-mail" 
                 href="{% url "election_voters_email" election.uuid %}">
-                &nbsp;{% trans "Send voters email" %}</a>
+                &nbsp;{% trans "Notify voters" %}</a>
             </li>
           </ul>
         </div>

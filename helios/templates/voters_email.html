@@ -5,7 +5,7 @@
 {% include "_election_view_menu.html" %}
 {% endblock %}
 
-{% block title %}{% trans "Send email" %}{% endblock %}
+{% block title %}{% trans "Notify voters" %}{% endblock %}
 
 {% block content %}
 <script>
@@ -18,16 +18,16 @@ voter_id = '{{voter_o.voter_id}}';
 <h5>
 {% if voter_o %}
 {% blocktrans with voter_name=voter_o.name voter_id=voter_o.voter_id suffix=filtered_voters.count|voters_filtered_suffix %}
-Send email to voter {{ voter_name }} ({{voter_id}})
+Notify voter {{ voter_name }} ({{voter_id}})
 {% endblocktrans %}
 {% else %}
 {% if poll %}
 {% blocktrans with poll_name=poll.name suffix=filtered_voters.count|voters_filtered_suffix %}
-Send email to poll '{{ poll_name }}' voters {{ suffix }}
+Notify poll '{{ poll_name }}' voters {{ suffix }}
 {% endblocktrans %}
 {% else %}
 {% blocktrans with election_name=election.name suffix=filtered_voters.count|voters_filtered_suffix %}
-Send email to election '{{ election_name }}' voters {{ suffix }}
+Notify election '{{ election_name }}' voters {{ suffix }}
 {% endblocktrans %}
 {% endif %}
 {% endif %}
