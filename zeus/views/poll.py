@@ -447,7 +447,7 @@ def voters_upload(request, election, poll):
                     voter_file.process(process_linked,
                                        preferred_encoding=preferred_encoding)
                 except (exceptions.VoterLimitReached, \
-                    exceptions.DuplicateVoterID) as e:
+                    exceptions.DuplicateVoterID, ValidationError) as e:
                     messages.error(request, e.message)
                     voter_file.delete()
                     url = poll_reverse(poll, 'voters')
@@ -607,12 +607,13 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             'custom_subject': "&lt;SUBJECT&gt;"
         })
 
-    default_body = render_to_string(
-        'email/%s_body.txt' % template, {
+    tpl_context = {
             'election' : election,
             'election_url' : election_url,
             'custom_subject' : default_subject,
             'custom_message': '&lt;BODY&gt;',
+            'custom_message_sms': '<SMS_BODY>',
+            'SECURE_URL_HOST': settings.SECURE_URL_HOST,
             'voter': {
                 'vote_hash' : '<SMART_TRACKER>',
                 'name': '<VOTER_NAME>',
@@ -620,12 +621,19 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                 'voter_surname': '<VOTER_SURNAME>',
                 'voter_login_id': '<VOTER_LOGIN_ID>',
                 'voter_password': '<VOTER_PASSWORD>',
+                'login_code': '<VOTER_LOGIN_CODE>',
                 'audit_passwords': '1',
                 'get_audit_passwords': ['pass1', 'pass2', '...'],
                 'get_quick_login_url': '<VOTER_LOGIN_URL>',
                 'poll': poll,
                 'election' : election}
-            })
+            }
+
+    default_body = render_to_string(
+        'email/%s_body.txt' % template, tpl_context)
+
+    default_sms_body = render_to_string(
+        'sms/%s_body.txt' % template, tpl_context)
 
     q_param = request.GET.get('q', None)
 
@@ -646,13 +654,13 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             return HttpResponseRedirect(url)
 
     if request.method == "GET":
-        email_form = EmailVotersForm()
-        email_form.fields['subject'].initial = dict(TEMPLATES)[template]
+        email_form = EmailVotersForm(election, template)
+        email_form.fields['email_subject'].initial = dict(TEMPLATES)[template]
         if voter:
             email_form.fields['send_to'].widget = \
                 email_form.fields['send_to'].hidden_widget()
     else:
-        email_form = EmailVotersForm(request.POST)
+        email_form = EmailVotersForm(election, template, request.POST)
         if email_form.is_valid():
             # the client knows to submit only once with a specific voter_id
             voter_constraints_include = None
@@ -682,15 +690,24 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
                 subject_template = 'email/%s_subject.txt' % template
                 body_template = 'email/%s_body.txt' % template
+                body_template_sms = 'sms/%s_body.txt' % template
+                contact_method = email_form.cleaned_data['contact_method']
+
                 extra_vars = {
-                    'custom_subject' : email_form.cleaned_data['subject'],
-                    'custom_message' : email_form.cleaned_data['body'],
+                    'SECURE_URL_HOST': settings.SECURE_URL_HOST,
+                    'custom_subject' : email_form.cleaned_data['email_subject'],
+                    'custom_message' : email_form.cleaned_data['email_body'],
+                    'custom_message_sms' : email_form.cleaned_data['sms_body'],
                     'election_url' : election_url,
                 }
                 task_kwargs = {
-                    'subject_template': subject_template,
-                    'body_template': body_template,
-                    'extra_vars': extra_vars,
+                    'contact_id': template,
+                    'notify_once': email_form.cleaned_data.get('notify_once'),
+                    'subject_template_email': subject_template,
+                    'body_template_email': body_template,
+                    'body_template_sms': body_template_sms,
+                    'contact_methods': contact_method.split(":"),
+                    'template_vars': extra_vars,
                     'voter_constraints_include': voter_constraints_include,
                     'voter_constraints_exclude': voter_constraints_exclude,
                     'update_date': True,
@@ -707,6 +724,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                     log_obj.logger.info("Notifying voters, [template: %s, filter: %r]", template, q_param)
                 tasks.voters_email.delay(_poll.pk, **task_kwargs)
 
+
             filters = get_voters_filters_with_constraints(q_param,
                         voter_constraints_include, voter_constraints_exclude)
             send_to = filtered_voters.filter(filters)
@@ -722,6 +740,12 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             if q_param:
                 url += '?q=%s' % urllib.quote_plus(q_param)
             return HttpResponseRedirect(url)
+        else:
+            message = _("Something went wrong")
+            messages.error(request, message)
+
+    if election.sms_enabled and election.sms_data.left <= 0:
+        messages.warning(request, _("No SMS deliveries left."))
 
     context = {
         'email_form': email_form,
@@ -730,6 +754,8 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         'voter_o': voter,
         'default_subject': default_subject,
         'default_body': default_body,
+        'default_sms_body': default_sms_body,
+        'sms_enabled': election.sms_enabled,
         'template': template,
         'filtered_voters': filtered_voters,
         'templates': TEMPLATES
@@ -968,8 +994,8 @@ def cast(request, election, poll):
                             content_type="application/json")
     else:
         # notify user
-        tasks.send_cast_vote_email.delay(poll.pk, voter.pk, signature)
         fingerprint = voter.cast_votes.filter()[0].fingerprint
+        tasks.send_cast_vote_email.delay(poll.pk, voter.pk, signature, fingerprint)
         url = "%s%s?f=%s" % (settings.SECURE_URL_HOST, poll_reverse(poll,
                                                                'cast_done'),
                              fingerprint)
@@ -1008,6 +1034,12 @@ def cast_done(request, election, poll):
                                'election_uuid': election.uuid,
                                'poll_uuid': poll.uuid
     })
+
+
+@require_http_methods(["GET"])
+def download_signature_short(request, fingerprint):
+    vote = CastVote.objects.get(fingerprint=fingerprint)
+    return download_signature(request, vote.voter.poll.election, vote.voter.poll, fingerprint)
 
 
 @auth.election_view(check_access=False)
@@ -1194,10 +1226,10 @@ def sms_delivery(request, election, poll):
     if error == '0':
         error = None
     code = "mybsms:" + resp['id']
+    poll.logger.info(
+        "Mobile delivery status received from '%r': %r" % (ip_addr, resp))
     try:
         voter = poll.voters.get(last_sms_code=code)
-        poll.logger.info(
-            "Mobile delivery status received from '%r': %r" % (ip_addr, resp))
         status = resp.get('status', 'unknown')
         if error:
             status = "%s:%r:%r" % ("ERROR", status, resp)

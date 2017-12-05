@@ -41,8 +41,6 @@ Send email to election '{{ election_name }}' voters {{ suffix }}
 {% endif %}
 
 <p>
-<b>Templates</b>:
-
 {% for template_option in templates %}
 {% if template_option.0 == template %}
 <b>{{template_option.1}}</b>
@@ -52,12 +50,22 @@ Send email to election '{{ election_name }}' voters {{ suffix }}
 &nbsp;&nbsp;&nbsp;
 {% endfor %}
 
+{% if sms_enabled %}
+<h5>{% trans "Email content" %}</h5>
+{% endif %}
 <pre style="border: 1px solid #888; padding:20px">
 Subject: {{default_subject}}
 
 {{default_body|safe}}
 </pre>
+{% if sms_enabled %}
+<h5>{% trans "SMS content" %}</h5>
+<pre style="border: 1px solid #888; padding:20px">
+{{default_sms_body|safe}}
+</pre>
+{% endif %}
 
+<br /><br />
 <p>
 {% trans "You can edit the contents of the message using the following form." %}
 </p>

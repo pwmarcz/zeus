@@ -10,6 +10,7 @@ if SERVER_PREFIX:
 
 app_patterns = patterns('')
 
+
 auth_urls = patterns('zeus.views.auth',
     url(r'^auth/logout', 'logout', name='logout'),
     url(r'^auth/login', 'password_login_view', name='login'),
@@ -28,6 +29,8 @@ admin_urls = patterns('zeus.views.admin',
 
 app_patterns += patterns(
     '',
+    url(r'^vote', 'zeus.views.auth.voter_login', name='voter_quick_login'),
+    url(r'^f/(?P<fingerprint>.*)', 'zeus.views.poll.download_signature_short', name='download_signature_short'),
     (r'^', include('zeus.urls.site')),
     (r'^elections/', include('zeus.urls.election')),
     (r'^auth/', include(auth_urls)),

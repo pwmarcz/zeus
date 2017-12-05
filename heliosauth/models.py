@@ -45,6 +45,22 @@ class UserGroup(models.Model):
         return self.name
 
 
+class SMSBackendData(models.Model):
+
+  credentials = models.TextField(max_length=255, null=True, default=None)
+  limit = models.PositiveIntegerField(default=0)
+  sent = models.PositiveIntegerField(default=0)
+  sender = models.CharField(max_length=255, default="ZEUS")
+
+  @property
+  def left(self):
+      return self.limit - self.sent
+
+  def increase_sent(self, msg=None):
+      inst = self.__class__.objects.get(pk=self.pk)
+      inst.sent += 1
+      inst.save()
+
 class User(models.Model):
   user_type = models.CharField(max_length=50)
   user_id = models.CharField(max_length=100, unique=True)
@@ -54,6 +70,7 @@ class User(models.Model):
 
   # other properties
   info = JSONField()
+  sms_data = models.ForeignKey(SMSBackendData, null=True, default=None)
 
   # access token information
   token = JSONField(null = True)

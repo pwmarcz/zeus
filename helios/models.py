@@ -50,7 +50,7 @@ from helios.byte_fields import ByteaField
 from helios.utils import force_utf8
 
 
-from heliosauth.models import User, AUTH_SYSTEMS
+from heliosauth.models import User, AUTH_SYSTEMS, SMSBackendData
 from heliosauth.jsonfield import JSONField
 from helios.datatypes import LDObject
 
@@ -258,6 +258,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         (0, _('Unofficial')),
         (1, _('Official')),
     )
+
     linked_polls = models.BooleanField(_('Linked polls'), default=False)
     election_module = models.CharField(_("Election type"), max_length=250,
                                          null=False,
@@ -329,12 +330,32 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
                                     choices=OFFICIAL_CHOICES)
     objects = ElectionManager()
 
+    sms_data = models.ForeignKey(SMSBackendData, default=None, null=True)
+    sms_api_enabled = models.BooleanField(default=False)
+
+    cast_notify_once = models.BooleanField(default=True)
+
     class Meta:
         ordering = ('-created_at', )
 
     def __init__(self, *args, **kwargs):
         self._logger = None
         super(Election, self).__init__(*args, **kwargs)
+
+
+    @property
+    def sms_credentials(self):
+        try:
+            data = self.sms_data.credentials
+            if not data:
+                return None
+            return data.strip().split(":")
+        except:
+            return None
+
+    @property
+    def sms_enabled(self):
+        return self.sms_api_enabled and self.sms_data
 
     @property
     def polls_by_link_id(self):
@@ -742,6 +763,10 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
   def __init__(self, *args, **kwargs):
       self._logger = None
       super(Poll, self).__init__(*args, **kwargs)
+
+  @property
+  def sms_enabled(self):
+    return self.election.sms_enabled
 
   def get_shibboleth_constraints(self):
     defaults = {
@@ -1417,8 +1442,11 @@ def iter_voter_data(voter_data, email_validator=validate_email,
             raise ValidationError(m)
 
         return_dict['voter_id'] = voter_fields[0]
-        email = voter_fields[1]
-        email_validator(email, line)
+        email = voter_fields[1].strip()
+        if len(email) > 0:
+            email_validator(email, line)
+        else:
+            email = None
         return_dict['email'] = email
         if len(voter_fields) == 2:
             yield return_dict
@@ -1450,6 +1478,8 @@ def iter_voter_data(voter_data, email_validator=validate_email,
                 (mobile[0] != '+' and not mobile[0].isdigit()):
                     m = _("Malformed mobile phone number: %s") % mobile
                     raise ValidationError(m)
+        else:
+            mobile = None
         return_dict['mobile'] = mobile
 
         weight = voter_fields[6]
@@ -1507,6 +1537,16 @@ class VoterFile(models.Model):
     return iter_voter_data(voter_data, email_validator=email_validator,
                            preferred_encoding=preferred_encoding)
 
+  def validate_voter_entry(self, voter):
+      if not any([voter['email'], voter['mobile']]):
+          msg = _("Voter [%s]: Provide at least one of the email and mobile fields." \
+                  % voter['voter_id'])
+          raise ValidationError(msg)
+
+      if voter['mobile'] and not self.poll.sms_enabled:
+          msg = _("Mobile backend is not set for this election")
+          raise ValidationError(msg)
+
   @transaction.atomic
   def process(self, linked=True, check_dupes=True, preferred_encoding=None):
     demo_voters = 0
@@ -1545,6 +1585,8 @@ class VoterFile(models.Model):
       fathername = voter.get('fathername', '')
       mobile = voter.get('mobile', '')
       weight = voter.get('weight', 1)
+
+      self.validate_voter_entry(voter)
 
       voter = None
       try:
@@ -1626,6 +1668,12 @@ class VoterQuerySet(QuerySet):
     def visited(self):
         return self.filter(last_visit__isnull=False)
 
+    def email_set(self):
+        return self.filter(voter_email__isnull=False).exclude(voter_email="")
+
+    def mobile_set(self):
+        return self.filter(voter_mobile__isnull=False).exclude(voter_mobile="")
+
 class VoterManager(models.Manager):
 
     def get_queryset(self):
@@ -1664,6 +1712,7 @@ class Voter(HeliosModel, VoterFeatures):
   last_sms_send_at = models.DateTimeField(null=True)
   last_sms_code = models.CharField(max_length=100, blank=True, null=True)
   last_sms_status = models.CharField(max_length=255, blank=True, null=True)
+
   last_email_send_at = models.DateTimeField(null=True)
   last_booth_invitation_send_at = models.DateTimeField(null=True)
   last_visit = models.DateTimeField(null=True)
@@ -1677,6 +1726,24 @@ class Voter(HeliosModel, VoterFeatures):
     unique_together = (('poll', 'voter_login_id'), ('poll', 'voter_password'))
 
   user = None
+
+  def notify(self, method, subject, body, vars):
+      backend = self.get
+
+  @property
+  def contact_methods(self):
+      methods_attr_map = (
+          ('voter_email', 'email'),
+          ('voter_mobile', 'sms')
+      )
+      method_enabled = lambda x: x[1] if getattr(self, x[0], None) else None
+      return filter(bool, map(method_enabled, methods_attr_map))
+
+  def voter_email_display(self):
+      return self.voter_email or _("No email set")
+
+  def voter_contact_field_display(self):
+      return self.voter_email or self.voter_mobile
 
   @property
   def linked_voters(self):

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 VOTER_REMOVE_CONFIRM = _("Confirm voter removal: {{ voter.voter_name}} "
                          "{{ voter.voter_surname }} "
                          "{{ voter.voter_fathername }} "
-                         "({{ voter.voter_email }})")
+                         "({{ voter.voter_contact_field_display }})")
 
 
 TRUSTEE_REMOVE_CONFIRM = _("Are you sure you want to delete the selected"

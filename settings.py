@@ -305,6 +305,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
+SMS_BACKEND = "mybsms"
+
 # useful trick for custom settings
 try:
     from local_settings import *

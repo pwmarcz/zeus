@@ -38,7 +38,7 @@
 {% else %}
 <tr>
 {% endif %}
-    <td>{{v.voter_id}}</td><td>{{v.email}}</td>
+<td>{{v.voter_id}}</td><td>{% if v.email %}{{v.email}}{% else %}{% trans "No email set" %}{% endif %}</td>
     <td>{{v.name}}</td><td>{{v.surname}}</td>
     <td>{{ v.fathername }}</td><td>{{ v.mobile }}</td>
     <td>{{ v.weight }}</td>

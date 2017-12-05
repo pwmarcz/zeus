@@ -1,2 +1,11 @@
-{% load i18n %}{% trans "Vote fingerprint" %}
-{{ vote_hash }}
+You have successfully cast a vote in
+
+{{election.name}}
+{{poll.name}}
+
+as
+
+{{voter.voter_name}} {{voter.voter_surname}}
+with registration ID: {{voter.voter_login_id}}
+
+you can find your encrypted vote attached in this mail.

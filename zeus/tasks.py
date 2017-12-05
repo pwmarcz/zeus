@@ -22,6 +22,7 @@ from django.db import transaction
 from zeus.core import from_canonical
 from zeus import mobile
 from zeus import utils
+from zeus.contact import ContactBackend
 from email.Utils import formataddr
 
 
@@ -57,94 +58,141 @@ def poll_task(*taskargs, **taskkwargs):
 
 @task(rate_limit=getattr(settings, 'ZEUS_VOTER_EMAIL_RATE', '20/m'),
       ignore_result=True)
-def single_voter_email(voter_uuid, subject_template, body_template,
-                       extra_vars={}, update_date=True,
-                       update_booth_invitation_date=False):
+def single_voter_email(voter_uuid,
+                       contact_methods,
+                       contact_id,
+                       subject_template_email,
+                       body_template_email,
+                       body_template_sms,
+                       template_vars={},
+                       update_date=True,
+                       update_booth_invitation_date=False,
+                       notify_once=False):
+
     voter = Voter.objects.get(uuid=voter_uuid)
     lang = voter.poll.election.communication_language
+
     with translation.override(lang):
-        the_vars = copy.copy(extra_vars)
-        the_vars.update({'voter' : voter, 'poll': voter.poll,
-                         'election': voter.poll.election})
-        subject = render_template_raw(None, subject_template, the_vars)
-        body = render_template_raw(None, body_template, the_vars)
-        linked_voters = voter.linked_voters
-        if update_date:
-            for voter in linked_voters:
-                voter.last_email_send_at = datetime.datetime.now()
-                voter.save()
-        if update_booth_invitation_date:
-            for voter in linked_voters:
-                voter.last_booth_invitation_send_at = datetime.datetime.now()
-                voter.save()
-        voter.user.send_message(subject, body)
+        template_vars= copy.copy(template_vars)
+        template_vars.update({'voter' : voter, 'poll': voter.poll,
+                              'election': voter.poll.election})
+
+        subject_tpls = {
+            'email': subject_template_email,
+            'sms': ''
+        }
+
+        body_tpls = {
+            'email': body_template_email,
+            'sms': body_template_sms
+        }
+
+
+        def sent_hook(voter, method, error=None):
+            if error:
+                return
+            linked_voters = voter.linked_voters
+            if method == 'email' and update_date:
+                for voter in linked_voters:
+                    voter.last_email_send_at = datetime.datetime.now()
+                    voter.save()
+            if method == 'sms' and update_date:
+                for voter in linked_voters:
+                    voter.last_sms_send_at = datetime.datetime.now()
+                    voter.save()
+            if update_booth_invitation_date:
+                for voter in linked_voters:
+                    voter.last_booth_invitation_send_at = datetime.datetime.now()
+                    voter.save()
+
+        ContactBackend.notify_voter(
+            voter.poll,
+            voter,
+            contact_id,
+            contact_methods,
+            subject_tpls,
+            body_tpls,
+            template_vars,
+            sent_hook=sent_hook,
+            notify_once=notify_once)
 
 
 @task(ignore_result=True)
-def voters_email(poll_id, subject_template, body_template, extra_vars={},
+def voters_email(poll_id,
+                 contact_methods,
+                 contact_id,
+                 subject_template_email,
+                 body_template_email,
+                 body_template_sms,
+                 template_vars={},
                  voter_constraints_include=None,
                  voter_constraints_exclude=None,
                  update_date=True,
                  update_booth_invitation_date=False,
+                 notify_once=False,
                  q_param=None):
+
     poll = Poll.objects.get(id=poll_id)
     voters = poll.voters.filter(utils.get_voters_filters_with_constraints(
         q_param, voter_constraints_include, voter_constraints_exclude
     ))
 
+    poll.logger.info("Notifying %d voters via %r" % (voters.count(), contact_methods))
     if len(poll.linked_polls) > 1 and 'vote_body' in body_template:
-        body_template = body_template.replace("_body.txt", "_linked_body.txt")
+        body_template_email = body_template_email.replace("_body.txt", "_linked_body.txt")
+        #TODO: Handle linked polls sms notification
 
     for voter in voters:
         single_voter_email.delay(voter.uuid,
-                                 subject_template,
-                                 body_template,
-                                 extra_vars,
+                                 contact_methods,
+                                 contact_id,
+                                 subject_template_email,
+                                 body_template_email,
+                                 body_template_sms,
+                                 template_vars,
                                  update_date,
-                                 update_booth_invitation_date)
+                                 update_booth_invitation_date,
+                                 notify_once=notify_once)
 
 
 @task(rate_limit=getattr(settings, 'ZEUS_VOTER_EMAIL_RATE', '20/m'),
       ignore_result=True)
-def send_cast_vote_email(poll_pk, voter_pk, signature):
+def send_cast_vote_email(poll_pk, voter_pk, signature, fingerprint):
     poll = Poll.objects.get(pk=poll_pk)
     election = poll.election
     lang = election.communication_language
     voter = poll.voters.filter().get(pk=voter_pk)
 
     with translation.override(lang):
-        subject = _("%(election_name)s - vote cast") % {
-          'election_name': election.name,
-          'poll_name': poll.name
-    }
+        email_subject = "email/cast_done_subject.txt"
+        email_body = "email/cast_done_body.txt"
+        sms_body = "sms/cast_done_body.txt"
+        # send it via the notification system associated with the auth system
+        attachments = [('vote.signature', signature['signature'], 'text/plain')]
 
-        body = _(u"""You have successfully cast a vote in
+        subject_tpls = {
+            'email': email_subject,
+            'sms': None
+        }
 
-%(election_name)s
-%(poll_name)s
+        body_tpls = {
+            'email': email_body,
+            'sms': sms_body
+        }
 
-as
-
-%(voter_name)s %(voter_surname)s
-with registration ID: %(reg_id)s
-
-you can find your encrypted vote attached in this mail.
-""") % {
-    'election_name': election.name,
-    'poll_name': poll.name,
-    'voter_name': voter.voter_name,
-    'voter_surname': voter.voter_surname,
-    'reg_id': voter.voter_login_id,
-}
-    # send it via the notification system associated with the auth system
-    attachments = [('vote.signature', signature['signature'], 'text/plain')]
-    name = "%s %s" % (voter.voter_name, voter.voter_surname)
-    to = formataddr((name, voter.voter_email))
-    message = EmailMessage(subject, body, settings.SERVER_EMAIL, [to])
-    for attachment in attachments:
-        message.attach(*attachment)
-
-    message.send(fail_silently=False)
+        receipt_url = settings.SECURE_URL_HOST + reverse('download_signature_short', args=(fingerprint,))
+        tpl_vars = {
+            'voter': voter,
+            'poll': poll,
+            'election': election,
+            'signature': signature,
+            'date': voter.last_cast_vote().cast_at,
+            'vote_receipt_url': receipt_url
+        }
+        ContactBackend.notify_voter(
+            poll, voter, 'cast_done', voter.contact_methods, subject_tpls,
+            body_tpls, tpl_vars, attachments=attachments,
+            notify_once=election.cast_notify_once)
 
 
 @poll_task(ignore_result=True)
@@ -313,74 +361,6 @@ def poll_compute_results(poll_id):
         subject = "Results computed - docs generated"
         msg = "Results computed - docs generated"
         e.notify_admins(msg=msg, subject=subject)
-
-
-
-@task(ignore_result=False)
-def send_voter_sms(voter_id, tpl, override_mobile=None, resend=False,
-                   dry=True):
-    voter = Voter.objects.select_related().get(pk=voter_id)
-    if not voter.voter_mobile and not override_mobile:
-        raise Exception("Voter mobile field not set")
-
-    dlr_url = settings.SECURE_URL_HOST + reverse('election_poll_sms_delivery', args=(voter.poll.election.uuid, voter.poll.uuid))
-    client = mobile.get_client(voter.poll.election.uuid, dlr_url=dlr_url)
-    message = ""
-    context = Context({
-        'voter': voter,
-        'poll': voter.poll,
-        'election': voter.poll.election,
-        'reg_code': voter.voter_login_id,
-        'login_code': voter.login_code,
-        'email': voter.voter_email,
-        'secret': voter.voter_password,
-        'SECURE_URL_HOST': settings.SECURE_URL_HOST
-    })
-    t = Template(tpl)
-    message = t.render(context)
-
-    # identify and sanitize mobile number
-    voter_mobile = override_mobile or voter.voter_mobile
-    try:
-        voter_mobile = utils.sanitize_mobile_number(voter_mobile)
-    except Exception, e:
-        return False, "Invalid number (%s)" % str(voter_mobile)
-
-    # do not resend if asked to
-    if not resend and voter.last_sms_send_at:
-        print "Skipping. Message already sent at %r" % voter.last_sms_send_at
-
-    if dry:
-        # dry/testing mode
-        print 10 * "-"
-        print "TO: ", voter_mobile
-        print "FROM: ", client.from_mobile
-        print "MESSAGE (%d) :" % len(message)
-        print message
-        print 10 * "-"
-        sent, error_or_code = True, "FAKE_ID"
-    else:
-        # call to the API
-        poll = voter.poll
-        poll.logger.info("Sending SMS to %s, (%s - %s)", voter_mobile,
-                         voter.voter_login_id, voter.voter_mobile)
-        sent, error_or_code = client.send(voter_mobile, message)
-        msg_uid = client._last_uid
-        if not sent:
-            poll.logger.error("Failed to send %r (%r, %r)", msg_uid, sent,
-                              error_or_code)
-        else:
-            poll.logger.info("SMS sent %r (%r, %r)", msg_uid, sent,
-                             error_or_code)
-        if sent:
-            # store last notification date
-            voter.last_sms_send_at = datetime.datetime.now()
-            voter.last_sms_code = client.id + ":" + error_or_code
-            if not client.remote_status:
-                voter.last_sms_status = 'sent'
-            voter.save()
-
-    return sent, error_or_code
 
 
 @task(ignore_result=False)

@@ -97,7 +97,8 @@ class ElectionForm(forms.ModelForm):
                   'departments', 'voting_starts_at', 'voting_ends_at',
                   'voting_extended_until',
                   'trustees', 'help_email', 'help_phone',
-                  'communication_language', 'linked_polls')
+                  'communication_language', 'linked_polls',
+                  'sms_api_enabled')
 
     def __init__(self, owner, institution, *args, **kwargs):
         self.institution = institution
@@ -116,6 +117,18 @@ class ElectionForm(forms.ModelForm):
                                                     choices=choices,
                                                     initial=lang,
                                                     help_text = help_text)
+        self.fields['remote_mixes'].widget = forms.HiddenInput()
+        self.fields['linked_polls'].widget = forms.HiddenInput()
+        if owner.sms_data:
+            help_text = _("Allow service to notify voters using SMS (%d deliveries available for your account)" % owner.sms_data.left)
+            self.fields['sms_api_enabled'] = forms.BooleanField(
+                label=_("SMS API enabled"),
+                initial=True,
+                required=False,
+                help_text=help_text)
+        else:
+            del self.fields['sms_api_enabled']
+
         self.creating = True
         self._initial_data = {}
         if self.instance and self.instance.pk:
@@ -222,6 +235,9 @@ class ElectionForm(forms.ModelForm):
         saved = super(ElectionForm, self).save(*args, **kwargs)
         trustees = extract_trustees(self.cleaned_data.get('trustees'))
         saved.institution = self.institution
+        if saved.sms_api_enabled:
+            saved.sms_data = self.owner.sms_data
+
         saved.save()
         if saved.feature_edit_trustees:
             saved.update_trustees(trustees)
@@ -778,13 +794,51 @@ SEND_TO_CHOICES = [
     ('not-voted', _('selected voters who have not yet cast a ballot'))
 ]
 
+CONTACT_CHOICES = [
+    ('email', _('Email')),
+    ('sms', _('SMS')),
+    ('email:sms', _('Both SMS and Email')),
+]
+
+notify_once_help_text = _("""Notify users once (sends sms only to users with no email set)""")
 class EmailVotersForm(forms.Form):
-    subject = forms.CharField(label=_('Email subject'), max_length=80,
+    email_subject = forms.CharField(label=_('Email subject'), max_length=80,
                               required=False)
-    body = forms.CharField(label=_('In place of BODY'), max_length=30000,
+    email_body = forms.CharField(label=_('In place of BODY'), max_length=30000,
                            widget=forms.Textarea, required=False)
+    sms_body = forms.CharField(label=_('In place of SMS_BODY'), max_length=30000,
+                           widget=forms.Textarea, required=False)
+    contact_method = forms.ChoiceField(label=_("Contact method"), initial="email:sms",
+                                choices=CONTACT_CHOICES)
+    notify_once = forms.BooleanField(initial=True, label=_("Notify once"), help_text=notify_once_help_text, required=False)
     send_to = forms.ChoiceField(label=_("Send To"), initial="all",
                                 choices=SEND_TO_CHOICES)
+
+    def __init__(self, election, template, *args, **kwargs):
+        super(EmailVotersForm, self).__init__(*args, **kwargs)
+        self.election = election
+        self.template = template
+
+        if not election.sms_enabled:
+            self.fields['sms_body'].widget = forms.HiddenInput()
+            self.fields['contact_method'].widget = forms.HiddenInput()
+            self.fields['contact_method'].choices = [('email', _('Email'))]
+            self.fields['contact_method'].initial = 'email'
+            self.fields['notify_once'].widget = forms.HiddenInput()
+            self.fields['notify_once'].initial = False
+        else:
+            choices = copy.copy(CONTACT_CHOICES)
+            choices[1] = list(choices[1])
+            choices[1][1] = "%s (%s)" % (unicode(choices[1][1]), _("%d deliveries available") % election.sms_data.left)
+            self.fields['contact_method'].choices = choices
+
+    def clean(self):
+        super(EmailVotersForm, self).clean()
+        data = self.cleaned_data
+        if 'sms' in data.get('contact_method', []) and self.template == 'info':
+            if data.get('sms_body').strip() == '':
+                raise ValidationError(_("Please provide SMS body"))
+        return data
 
 
 class ChangePasswordForm(forms.Form):
