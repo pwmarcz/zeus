@@ -135,7 +135,6 @@ class Command(BaseCommand):
                 print "SMS deliveries limit is set to 10"
 
             backend.credentials = "%s:%s" % (username, password)
-            backend.limit = limit
             backend.sender = sender
             backend.save()
             user.sms_data = backend
