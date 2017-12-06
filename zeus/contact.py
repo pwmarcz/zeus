@@ -101,7 +101,19 @@ class EmailBackend(ContactBackend):
 
     def do_notify(self, voter, id, subject, body, attachments):
         self.logger.info("Notifying voter %r for '%r' via email (%r)" % (voter.voter_login_id, id, voter.voter_email))
-        return voter.user.send_message(subject, body), None
+        subject = subject.replace("\n", "")
+        if attachments and len(attachments) > 0:
+            name = "%s %s" % (voter.voter_name, voter.voter_surname)
+            to = formataddr((name, voter.voter_email))
+            message = EmailMessage(subject, body, settings.SERVER_EMAIL, [to])
+            for attachment in attachments:
+                message.attach(*attachment)
+            try:
+                return message.send(fail_silently=False), None
+            except Exception, e:
+                return None, e
+        else:
+            return voter.user.send_message(subject, body), None
 
 
 class SMSBackend(ContactBackend):
