@@ -121,7 +121,7 @@ class ElectionForm(forms.ModelForm):
         self.fields['remote_mixes'].widget = forms.HiddenInput()
         self.fields['linked_polls'].widget = forms.HiddenInput()
         if owner.sms_data:
-            help_text = _("Notify voters using SMS (%d deliveries available for your account)" % owner.sms_data.left)
+            help_text = _("Notify voters using SMS (%d deliveries available for your account)") % owner.sms_data.left
             self.fields['sms_api_enabled'] = forms.BooleanField(
                 label=_("Mobile SMS notifications enabled"),
                 initial=True,
@@ -810,7 +810,7 @@ class EmailVotersForm(forms.Form):
                            widget=forms.Textarea, required=False)
     contact_method = forms.ChoiceField(label=_("Contact method"), initial="email:sms",
                                 choices=CONTACT_CHOICES)
-    notify_once = forms.BooleanField(initial=True, label=_("No sms if voter email is set"), required=False)
+    notify_once = forms.BooleanField(initial=True, label=_("Do not send sms if voter email is set"), required=False)
     send_to = forms.ChoiceField(label=_("Send To"), initial="all",
                                 choices=SEND_TO_CHOICES)
 

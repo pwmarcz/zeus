@@ -108,7 +108,7 @@ msgstr "Γλώσσα επικοινωνίας"
 #, python-format
 msgid "Notify voters using SMS (%d deliveries available for your account)"
 msgstr ""
-"Ενημέρωση ψηφοφόρων μέσω SMS (%d deliveries available for your account)"
+"Ενημέρωση ψηφοφόρων μέσω SMS (%d αποστολές SMS διαθέσιμες)"
 
 msgid "Mobile SMS notifications enabled"
 msgstr "Ενεργοποίηση μηνυμάτων SMS"
@@ -237,11 +237,11 @@ msgstr "Στην θέση SMS_BODY"
 msgid "Contact method"
 msgstr "Τρόπος επικοινωνίας"
 
-msgid "No sms if voter email is set"
-msgstr "Αποστολή sms μόνο για όσους δεν έχει δηλωθεί email"
+msgid "Do not send sms if voter email is set"
+msgstr "Να μην αποσταλεί sms αν έχει δηλωθεί email"
 
 msgid "Send To"
-msgstr "Αποστολή πρός"
+msgstr "Αποστολή προς"
 
 msgid "Email"
 msgstr "Email"
@@ -251,7 +251,7 @@ msgid "%d deliveries available"
 msgstr "%d αποστολές sms διαθέσιμες"
 
 msgid "Please provide SMS body"
-msgstr "Παρακαλούμε δηλώστε κέιμενο SMS"
+msgstr "Παρακαλούμε δηλώστε κείμενο SMS"
 
 msgid "Current password"
 msgstr "Τρέχων κωδικός"

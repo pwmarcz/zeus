@@ -19,10 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 msgid "Email subject"
-msgstr "Τίτλος ηλεκτρονικου μηνύματος (email)"
+msgstr "Τίτλος ηλεκτρονικού μηνύματος (email)"
 
 msgid "Email body"
-msgstr "Περιεχόμενο ηλεκτρονικου μηνύματος (email)"
+msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
 
 msgid "Send To"
 msgstr "Αποστολή Προς"
@@ -1510,7 +1510,7 @@ msgid "The message will only be sent to the following voter:"
 msgstr "Το μήνυμα θα σταλεί μόνο στον ακόλουθο ψηφοφόρο:"
 
 msgid "Email content"
-msgstr "Περιεχόμενο ηλεκτρονικου μηνύματος (email)"
+msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
 
 msgid "SMS content"
 msgstr "Περιεχόμενο μηνύματος SMS"
