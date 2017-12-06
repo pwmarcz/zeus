@@ -61,6 +61,11 @@ class SMSBackendData(models.Model):
       inst.sent += 1
       inst.save()
 
+  @property
+  def display(self):
+      return u"%s [%d/%d/%d]" % \
+          (self.credentials, self.sent, self.limit, self.left)
+
 class User(models.Model):
   user_type = models.CharField(max_length=50)
   user_id = models.CharField(max_length=100, unique=True)

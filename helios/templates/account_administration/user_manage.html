@@ -14,6 +14,9 @@
     <th>{% trans "Institution" %}</th>
     <th>{% trans "User Groups" %}</th>
     <th>{% trans "Elections Held" %}</th>
+    {% if u_data.superadmin_p %}
+    <th>{% trans "SMS backend" %}</th>
+    {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -24,6 +27,9 @@
     <td>{{u_data.institution.name}}</td>
     <td>{{u_data.groups_display}}</td>
     <td>{{u_data.elections.all.count}}</td>
+    {% if u_data.superadmin_p %}
+    <td>{{u_data.sms_data.display}}</td>
+    {% endif %}
   </tr>
   </tbody>
 </table>
