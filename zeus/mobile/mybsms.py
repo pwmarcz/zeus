@@ -48,6 +48,7 @@ class Client(object):
         if not uid:
             uid = unicode(uuid.uuid4())
 
+        mobile = mobile.replace("+", "")
         msg = self._construct(uid, mobile, msg)
         data = json.dumps(msg)
         http_response = urllib.urlopen(self.apiurl, data=data)
