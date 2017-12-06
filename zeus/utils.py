@@ -260,6 +260,8 @@ VOTER_SEARCH_FIELDS = ['voter_name', 'voter_surname', 'voter_email']
 VOTER_EXTRA_HEADERS = ['excluded_at']
 VOTER_BOOL_KEYS_MAP = {
         'voted': ('cast_votes__id', 'nullcheck'),
+        'email': ('voter_email', 'nullcheck'),
+        'mobile': ('voter_mobile', 'nullcheck'),
         'invited': ('last_booth_invitation_send_at', 'nullcheck'),
         'excluded': ('excluded_at', 'nullcheck'),
      }
