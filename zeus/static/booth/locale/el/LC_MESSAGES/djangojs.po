@@ -262,3 +262,6 @@ msgstr ""
 
 msgid "SUBMIT_BALLOT"
 msgstr "Υποβολή ψήφου"
+
+msgid "CONFIRM"
+msgstr "Αποδοχή"

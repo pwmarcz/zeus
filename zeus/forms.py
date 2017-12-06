@@ -88,7 +88,8 @@ class ElectionForm(forms.ModelForm):
         'remote_mixes': ['edit_remote_mixes'],
         'trial': ['edit_trial'],
         'departments': ['edit_departments'],
-        'linked_polls': ['edit_linked_polls']
+        'linked_polls': ['edit_linked_polls'],
+        'cast_consent_text': ['edit_cast_consent_text'],
     }
 
     class Meta:
@@ -98,7 +99,7 @@ class ElectionForm(forms.ModelForm):
                   'voting_extended_until',
                   'trustees', 'help_email', 'help_phone',
                   'communication_language', 'linked_polls',
-                  'sms_api_enabled')
+                  'sms_api_enabled', 'cast_consent_text')
 
     def __init__(self, owner, institution, *args, **kwargs):
         self.institution = institution

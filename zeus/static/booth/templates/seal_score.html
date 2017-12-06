@@ -33,13 +33,18 @@
 
 <form>
 <div class="confirm-checks">
-  <div class="clearfix form-row">
-    <label for="required-to-cast-2" onclick="BOOTH.check_cast_form()">
-      <input type="checkbox" id="required-to-cast-2" style=""
-      onclick="BOOTH.check_cast_form()">
-      <span class="custom checkbox" onclick="BOOTH.check_cast_form()"></span>
+  <div class="clearfix form-row" style="margin-left:0; padding-left:0">
+      {#if $T.election.cast_consent_text}
+      <pre style="color:#222; border: 1px solid #aaa; overflow: scroll; padding: 10px; margin-bottom:10px;" >{$T.election.cast_consent_text}</pre>
+      <input type="checkbox" id="required-to-cast-2" style="margin-top:0; margin-right:6px; float: left" onclick="BOOTH.check_cast_form()">
+      <label for="required-to-cast-2" style="text-indent:0"  onclick="BOOTH.check_cast_form()">{gettext("CONFIRM")}</label>
+      {#/if}
+      {#if !$T.election.cast_consent_text}
+      <label for="required-to-cast-2" style="text-indent:0" onclick="BOOTH.check_cast_form()">
+      <input type="checkbox" id="required-to-cast-2" style="" onclick="BOOTH.check_cast_form()">
       {gettext("ELECTION_TERMS_LABEL")}
-    </label>
+      </label>
+      {#/if}
   </div>
 </div>
 </form>

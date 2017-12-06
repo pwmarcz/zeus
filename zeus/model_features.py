@@ -122,6 +122,10 @@ class ElectionFeatures(FeaturesMixin):
     def _feature_editing_fields(self):
         return not self.feature_frozen
 
+    @election_feature('edit_cast_consent_text')
+    def _feature_editing_cast_consent_text(self):
+        return not self.feature_voting_started
+
     @election_feature('edit_help_email', 'edit_help_phone')
     def _feature_editing_fields2(self):
         return not self.feature_frozen

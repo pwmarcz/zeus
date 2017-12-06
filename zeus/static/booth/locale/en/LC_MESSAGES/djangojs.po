@@ -254,3 +254,6 @@ msgstr "I confirm that I am alone and nobody else has witnessed my selections."
 
 msgid "SUBMIT_BALLOT"
 msgstr "Submit ballot"
+
+msgid "CONFIRM"
+msgstr "Confirm"

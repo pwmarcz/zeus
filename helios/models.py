@@ -335,6 +335,9 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
 
     cast_notify_once = models.BooleanField(default=True)
 
+    cast_consent_text = models.TextField(default=None, null=True, blank=True,
+                                         help_text=help.cast_consent_text)
+
     class Meta:
         ordering = ('-created_at', )
 
@@ -987,6 +990,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
           'election_name': election.name,
           'public_key': public_key,
           'questions': self.questions,
+          'cast_consent_text': election.cast_consent_text or None,
           'questions_data': self.questions_data,
           'election_module': getattr(module, 'booth_module_id', module.module_id),
           'module_params': module.params,
