@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 10:22+0300\n"
+"POT-Creation-Date: 2017-12-05 18:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,8 +279,20 @@ msgid "Invalid voter data at line %s"
 msgstr "Λανθασμένα στοιχεία ψηφοφόρου στην γραμμή %s"
 
 #, python-format
+msgid "Voter [%s]: Provide at least one of the email and mobile fields."
+msgstr ""
+"Ψηφοφόρος [%s]: Παρακαλούμε δηλώστε τουλάχιστον ένα από τα πεδία διεύθυνσης "
+"ηλεκτρονικού ταχυδρομείου και κινητού."
+
+msgid "Mobile backend is not set for this election"
+msgstr "Η δυνατότητα αποστολής SMS είναι απενεργοποιημένη"
+
+#, python-format
 msgid "Duplicate voter id : %s"
 msgstr "Διπλότυπο αναγνωριστικό χρήστη %s"
+
+msgid "No email set"
+msgstr "Δεν έχει οριστεί διεύθυνση ηλεκτρονικού ταχυδρομείου"
 
 msgid "Create trustee key"
 msgstr "Δημιουργία κωδικού ψηφοφορίας"
@@ -609,6 +621,9 @@ msgstr "Σύνολο ψήφων"
 msgid "Elected"
 msgstr "Εκλεγμένοι"
 
+msgid "Save proof data"
+msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
+
 msgid "To create a new election, enter the necessary information below."
 msgstr ""
 "Για τη δημιουργία νέας ψηφοφορίας, εισάγετε τα απαραίτητα στοιχεία παρακάτω."
@@ -625,21 +640,18 @@ msgstr "Δεν έχουν ληφθεί ακόμη ψήφοι ελέγχου"
 msgid "Your vote has been cast"
 msgstr "Η ψήφος σας υποβλήθηκε."
 
+msgid "Your vote has been successfully cast. Thank you for participating."
+msgstr "Η ψήφος σας υποβλήθηκε επιτυχώς. Ευχαριστούμε για τη συμμετοχή σας."
+
+#, python-format
 msgid ""
-"Your vote has been successfully cast.\n"
-"Thank you for participating."
+"\n"
+"A %(anchor_start)ssubmission receipt%(anchor_end)s for your vote has been "
+"sent to your email address or mobile phone.\n"
 msgstr ""
-"Η ψήφος σας υποβλήθηκε επιτυχώς.\n"
-"Ευχαριστούμε για τη συμμετοχή σας."
-
-msgid "A"
-msgstr "Η"
-
-msgid "submission receipt"
-msgstr "απόδειξη υποβολής"
-
-msgid "for your vote has been sent to your email address"
-msgstr "για την ψήφο σας έχει σταλεί με email"
+"\n"
+"Η %(anchor_start)sαπόδειξη υποβολής%(anchor_end)s για την ψήφο σας έχει "
+"σταλεί με email ή με sms στο κινητό σας τηλέφωνο.\n"
 
 msgid "Eligibles count"
 msgstr "Πλήθος εκλεγόμενων"
@@ -661,9 +673,6 @@ msgstr "Προεπισκόπηση παραπετάσματος"
 
 msgid "Total votes"
 msgstr "Σύνολο ψήφων"
-
-msgid "Save proof data"
-msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
 
 msgid "Total voters count"
 msgstr "Σύνολο ψηφοφόρων"
@@ -688,8 +697,8 @@ msgstr "Επιλογές λίστας ψηφοφόρων"
 msgid "Import voters"
 msgstr "Εισαγωγή ψηφοφόρων"
 
-msgid "Send voters email"
-msgstr "Αποστολή μηνύματος email στους ψηφοφόρους"
+msgid "Notify voters"
+msgstr "Αποστολή μηνύματος σε ψηφοφόρους"
 
 msgid "Export voter list to CSV"
 msgstr "Εξαγωγή λίστας ψηφοφόρων σε αρχείο CSV"
@@ -718,9 +727,6 @@ msgstr "(Εξαίρεση)"
 
 msgid "Voter actions"
 msgstr "Επιλογές ψηφοφόρου"
-
-msgid "Send voter email"
-msgstr "Αποστολή μηνύματος email σε ψηφοφόρους"
 
 msgid "Delete voter"
 msgstr "Διαγραφή ψηφοφόρου"
@@ -1164,11 +1170,31 @@ msgstr "Μήνυμα συστήματος"
 msgid "ELECTION INFO"
 msgstr "Πληροφορίες ψηφοφορίας"
 
-msgid "Vote fingerprint"
-msgstr "Αποτύπωμα ψήφου"
-
-msgid "Thank you for voting"
-msgstr "Ευχαριστούμε που ψηφίσατε"
+#, python-format
+msgid ""
+"You have successfully cast a vote in\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"\n"
+"as\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"with registration ID: %(voter_login_id)s\n"
+"\n"
+"you can find your encrypted vote attached in this mail."
+msgstr ""
+"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"\n"
+"ως\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"με αριθμό καταχώρισης: %(voter_login_id)s\n"
+"\n"
+"H απόδειξη της καταχώρισης βρίσκεται συνημμένη στο παρόν μήνυμα."
 
 msgid ""
 "Greetings,\n"
@@ -1360,6 +1386,24 @@ msgstr ""
 "Οι ψηφοφόροι πρέπει να ακολουθήσουν το σύνδεσμο που τους έχει αποσταλεί μέσω "
 "email ή SMS.\n"
 
+#, python-format
+msgid ""
+"You have successfully cast a vote in %(election_name)s\n"
+"%(vote_receipt_url)s"
+msgstr ""
+"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία %(election_name)s\n"
+"%(vote_receipt_url)s"
+
+#, python-format
+msgid ""
+"ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
+"VOTES TO %(secure_url_host)s - LOGIN CODE: %(voter_login_code)s"
+"%(custom_message_sms)s"
+msgstr ""
+"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s "
+"ΨΗΦΙΖΕΙ ΣΤΟ %(secure_url_host)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
+"%(custom_message_sms)s"
+
 msgid "As a trustee for the election"
 msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
 
@@ -1437,22 +1481,18 @@ msgstr ""
 "Η πρόσβαση στην ψηφοφορία απαιτεί σύνδεση σε εξωτερικό σύστημα ελέγχου "
 "χρηστών. Σας κατευθύνουμε στο εξωτερικό σύστημα."
 
-msgid "Send email"
-msgstr "Αποστολή μηνύματος email σε ψηφοφόρους"
-
 #, python-format
 msgid ""
 "\n"
-"Send email to voter %(voter_name)s (%(voter_id)s)\n"
+"Notify voter %(voter_name)s (%(voter_id)s)\n"
 msgstr ""
 "\n"
-"Αποστολή ηλεκτρονικού μηνύματος στον ψηφοφόρο  %(voter_name)s "
-"(%(voter_id)s)\n"
+"Αποστολή μηνύματος στον ψηφοφόρο  %(voter_name)s (%(voter_id)s)\n"
 
 #, python-format
 msgid ""
 "\n"
-"Send email to poll '%(poll_name)s' voters %(suffix)s\n"
+"Notify poll '%(poll_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
 "Αποστολή μηνύματος στους ψηφοφόρους της κάλπης '%(poll_name)s' %(suffix)s\n"
@@ -1460,7 +1500,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"Send email to election '%(election_name)s' voters %(suffix)s\n"
+"Notify election '%(election_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
 "Αποστολή μηνύματος στους ψηφοφόρους της ψηφοφορίας '%(election_name)s' "
@@ -1468,6 +1508,12 @@ msgstr ""
 
 msgid "The message will only be sent to the following voter:"
 msgstr "Το μήνυμα θα σταλεί μόνο στον ακόλουθο ψηφοφόρο:"
+
+msgid "Email content"
+msgstr "Περιεχόμενο ηλεκτρονικου μηνύματος (email)"
+
+msgid "SMS content"
+msgstr "Περιεχόμενο μηνύματος SMS"
 
 msgid "You can edit the contents of the message using the following form."
 msgstr "Μπορείτε να επεξεργαστείτε το μήνυμα στην φόρμα που ακολουθεί."

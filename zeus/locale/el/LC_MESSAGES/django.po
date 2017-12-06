@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 10:21+0300\n"
+"POT-Creation-Date: 2017-12-05 18:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,8 @@ msgid "Electors: Group B"
 msgstr "Εκλέκτορες: Ομάδα Β"
 
 msgid "Greek Universities single governing bodies election"
-msgstr "Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
+msgstr ""
+"Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
 
 msgid "Voter excluded"
 msgstr "Έχει εξαιρεθεί"
@@ -103,6 +104,14 @@ msgstr "Επιλέξτε την γλώσσα που θα χρησιμοποιη�
 
 msgid "Communication language"
 msgstr "Γλώσσα επικοινωνίας"
+
+#, python-format
+msgid "Notify voters using SMS (%d deliveries available for your account)"
+msgstr ""
+"Ενημέρωση ψηφοφόρων μέσω SMS (%d deliveries available for your account)"
+
+msgid "Mobile SMS notifications enabled"
+msgstr "Ενεργοποίηση μηνυμάτων SMS"
 
 msgid "Invalid voting end date"
 msgstr "Οι ημερομηνίες έναρξης/λήξης δεν είναι σωστές."
@@ -207,14 +216,42 @@ msgstr "ψηφοφόροι που έχουν καταθέσει ψήφο"
 msgid "selected voters who have not yet cast a ballot"
 msgstr "ψηφοφόροι που δεν έχουν καταθέσει ακόμη ψήφο"
 
+msgid "Email only"
+msgstr "Μόνο Email"
+
+msgid "SMS only"
+msgstr "Μόνο SMS"
+
+msgid "Email and SMS"
+msgstr "Email και SMS"
+
 msgid "Email subject"
 msgstr "Tίτλος μηνύματος email"
 
 msgid "In place of BODY"
 msgstr "Στην θέση BODY"
 
+msgid "In place of SMS_BODY"
+msgstr "Στην θέση SMS_BODY"
+
+msgid "Contact method"
+msgstr "Τρόπος επικοινωνίας"
+
+msgid "No sms if voter email is set"
+msgstr "Αποστολή sms μόνο για όσους δεν έχει δηλωθεί email"
+
 msgid "Send To"
 msgstr "Αποστολή πρός"
+
+msgid "Email"
+msgstr "Email"
+
+#, python-format
+msgid "%d deliveries available"
+msgstr "%d αποστολές sms διαθέσιμες"
+
+msgid "Please provide SMS body"
+msgstr "Παρακαλούμε δηλώστε κέιμενο SMS"
 
 msgid "Current password"
 msgstr "Τρέχων κωδικός"
@@ -331,10 +368,11 @@ msgstr ""
 
 msgid ""
 "Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
-"{{ voter.voter_fathername }} ({{ voter.voter_email }})"
+"{{ voter.voter_fathername }} ({{ voter.voter_contact_field_display }})"
 msgstr ""
 "Επιβεβαιώστε τη διαγραφή ψηφοφόρου: {{ voter.voter_name}} {{ voter."
-"voter_surname }} {{ voter.voter_fathername }} ({{ voter.voter_email }})"
+"voter_surname }} {{ voter.voter_fathername }} ({{ voter."
+"voter_contact_field_display }})"
 
 msgid "Are you sure you want to delete the selected trustee ?"
 msgstr "Επιβεβαιώστε τη διαγραφή του επιλεγμένου μέλους της εφορευτικής"
@@ -506,36 +544,6 @@ msgstr "Λήξη: %(date)s"
 msgid "Extension: %(date)s"
 msgstr "Παράταση: %(date)s"
 
-#, python-format
-msgid "%(election_name)s - vote cast"
-msgstr "%(election_name)s - ψήφος ελήφθη"
-
-#, python-format
-msgid ""
-"You have successfully cast a vote in\n"
-"\n"
-"%(election_name)s\n"
-"%(poll_name)s\n"
-"\n"
-"as\n"
-"\n"
-"%(voter_name)s %(voter_surname)s\n"
-"with registration ID: %(reg_id)s\n"
-"\n"
-"you can find your encrypted vote attached in this mail.\n"
-msgstr ""
-"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία\n"
-"\n"
-"%(election_name)s\n"
-"%(poll_name)s\n"
-"\n"
-"ως\n"
-"\n"
-"%(voter_name)s %(voter_surname)s\n"
-"με αριθμό καταχώρισης: %(reg_id)s\n"
-"\n"
-"H απόδειξη της καταχώρισης βρίσκεται συνημμένη στο παρόν μήνυμα.\n"
-
 msgid "Are you sure ?"
 msgstr "Επιβεβαιώστε"
 
@@ -547,9 +555,6 @@ msgstr "σύνολο ψηφοφόρων"
 
 msgid "Registration ID"
 msgstr "Αριθμός Καταχώρισης"
-
-msgid "Email"
-msgstr "Email"
 
 msgid "Surname"
 msgstr "Επίθετο"
@@ -653,6 +658,12 @@ msgstr "Δεν βρέθηκαν ψηφοφόροι."
 msgid "Email sending started"
 msgstr "Η αποστολή μηνυμάτων email έχει ξεκινήσει"
 
+msgid "Something went wrong"
+msgstr "Προέκυψε σφάλμα"
+
+msgid "No SMS deliveries left."
+msgstr "Δεν έχετε διαθέσιμες αποστολές SMS"
+
 msgid "Voter removed successfully"
 msgstr "Ο ψηφοφόρος διεγράφη επιτυχώς"
 
@@ -694,14 +705,3 @@ msgstr ""
 
 msgid "The requested page was not found."
 msgstr "Η σελίδα που ζητήσατε δεν βρέθηκε."
-
-#~ msgid "&#37; is not a valid character"
-#~ msgstr "Ο χαρακτήρας % δεν επιτρέπεται"
-
-#~ msgid "Max answers should be greater or equal than min answers"
-#~ msgstr ""
-#~ "Ο μέγιστος αριθμός απαντήσεων πρέπει να είναι ίσος ή μεγαλύτερος του "
-#~ "ελάχιστου αριθμού απαντήσεων"
-
-#~ msgid "Department limit"
-#~ msgstr "Κανόνας των '2'"

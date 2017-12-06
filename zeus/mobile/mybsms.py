@@ -34,7 +34,6 @@ class Client(object):
         req['username'] = self.user
         req['password'] = self.password
         req['recipients'] = [str(msisdn)]
-        message = message.decode("utf8")
         message = escape(message, escape_dict)
         req['message'] = message
         if self.delivery_url:

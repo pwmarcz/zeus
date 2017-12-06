@@ -7,19 +7,13 @@
 
 {% block content %}
 <p>
-{% blocktrans %}Your vote has been successfully cast.
-Thank you for participating.{% endblocktrans %}
+{% blocktrans %}Your vote has been successfully cast. Thank you for participating.{% endblocktrans %}
 
 <br>
-{% trans "A" %}
-<a target="_blank" href="{% url "election_poll_download_signature" election_uuid poll_uuid cast_vote.fingerprint %}"
-  >{% trans "submission receipt" %}</a> {% trans "for your vote has been sent to your email address or mobile phone" %}.
-</p>
+{% url "election_poll_download_signature" election_uuid poll_uuid cast_vote.fingerprint as download_url %}
 
-{% comment %}
-<div class="vote-hash panel">{{ vote_hash }}
-  <div class="vote-hash-actions">
-  </div>
-</div>
-{% endcomment %}
+{% blocktrans with anchor_start='<a target="_blank" href="'|add:download_url|add:'">'|safe anchor_end="</a>"|safe %}
+A {{anchor_start}}submission receipt{{anchor_end}} for your vote has been sent to your email address or mobile phone.
+{% endblocktrans %}
+
 {% endblock %}

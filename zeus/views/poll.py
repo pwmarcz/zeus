@@ -612,7 +612,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             'election_url' : election_url,
             'custom_subject' : default_subject,
             'custom_message': '&lt;BODY&gt;',
-            'custom_message_sms': '<SMS_BODY>',
+            'custom_message_sms': '&lt;SMS_BODY&gt;',
             'SECURE_URL_HOST': settings.SECURE_URL_HOST,
             'voter': {
                 'vote_hash' : '<SMART_TRACKER>',
