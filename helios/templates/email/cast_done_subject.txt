@@ -1,1 +1,1 @@
-{{ election.name }} - vote cast
+{% load i18n %}{{ election.name|truncatechars:30 }} - {% trans "Thank you for voting" %}
