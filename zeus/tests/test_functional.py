@@ -757,7 +757,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for email in mail.outbox:
             for voter in voters:
                 if voter.voter_email in email.to[0]:
-                    self.assertTrue(u'vote cast' in email.subject)
+                    self.assertTrue(u'Thank you for voting' in email.subject)
         mail.outbox = []
 
     def emails_after_election_close(self):
