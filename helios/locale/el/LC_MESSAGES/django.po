@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-05 18:26+0200\n"
+"POT-Creation-Date: 2017-12-06 19:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -590,6 +590,9 @@ msgstr "Δημιουργία ομάδας χρηστών"
 
 msgid "Please confirm the password reset of user "
 msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
+
+msgid "SMS backend"
+msgstr "Πάροχος SMS"
 
 msgid "Reset Password"
 msgstr "Επανέκδοση κωδικού"
@@ -1196,6 +1199,9 @@ msgstr ""
 "\n"
 "H απόδειξη της καταχώρισης βρίσκεται συνημμένη στο παρόν μήνυμα."
 
+msgid "Thank you for voting"
+msgstr "Ευχαριστούμε που ψηφίσατε"
+
 msgid ""
 "Greetings,\n"
 "\n"
@@ -1396,13 +1402,23 @@ msgstr ""
 
 #, python-format
 msgid ""
-"ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
-"VOTES TO %(secure_url_host)s - LOGIN CODE: %(voter_login_code)s"
+"ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
+"WITH REG CODE %(voter_login_id)s\n"
+"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
 "%(custom_message_sms)s"
 msgstr ""
-"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s "
-"ΨΗΦΙΖΕΙ ΣΤΟ %(secure_url_host)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
+"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s ΠΑΡΑΤΑΣΗ ΨΗΦΟΥ ΕΩΣ ΤΙΣ %(ext_date)s: Ο ΑΜ "
+"%(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ %(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
 "%(custom_message_sms)s"
+
+#, python-format
+msgid ""
+"ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
+"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
+"%(custom_message_sms)s"
+msgstr ""
+"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ "
+"%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s%(custom_message_sms)s"
 
 msgid "As a trustee for the election"
 msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
@@ -1605,6 +1621,3 @@ msgstr "Για να ξεκινήσετε νέα καταμέτρηση πατή�
 
 msgid "Terms of use"
 msgstr "Όροι χρήσης"
-
-msgid "Thank you for voting"
-msgstr "Ευχαριστούμε που ψηφίσατε"
