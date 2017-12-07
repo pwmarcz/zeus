@@ -60,7 +60,7 @@ Notify election '{{ election_name }}' voters {{ suffix }}
 </pre>
 {% if sms_enabled %}
 <h5>{% trans "SMS content" %}</h5>
-<pre style="border: 1px solid #888; padding:20px">
+<pre style="white-space: pre-wrap; border: 1px solid #888; padding:20px">
 {{default_sms_body|safe}}
 </pre>
 {% endif %}
