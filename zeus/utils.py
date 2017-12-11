@@ -256,7 +256,7 @@ REPORT_TABLE_HEADERS = OrderedDict([
     ('official', _('Official'))
     ])
 
-VOTER_SEARCH_FIELDS = ['voter_name', 'voter_surname', 'voter_email']
+VOTER_SEARCH_FIELDS = ['voter_login_id', 'voter_name', 'voter_surname', 'voter_email']
 VOTER_EXTRA_HEADERS = ['excluded_at']
 VOTER_BOOL_KEYS_MAP = {
         'voted': ('cast_votes__id', 'nullcheck'),
