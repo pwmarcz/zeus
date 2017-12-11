@@ -644,8 +644,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
     if not q_param:
         filtered_voters = filtered_voters.none()
     else:
-        filter_voters = election.get_module().filter_voters
-        filtered_voters = filter_voters.filter(filtered_voters, q_param, request)
+        filtered_voters = election.get_module().filter_voters(filtered_voters, q_param, request)
 
         if not filtered_voters.count():
             message = _("No voters were found.")
