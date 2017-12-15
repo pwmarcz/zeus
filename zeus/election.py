@@ -646,7 +646,7 @@ class ZeusDjangoElection(ZeusCoreElection):
             candidate_sums = 0
 
             for candidate_count, candidate in results['candidate_counts']:
-                cand_party, candidate = candidate.split(": ")
+                cand_party, candidate = candidate.split(": ", 1)
 
                 if candidate in candidates and cand_party == party:
                     candidate_sums += count
