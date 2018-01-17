@@ -227,7 +227,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
 def _add_batch(request, election):
     batch_file = request.FILES['batch_file']
     try:
-        data = yaml.load(batch_file)
+        data = yaml.safe_load(batch_file)
     except Exception:
         messages.error(request, _("Invalid batch file contents"))
         url = election_reverse(election, 'polls_list')
