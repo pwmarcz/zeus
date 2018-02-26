@@ -2,7 +2,8 @@ language: python
 python:
   - "2.7"
 install:
-  - sudo apt-get install postgresql libpq-dev
+  # postgresql should be installed by default
+  - sudo apt-get install libpq-dev
   - sudo -u postgres createuser -s `whoami` || true
   - createdb zeus_test
   - ./setup-database
