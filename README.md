@@ -1,5 +1,7 @@
 # The Zeus election server
 
+[![Build Status](https://travis-ci.org/pwmarcz/zeus.svg?branch=master)](https://travis-ci.org/pwmarcz/zeus)
+
 LICENCE: This code is released under the GPL v3 or later
 
 This is a fork of Ben Adida's Helios server. The differences from Helios are as follows:
