@@ -24,3 +24,4 @@ test.html
 .test_report
 deploy/config.yaml
 env
+.pytest_cache
