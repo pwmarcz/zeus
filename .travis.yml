@@ -9,4 +9,4 @@ install:
   - ./setup-python
 
 script:
-  - py.test
+  - py.test -v
