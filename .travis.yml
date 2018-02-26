@@ -9,4 +9,4 @@ install:
   - ./setup-python
 
 script:
-  - py.test -v
+  - . env/bin/activate && py.test -v
