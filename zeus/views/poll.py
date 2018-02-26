@@ -20,7 +20,7 @@ from django.core.validators import validate_email
 from django.utils.html import mark_safe, escape
 from django.shortcuts import redirect
 from django import forms
-from django.template.loader import Template, Context
+from django.template import Template, Context
 
 from zeus.forms import ElectionForm
 from zeus import auth

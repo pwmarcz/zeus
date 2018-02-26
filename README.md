@@ -46,7 +46,7 @@ Run migrations:
 
 ## Test
 
-    python manage.py test
+    py.test -v
 
 ## Python packages
 

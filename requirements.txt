@@ -7,29 +7,50 @@
 amqp==1.4.9               # via kombu
 ansicolors==1.0.2
 anyjson==0.3.3
+apipkg==1.4               # via execnet
+attrs==17.4.0             # via automat
+automat==0.6.0            # via twisted
 backports-abc==0.5        # via tornado
 billiard==3.3.0.23        # via celery
 celery==3.1.25
 celerymon==1.0.3
 certifi==2018.1.18        # via tornado
+constantly==15.1.0        # via twisted
+cov-core==1.15.0          # via pytest-cov
+coverage==3.7.1           # via cov-core, pytest-cov
 django-celery==3.2.2
+django-debug-toolbar==0.9.4
 django-eml-email-backend==0.1
 django-extensions==0.9
 django-kombu==0.9.4
 django-pagination==1.0.7
 django-picklefield==0.3.2
 django==1.8
+execnet==1.5.0            # via pytest-xdist
 gmpy==1.17
+hyperlink==18.0.0         # via twisted
+idna==2.6                 # via hyperlink
+incremental==17.5.0       # via twisted
+ipython==0.13
 kombu==3.0.37             # via celery
 psycopg2==2.7.4
+py==1.5.2                 # via pytest, pytest-cov, pytest-xdist
 pycrypto==2.6
 pyicu==1.7
+pytest-cov==1.8.1
+pytest-django==2.9.1
+pytest-xdist==1.11
+pytest==2.6.4
 python-dateutil==1.5
 python-openid==2.2.5
 pytz==2018.3              # via celery
 pyyaml==3.12
 reportlab==3.0
+selenium==2.25.0
 simplejson==3.4.0
 singledispatch==3.4.0.3   # via tornado
-six==1.11.0               # via singledispatch
+six==1.11.0               # via automat, singledispatch
 tornado==4.5.3            # via celerymon
+trunserver==0.0.2
+twisted==17.9.0           # via trunserver
+zope.interface==4.4.3     # via twisted
