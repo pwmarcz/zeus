@@ -1,4 +1,4 @@
-Django==1.4
+Django==1.6
 South==0.7.6
 ansicolors==1.0.2
 anyjson==0.3.3
@@ -9,16 +9,18 @@ django-celery==2.5.5
 django-eml-email-backend==0.1
 django-extensions==0.9
 django-kombu==0.9.4
-kombu==2.4.7
+django-picklefield==0.3.2
+kombu==3.0.30
 pycrypto==2.6
 python-dateutil==1.5
 python-openid==2.2.5
-psycopg2==2.5.2
+psycopg2==2.7.4
 PyICU==1.7
 django-pagination==1.0.7
 gmpy==1.17
 simplejson==3.4.0
 reportlab==3.0
+pyyaml
 
 # devtools
 #selenium==2.25.0
