@@ -16,4 +16,5 @@ if ! test -f env/bin/python; then
     virtualenv --python="$PYTHON" env
 fi
 
-. env/bin/activate && pip install -r requirements.txt
+. env/bin/activate && pip install pip-tools==1.11.0
+. env/bin/activate && pip-sync

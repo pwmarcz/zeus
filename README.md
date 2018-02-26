@@ -47,3 +47,21 @@ Run migrations:
 ## Test
 
     python manage.py test
+
+## Python packages
+
+We use [pip-tools](https://github.com/jazzband/pip-tools) to manage
+dependencies:
+
+- `requirements.in` - contains list of direct dependencies, not necessarily
+  pinned
+- `requirements.txt` - auto-generated from `requirements.in`, all packages, all
+  versions pinned
+
+In order to install a new package:
+
+- activate virtualenv (`. env/bin/activate`)
+- edit `requirements.in`
+- run `pip-compile` to generate a new `requirements.txt` file
+- run `pip-sync` to install the new packages
+- test the change and commit all files
