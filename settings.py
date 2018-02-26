@@ -37,8 +37,8 @@ TIME_ZONE = 'Europe/Athens'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'el-gr'
-LANGUAGES = (('el', 'Greek'),)
+LANGUAGE_CODE = 'en'
+LANGUAGES = (('en', 'English'),)
 
 SITE_ID = 1
 
