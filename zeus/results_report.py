@@ -34,6 +34,7 @@ from stv.parser import STVParser
 
 PAGE_WIDTH, PAGE_HEIGHT = A4
 
+'''
 default_path = '/usr/share/fonts/truetype/linux-libertine/LinLibertine_Re.ttf'
 linlibertine = TTFont('LinLibertine',
 #                      '/Users/Panos/Library/Fonts/LinLibertine_Rah.ttf')
@@ -45,7 +46,7 @@ linlibertineb = TTFont('LinLibertineBd',
 #                       '/Users/Panos/Library/Fonts/LinLibertine_RBah.ttf')
                         getattr(settings, 'ZEUS_RESULTS_FONT_BOLD_PATH', default_path))
 pdfmetrics.registerFont(linlibertineb)
-
+'''
 ZEUS_LOGO = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                          'logo-positive.jpg')
 
