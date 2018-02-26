@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 install:
-  - sudo apt-get install postgresql libq-dev
+  - sudo apt-get install postgresql libpq-dev
   - sudo -u postgres createuser -s `whoami` || true
   - createdb zeus_test
   - ./setup-database
