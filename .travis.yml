@@ -6,7 +6,6 @@ install:
   - sudo apt-get install libpq-dev
   - sudo -u postgres createuser -s `whoami` || true
   - createdb zeus_test
-  - ./setup-database
   - ./setup-python
 
 script:
