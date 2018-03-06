@@ -13,7 +13,7 @@ pycrypto==2.6
 python-dateutil==1.5
 python-openid==2.2.5
 psycopg2==2.7.4
-PyICU==1.7
+PyICU>=2.0.3
 django-pagination==1.0.7
 gmpy==1.17
 simplejson==3.4.0
