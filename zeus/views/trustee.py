@@ -3,6 +3,8 @@ import logging
 import datetime
 import json
 
+import traceback
+from django.core import mail
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext_lazy as _
@@ -95,20 +97,13 @@ def verify_key(request, election, trustee):
 @auth.requires_election_features('trustee_can_upload_pk')
 @require_http_methods(['POST'])
 def upload_pk(request, election, trustee):
-    transaction.set_autocommit(False)
-    try:
+    with transaction.atomic():
         public_key_and_proof = \
                 utils.from_json(request.POST['public_key_json'])
         public_key = algs.EGPublicKey.fromJSONDict(
             public_key_and_proof['public_key'])
         pok = algs.DLogProof.fromJSONDict(public_key_and_proof['pok'])
         election.add_trustee_pk(trustee, public_key, pok)
-        transaction.commit()
-    except Exception, e:
-        election.logger.exception(e)
-        transaction.rollback()
-        messages.error(request, "Cannot upload public key")
-    transaction.set_autocommit(True)
 
     return HttpResponseRedirect(reverse('election_trustee_home',
                                         args=[election.uuid]))
