@@ -30,7 +30,7 @@ Create a database:
 
 Ensure you have Python 2.7 and virtualenv. Setup virtualenv:
 
-    ./setup-virtualenv
+    ./setup-python
 
 Activate virtualenv:
 
