@@ -56,21 +56,6 @@ def mkdir_p(path):
             pass
         else: raise
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'root': {
-        'level': 'INFO',
-        'handlers': ['stream'] if os.environ.get("ZEUS_TESTS_VERBOSE", False) \
-                                                                        else []
-    },
-    'handlers': {
-        'stream': {
-            'class': 'logging.StreamHandler'
-        }
-    }
-}
-
 TESTS_DIR = os.environ.get('ZEUS_TESTS_DIR', '/tmp/zeus-tests')
 PROJECT_ROOT = '%s/%s' % (TESTS_DIR, datetime.datetime.now())
 ZEUS_ELECTION_LOG_DIR = os.path.join(PROJECT_ROOT, 'election_logs')
