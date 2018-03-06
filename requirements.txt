@@ -36,7 +36,7 @@ kombu==3.0.37             # via celery
 psycopg2==2.7.4
 py==1.5.2                 # via pytest, pytest-cov, pytest-xdist
 pycrypto==2.6
-pyicu==1.7
+pyicu==2.0.3
 pytest-cov==1.8.1
 pytest-django==2.9.1
 pytest-xdist==1.11
