@@ -1,6 +1,7 @@
 # The Zeus election server
 
 [![Build Status](https://travis-ci.org/pwmarcz/zeus.svg?branch=master)](https://travis-ci.org/pwmarcz/zeus)
+[![codecov](https://codecov.io/gh/pwmarcz/zeus/branch/master/graph/badge.svg)](https://codecov.io/gh/pwmarcz/zeus)
 
 LICENCE: This code is released under the GPL v3 or later
 
