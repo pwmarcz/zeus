@@ -9,4 +9,8 @@ install:
   - ./setup-python
 
 script:
-  - . env/bin/activate && py.test -v
+  - . env/bin/activate && py.test -v --cov
+  
+# TODO change to after_success after tests are passing
+after_script:
+  - . env/bin/activate && codecov

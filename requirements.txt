@@ -14,10 +14,11 @@ backports-abc==0.5        # via tornado
 billiard==3.3.0.23        # via celery
 celery==3.1.25
 celerymon==1.0.3
-certifi==2018.1.18        # via tornado
+certifi==2018.1.18        # via requests, tornado
+chardet==3.0.4            # via requests
+codecov==2.0.15
 constantly==15.1.0        # via twisted
-cov-core==1.15.0          # via pytest-cov
-coverage==3.7.1           # via cov-core, pytest-cov
+coverage==3.7.1           # via codecov, pytest-cov
 django-celery==3.2.2
 django-debug-toolbar==0.9.4
 django-eml-email-backend==0.1
@@ -29,15 +30,15 @@ django==1.8
 execnet==1.5.0            # via pytest-xdist
 gmpy==1.17
 hyperlink==18.0.0         # via twisted
-idna==2.6                 # via hyperlink
+idna==2.6                 # via hyperlink, requests
 incremental==17.5.0       # via twisted
 ipython==0.13
 kombu==3.0.37             # via celery
 psycopg2==2.7.4
-py==1.5.2                 # via pytest, pytest-cov, pytest-xdist
+py==1.5.2                 # via pytest, pytest-xdist
 pycrypto==2.6
 pyicu==2.0.3
-pytest-cov==1.8.1
+pytest-cov==2.5.1
 pytest-django==2.9.1
 pytest-xdist==1.11
 pytest==2.6.4
@@ -46,6 +47,7 @@ python-openid==2.2.5
 pytz==2018.3              # via celery
 pyyaml==3.12
 reportlab==3.0
+requests==2.18.4          # via codecov
 selenium==2.25.0
 simplejson==3.4.0
 singledispatch==3.4.0.3   # via tornado
@@ -53,4 +55,5 @@ six==1.11.0               # via automat, singledispatch
 tornado==4.5.3            # via celerymon
 trunserver==0.0.2
 twisted==17.9.0           # via trunserver
+urllib3==1.22             # via requests
 zope.interface==4.4.3     # via twisted
