@@ -1969,7 +1969,7 @@ class Voter(HeliosModel, VoterFeatures):
 class CastVoteQuerySet(QuerySet):
 
     def distinct_voter(self):
-        return self.distinct('voter')
+        return self.order_by('voter').distinct('voter')
 
     def countable(self):
         return self.filter(voter__excluded_at__isnull=True)
