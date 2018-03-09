@@ -26,7 +26,7 @@ django-extensions==0.9
 django-kombu==0.9.4
 django-pagination==1.0.7
 django-picklefield==0.3.2
-django==1.8
+django==1.8.19
 enum34==1.1.6             # via traitlets
 execnet==1.5.0            # via pytest-xdist
 funcsigs==1.0.2           # via pytest
