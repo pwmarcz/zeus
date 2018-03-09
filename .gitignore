@@ -23,3 +23,6 @@ report
 test.html
 .test_report
 deploy/config.yaml
+*.egg-info
+/dist
+/.venv
