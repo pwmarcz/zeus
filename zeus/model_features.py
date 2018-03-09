@@ -91,6 +91,16 @@ class ElectionFeatures(FeaturesMixin):
             yield poll.check_features(*args)
 
     @election_feature()
+    def _feature_can_upload_remote_mix(self):
+        return self.feature_can_close_remote_mixing
+
+    @election_feature()
+    def _feature_can_close_remote_mixing(self):
+      return self.mix_key and \
+        self.polls_feature_mix_finished and \
+        not self.feature_remote_mixing_finished
+
+    @election_feature()
     def _feature_voting_started(self):
       return  self.feature_frozen and \
               self.voting_starts_at <= datetime.datetime.now()
@@ -361,7 +371,7 @@ class PollFeatures(FeaturesMixin):
     @poll_feature()
     def _feature_mixing_finished(self):
         remote_finished = self.feature_remote_mixes_finished
-        return self.feature_mix_finished
+        return remote_finished and self.feature_mix_finished
 
     @poll_feature()
     def _feature_closed(self):

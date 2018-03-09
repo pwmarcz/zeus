@@ -55,7 +55,8 @@ from heliosauth.jsonfield import JSONField
 from helios.datatypes import LDObject
 
 from zeus.core import (numbers_hash, gamma_encoding_max,
-                       gamma_decode, to_absolute_answers, to_canonical)
+                       gamma_decode, to_absolute_answers, to_canonical,
+                       from_canonical)
 from zeus.slugify import slughifi
 from zeus.election_modules import ELECTION_MODULES_CHOICES, get_poll_module, \
     get_election_module
@@ -174,10 +175,7 @@ class PollMix(models.Model):
         return True
 
     def zeus_mix(self):
-        filled_mix = ""
-        for part in self.parts.order_by("pk"):
-            filled_mix += part.data
-        return marshal.loads(filled_mix)
+        return from_canonical(self.mix_file.read())
 
     def mix_parts_iter(self, mix):
         size = len(mix)
@@ -198,8 +196,8 @@ class PollMix(models.Model):
 
     @transaction.atomic
     def _do_mix(self):
-        zeus_mix = self.poll.zeus.get_last_mix()
-        new_mix = self.poll.zeus.mix(zeus_mix)
+        last_mix = self.poll.zeus.get_last_mix()
+        new_mix = self.poll.zeus.mix(last_mix)
 
         self.store_mix(new_mix)
         self.store_mix_in_file(new_mix)
@@ -346,6 +344,12 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         super(Election, self).__init__(*args, **kwargs)
 
 
+    def reset_remote_mixing(self):
+        with transaction.atomic():
+            for poll in self.polls.all():
+                poll.mixes.filter(mix_order__gt=0).delete()
+
+
     @property
     def sms_credentials(self):
         try:
@@ -379,6 +383,9 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
             return 'VOTING'
 
         if not self.tallying_finished_at:
+            return 'MIXING'
+
+        if self.mix_key and not self.remote_mixing_finished_at:
             return 'MIXING'
 
         if not self.mix_finished_at:
@@ -474,8 +481,11 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
           self.any_poll_feature_validate_mixing_finished:
           return _('Validating mixing')
 
-      if self.polls_feature_mix_finished:
+      if self.polls_feature_mixing_finished:
           return _('Mixing finished')
+
+      if self.feature_can_close_remote_mixing:
+          return _('Waiting for remote mixes')
 
       if self.any_poll_feature_mix_running or self.any_poll_feature_mix_finished:
           return _('Mixing')
@@ -500,6 +510,15 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
           return _('Frozen')
 
       return _('Election pending to freeze')
+
+    @property
+    def remote_mix_url(self):
+        return "%s%s" % (settings.SECURE_URL_HOST,
+                         reverse('election_remote_mix', args=(self.uuid,
+                            self.mix_key)))
+
+    def check_mix_key(self, key):
+        return key == self.mix_key
 
     def close_voting(self):
         self.voting_ended_at = datetime.datetime.now()
@@ -603,13 +622,13 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         if not self.voting_ended_at:
             return 'VOTING'
 
-        if not self.mixing_finished:
+        if not self.any_poll_feature_mix_finished:
             return 'MIXING'
 
         if self.mix_key and not self.remote_mixing_finished_at:
             return 'MIXING'
 
-        if not self.results_compute_finished:
+        if not self.feature_polls_results_computed:
             return 'DECRYPTING'
 
         return 'FINISHED'
@@ -768,6 +787,13 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
       super(Poll, self).__init__(*args, **kwargs)
 
   @property
+  def remote_mix_url(self):
+        return "%s%s" % (settings.SECURE_URL_HOST,
+                         reverse('election_poll_remote_mix', args=(
+                            self.election.uuid, self.uuid,
+                            self.election.mix_key)))
+
+  @property
   def sms_enabled(self):
     return self.election.sms_enabled
 
@@ -853,6 +879,9 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         return 'VOTING'
 
     if not self.feature_mix_finished:
+        return 'MIXING'
+
+    if self.election.mix_key and not self.election.remote_mixing_finished_at:
         return 'MIXING'
 
     if not self.result:
@@ -1175,8 +1204,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
       return self.mixes.count()
 
   @property
-  def finished_mixnets(self):
-      return self.mixnets.filter(status='finished').defer('data')
+  def finished_mixes(self):
+      return self.mixes.filter(status='finished').defer('data')
 
   def mixing_errors(self):
       errors = []
@@ -1213,7 +1242,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         return e
 
     with transaction.atomic():
-        if not Poll.objects.get(pk=self.pk).tallying_finished_at:
+        if not Poll.objects.get(pk=self.pk).election.remote_mixing_finished_at:
             mix.save()
         else:
             return "Mixing finished"
@@ -1222,20 +1251,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
   @property
   def remote_mixes(self):
-      return self.mixnets.filter(mix_type='remote',
+      return self.mixes.filter(mix_type='remote',
                                status='finished').defer("data")
-
-  def get_mix_url(self):
-    if not self.mix_key:
-      return ''
-    return settings.URL_HOST + "/helios/elections/%s/mix/%s" % (self.uuid, self.mix_key)
-
-  def mixes_count(self):
-    mixnets_count = self.mixnets.filter(status="finished",
-                        second_mix__isnull=False).count() * 2
-    mixnets_count += self.mixnets.filter(status="finished",
-                                         second_mix__isnull=True).count()
-    return mixnets_count
 
   def _get_zeus_vote(self, enc_vote, voter=None, audit_password=None):
     answer = enc_vote.encrypted_answers[0]
