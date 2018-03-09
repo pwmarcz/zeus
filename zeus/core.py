@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 PYTHON_MAJOR = sys.version_info[0]
 from datetime import datetime
@@ -530,8 +531,9 @@ class CheapQueue(object):
         self.getcount += 1
         return obj
 
-#Queue = mpQueue
-Queue = CheapQueue
+Queue = mpQueue
+if os.path.exists("/dev/shm"):
+    Queue = CheapQueue
 
 def async_call(func, args, kw, channel):
     argspec = inspect.getargspec(func)
