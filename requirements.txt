@@ -10,6 +10,7 @@ anyjson==0.3.3
 apipkg==1.4               # via execnet
 attrs==17.4.0             # via pytest
 backports-abc==0.5        # via tornado
+backports.shutil-get-terminal-size==1.0.0  # via ipython
 billiard==3.3.0.23        # via celery
 celery==3.1.25
 celerymon==1.0.3
@@ -17,6 +18,7 @@ certifi==2018.1.18        # via requests, tornado
 chardet==3.0.4            # via requests
 codecov==2.0.15
 coverage==4.5.1           # via codecov, pytest-cov
+decorator==4.2.1          # via ipython, traitlets
 django-celery==3.2.2
 django-debug-toolbar==0.9.4
 django-eml-email-backend==0.1
@@ -25,16 +27,24 @@ django-kombu==0.9.4
 django-pagination==1.0.7
 django-picklefield==0.3.2
 django==1.8
+enum34==1.1.6             # via traitlets
 execnet==1.5.0            # via pytest-xdist
 funcsigs==1.0.2           # via pytest
 gmpy==1.17
 idna==2.6                 # via requests
-ipython==0.13
+ipython-genutils==0.2.0   # via traitlets
+ipython==5.5.0
 kombu==3.0.37             # via celery
+pathlib2==2.3.0           # via ipython, pickleshare
+pexpect==4.4.0            # via ipython
+pickleshare==0.7.4        # via ipython
 pluggy==0.6.0             # via pytest
+prompt-toolkit==1.0.15    # via ipython
 psycopg2==2.7.4
+ptyprocess==0.5.2         # via pexpect
 py==1.5.2                 # via pytest
 pycrypto==2.6.1
+pygments==2.2.0           # via ipython
 pyicu==2.0.3
 pytest-cov==2.5.1
 pytest-django==3.1.2
@@ -47,9 +57,13 @@ pytz==2018.3              # via celery
 pyyaml==3.12
 reportlab==3.0
 requests==2.18.4          # via codecov
+scandir==1.7              # via pathlib2
 selenium==2.25.0
+simplegeneric==0.8.1      # via ipython
 simplejson==3.4.0
 singledispatch==3.4.0.3   # via tornado
-six==1.11.0               # via pytest, singledispatch
+six==1.11.0               # via pathlib2, prompt-toolkit, pytest, singledispatch, traitlets
 tornado==4.5.3            # via celerymon
+traitlets==4.3.2          # via ipython
 urllib3==1.22             # via requests
+wcwidth==0.1.7            # via prompt-toolkit
