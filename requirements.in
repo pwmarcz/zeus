@@ -22,7 +22,6 @@ pyyaml
 
 # devtools
 selenium==2.25.0
-trunserver==0.0.2
 django-debug-toolbar==0.9.4
 ipython==0.13
 pytest>=3.4.2
