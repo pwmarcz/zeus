@@ -720,7 +720,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         # trustees got mail for step 2
         trustees = Election.objects.get(uuid=self.e_uuid).trustees.all()
         mail_num = len(trustees) - 1
-        self.assertEqual(len(mail.outbox), mail_num)
+        self.assertEqual(len(mail.outbox), mail_num + 1)
         for email in mail.outbox:
             for trustee in trustees:
                 if trustee.email in email.to[0]:
