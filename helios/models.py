@@ -1159,7 +1159,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
   def voters_cast_count(self):
     return self.cast_votes.filter(
-        voter__excluded_at__isnull=True).distinct('voter').count()
+        voter__excluded_at__isnull=True).order_by('voter').distinct('voter').count()
 
   def total_cast_count(self):
     return self.cast_votes.filter(
