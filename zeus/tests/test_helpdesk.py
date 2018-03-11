@@ -318,7 +318,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'test_admin',
             'institution': 'test_inst',
-            'user_groups': [1],
+            'user_groups': [self.group.id],
             'is_disabled': 'on',
             }
         r = self.c.post(
@@ -370,7 +370,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
                 'user_id': u.user_id,
                 'institution': u.institution.name,
                 'is_disabled': 'on',
-                'user_groups': [1]
+                'user_groups': [self.group.id]
             }
             self.c.post(
                 '/account_administration/user_creation/?edit_id=%s'
@@ -462,14 +462,14 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'new_test_user',
             'institution': 'test_inst',
-            'user_groups': [1]
+            'user_groups': [self.group.id]
             }
         self.c.post(
             '/account_administration/user_creation/',
             post_data
             )
         self.assertEqual(User.objects.all().count(), 4)
-        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "default")
+        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "ZEUS")
 
     def test_superadmin_can_create_user_with_post(self):
         # there are already 3 users
@@ -482,14 +482,14 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'new_test_user',
             'institution': 'test_inst',
-            'user_groups': [1]
+            'user_groups': [self.group.id]
             }
         self.c.post(
             '/account_administration/user_creation/',
             post_data
             )
         self.assertEqual(User.objects.all().count(), 4)
-        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "default")
+        self.assertEqual(User.objects.get(user_id="new_test_user").user_groups.get().name, "ZEUS")
 
     def test_edit_user(self):
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
@@ -498,7 +498,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         post_data = {
             'user_id': 'test_admin',
             'name': 'test_name',
-            'user_groups': [1],
+            'user_groups': [self.group.id],
             'institution': 'test_inst'
             }
         r = self.c.post(

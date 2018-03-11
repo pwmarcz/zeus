@@ -794,6 +794,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         # results computed - docs generated - 3 mails in total
         admins = settings.ADMINS
         mail_num = 3
+        # for m in mail.outbox:
+            # print m.body
         self.assertEqual(len(mail.outbox), mail_num)
         admin_messages = [
             'Trustees partial decryptions finished',
