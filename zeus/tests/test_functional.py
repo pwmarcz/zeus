@@ -720,7 +720,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         # trustees got mail for step 2
         trustees = Election.objects.get(uuid=self.e_uuid).trustees.all()
         mail_num = len(trustees) - 1
-        self.assertEqual(len(mail.outbox), mail_num + 1)
+        self.assertEqual(len(mail.outbox), mail_num)
         for email in mail.outbox:
             for trustee in trustees:
                 if trustee.email in email.to[0]:
@@ -813,8 +813,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.admin_can_submit_election_form()
         self.first_trustee_step_and_admin_mail()
         e = Election.objects.get(uuid=self.e_uuid)
-        pks = self.prepare_trustees(self.e_uuid)
         self.assertEqual(self.freeze_election(), None)
+        pks = self.prepare_trustees(self.e_uuid)
         self.second_trustee_step_mail()
         self.create_duplicate_polls()
         self.create_polls()
