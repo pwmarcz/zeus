@@ -203,8 +203,9 @@ def freeze(request, election):
 
     # hacky delay. Hopefully validate create task will start running
     # before the election view redirect.
-    import time
-    time.sleep(getattr(settings, 'ZEUS_ELECTION_FREEZE_DELAY', 4))
+    if not settings.CELERY_ALWAYS_EAGER:
+        import time
+        time.sleep(getattr(settings, 'ZEUS_ELECTION_FREEZE_DELAY', 4))
 
     url = election_reverse(election, 'index')
     return HttpResponseRedirect(url)
