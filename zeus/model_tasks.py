@@ -178,37 +178,33 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
 
             try:
                 # in order to manually track task method error status
-                transaction.set_autocommit(False)
+                with transaction.atomic():
 
-                if lock:
-                    self._select_for_update()
-                func(self, *args, **kwargs)
+                    if lock:
+                        self._select_for_update()
+                    func(self, *args, **kwargs)
 
-                finished = False
-                if not is_recurrent:
-                    finished = True
-                else:
-                    if completed_cb and completed_cb(self):
+                    finished = False
+                    if not is_recurrent:
                         finished = True
+                    else:
+                        if completed_cb and completed_cb(self):
+                            finished = True
 
-                if finished:
-                    self.__setattr__(finished_field,
-                                    datetime.datetime.now())
-                    setattr(self, status_field, 'finished')
-                    setattr(self, error_field, None)
-                    self.notify_task(name, 'finished')
-                else:
-                    self.notify_task(name, 'waiting')
-                    setattr(self, status_field, 'waiting')
-                self.save()
-                transaction.commit()
-                transaction.set_autocommit(True)
+                    if finished:
+                        self.__setattr__(finished_field,
+                                        datetime.datetime.now())
+                        setattr(self, status_field, 'finished')
+                        setattr(self, error_field, None)
+                        self.notify_task(name, 'finished')
+                    else:
+                        self.notify_task(name, 'waiting')
+                        setattr(self, status_field, 'waiting')
+                    self.save()
             except Exception, e:
                 error = str(e)
                 self.notify_task(name, 'error', error)
                 self.notify_exception(e)
-                transaction.rollback()
-                transaction.set_autocommit(True)
                 with transaction.atomic():
                     setattr(self, error_field, error)
                     setattr(self, started_field, None)
