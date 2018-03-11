@@ -45,6 +45,8 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             'password': 'test_superadmin',
             }
 
+        UserGroup.objects.create(name='default')
+
     # test user permissions
 
     def test_access_not_allowed_without_login(self):
@@ -315,10 +317,11 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
         u = User.objects.get(user_id='test_admin')
         uid = u.id
+        group_id = UserGroup.objects.get(name='default').id
         post_data = {
             'user_id': 'test_admin',
             'institution': 'test_inst',
-            'user_groups': [1],
+            'user_groups': [group_id],
             'is_disabled': 'on',
             }
         r = self.c.post(
