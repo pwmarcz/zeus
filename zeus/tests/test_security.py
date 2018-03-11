@@ -55,7 +55,7 @@ class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestAdminsPermissions, self).setUp()
         #one admin exists, we need another one
-        group = UserGroup.objects.get(name="default")
+        group = UserGroup.objects.get(name="ZEUS")
         self.admin2 = User.objects.create(user_type="password",
                                          user_id="test_admin2",
                                          info={"password": make_password("test_admin2")},
