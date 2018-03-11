@@ -1,15 +1,10 @@
-"""
-# to run tests
-$ export PYTHONPATH=.
-$ python manage.py test helios --settings=test_settings
-"""
-
-from settings import *
+from .base import *
 
 import os, errno
 import datetime
 
 DEBUG = False
+TEMPLATE_DEBUG = True
 
 LANGUAGES = (('en', 'EN'), ('el', 'EL'))
 LANGUAGE_CODE = 'en'
