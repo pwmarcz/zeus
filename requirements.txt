@@ -53,7 +53,7 @@ pytest-django==3.1.2
 pytest-forked==0.2        # via pytest-xdist
 pytest-xdist==1.22.2
 pytest==3.4.2
-python-dateutil==1.5
+python-dateutil==2.6.1
 python-openid==2.2.5
 pytz==2018.3              # via celery
 pyyaml==3.12
@@ -64,7 +64,7 @@ selenium==2.25.0
 simplegeneric==0.8.1      # via ipython
 simplejson==3.4.0
 singledispatch==3.4.0.3   # via tornado
-six==1.11.0               # via mock, pathlib2, prompt-toolkit, pytest, singledispatch, traitlets
+six==1.11.0               # via mock, pathlib2, prompt-toolkit, pytest, python-dateutil, singledispatch, traitlets
 tornado==4.5.3            # via celerymon
 traitlets==4.3.2          # via ipython
 urllib3==1.22             # via requests
