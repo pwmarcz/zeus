@@ -7,8 +7,6 @@ from helios.models import *
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
-pytestmark = pytest.mark.django_db(transaction=True)
-
 
 class SetUpAdminAndClientMixin():
 

@@ -9,7 +9,7 @@ from itertools import izip, chain
 from random import shuffle, sample, randint, choice
 from datetime import timedelta
 
-from django.test import TransactionTestCase as TestCase
+from django.test import TestCase
 from django.conf import settings
 from django.core import mail
 
@@ -21,7 +21,6 @@ from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
 from zeus.views.common import ELGAMAL_PARAMS
 
-pytestmark = pytest.mark.django_db(transaction=True)
 
 class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
