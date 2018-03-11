@@ -40,6 +40,7 @@ pathlib2==2.3.0           # via ipython, pickleshare
 pbr==3.1.1                # via mock
 pexpect==4.4.0            # via ipython
 pickleshare==0.7.4        # via ipython
+pillow==5.0.0             # via reportlab
 pluggy==0.6.0             # via pytest
 prompt-toolkit==1.0.15    # via ipython
 psycopg2==2.7.4
@@ -57,7 +58,7 @@ python-dateutil==2.6.1
 python-openid==2.2.5
 pytz==2018.3              # via celery
 pyyaml==3.12
-reportlab==3.0
+reportlab==3.4.0
 requests==2.18.4          # via codecov
 scandir==1.7              # via pathlib2
 selenium==2.25.0

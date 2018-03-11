@@ -17,7 +17,7 @@ PyICU>=2.0.3
 django-pagination==1.0.7
 gmpy==1.17
 simplejson==3.4.0
-reportlab==3.0
+reportlab>=3.4.0
 pyyaml
 
 # devtools
