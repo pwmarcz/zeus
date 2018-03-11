@@ -1,4 +1,7 @@
-from .base import *
+try:
+    from .local import *
+except ImportError:
+    from .dev import *
 
 import os, errno
 import datetime
