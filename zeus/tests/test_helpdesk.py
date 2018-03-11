@@ -10,8 +10,6 @@ from zeus.models import Institution
 
 from utils import SetUpAdminAndClientMixin, get_messages_from_response
 
-pytestmark = pytest.mark.django_db(transaction=True)
-
 
 class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
 
