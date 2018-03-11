@@ -11,6 +11,5 @@ install:
 script:
   - . env/bin/activate && py.test -v --cov
   
-# TODO change to after_success after tests are passing
-after_script:
+after_success:
   - . env/bin/activate && codecov
