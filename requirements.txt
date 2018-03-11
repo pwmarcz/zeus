@@ -29,13 +29,15 @@ django-picklefield==0.3.2
 django==1.8.19
 enum34==1.1.6             # via traitlets
 execnet==1.5.0            # via pytest-xdist
-funcsigs==1.0.2           # via pytest
+funcsigs==1.0.2           # via mock, pytest
 gmpy==1.17
 idna==2.6                 # via requests
 ipython-genutils==0.2.0   # via traitlets
 ipython==5.5.0
 kombu==3.0.37             # via celery
+mock==2.0.0
 pathlib2==2.3.0           # via ipython, pickleshare
+pbr==3.1.1                # via mock
 pexpect==4.4.0            # via ipython
 pickleshare==0.7.4        # via ipython
 pluggy==0.6.0             # via pytest
@@ -62,7 +64,7 @@ selenium==2.25.0
 simplegeneric==0.8.1      # via ipython
 simplejson==3.4.0
 singledispatch==3.4.0.3   # via tornado
-six==1.11.0               # via pathlib2, prompt-toolkit, pytest, singledispatch, traitlets
+six==1.11.0               # via mock, pathlib2, prompt-toolkit, pytest, singledispatch, traitlets
 tornado==4.5.3            # via celerymon
 traitlets==4.3.2          # via ipython
 urllib3==1.22             # via requests

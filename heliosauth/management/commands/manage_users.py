@@ -185,4 +185,6 @@ class Command(BaseCommand):
             newuser.institution = inst
             newuser.ecounting_account = False
             newuser.save()
+            newuser.user_groups = [UserGroup.objects.get(name="default")]
+
 
