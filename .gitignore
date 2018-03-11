@@ -5,7 +5,6 @@ initialization.py
 .DS_Store
 *~
 media/*
-local_settings.py
 .sass-cache
 docs/install/_build
 *.swp
@@ -23,3 +22,4 @@ test.html
 deploy/config.yaml
 env
 .pytest_cache
+settings/local.py

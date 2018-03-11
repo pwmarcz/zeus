@@ -22,21 +22,20 @@ This is a fork of Ben Adida's Helios server. The differences from Helios are as 
 
 Install Postgres (`postgres-server`, `libpq-dev`).
 
-If necessary, create a Postgres user:
+If necessary, create a Postgres user. Then create a database:
 
     sudo -u postgres createuser -s $(whoami)
-
-Create a database:
-
     createdb helios
 
-Ensure you have Python 2.7 and virtualenv. Setup virtualenv:
+Ensure you have Python 2.7 and virtualenv, setup and activate virtualenv:
 
     ./setup-python
-
-Activate virtualenv:
-
     . env/bin/activate
+
+Create a local Django settings file. This will be an unversioned file that you
+can then customize.
+
+    cp settings/local_template.py settings/local.py
 
 Run migrations:
 
