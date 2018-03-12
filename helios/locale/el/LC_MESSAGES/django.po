@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-06 19:03+0200\n"
+"POT-Creation-Date: 2018-03-12 15:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,8 +137,11 @@ msgstr "Επικύρωση μίξης σε εξέλιξη"
 msgid "Mixing finished"
 msgstr "Η μίξη ολοκληρώθηκε"
 
+msgid "Waiting for remote mixes"
+msgstr "Αναμονή για καταχώρηση ανάμιξης ψηφοδελτίων"
+
 msgid "Mixing"
-msgstr "Μίξη"
+msgstr "Κρυπτογραφική ανάμιξη ψηφοδελτίων"
 
 msgid "Validating voting"
 msgstr "Επικύρωση ψηφοφορίας σε εξέλιξη"
@@ -324,11 +327,20 @@ msgstr "Λευκή ψήφος"
 msgid "Election status"
 msgstr "Κατάσταση ψηφοφορίας"
 
+msgid "Use the following URL to append additional mixes"
+msgstr "Χρησιμοποιήστε τον ακόλουθο σύνδεσμο για καταχώρηση επιπλέον κρυπτογραφικών αναμίξεων ψηφοδελτίων"
+
+msgid "Mixing status"
+msgstr "Κατάσταση διαδικασίας κρυπτογραφικής ανάμιξης ψηφοδελτίων"
+
 msgid "Freeze election"
 msgstr "Οριστικοποίηση ψηφοφορίας"
 
 msgid "Close election"
 msgstr "Λήξη ψηφοφορίας"
+
+msgid "Close mixing"
+msgstr "Ολοκλρήρωση ανάμιξης ψηφοδελτίων"
 
 msgid "Cancel election"
 msgstr "Ακύρωση ψηφοφορίας"
@@ -449,14 +461,11 @@ msgstr ""
 msgid "Confirm freeze"
 msgstr "Επιβεβαίωση οριστικοποίησης"
 
-msgid ""
-"About to freeze election.\n"
-"  After this, most changes will not be possible.\n"
-"  Are you certain?"
-msgstr ""
-"Η ψηφοφορία θα οριστικοποιηθεί.\n"
-"  Δεν θα γίνονται πλέον δεκτές αλλαγές\n"
-"  πλην ελαχίστων εξαιρέσεων."
+msgid "Please confirm."
+msgstr "Ναι, επιβεβαιώνω!"
+
+msgid "Confirm close mixing"
+msgstr "Επιβεβαίωση ολοκλρήωσης κρυπτογραφικών αναμίξεων ψηφοδελτίων"
 
 msgid "Rename poll"
 msgstr "Μετονομασία κάλπης"
