@@ -41,6 +41,11 @@ Run migrations:
 
     python manage.py migrate
 
+Create an institution and admin user:
+
+    python manage.py manage_users --create-institution "ZEUS"
+    python manage.py manage_users --create-user <username> --institution=1
+
 ## Run
 
     python manage.py runserver 0.0.0.0:8000
