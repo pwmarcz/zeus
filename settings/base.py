@@ -239,8 +239,9 @@ ZEUS_VOTER_EMAIL_RATE = '30/m'
 DATA_PATH = os.path.join(ROOT_PATH, 'data')
 
 ZEUS_ELECTION_LOG_DIR = os.path.join(DATA_PATH, 'election_logs')
-ZEUS_RESULTS_PATH = os.path.join(DATA_PATH, 'zeus')
-ZEUS_PROOFS_PATH = os.path.join(DATA_PATH, 'zeus_proofs')
+ZEUS_RESULTS_PATH = os.path.join(DATA_PATH, 'results')
+ZEUS_PROOFS_PATH = os.path.join(DATA_PATH, 'proofs')
+ZEUS_PROOFS_PATH = os.path.join(DATA_PATH, 'mixes')
 ZEUS_ALLOW_EARLY_ELECTION_CLOSE = True
 ZEUS_CELERY_TEMPDIR = os.path.join('/', 'var', 'run', 'zeus-celery')
 ZEUS_HEADER_BG_URL = '/static/zeus/images/logo_bg_nobrand'
