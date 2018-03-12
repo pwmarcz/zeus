@@ -63,7 +63,7 @@ def test_decryption():
     pts = []
     for (alpha, beta), factor in izip(cts, master_factors):
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
-    assert sorted(pts) != sorted(texts)
+    assert sorted(pts) == sorted(texts)
 
 
 def test_generate():
