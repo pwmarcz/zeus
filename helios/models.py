@@ -333,7 +333,8 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
 
     cast_notify_once = models.BooleanField(default=True)
 
-    cast_consent_text = models.TextField(default=None, null=True, blank=True,
+    cast_consent_text = models.TextField(_("Cast consent test"),
+                                         default=None, null=True, blank=True,
                                          help_text=help.cast_consent_text)
 
     class Meta:
