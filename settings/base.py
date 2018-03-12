@@ -257,22 +257,6 @@ MIX_PART_SIZE = 104857600
 USE_X_SENDFILE = False
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'root': {
-        'level': 'INFO',
-        'handlers': ['file']
-    },
-    'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(DATA_PATH, 'zeus.log')
-        }
-    }
-}
-
-
 # default sms credentials
 ZEUS_SMS_API_USERNAME = ""
 ZEUS_SMS_API_PASSWORD = ""
@@ -329,6 +313,7 @@ LOGGING = {
     'loggers': {},
     'root': {
         'handlers': ['console'],
+        'level': 'DEBUG',
         'propagate': True,
     },
 }
