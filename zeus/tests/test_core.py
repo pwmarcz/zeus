@@ -1,4 +1,7 @@
 from itertools import izip
+import tempfile
+import shutil
+import os
 
 from zeus.core import (
     _default_crypto,
@@ -6,6 +9,8 @@ from zeus.core import (
     compute_decryption_factors,
     combine_decryption_factors,
     decrypt_with_decryptor,
+    from_canonical,
+    main,
 )
 from zeus.zeus_sk import mix_ciphers
 
@@ -61,3 +66,15 @@ def test_decryption():
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
     if sorted(pts) != sorted(texts):
         raise AssertionError("ZZ")
+
+
+def test_generate():
+    d = tempfile.mkdtemp(prefix='zeus')
+    try:
+        filename = os.path.join(d, 'election.json')
+        main(['--generate', filename])
+        # Parse the results back.
+        with open(filename) as f:
+            election = from_canonical(f)
+    finally:
+        shutil.rmtree(d)

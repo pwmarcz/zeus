@@ -4528,7 +4528,7 @@ class ZeusCoreElection(object):
         return self
 
 
-def main():
+def main(cmd=None):
     import argparse
     description='Zeus Election Reference Implementation and Verifier.'
     epilog="Try 'zeus --generate'"
@@ -4618,7 +4618,9 @@ def main():
         help=("Buffer output newlines according to --oms "
               "instead of sending them out immediately"))
 
-    args = parser.parse_args()
+    if cmd is None:
+        cmd = sys.argv[1:]
+    args = parser.parse_args(cmd)
 
     def do_extract_signatures(election, prefix='counted', teller=_teller):
         vfm, counted_list = election.extract_votes_for_mixing()
