@@ -3,10 +3,7 @@ import datetime
 import json
 import os
 
-try:
-  from collections import OrderedDict
-except ImportError:
-  from django.utils.datastructures import SortedDict as OrderedDict
+from collections import OrderedDict
 
 from zeus.forms import ElectionForm
 from zeus.forms import PollForm, PollFormSet

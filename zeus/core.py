@@ -29,22 +29,13 @@ import inspect
 import importlib
 from time import time, sleep
 
-try:
-    from gmpy import mpz
-    _pow = pow
+from gmpy import mpz
+_pow = pow
 
-    def pow(b, e, m):
-        return int(_pow(mpz(b), e, m))
-except ImportError:
-    print "Warning: Could not import gmpy. Falling back to SLOW crypto."
+def pow(b, e, m):
+    return int(_pow(mpz(b), e, m))
 
 bit_length = lambda num: num.bit_length()
-if sys.version_info < (2, 7):
-    def bit_length(num):
-        s = bin(num)
-        s = s.lstrip('-0b')
-        return len(s)
-
 
 class ZeusError(Exception):
     pass
