@@ -1,48 +1,39 @@
+import pytest
 from zeus.utils import decalize, undecalize
 
+@pytest.mark.parametrize(('s', 'dec'), [
+    ('', ''),
+    (' ', '00'),
+    ('\x7f', '95'),
+])
+def test_simple(s, dec):
+    assert decalize(s) == dec
+    assert undecalize(dec) == s
 
-def test_decalize():
+
+def random_strings(n):
     import random
+    random.seed(42)
     alphabet = 'abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPQRSTUVWXYZ23456789'
+    return [
+        ''.join(random.choice(alphabet) for j in xrange(12))
+        for i in xrange(n)
+    ]
 
-    N = 1000
-    for i in xrange(N):
-        s = ''
-        for j in xrange(12):
-            s += random.choice(alphabet)
-        dec = decalize(s, sep='-', chunk=2)
-        #print s, '-', dec
-        undec = undecalize(dec)
-        if undec != s:
-            m = "%s %s %s %s" % (i, s, dec, undec)
-            raise AssertionError("decalize-undecalize mismatch: %s" % m)
 
-    if decalize("") != undecalize(""):
-        raise AssertionError()
+@pytest.mark.parametrize('s', random_strings(10))
+def test_decalize_random(s):
+    dec = decalize(s, sep='-', chunk=2)
+    assert undecalize(dec) == s
 
-    if decalize(" ") != "00":
-        raise AssertionError()
 
-    if undecalize("00") != " ":
-        raise AssertionError()
+@pytest.mark.parametrize('s', ['\x1f', '\x80'])
+def test_decalize_fail(s):
+    with pytest.raises(ValueError):
+        decalize(s)
 
-    if undecalize("95") != "\x7f":
-        raise AssertionError()
 
-    decalize_tests = ["\x1f", "\x80"]
-    for t in decalize_tests:
-        try:
-            decalize(t)
-        except ValueError as e:
-            pass
-        else:
-            raise AssertionError("Decalize(%s) failed to fail" % t)
-
-    undecalize_tests = ["9012-3", "42019609"]
-    for t in undecalize_tests:
-        try:
-            undecalize(t)
-        except ValueError as e:
-            pass
-        else:
-            raise AssertionError("Undecalize(%s) failed to fail" % t)
+@pytest.mark.parametrize('s', ["9012-3", "42019609"])
+def test_undecalize_fail(s):
+    with pytest.raises(ValueError):
+        undecalize(s)
