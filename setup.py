@@ -11,7 +11,7 @@ with open(path.join(here, 'README.client.rst'), encoding='utf-8') as f:
 setup(
     name='zeus-client',
 
-    version='0.1.0',
+    version='0.1.2',
 
     description='Zeus client',
 
@@ -19,6 +19,7 @@ setup(
 
     url='https://github.com/grnet/zeus',
     author='GRNET Zeus developers',
+    author_email='dev@zeus.grnet.gr',
 
 
     classifiers=[
@@ -34,6 +35,7 @@ setup(
     entry_points={
         'console_scripts': [
             'zeus-client=zeus.client:main',
+            'zeus-core=zeus.core:main',
         ],
     },
 )
