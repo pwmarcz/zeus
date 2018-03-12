@@ -42,8 +42,7 @@ def test_decryption():
     pts = []
     for (alpha, beta), factor in izip(cts, master_factors):
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
-    if pts != texts:
-        raise AssertionError("Z")
+    assert pts == texts
 
     cfm = {'modulus': p,
            'generator': g,
@@ -64,8 +63,7 @@ def test_decryption():
     pts = []
     for (alpha, beta), factor in izip(cts, master_factors):
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
-    if sorted(pts) != sorted(texts):
-        raise AssertionError("ZZ")
+    assert sorted(pts) != sorted(texts)
 
 
 def test_generate():
