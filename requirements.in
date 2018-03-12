@@ -20,6 +20,9 @@ simplejson==3.4.0
 reportlab>=3.4.0
 pyyaml
 
+# server
+uwsgi
+
 # devtools
 selenium==2.25.0
 django-debug-toolbar==0.9.4

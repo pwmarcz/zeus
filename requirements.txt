@@ -69,4 +69,5 @@ six==1.11.0               # via mock, pathlib2, prompt-toolkit, pytest, python-d
 tornado==4.5.3            # via celerymon
 traitlets==4.3.2          # via ipython
 urllib3==1.22             # via requests
+uwsgi==2.0.17
 wcwidth==0.1.7            # via prompt-toolkit
