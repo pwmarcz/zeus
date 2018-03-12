@@ -522,99 +522,6 @@ msgid ""
 "You have successfully uploaded your partial decryption of the election tally."
 msgstr "Έχετε ολοκληρώσει επιτυχώς την διαδικασία μερικής αποκρυπτογράφησης."
 
-msgid "Create Institution"
-msgstr "Δημιουργία Ιδρύματος"
-
-msgid "Please confirm the deletion of institution"
-msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του ιδρύματος"
-
-msgid "Yes, I confirm!"
-msgstr "Ναι, επιβεβαιώνω!"
-
-msgid "Insitution has users, can't be deleted."
-msgstr "Το ίδρυμα έχει χρήστες, δεν μπορεί να διαγραφεί."
-
-msgid "You didn't choose an institution."
-msgstr "Δεν επιλέχθηκε ίδρυμα."
-
-msgid "Please confirm the deletion of user"
-msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του χρήστη"
-
-msgid "You didn't choose a user."
-msgstr "Δεν επιλέχθηκε χρήστης."
-
-msgid "Institution"
-msgstr "Ίδρυμα"
-
-msgid "Filter"
-msgstr "Φίλτρο"
-
-msgid "Clear"
-msgstr "Εκκαθάριση"
-
-msgid "Name"
-msgstr "Όνομα"
-
-msgid "Users"
-msgstr "Χρήστες"
-
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-msgid "Create User"
-msgstr "Δημιουργία Χρήστη"
-
-msgid "No results found"
-msgstr "Δεν βρέθηκαν αποτελέσματα"
-
-msgid "Election types"
-msgstr "Τύποι ψηφοφορίας"
-
-msgid "Users count"
-msgstr "Αριθμός χρηστών"
-
-msgid "Actions"
-msgstr "Επιλογές"
-
-msgid "User Groups"
-msgstr "Ομάδες χρηστών"
-
-msgid "Is helpdesk user"
-msgstr "Χρήστης helpdesk"
-
-msgid "Elections Held"
-msgstr "Αριθμός Εκλογών"
-
-msgid "Details"
-msgstr "Λεπτομέρειες"
-
-msgid "Institutions"
-msgstr "Ιδρύματα"
-
-msgid "Groups"
-msgstr "Ομάδες"
-
-msgid "Create Group"
-msgstr "Δημιουργία ομάδας χρηστών"
-
-msgid "Please confirm the password reset of user "
-msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
-
-msgid "SMS backend"
-msgstr "Πάροχος SMS"
-
-msgid "Reset Password"
-msgstr "Επανέκδοση κωδικού"
-
-msgid "Election Name"
-msgstr "Τίτλος ψηφοφορίας"
-
-msgid "Start date"
-msgstr "Ημερομηνία έναρξης"
-
-msgid "End Date"
-msgstr "Ημερομηνία Λήξης"
-
 msgid "Change password"
 msgstr "Αλλαγή κωδικού"
 
@@ -623,18 +530,6 @@ msgstr "Ο νέος κωδικός έχει καταχωρισθεί"
 
 msgid "SAVE"
 msgstr "Αποθήκευση"
-
-msgid "votes cast"
-msgstr "ψηφοδέλτια"
-
-msgid "Total score"
-msgstr "Σύνολο ψήφων"
-
-msgid "Elected"
-msgstr "Εκλεγμένοι"
-
-msgid "Save proof data"
-msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
 
 msgid "To create a new election, enter the necessary information below."
 msgstr ""
@@ -686,6 +581,9 @@ msgstr "Προεπισκόπηση παραπετάσματος"
 msgid "Total votes"
 msgstr "Σύνολο ψήφων"
 
+msgid "Save proof data"
+msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
+
 msgid "Total voters count"
 msgstr "Σύνολο ψηφοφόρων"
 
@@ -717,6 +615,9 @@ msgstr "Εξαγωγή λίστας ψηφοφόρων σε αρχείο CSV"
 
 msgid "Delete all voters"
 msgstr "Διαγραφή όλων των ψηφοφόρων"
+
+msgid "Filter"
+msgstr "Φίλτρο"
 
 #, python-format
 msgid ""
@@ -930,6 +831,9 @@ msgstr "τελευταία ψήφος"
 
 msgid "select action"
 msgstr "επιλογές"
+
+msgid "Actions"
+msgstr "Επιλογές"
 
 msgid "Manage voters"
 msgstr "Διαχείριση ψηφοφόρων"
@@ -1176,6 +1080,245 @@ msgstr "Email υποστήριξης"
 msgid "Election support phone"
 msgstr "Τηλέφωνο υποστήριξης"
 
+msgid "Error saving form."
+msgstr ""
+"Η αποθήκευση της φόρμας απέτυχε. Παρακαλούμε ελέγξτε την εγκυρότητά της."
+
+msgid "Login"
+msgstr "Είσοδος"
+
+msgid ""
+"\n"
+"This is a login form for election administrators only.\n"
+"Voters have to use the link sent to them via email or SMS.\n"
+msgstr ""
+"\n"
+"Εδώ εισέρχονται μόνο οι διαχειριστές ψηφοφοριών.\n"
+"Οι ψηφοφόροι πρέπει να ακολουθήσουν το σύνδεσμο που τους έχει αποσταλεί μέσω "
+"email ή SMS.\n"
+
+msgid "As a trustee for the election"
+msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
+
+msgid "please visit your control panel and follow the instructions"
+msgstr ""
+"παρακαλούμε επισκεφθείτε τον πίνακα ελέγχου και ακολουθήστε τις οδηγίες"
+
+msgid "Zeus Digital Elections"
+msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς»"
+
+msgid "actions required, step"
+msgstr "απαιτούνται ενέργειές σας, βήμα"
+
+msgid "trustee dashboard"
+msgstr "πίνακας ελέγχου εφορευτικής"
+
+msgid "Trustee actions"
+msgstr "Ενέργειες εφορευτικής"
+
+msgid "You are logged in as election administrator"
+msgstr "Συνδεθήκατε ως διαχειριστής ψηφοφοριών"
+
+msgid "control panel"
+msgstr "πίνακας ελέγχου"
+
+msgid "accounts"
+msgstr "λογαριασμοί"
+
+msgid "reports"
+msgstr "Αναφορά"
+
+msgid "logout"
+msgstr "έξοδος"
+
+msgid "change password"
+msgstr "αλλαγή κωδικού"
+
+msgid "You are logged in as voter"
+msgstr "Συδεθήκατε ως ψηφοφόρος"
+
+msgid "proceed to election site"
+msgstr "είσοδος στη σελίδα της ψηφοφορίας"
+
+msgid "You are logged in as trustee"
+msgstr "Συνδεθήκατε ως μέλος εφορευτικής"
+
+msgid "Your web browser is not supported for trustee functions."
+msgstr ""
+"Ο φυλλομετρητής (browser) σας δεν υποστηρίζεται για τις ενέργειες της "
+"εφορευτικής επιτροπής."
+
+msgid "Voter login"
+msgstr "Είσοδος ψηφοφόρου"
+
+msgid ""
+"\n"
+"Please, provide your voter credentials sent to you via Email or SMS\n"
+msgstr ""
+"\n"
+"Συμπληρώστε τα στοιχεία σας για να ψηφίσετε.\n"
+"Τα απαραίτητα στοιχεία θα πρέπει να σας έχουν σταλεί μέσω Email, SMS, ή "
+"άλλου μέσου.\n"
+"Αν δεν τα έχετε λάβει, επικοινωνήστε με την εφορευτική επιτροπή.\n"
+
+msgid "Redirecting..."
+msgstr "Μεταφορά..."
+
+msgid "Voter login redirect"
+msgstr "Ανακατεύθυνση..."
+
+msgid ""
+"Election requires third party authentication. You are being redirected to "
+"the third party login site."
+msgstr ""
+"Η πρόσβαση στην ψηφοφορία απαιτεί σύνδεση σε εξωτερικό σύστημα ελέγχου "
+"χρηστών. Σας κατευθύνουμε στο εξωτερικό σύστημα."
+
+#, python-format
+msgid ""
+"\n"
+"Notify voter %(voter_name)s (%(voter_id)s)\n"
+msgstr ""
+"\n"
+"Αποστολή μηνύματος στον ψηφοφόρο  %(voter_name)s (%(voter_id)s)\n"
+
+#, python-format
+msgid ""
+"\n"
+"Notify poll '%(poll_name)s' voters %(suffix)s\n"
+msgstr ""
+"\n"
+"Αποστολή μηνύματος στους ψηφοφόρους της κάλπης '%(poll_name)s' %(suffix)s\n"
+
+#, python-format
+msgid ""
+"\n"
+"Notify election '%(election_name)s' voters %(suffix)s\n"
+msgstr ""
+"\n"
+"Αποστολή μηνύματος στους ψηφοφόρους της ψηφοφορίας '%(election_name)s' "
+"%(suffix)s\n"
+
+msgid "The message will only be sent to the following voter:"
+msgstr "Το μήνυμα θα σταλεί μόνο στον ακόλουθο ψηφοφόρο:"
+
+msgid "Email content"
+msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
+
+msgid "SMS content"
+msgstr "Περιεχόμενο μηνύματος SMS"
+
+msgid "You can edit the contents of the message using the following form."
+msgstr "Μπορείτε να επεξεργαστείτε το μήνυμα στην φόρμα που ακολουθεί."
+
+msgid "Send"
+msgstr "Αποστολή"
+
+msgid "Sending complete."
+msgstr "Η αποστολή ολοκληρώθηκε."
+
+msgid "Back to the polls"
+msgstr "Πίσω στις κάλπες"
+
+msgid "Error emailing voters"
+msgstr "Σφάλμα κατά την αποστολή email στους ψηφοφόρους"
+
+msgid "Create Institution"
+msgstr "Δημιουργία Ιδρύματος"
+
+msgid "Please confirm the deletion of institution"
+msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του ιδρύματος"
+
+msgid "Yes, I confirm!"
+msgstr "Ναι, επιβεβαιώνω!"
+
+msgid "Insitution has users, can't be deleted."
+msgstr "Το ίδρυμα έχει χρήστες, δεν μπορεί να διαγραφεί."
+
+msgid "You didn't choose an institution."
+msgstr "Δεν επιλέχθηκε ίδρυμα."
+
+msgid "Please confirm the deletion of user"
+msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του χρήστη"
+
+msgid "You didn't choose a user."
+msgstr "Δεν επιλέχθηκε χρήστης."
+
+msgid "Institution"
+msgstr "Ίδρυμα"
+
+msgid "Clear"
+msgstr "Εκκαθάριση"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Users"
+msgstr "Χρήστες"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "Create User"
+msgstr "Δημιουργία Χρήστη"
+
+msgid "No results found"
+msgstr "Δεν βρέθηκαν αποτελέσματα"
+
+msgid "Election types"
+msgstr "Τύποι ψηφοφορίας"
+
+msgid "Users count"
+msgstr "Αριθμός χρηστών"
+
+msgid "User Groups"
+msgstr "Ομάδες χρηστών"
+
+msgid "Is helpdesk user"
+msgstr "Χρήστης helpdesk"
+
+msgid "Elections Held"
+msgstr "Αριθμός Εκλογών"
+
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgid "Institutions"
+msgstr "Ιδρύματα"
+
+msgid "Groups"
+msgstr "Ομάδες"
+
+msgid "Create Group"
+msgstr "Δημιουργία ομάδας χρηστών"
+
+msgid "Please confirm the password reset of user "
+msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
+
+msgid "SMS backend"
+msgstr "Πάροχος SMS"
+
+msgid "Reset Password"
+msgstr "Επανέκδοση κωδικού"
+
+msgid "Election Name"
+msgstr "Τίτλος ψηφοφορίας"
+
+msgid "Start date"
+msgstr "Ημερομηνία έναρξης"
+
+msgid "End Date"
+msgstr "Ημερομηνία Λήξης"
+
+msgid "votes cast"
+msgstr "ψηφοδέλτια"
+
+msgid "Total score"
+msgstr "Σύνολο ψήφων"
+
+msgid "Elected"
+msgstr "Εκλεγμένοι"
+
 msgid "System message"
 msgstr "Μήνυμα συστήματος"
 
@@ -1346,10 +1489,6 @@ msgstr ""
 msgid "Audit codes only apply for poll:"
 msgstr "Οι κωδικοί αφορούν μόνο την κάλπη:"
 
-msgid "Error saving form."
-msgstr ""
-"Η αποθήκευση της φόρμας απέτυχε. Παρακαλούμε ελέγξτε την εγκυρότητά της."
-
 msgid "Home"
 msgstr "Αρχική"
 
@@ -1388,19 +1527,6 @@ msgstr ""
 "    </p>\n"
 "    "
 
-msgid "Login"
-msgstr "Είσοδος"
-
-msgid ""
-"\n"
-"This is a login form for election administrators only.\n"
-"Voters have to use the link sent to them via email or SMS.\n"
-msgstr ""
-"\n"
-"Εδώ εισέρχονται μόνο οι διαχειριστές ψηφοφοριών.\n"
-"Οι ψηφοφόροι πρέπει να ακολουθήσουν το σύνδεσμο που τους έχει αποσταλεί μέσω "
-"email ή SMS.\n"
-
 #, python-format
 msgid ""
 "You have successfully cast a vote in %(election_name)s\n"
@@ -1428,132 +1554,6 @@ msgid ""
 msgstr ""
 "ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ "
 "%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s%(custom_message_sms)s"
-
-msgid "As a trustee for the election"
-msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
-
-msgid "please visit your control panel and follow the instructions"
-msgstr ""
-"παρακαλούμε επισκεφθείτε τον πίνακα ελέγχου και ακολουθήστε τις οδηγίες"
-
-msgid "Zeus Digital Elections"
-msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς»"
-
-msgid "actions required, step"
-msgstr "απαιτούνται ενέργειές σας, βήμα"
-
-msgid "trustee dashboard"
-msgstr "πίνακας ελέγχου εφορευτικής"
-
-msgid "Trustee actions"
-msgstr "Ενέργειες εφορευτικής"
-
-msgid "You are logged in as election administrator"
-msgstr "Συνδεθήκατε ως διαχειριστής ψηφοφοριών"
-
-msgid "control panel"
-msgstr "πίνακας ελέγχου"
-
-msgid "accounts"
-msgstr "λογαριασμοί"
-
-msgid "reports"
-msgstr "Αναφορά"
-
-msgid "logout"
-msgstr "έξοδος"
-
-msgid "change password"
-msgstr "αλλαγή κωδικού"
-
-msgid "You are logged in as voter"
-msgstr "Συδεθήκατε ως ψηφοφόρος"
-
-msgid "proceed to election site"
-msgstr "είσοδος στη σελίδα της ψηφοφορίας"
-
-msgid "You are logged in as trustee"
-msgstr "Συνδεθήκατε ως μέλος εφορευτικής"
-
-msgid "Your web browser is not supported for trustee functions."
-msgstr ""
-"Ο φυλλομετρητής (browser) σας δεν υποστηρίζεται για τις ενέργειες της "
-"εφορευτικής επιτροπής."
-
-msgid "Voter login"
-msgstr "Είσοδος ψηφοφόρου"
-
-msgid ""
-"\n"
-"Please, provide your voter credentials sent to you via Email or SMS\n"
-msgstr ""
-"\n"
-"Συμπληρώστε τα στοιχεία σας για να ψηφίσετε.\n"
-"Τα απαραίτητα στοιχεία θα πρέπει να σας έχουν σταλεί μέσω Email, SMS, ή "
-"άλλου μέσου.\n"
-"Αν δεν τα έχετε λάβει, επικοινωνήστε με την εφορευτική επιτροπή.\n"
-
-msgid "Redirecting..."
-msgstr "Μεταφορά..."
-
-msgid "Voter login redirect"
-msgstr "Ανακατεύθυνση..."
-
-msgid ""
-"Election requires third party authentication. You are being redirected to "
-"the third party login site."
-msgstr ""
-"Η πρόσβαση στην ψηφοφορία απαιτεί σύνδεση σε εξωτερικό σύστημα ελέγχου "
-"χρηστών. Σας κατευθύνουμε στο εξωτερικό σύστημα."
-
-#, python-format
-msgid ""
-"\n"
-"Notify voter %(voter_name)s (%(voter_id)s)\n"
-msgstr ""
-"\n"
-"Αποστολή μηνύματος στον ψηφοφόρο  %(voter_name)s (%(voter_id)s)\n"
-
-#, python-format
-msgid ""
-"\n"
-"Notify poll '%(poll_name)s' voters %(suffix)s\n"
-msgstr ""
-"\n"
-"Αποστολή μηνύματος στους ψηφοφόρους της κάλπης '%(poll_name)s' %(suffix)s\n"
-
-#, python-format
-msgid ""
-"\n"
-"Notify election '%(election_name)s' voters %(suffix)s\n"
-msgstr ""
-"\n"
-"Αποστολή μηνύματος στους ψηφοφόρους της ψηφοφορίας '%(election_name)s' "
-"%(suffix)s\n"
-
-msgid "The message will only be sent to the following voter:"
-msgstr "Το μήνυμα θα σταλεί μόνο στον ακόλουθο ψηφοφόρο:"
-
-msgid "Email content"
-msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
-
-msgid "SMS content"
-msgstr "Περιεχόμενο μηνύματος SMS"
-
-msgid "You can edit the contents of the message using the following form."
-msgstr "Μπορείτε να επεξεργαστείτε το μήνυμα στην φόρμα που ακολουθεί."
-
-msgid "Send"
-msgstr "Αποστολή"
-
-msgid "Sending complete."
-msgstr "Η αποστολή ολοκληρώθηκε."
-
-msgid "Back to the polls"
-msgstr "Πίσω στις κάλπες"
-
-msgid "Error emailing voters"
-msgstr "Σφάλμα κατά την αποστολή email στους ψηφοφόρους"
 
 msgid "FAQ"
 msgstr "Ερωτήσεις-Απαντήσεις"
