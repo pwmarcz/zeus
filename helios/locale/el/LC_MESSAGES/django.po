@@ -345,7 +345,7 @@ msgid "Close election"
 msgstr "Λήξη ψηφοφορίας"
 
 msgid "Close mixing"
-msgstr "Ολοκλρήρωση ανάμιξης ψηφοδελτίων"
+msgstr "Ολοκλρήρωση μίξης"
 
 msgid "Cancel election"
 msgstr "Ακύρωση ψηφοφορίας"
