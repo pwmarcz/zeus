@@ -27,10 +27,16 @@ If necessary, create a Postgres user. Then create a database:
     sudo -u postgres createuser -s $(whoami)
     createdb helios
 
-Ensure you have Python 2.7 and virtualenv, setup and activate virtualenv:
+Ensure you have Python 2.7 and [pipenv](https://docs.pipenv.org/), installed and
+do the following:
 
-    ./setup-python
-    . env/bin/activate
+    pipenv --python python2
+    pipenv install --dev
+    pipenv shell
+
+This will create a virtualenv for you, install all the required packages
+(including the ones needed for development) and activate the virtual
+environment.
 
 Create a local Django settings file. This will be an unversioned file that you
 can then customize.
@@ -56,18 +62,14 @@ Create an institution and admin user:
 
 ## Python packages
 
-We use [pip-tools](https://github.com/jazzband/pip-tools) to manage
-dependencies:
+We use [pipenv](https://docs.pipenv.org/) to manage dependencies:
 
-- `requirements.in` - contains list of direct dependencies, not necessarily
-  pinned
-- `requirements.txt` - auto-generated from `requirements.in`, all packages, all
-  versions pinned
+- `Pipfile` - contains a list of direct dependencies, with version specifiers
+- `Pipfile.lock` - auto-generated from `Pipfile`, all packages, all
+  versions pinned together with their checksums
 
 In order to install a new package:
 
-- activate virtualenv (`. env/bin/activate`)
-- edit `requirements.in`
-- run `pip-compile` to generate a new `requirements.txt` file
-- run `pip-sync` to install the new packages
+- `pipenv install <package>`
+- look into `Pipfile` to make sure the right package was added
 - test the change and commit all files
