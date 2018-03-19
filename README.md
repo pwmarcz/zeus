@@ -33,7 +33,7 @@ installed. You can install `pipenv` by running `pip install --user pipenv`.
 Then, do the following:
 
     pipenv --python python2
-    pipenv install --dev
+    pipenv sync --dev
     pipenv shell
 
 This will create a virtualenv for you, install all the required packages

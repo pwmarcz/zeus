@@ -8,7 +8,7 @@ install:
   - createdb zeus_test
   - pip install --user pipenv
   - pipenv --python python2
-  - pipenv install --dev
+  - pipenv sync --dev
 
 script:
   - pipenv run p.test -v --cov
