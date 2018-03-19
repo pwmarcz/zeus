@@ -7,7 +7,7 @@ IN_VENV = '. /srv/zeus/virtualenv/bin/activate &&'
 
 
 @task
-def host(hostname, git_branch='deploy'):
+def host(hostname, git_branch='prod'):
     env.hosts = [hostname]
     env.git_branch = git_branch
 
