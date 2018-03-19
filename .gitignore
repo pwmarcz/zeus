@@ -20,7 +20,6 @@ report
 test.html
 .test_report
 deploy/config.yaml
-env
 .pytest_cache
 settings/local.py
 .idea/
