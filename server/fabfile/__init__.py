@@ -1,4 +1,4 @@
-from fabric.api import task, env, cd, sudo
+from fabric.api import task, env, cd, sudo, hide
 from fabric.contrib.files import exists
 
 
@@ -18,6 +18,7 @@ def deploy():
     stop()
     update_source()
     update_python()
+    collect_static_files()
     start()
 
 
@@ -46,5 +47,12 @@ def update_source():
 
 @task
 def update_python():
-    with cd('/srv/zeus/install'):
+    with cd('/srv/zeus/install'), hide('output'):
         sudo(f'{IN_VENV} pipenv sync --bare', user='zeus')
+
+
+@task
+def collect_static_files():
+    with cd('/srv/zeus/install'), hide('output'):
+        sudo('rm -rf sitestatic')
+        sudo(f'{IN_VENV} python manage.py collectstatic --noinput', user='zeus')
