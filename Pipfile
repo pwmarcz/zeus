@@ -30,8 +30,8 @@ django-debug-toolbar = "*"
 pytest-xdist = "*"
 
 # selenium = "==2.25.0"
-# ipython = ">=5.5.0"
-# codecov = "*"
+ipython = ">=5,<6"
+codecov = "*"
 
 
 [requires]
