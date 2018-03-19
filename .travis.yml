@@ -6,10 +6,12 @@ install:
   - sudo apt-get install libpq-dev
   - sudo -u postgres createuser -s `whoami` || true
   - createdb zeus_test
-  - ./setup-python
+  - pip install pipenv
+  - pipenv --python python2
+  - pipenv sync --dev
 
 script:
-  - . env/bin/activate && py.test -v --cov
-  
+  - pipenv run pytest -v --cov
+
 after_success:
-  - . env/bin/activate && codecov
+  - pipenv run codecov
