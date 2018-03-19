@@ -14,7 +14,7 @@ import Crypto.Util.number as number
 inverse = number.inverse
 from Crypto import Random
 from os import (fork, kill, getpid, waitpid, ftruncate, lseek, fstat,
-                read, write, unlink, open as os_open, close,
+                read, write, unlink, open as os_open, close, path,
                 O_CREAT, O_RDWR, O_APPEND, SEEK_CUR, SEEK_SET)
 from fcntl import flock, LOCK_EX, LOCK_UN
 from multiprocessing import Semaphore, Queue as mpQueue
@@ -521,8 +521,11 @@ class CheapQueue(object):
         self.getcount += 1
         return obj
 
-#Queue = mpQueue
-Queue = CheapQueue
+
+# TODO: this is ugly; probably fine for now, but we should profile/decide
+# which queue implementation is better at some point
+Queue = CheapQueue if path.exists('/dev/shm') else mpQueue
+
 
 def async_call(func, args, kw, channel):
     argspec = inspect.getargspec(func)
