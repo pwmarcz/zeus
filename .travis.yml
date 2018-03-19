@@ -11,7 +11,7 @@ install:
   - pipenv sync --dev
 
 script:
-  - pipenv run p.test -v --cov
+  - pipenv run pytest -v --cov
 
 after_success:
   - pipenv run codecov
