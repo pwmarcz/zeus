@@ -18,7 +18,7 @@ gmpy = "==1.17"
 reportlab = "*"
 pyyaml = "*"
 uwsgi = "*"
-
+ipython = ">=5,<6"
 
 [dev-packages]
 
@@ -30,7 +30,6 @@ django-debug-toolbar = "*"
 pytest-xdist = "*"
 
 # selenium = "==2.25.0"
-ipython = ">=5,<6"
 codecov = "*"
 
 
