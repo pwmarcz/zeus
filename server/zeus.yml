@@ -1,0 +1,79 @@
+- hosts: all
+  become: yes
+  vars:
+    zeus_db_password: "{{ lookup('password', '.secrets/zeus_db_password.' + inventory_hostname + '.txt') }}"
+  tasks:
+
+    - user:
+        name: zeus
+        shell: /bin/bash
+        home: /srv/zeus/
+
+    - user:
+        name: www-data
+        groups: zeus
+        append: yes
+
+    - apt: pkg={{ item }} state=latest
+      with_items:
+        - postgresql-9.5
+        - libpq-dev
+        - python-psycopg2
+        - libicu-dev
+        - libgmp-dev
+        - g++
+
+    - postgresql_db:
+        name: zeus
+      become_user: postgres
+
+    - postgresql_user:
+        name: zeus
+        db: zeus
+        password: "{{ zeus_db_password }}"
+      become_user: postgres
+
+    - git:
+        repo: https://github.com/pwmarcz/zeus.git
+        dest: /srv/zeus/install
+      become_user: zeus
+
+    - template:
+        src: templates/zeus_settings_local.py
+        dest: /srv/zeus/install/settings/local.py
+        owner: zeus
+
+    - template:
+        src: templates/zeus_uwsgi.ini
+        dest: /srv/zeus/uwsgi.ini
+        owner: zeus
+
+    - file:
+        path: /var/run/zeus
+        state: directory
+        owner: zeus
+        group: zeus
+        mode: 0770
+
+    - template:
+        src: templates/zeus-uwsgi.service
+        dest: /etc/systemd/system/zeus-uwsgi.service
+
+    - systemd:
+        name: zeus-uwsgi.service
+        enabled: yes
+
+    - template:
+        src: templates/zeus-nginx.conf
+        dest: /etc/nginx/sites-available/zeus
+      notify: reload nginx
+
+    - file:
+        src: /etc/nginx/sites-available/zeus
+        dest: /etc/nginx/sites-enabled/zeus
+        state: link
+      notify: reload nginx
+
+  handlers:
+    - name: reload nginx
+      service: name=nginx state=reloaded
