@@ -8,6 +8,8 @@ def get_from_env(var, default):
     else:
         return default
 
+ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
+
 DEBUG = False
 TEMPLATE_DEBUG = False
 
@@ -59,7 +61,9 @@ MEDIA_URL = ''
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 #ADMIN_MEDIA_PREFIX = '/media/'
-STATIC_URL = '/media/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(ROOT_PATH, 'sitestatic')
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = get_from_env('SECRET_KEY', 'replaceme')
@@ -83,7 +87,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'urls'
 
-ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
 BOOTH_PATH = os.path.join('zeus', 'static', 'booth')
 TEMPLATE_DIRS = (
     ROOT_PATH,
