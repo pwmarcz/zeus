@@ -21,6 +21,7 @@ from django.utils.html import mark_safe, escape
 from django.shortcuts import redirect
 from django import forms
 from django.template import Template, Context
+from django.conf import settings
 
 from zeus.forms import ElectionForm
 from zeus import auth
