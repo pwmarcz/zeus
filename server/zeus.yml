@@ -112,7 +112,6 @@
       - name: stop service
         service: name=zeus-uwsgi state=stopped
         tags: [deploy]
-        when: git_repo.changed
 
       - name: update source
         git:
