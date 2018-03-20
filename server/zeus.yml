@@ -1,7 +1,7 @@
 - hosts: all
   become: yes
   vars:
-    zeus_db_password: "{{ lookup('password', 'secrets/zeus_db_password.' + inventory_hostname + '.txt') }}"
+    zeus_db_password: "{{ (lookup('file', 'secrets/zeus-secrets-{{ inventory_hostname }}.json') | from_json)['db_password'] }}"
   tasks:
 
     - name: zeus user
@@ -42,6 +42,14 @@
         repo: https://github.com/pwmarcz/zeus.git
         dest: /srv/zeus/install
       become_user: zeus
+
+    - name: secrets.json
+      copy:
+        src: 'secrets/zeus-secrets-{{ inventory_hostname }}.json'
+        dest: /srv/zeus/secrets.json
+        owner: zeus
+        group: zeus
+        mode: 0700
 
     - name: settings/local.py
       template:

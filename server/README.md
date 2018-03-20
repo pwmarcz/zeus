@@ -28,11 +28,13 @@ Copy `hosts_example.yml` to `hosts.yml`, customize:
           zeus_domain: zeus.example.com
           zeus_use_ssl: yes
 
+Create a secrets file with all passwords generated:
+
+    ./generate-secrets secrets/zeus-secrets-example.com.json
+
 Apply with:
 
     ansible-playbook zeus.yml -i hosts.yml
-
-Note that this will generate a database password and cache it in `.secrets/`.
 
 ## Deployment (`fabric`)
 
