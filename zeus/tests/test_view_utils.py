@@ -13,7 +13,7 @@ def test_set_menu():
 
 
 def test_common_json_handler():
-    date = datetime.datetime.strptime('2015-05-16', '%Y-%m-%d').isoformat()
+    date = datetime.datetime.strptime('2015-05-16', '%Y-%m-%d')
     assert utils.common_json_handler(date) == '2015-05-16T00:00:00'
     assert utils.common_json_handler('somestring') == 'somestring'
 
