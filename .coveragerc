@@ -1,3 +1,5 @@
 [run]
 source = .
+omit =
+  **site-packages**
 branch = True
