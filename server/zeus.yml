@@ -4,12 +4,14 @@
     zeus_db_password: "{{ lookup('password', 'secrets/zeus_db_password.' + inventory_hostname + '.txt') }}"
   tasks:
 
-    - user:
+    - name: zeus user
+      user:
         name: zeus
         shell: /bin/bash
         home: /srv/zeus/
 
-    - user:
+    - name: www-data user
+      user:
         name: www-data
         groups: zeus
         append: yes
@@ -23,52 +25,57 @@
         - libgmp-dev
         - g++
 
-    - postgresql_db:
+    - name: zeus database
+      postgresql_db:
         name: zeus
       become_user: postgres
 
-    - postgresql_user:
+    - name: zeus postgres user
+      postgresql_user:
         name: zeus
         db: zeus
         password: "{{ zeus_db_password }}"
       become_user: postgres
 
-    - git:
+    - name: git repo
+      git:
         repo: https://github.com/pwmarcz/zeus.git
         dest: /srv/zeus/install
       become_user: zeus
 
-    - template:
+    - name: settings/local.py
+      template:
         src: templates/zeus_settings_local.py
         dest: /srv/zeus/install/settings/local.py
         owner: zeus
 
-    - template:
+    - name: uwsgi.ini
+      template:
         src: templates/zeus_uwsgi.ini
         dest: /srv/zeus/uwsgi.ini
         owner: zeus
 
-    - file:
+    - name: /var/run/zeus
+      file:
         path: /var/run/zeus
         state: directory
         owner: zeus
         group: zeus
         mode: 0770
 
-    - template:
+    - name: systemd service configuration
+      template:
         src: templates/zeus-uwsgi.service
         dest: /etc/systemd/system/zeus-uwsgi.service
 
-    - systemd:
-        name: zeus-uwsgi.service
-        enabled: yes
-
-    - template:
+    - name: nginx template
+      template:
         src: templates/zeus-nginx.conf
         dest: /etc/nginx/sites-available/zeus
       notify: reload nginx
 
-    - file:
+    - name: symlink nginx template
+      file:
         src: /etc/nginx/sites-available/zeus
         dest: /etc/nginx/sites-enabled/zeus
         state: link
