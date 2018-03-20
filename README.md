@@ -64,6 +64,18 @@ Create an institution and admin user:
 
     python manage.py runserver 0.0.0.0:8000
 
+### Celery
+
+By default, in development all Celery tasks run synchronously. If you
+want to run a Celery worker, first disable this behaviour by editing
+`settings/local.py`:
+
+    CELERY_ALWAYS_EAGER = False
+
+Then, run:
+
+    python manage.py celery worker -l INFO
+
 ## Test
 
     py.test -v
