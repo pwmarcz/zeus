@@ -16,24 +16,24 @@ class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):
 
     def test_user_on_login_page(self):
         r = self.c.get('/', follow=True)
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
 
     def test_admin_login_with_creds(self):
         r = self.c.post(self.locations['login'], self.login_data, follow=True)
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
         # user has no election so it redirects from /admin to /elections/new
         self.assertRedirects(r, self.locations['create'])
 
     def test_forbid_logged_admin_to_login(self):
         self.c.post(self.locations['login'], self.login_data)
         r = self.c.post(self.locations['login'], self.login_data)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
     def test_admin_login_wrong_creds(self):
         wrong_creds = {'username': 'wrong_admin', 'password': 'wrong_password'}
         r = self.c.post(self.locations['login'], wrong_creds)
         # if code is 200 user failed to login and wasn't redirected
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
 
     def test_logged_admin_can_logout(self):
         self.c.post(self.locations['login'], self.login_data)
@@ -42,12 +42,12 @@ class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):
 
     def test_set_language(self):
         resp = self.c.post('/i18n/setlang/', {'language': '\x00', 'next': '/'})
-        self.assertEqual(resp.status_code, 302)
+        assert resp.status_code == 302
         resp = self.c.post('/i18n/setlang/', {'language': 'el', 'next': '/'}, follow=True)
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.context['LANGUAGE_CODE'], 'el')
+        assert resp.status_code == 200
+        assert resp.context['LANGUAGE_CODE'] == 'el'
         resp = self.c.post('/i18n/setlang/', {'language': 'en', 'next': '/'}, follow=True)
-        self.assertEqual(resp.context['LANGUAGE_CODE'], 'en')
+        assert resp.context['LANGUAGE_CODE'] == 'en'
 
 
 class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
@@ -87,14 +87,14 @@ class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
     def login_and_create_election(self, login_data):
         self.c.post(self.locations['login'], login_data)
         r = self.c.post(self.locations['create'], self.election_form, follow=True)
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
         self.c.get(self.locations['logout'])
 
     def create_elections_with_different_admins(self):
         self.login_and_create_election(self.login_data)
         self.login_and_create_election(self.login_data2)
         e = Election.objects.all()
-        self.assertEqual(len(e), 2)
+        assert len(e) == 2
         #make dict with admin and his election(uuid)
         self.pairs = {}
         for election in e:
@@ -105,4 +105,4 @@ class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
         self.create_elections_with_different_admins()
         self.c.post(self.locations['login'], self.login_data2)
         r = self.c.get('/elections/%s/edit'% self.pairs['test_admin'])
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403

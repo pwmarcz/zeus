@@ -44,7 +44,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        self.assertEqual(response.status_code, 403)
+        assert response.status_code == 403
 
     def test_post_without_superadmin(self):
         """
@@ -56,7 +56,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
 
         response = self.post_and_get_response()
 
-        self.assertEqual(response.status_code, 403)
+        assert response.status_code == 403
 
     def test_post_with_superadmin(self):
         """
@@ -71,7 +71,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
 
         response = self.post_and_get_response()
 
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
 
     def test_get_without_superadmin(self):
         """

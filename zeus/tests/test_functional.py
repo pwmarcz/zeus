@@ -51,7 +51,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
     def election_form_with_wrong_dates(self):
         self.election_form['election_module'] = self.election_type
         # election number must be 0 before correct form submit
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
         self.c.post(self.locations['login'], self.login_data)
 
         # no starting date
@@ -60,7 +60,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         r = self.c.post(self.locations['create'], corrupted_form, follow=True)
         self.assertFormError(r, 'form', 'voting_starts_at',
                              'This field is required.')
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
 
         # no ending date
         corrupted_form = self.election_form.copy()
@@ -68,7 +68,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         r = self.c.post(self.locations['create'], corrupted_form, follow=True)
         self.assertFormError(r, 'form', 'voting_ends_at',
                              'This field is required.')
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
 
         # corrupted starting date
         corrupted_form = self.election_form.copy()
@@ -76,7 +76,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         r = self.c.post(self.locations['create'], corrupted_form, follow=True)
         self.assertFormError(r, 'form', 'voting_starts_at',
                              'Wrong date or time format')
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
 
         # corrupted ending date
         corrupted_form = self.election_form.copy()
@@ -84,7 +84,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         r = self.c.post(self.locations['create'], corrupted_form, follow=True)
         self.assertFormError(r, 'form', 'voting_ends_at',
                              'Wrong date or time format')
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
 
     def admin_can_submit_election_form(self):
         self.election_form['election_module'] = self.election_type
@@ -99,21 +99,20 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
         if self.election_type == 'stv':
 
-            self.assertRaises(
-                IndexError,
-                self.stv_election_form_must_have_departments,
-                self.election_form)
+            with pytest.raises(
+                IndexError):
+                self.stv_election_form_must_have_departments(self.election_form)
             self.verbose('- STV election form was not submited '
                          'without departments')
 
             self.election_form['departments'] = self.departments
         # Elections number must be 0 before form submit
-        self.assertEqual(Election.objects.all().count(), 0)
+        assert Election.objects.all().count() == 0
         self.c.post(self.locations['login'], self.login_data)
         self.c.post(self.locations['create'], self.election_form, follow=True)
         e = Election.objects.all()[0]
         self.e_uuid = e.uuid
-        self.assertIsInstance(e, Election)
+        assert isinstance(e, Election)
         self.verbose('+ Admin posted election form')
 
     '''
@@ -142,7 +141,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 login_url = t.get_login_url()
                 self.c.get(self.locations['logout'])
                 r = self.c.get(login_url)
-                self.assertEqual(r.status_code, 302)
+                assert r.status_code == 302
                 t1_kp = ELGAMAL_PARAMS.generate_keypair()
                 pk = algs.EGPublicKey.from_dict(dict(p=t1_kp.pk.p,
                                                      q=t1_kp.pk.q,
@@ -161,7 +160,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
                 r = self.c.post('/elections/%s/trustee/upload_pk' %
                                (e_uuid), post_data, follow=True)
-                self.assertEqual(r.status_code, 200)
+                assert r.status_code == 200
                 t = Trustee.objects.get(pk=t.pk)
                 t.last_verified_key_at = datetime.datetime.now()
                 t.save()
@@ -218,7 +217,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                         follow=True
                         )
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertNotEqual(e.voting_extended_until, None)
+        assert e.voting_extended_until != None
 
     def create_duplicate_polls(self):
         e = Election.objects.all()[0]
@@ -232,11 +231,11 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         post_data.update(self._get_poll_params(self.polls_number+1))
         self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), polls_count + 1)
+        assert e.polls.all().count() == polls_count + 1
         # try to create poll with same name
         self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), polls_count + 1)
+        assert e.polls.all().count() == polls_count + 1
         self.verbose('- Poll was not created - duplicate poll names')
         # clean - delete polls
         polls = Poll.objects.all()
@@ -251,7 +250,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.c.post(self.locations['login'], self.login_data)
         e = Election.objects.all()[0]
         # there shouldn't be any polls before we create them
-        self.assertEqual(e.polls.all().count(), 0)
+        assert e.polls.all().count() == 0
         location = '/elections/%s/polls/add' % self.e_uuid
         for i in range(0, self.polls_number):
             post_data = {
@@ -260,7 +259,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             post_data.update(self._get_poll_params(i, None))
             self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), self.polls_number)
+        assert e.polls.all().count() == self.polls_number
         self.verbose('+ Polls were created')
         self.p_uuids = []
         for poll in e.polls.all():
@@ -278,7 +277,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         data['name'] = 'changed_poll_name'
         self.c.post(edit_url, data)
         poll = Poll.objects.get(uuid=p_uuid)
-        self.assertEqual(poll.name, 'changed_poll_name')
+        assert poll.name == 'changed_poll_name'
 
     def create_poll_after_freeze(self):
         self.c.get(self.locations['logout'])
@@ -289,9 +288,9 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             'name': 'test_poll_after_freeze',
             }
         r = self.c.post(location, post_data)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), self.polls_number)
+        assert e.polls.all().count() == self.polls_number
 
 
     def edit_poll_name_after_freeze(self):
@@ -302,8 +301,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        self.assertEqual(r.status_code, 403, "Poll name cannot be changed after \
-                         freeze")
+        assert r.status_code == 403, "Poll name cannot be changed after \
+                         freeze"
 
     def submit_questions(self):
         for p_uuid in self.p_uuids:
@@ -312,15 +311,15 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             questions_location = '/elections/%s/polls/%s/questions/manage' % \
                 (self.e_uuid, p_uuid)
             resp = self.c.post(questions_location, duplicate_post_data)
-            self.assertTrue(resp.context['form'].errors)
+            assert resp.context['form'].errors
             p = Poll.objects.get(uuid=p_uuid)
-            self.assertEqual(p.questions_count, 0)
+            assert p.questions_count == 0
             self.verbose('- Duplicate answers were not allowed in poll %s'
                          % p.name)
             resp = self.c.post(questions_location, post_data)
-            self.assertFalse(resp.context)
+            assert not resp.context
             p = Poll.objects.get(uuid=p_uuid)
-            self.assertEqual(p.questions_count, nr_questions)
+            assert p.questions_count == nr_questions
         self.verbose('+ Questions were created')
 
     def submit_duplicate_id_voters_file(self):
@@ -347,7 +346,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             self.c.post(upload_voters_location, {'confirm_p': 1})
             e = Election.objects.get(uuid=self.e_uuid)
             nr_voters = e.voters.count()
-            self.assertEqual(nr_voters, 0)
+            assert nr_voters == 0
         self.verbose('- Voters from faulty file were not submitted')
 
     def submit_wrong_field_number_voters_file(self):
@@ -373,10 +372,10 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 {'voters_file': file(voter_files[p_uuid])}
                 )
             r = self.c.post(upload_voters_location, {'confirm_p': 1})
-            self.assertEqual(r.status_code, 302)
+            assert r.status_code == 302
             e = Election.objects.get(uuid=self.e_uuid)
             nr_voters = e.voters.count()
-            self.assertEqual(nr_voters, 0)
+            assert nr_voters == 0
         self.verbose('- Voters from faulty file were not submitted')
 
     def get_voters_file(self):
@@ -408,7 +407,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             self.c.post(upload_voters_location, {'confirm_p': 1, 'encoding': 'iso-8859-7'})
         e = Election.objects.get(uuid=self.e_uuid)
         voters = e.voters.count()
-        self.assertEqual(voters, self.voters_num*self.polls_number)
+        assert voters == self.voters_num*self.polls_number
         self.verbose('+ Voters file submitted')
 
     def get_voters_urls(self):
@@ -433,7 +432,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             .get_quick_login_url())
         p_uuid = self.p_uuids[0]
         r = self.single_voter_cast_ballot(voter_login_url, p_uuid)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
         self.verbose('- Voting  was not allowed - not frozen yet')
 
     def voter_cannot_vote_after_close(self):
@@ -447,13 +446,13 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.voter_login(self.get_voter_from_url(voter_login_url),
                          voter_login_url)
         r = self.c.get(voter_login_url, follow=True)
-        self.assertTrue(('Η ψηφοφορία έχει λήξει' in r.content)
-                        or ('Voting closed' in r.content))
+        assert ('Η ψηφοφορία έχει λήξει' in r.content) \
+                        or ('Voting closed' in r.content)
         self.verbose('- Voter trying to vote was informed that'
                      ' voting is closed')
         r = self.c.post('/elections/%s/polls/%s/cast'
                         % (self.e_uuid, p_uuid), {})
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
         self.verbose('- Voter cannot access cast vote view after close')
 
     def submit_vote_for_each_voter(self, voters_urls):
@@ -462,7 +461,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 self.single_voter_cast_ballot(voter_url, p_uuid)
         for p_uuid in self.p_uuids:
             p = Poll.objects.get(uuid=p_uuid)
-            self.assertEqual(p.voters_cast_count(), self.voters_num)
+            assert p.voters_cast_count() == self.voters_num
 
     def single_voter_cast_ballot(self, voter_url, p_uuid):
         # make balot returns ballot_data and size
@@ -475,7 +474,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
     def voter_login(self, voter, voter_login_url=None):
         r = self.c.get(voter_login_url, follow=True)
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
 
     def encrypt_ballot_and_cast(self, selection, size, the_url, p_uuid):
         self.c.get(self.locations['logout'])
@@ -521,7 +520,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         e.save()
         self.c.post('/elections/%s/close' % self.e_uuid)
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertTrue(e.feature_closed)
+        assert e.feature_closed
         self.verbose('+ Election is closed')
 
     def decrypt_with_trustees(self, pks):
@@ -551,7 +550,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                     % (self.e_uuid, p_uuid)
                 post_data = {'factors_and_proofs': json.dumps(data)}
                 r = self.c.post(location, post_data)
-                self.assertEqual(r.status_code, 200)
+                assert r.status_code == 200
                 self.verbose('+ Trustee %s decrypted poll %s'
                              % (t.name, p.name))
 
@@ -564,16 +563,16 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             voter_weights = p.voters.filter().\
                 exclude(excluded_at__isnull=False).\
                 values_list('voter_weight', flat=True)
-            self.assertEqual(sum(voter_weights), len(mix_input))
+            assert sum(voter_weights) == len(mix_input)
             self.verbose('+ Valid cast votes sums for poll %s' % p.name)
 
     def check_results(self):
         # check if results exist
         for p_uuid in self.p_uuids:
             p = Poll.objects.get(uuid=p_uuid)
-            self.assertTrue(len(p.result[0]) > 0)
+            assert len(p.result[0]) > 0
             self.verbose('+ Results generated for poll %s' % p.name)
-            self.assertIsNone(p.compute_results_error)
+            assert p.compute_results_error is None
 
 
     def check_docs_exist(self, ext_dict):
@@ -592,14 +591,14 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                     )
                     if ext == 'json':
                         path = p_module.get_poll_result_file_path(ext, ext)
-                    self.assertTrue(os.path.exists(path))
+                    assert os.path.exists(path)
             for ext in e_exts:
                 e_path = el_module.get_election_result_file_path(
                     ext,
                     ext,
                     lang[0]
                 )
-                self.assertTrue(os.path.exists(e_path))
+                assert os.path.exists(e_path)
         self.verbose('+ Docs generated')
 
     def view_returns_poll_proofs_file(self, client, e_uuid, p_uuid):
@@ -607,13 +606,13 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             (e_uuid, p_uuid)
         r = client.get(address)
         response_data = dict(r.items())
-        self.assertTrue(response_data['Content-Type'] == 'application/zip')
+        assert response_data['Content-Type'] == 'application/zip'
 
     def view_returns_poll_results(self, client, e_uuid, p_uuid):
         address = '/elections/%s/polls/%s/results' % \
             (e_uuid, p_uuid)
         r = client.get(address)
-        self.assertEqual(r.status_code, 200)
+        assert r.status_code == 200
 
     def view_returns_result_files(self, ext_dict):
         p_exts = ext_dict['poll']
@@ -634,19 +633,15 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                             (self.e_uuid, poll.uuid, ext)
                     r = self.c.get(address)
                     response_data = dict(r.items())
-                    self.assertTrue(
-                        response_data['Content-Type'] == 'application/%s'
+                    assert response_data['Content-Type'] == 'application/%s' \
                         % ext
-                        )
             for ext in e_exts:
                 address = '/elections/%s/results/%s-%s.%s' % \
                     (e.uuid, e.short_name, lang[0], ext)
                 r = self.c.get(address)
                 response_data = dict(r.items())
-                self.assertTrue(
-                    response_data['Content-Type'] == 'application/%s'
+                assert response_data['Content-Type'] == 'application/%s' \
                     % ext
-                    )
         self.verbose('+ Requested downloadable content is available')
 
     def zip_contains_files(self, doc_exts):
@@ -692,7 +687,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             zip_file = zipfile.ZipFile(zippath, 'r')
             files_in_zip = zip_file.namelist()
             for file_name in file_names:
-                self.assertTrue(bool(file_name in files_in_zip))
+                assert bool(file_name in files_in_zip)
             self.verbose('+ Zip in %s contains all docs' % lang[1])
 
     def first_trustee_step_and_admin_mail(self):
@@ -701,17 +696,17 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         # 1 zeus trustee, does not get mail
         # 1 mail to admins with all addresses
         mail_num = len(trustees)
-        self.assertEqual(len(mail.outbox), mail_num)
+        assert len(mail.outbox) == mail_num
 
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
                     message = u'New Zeus election'
-                    self.assertEqual(email.subject, prefix+message)
+                    assert email.subject == prefix+message
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    self.assertTrue(u'step #1' in email.subject)
+                    assert u'step #1' in email.subject
         mail.outbox = []
 
     def second_trustee_step_mail(self):
@@ -719,44 +714,44 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         # trustees got mail for step 2
         trustees = Election.objects.get(uuid=self.e_uuid).trustees.all()
         mail_num = len(trustees) - 1
-        self.assertEqual(len(mail.outbox), mail_num)
+        assert len(mail.outbox) == mail_num
         for email in mail.outbox:
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    self.assertTrue(u'step #2' in email.subject)
+                    assert u'step #2' in email.subject
         mail.outbox = []
 
     def admin_notified_for_freeze(self):
         admins = settings.ADMINS
         # 1 mail is sent with multiple addresses in mail.to
-        self.assertEqual(len(mail.outbox), 1)
+        assert len(mail.outbox) == 1
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
                     message = u'Election is frozen'
-                    self.assertEqual(email.subject, prefix+message)
+                    assert email.subject == prefix+message
         mail.outbox = []
 
     def admin_notified_for_extension(self):
         admins = settings.ADMINS
         # 1 mail is sent with multiple addresses in mail.to
-        self.assertEqual(len(mail.outbox), 1)
+        assert len(mail.outbox) == 1
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
                     message = u'Voting extension'
-                    self.assertEqual(email.subject, prefix+message)
+                    assert email.subject == prefix+message
         mail.outbox = []
 
     def voters_received_voting_receipt(self):
         voters = Election.objects.get(uuid=self.e_uuid).voters.all()
-        self.assertEqual(len(mail.outbox), len(voters))
+        assert len(mail.outbox) == len(voters)
         for email in mail.outbox:
             for voter in voters:
                 if voter.voter_email in email.to[0]:
-                    self.assertTrue(u'Thank you for voting' in email.subject)
+                    assert u'Thank you for voting' in email.subject
         mail.outbox = []
 
     def emails_after_election_close(self):
@@ -768,7 +763,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         admins = settings.ADMINS
         # remove zeus trustee, does not get mail
         mail_num = len(trustees) + 3  # -1 zeus trustee + 4 to admins
-        self.assertEqual(len(mail.outbox), mail_num)
+        assert len(mail.outbox) == mail_num
         admin_messages = [
             'Election closed',
             'Validate voting finished',
@@ -780,10 +775,10 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to[0]:
-                    self.assertTrue(email.subject in admin_messages)
+                    assert email.subject in admin_messages
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    self.assertTrue(u'step #3' in email.subject)
+                    assert u'step #3' in email.subject
         mail.outbox = []
 
     def decryption_and_result_admin_mails(self):
@@ -795,7 +790,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         mail_num = 3
         # for m in mail.outbox:
             # print m.body
-        self.assertEqual(len(mail.outbox), mail_num)
+        assert len(mail.outbox) == mail_num
         admin_messages = [
             'Trustees partial decryptions finished',
             'Decryption finished',
@@ -806,7 +801,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to[0]:
-                    self.assertTrue(email.subject in admin_messages)
+                    assert email.subject in admin_messages
         mail.outbox = []
 
     def election_process(self):
@@ -814,7 +809,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.admin_can_submit_election_form()
         self.first_trustee_step_and_admin_mail()
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertEqual(self.freeze_election(), None)
+        assert self.freeze_election() == None
         pks = self.prepare_trustees(self.e_uuid)
         self.second_trustee_step_mail()
         self.create_duplicate_polls()
@@ -827,8 +822,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.submit_questions()
         self.voter_cannot_vote_before_freeze()
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertEqual(e.election_issues_before_freeze, [])
-        self.assertTrue(self.freeze_election())
+        assert e.election_issues_before_freeze == []
+        assert self.freeze_election()
         self.admin_notified_for_freeze()
         self.create_poll_after_freeze()
         self.edit_poll_name_after_freeze()
@@ -844,7 +839,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.emails_after_election_close()
         self.voter_cannot_vote_after_close()
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertTrue(e.feature_mixing_finished)
+        assert e.feature_mixing_finished
         self.decrypt_with_trustees(pks)
         self.decryption_and_result_admin_mails()
         self.check_cast_votes()
@@ -859,14 +854,14 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.admin_can_submit_election_form()
         self.first_trustee_step_and_admin_mail()
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertEqual(self.freeze_election(), None)
+        assert self.freeze_election() == None
         self.prepare_trustees(self.e_uuid)
         self.second_trustee_step_mail()
         self.create_polls()
         self.submit_voters_file()
         self.submit_questions()
         e = Election.objects.get(uuid=self.e_uuid)
-        self.assertTrue(self.freeze_election())
+        assert self.freeze_election()
         self.admin_notified_for_freeze()
         e = Election.objects.get(uuid=self.e_uuid)
         e.voting_starts_at = datetime.datetime.now()
@@ -983,7 +978,7 @@ class TestSimpleElection(TestElectionBase):
         for email in mail.outbox:
             for admin in admins:
                 if admin[1] in email.to[0]:
-                    self.assertTrue(email.subject in admin_messages)
+                    assert email.subject in admin_messages
 
     def test_admin_cancel_election(self):
         self.election_form['election_module'] = self.election_type
@@ -1274,51 +1269,51 @@ class TestThirdPartyShibboleth(TestSimpleElection):
         self.assertContains(r, "http-equiv")
         url = auth.make_shibboleth_login_url('default/login')
         self.assertContains(r, url)
-        self.assertEqual(self.c.session.get('shibboleth_voter_email'),
-                         voter.voter_email)
-        self.assertEqual(self.c.session.get('shibboleth_voter_uuid'),
-                         voter.uuid)
+        assert self.c.session.get('shibboleth_voter_email') == \
+                         voter.voter_email
+        assert self.c.session.get('shibboleth_voter_uuid') == \
+                         voter.uuid
         headers = {
             'HTTP_MAIL': voter.voter_email + 'invalidate',
             #'HTTP_EPPN': 'eppn',
             'HTTP_REMOTE_USER': 'remoteid'
         }
         r = self.c.get(url, follow=True, **headers)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
         headers['HTTP_EPPN'] = 'eppn'
         r = self.c.get(voter_login_url, follow=True)
         r = self.c.get(url, follow=True, **headers)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
         headers['HTTP_MAIL'] = voter.voter_email
         r = self.c.get(voter_login_url, follow=True)
         r = self.c.get(url.replace("login", "fakeendpoint"),
                        follow=True, **headers)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
         r = self.c.get(voter_login_url, follow=True)
         r = self.c.get(url, follow=True, **headers)
-        self.assertEqual(r.status_code, 200)
-        self.assertTrue(r.context['user'])
+        assert r.status_code == 200
+        assert r.context['user']
         r = self.c.get(self.locations['logout'], follow=True)
-        self.assertTrue(r.context['user'].is_anonymous())
+        assert r.context['user'].is_anonymous()
 
         r = self.c.get(voter_login_url, follow=True)
         headers['HTTP_MAIL'] = 'email1@voters.com:email2@voters.com'
         r = self.c.get(url, follow=True, **headers)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
         headers['HTTP_MAIL'] = 'email1@voters.com:email2@voters.com:%s' % voter.voter_email
         r = self.c.get(voter_login_url, follow=True)
         r = self.c.get(url, follow=True, **headers)
-        self.assertEqual(r.status_code, 200)
-        self.assertTrue(r.context['user'])
-        self.assertEqual(r.context['user']._user.uuid, voter.uuid)
-        self.assertEqual(self.c.session.get('shibboleth_voter_email', None),
-                         None)
-        self.assertEqual(self.c.session.get('shibboleth_voter_uuid', None),
-                         None)
+        assert r.status_code == 200
+        assert r.context['user']
+        assert r.context['user']._user.uuid == voter.uuid
+        assert self.c.session.get('shibboleth_voter_email', None) == \
+                         None
+        assert self.c.session.get('shibboleth_voter_uuid', None) == \
+                         None
 
     def _get_poll_params(self, index, poll=None):
         return {
@@ -1383,7 +1378,7 @@ class TestUniGovGrElection(TestSimpleElection):
         self.c.post(self.locations['login'], self.login_data)
         e = Election.objects.all()[0]
         # there shouldn't be any polls before we create them
-        self.assertEqual(e.polls.all().count(), 2)
+        assert e.polls.all().count() == 2
         self.p_uuids = []
         for poll in e.polls.all():
             self.p_uuids.append(poll.uuid)
@@ -1395,20 +1390,20 @@ class TestUniGovGrElection(TestSimpleElection):
         questions_location = '/elections/%s/polls/%s/questions/manage' % \
             (self.e_uuid, p_uuid)
         resp = self.c.post(questions_location, duplicate_post_data)
-        self.assertTrue(resp.context['form'].errors)
+        assert resp.context['form'].errors
         p = Poll.objects.get(uuid=p_uuid)
-        self.assertEqual(p.questions_count, 0)
+        assert p.questions_count == 0
         self.verbose('- Duplicate answers were not allowed in poll %s'
                         % p.name)
         resp = self.c.post(questions_location, post_data)
-        self.assertFalse(resp.context)
+        assert not resp.context
 
         p1 = Poll.objects.get(uuid=p_uuid)
-        self.assertEqual(p1.questions_count, nr_questions)
+        assert p1.questions_count == nr_questions
 
         p2 = Poll.objects.get(uuid=self.p_uuids[1])
-        self.assertEqual(p2.questions_count, nr_questions)
-        self.assertEqual(p1.questions, p2.questions)
+        assert p2.questions_count == nr_questions
+        assert p1.questions == p2.questions
         self.verbose('+ Questions were created')
 
     def create_duplicate_polls(self):
@@ -1419,11 +1414,11 @@ class TestUniGovGrElection(TestSimpleElection):
         post_data = {
             'name': e.polls.all()[0].name
             }
-        self.assertEqual(e.polls.all().count(), 2)
+        assert e.polls.all().count() == 2
         # try to create poll with same name
         self.c.post(location, post_data)
         e = Election.objects.all()[0]
-        self.assertEqual(e.polls.all().count(), 2)
+        assert e.polls.all().count() == 2
         self.verbose('- Poll was not created - duplicate poll names')
 
     def edit_poll_name_before_freeze(self):
@@ -1433,9 +1428,9 @@ class TestUniGovGrElection(TestSimpleElection):
         p_uuid = self.p_uuids[0]
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
         r = self.c.post(edit_url)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
     def save_poll_without_name_change(self):
         # help track bug where saving poll without changing name
@@ -1446,24 +1441,24 @@ class TestUniGovGrElection(TestSimpleElection):
         p_uuid = self.p_uuids[0]
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
         r = self.c.post(edit_url)
-        self.assertEqual(r.status_code, 403)
+        assert r.status_code == 403
 
     def check_results(self):
         # check if results exist
         for p_uuid in self.p_uuids:
             p = Poll.objects.get(uuid=p_uuid)
-            self.assertTrue(len(p.result[0]) > 0)
+            assert len(p.result[0]) > 0
             self.verbose('+ Results generated for poll %s' % p.name)
-            self.assertIsNone(p.compute_results_error)
+            assert p.compute_results_error is None
 
         e = Election.objects.get(uuid=self.e_uuid)
         results = e.get_module()._count_election_results()
-        self.assertTrue(results)
+        assert results
 
     def view_returns_poll_results(self, client, e_uuid, p_uuid):
         address = '/elections/%s/polls/%s/results' % \
             (e_uuid, p_uuid)
         r = client.get(address)
-        self.assertEqual(r.status_code, 302)
+        assert r.status_code == 302

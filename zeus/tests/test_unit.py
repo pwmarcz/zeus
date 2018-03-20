@@ -14,23 +14,23 @@ class TestUtils(TestCase):
 
     def test_q_args(self):
         q = "voter- +vote"
-        self.assertEqual(parse_q_param(q), ('voter-', ['+vote']))
+        assert parse_q_param(q) == ('voter-', ['+vote'])
 
     def test_voters_filters(self):
         qs = get_voters_filters("+voted")
-        self.assertEqual(qs.children[1], ('cast_votes__id__isnull', False))
+        assert qs.children[1] == ('cast_votes__id__isnull', False)
 
         qs = get_voters_filters("-voted")
-        self.assertEqual(qs.children[1], ('cast_votes__id__isnull', True))
+        assert qs.children[1] == ('cast_votes__id__isnull', True)
 
 class TestUniGovGr(TestCase):
 
     def test_count(self):
         from zeus.election_modules.unigovgr import UNIGOV_COUNT
         S, G, A, B = 115, 178, 56, 74
-        self.assertEqual(UNIGOV_COUNT(A, B, G, S)[1], 66.0)
+        assert UNIGOV_COUNT(A, B, G, S)[1] == 66.0
         S, G, A, B = 115, 178, 33, 50
-        self.assertEqual(UNIGOV_COUNT(A, B, G, S)[1], 39.0)
+        assert UNIGOV_COUNT(A, B, G, S)[1] == 39.0
         S, G, A, B = 115, 178, 14, 34
-        self.assertEqual(UNIGOV_COUNT(A, B, G, S)[1], 18.0)
+        assert UNIGOV_COUNT(A, B, G, S)[1] == 18.0
 

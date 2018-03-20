@@ -29,7 +29,8 @@ class UserModelTests(unittest.TestCase):
             def double_insert():
                 models.User.objects.create(user_type = auth_system, user_id = 'foobar', info={'name': 'Foo2 Bar'})
                 
-            self.assertRaises(IntegrityError, double_insert)
+            with pytest.raises(IntegrityError):
+                double_insert()
             transaction.rollback()
 
     def test_create_or_update(self):
@@ -43,8 +44,8 @@ class UserModelTests(unittest.TestCase):
                 new_name = 'Foo2 Bar'
                 u2 = models.User.update_or_create(user_type = auth_system, user_id = 'foobar_cou', info={'name': new_name})
 
-                self.assertEquals(u.id, u2.id)
-                self.assertEquals(u2.info['name'], new_name)
+                assert u.id == u2.id
+                assert u2.info['name'] == new_name
 
 
     def test_status_update(self):
@@ -56,9 +57,9 @@ class UserModelTests(unittest.TestCase):
             u = models.User.update_or_create(user_type = auth_system, user_id = 'foobar_status_update', info={'name':'Foo Bar Status Update'})
 
             if hasattr(auth_system_module, 'send_message'):
-                self.assertNotEquals(u.update_status_template, None)
+                assert u.update_status_template != None
             else:
-                self.assertEquals(u.update_status_template, None)
+                assert u.update_status_template == None
 
     def test_eligibility(self):
         """
@@ -69,19 +70,20 @@ class UserModelTests(unittest.TestCase):
         for auth_system, auth_system_module in AUTH_SYSTEMS.iteritems():
             u = models.User.update_or_create(user_type = auth_system, user_id = 'foobar_status_update', info={'name':'Foo Bar Status Update'})
 
-            self.assertTrue(u.is_eligible_for({'auth_system': auth_system}))
+            assert u.is_eligible_for({'auth_system': auth_system})
 
     def test_eq(self):
         for auth_system, auth_system_module in AUTH_SYSTEMS.iteritems():
             u = models.User.update_or_create(user_type = auth_system, user_id = 'foobar_eq', info={'name':'Foo Bar Status Update'})
             u2 = models.User.update_or_create(user_type = auth_system, user_id = 'foobar_eq', info={'name':'Foo Bar Status Update'})
 
-            self.assertEquals(u, u2)
+            assert u == u2
 
 
 import views
 import auth_systems.password as password_views
 from django.core.urlresolvers import reverse
+import pytest
 
 # FIXME: login CSRF should make these tests more complicated
 # and should be tested for
@@ -115,6 +117,6 @@ class UserBlackboxTests(TestCase):
         """using the test email backend"""
         self.test_user.send_message("testing subject", "testing body")
 
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].subject, "testing subject")
-        self.assertEquals(mail.outbox[0].to[0], "Foobar User <foobar-test@adida.net>")
+        assert len(mail.outbox) == 1
+        assert mail.outbox[0].subject == "testing subject"
+        assert mail.outbox[0].to[0] == "Foobar User <foobar-test@adida.net>"
