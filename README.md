@@ -28,7 +28,9 @@ If necessary, create a Postgres user. Then create a database:
     createdb helios
 
 Ensure you have Python 2.7 and [pipenv](https://docs.pipenv.org/)
-installed. You can install `pipenv` by running `pip install --user pipenv`.
+installed. You can install `pipenv` by running `pip install --user
+pipenv`, but make sure it ends up in your `PATH` (e.g. add `export
+PATH=$PATH:$HOME/.local/bin` to your `.bashrc`).
 
 Then, do the following:
 
