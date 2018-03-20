@@ -218,7 +218,7 @@ def cancel(request, election):
     cancel_date = datetime.datetime.now()
 
     election.canceled_at = cancel_date
-    election.cancel_msg = cancel_msg
+    election.cancelation_reason = cancel_msg
     election.completed_at = cancel_date
 
     election.save()

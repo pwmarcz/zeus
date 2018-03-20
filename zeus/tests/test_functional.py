@@ -985,6 +985,19 @@ class TestSimpleElection(TestElectionBase):
                 if admin[1] in email.to[0]:
                     self.assertTrue(email.subject in admin_messages)
 
+    def test_admin_cancel_election(self):
+        self.election_form['election_module'] = self.election_type
+        self.c.post(self.locations['login'], self.login_data)
+
+        self.c.post(self.locations['create'], self.election_form, follow=True)
+        election = Election.objects.get()
+        response = self.c.post('/elections/{}/cancel'.format(election.uuid), {
+            "cancel_msg": "canceled because of reasons"
+        })
+        assert response.status_code == 302
+        election.refresh_from_db()
+        assert election.cancelation_reason == 'canceled because of reasons'
+
 
 class TestPartyElection(TestElectionBase):
 
