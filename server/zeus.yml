@@ -92,6 +92,55 @@
         state: link
       notify: reload nginx
 
+    # Deploy!
+
+    - name: check git repo
+      git:
+        repo: "{{ zeus_git_repo }}"
+        dest: /srv/zeus/install
+        version: "{{ zeus_git_version }}"
+      become_user: zeus
+      register: git_repo
+      tags: [deploy]
+      check_mode: yes
+
+    - name: deploy new version
+      tags: [deploy]
+      when: git_repo.changed
+      block:
+
+      - name: stop service
+        service: name=zeus-uwsgi state=stopped
+        tags: [deploy]
+        when: git_repo.changed
+
+      - name: update source
+        git:
+          repo: "{{ zeus_git_repo }}"
+          dest: /srv/zeus/install
+          version: "{{ zeus_git_version }}"
+        become_user: zeus
+
+      - name: pipenv sync
+        shell: |
+          . ../virtualenv/bin/activate
+          pipenv sync
+        args:
+          chdir: /srv/zeus/install
+        become_user: zeus
+
+      - name: update static files
+        shell: |
+          . ../virtualenv/bin/activate
+          rm -rf sitestatic
+          python manage.py collectstatic --noinput
+        args:
+          chdir: /srv/zeus/install
+        become_user: zeus
+
+      - name: start service
+        service: name=zeus-uwsgi state=started
+
   handlers:
     - name: reload nginx
       service: name=nginx state=reloaded
