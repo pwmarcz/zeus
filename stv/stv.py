@@ -394,7 +394,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
 
     return elected, vote_count, full_data
 
-if __name__ == "__main__":
+def main(cmd=None):
     parser = argparse.ArgumentParser(description='Perform STV')
     parser.add_argument('-b', '--ballots', default='sys.stdin',
                         dest='ballots_file', help='input ballots file')
@@ -411,7 +411,9 @@ if __name__ == "__main__":
                         dest='random', help='random selection results')
     parser.add_argument('-l', '--loglevel', default=logging.INFO,
                         dest='loglevel', help='logging level')
-    args = parser.parse_args()
+    if cmd is None:
+        cmd = sys.argv[1:]
+    args = parser.parse_args(cmd)
 
     stream_handler = logging.StreamHandler(stream=sys.stdout)
     logger = logging.getLogger(SVT_LOGGER)
@@ -450,6 +452,10 @@ if __name__ == "__main__":
                                       args.random,
                                       logger=logger)
 
+    return elected
+
+if __name__ == '__main__':
+    elected = main()
     print "Results:"
     for result in elected:
         print result
