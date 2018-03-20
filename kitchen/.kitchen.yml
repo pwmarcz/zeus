@@ -1,0 +1,32 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+    - ["..", "/zeus", "create: true"]
+  network:
+    - ["forwarded_port", {guest: 80, host: 8080}]
+    - ["private_network", {ip: "192.168.1.66"}]
+
+provisioner:
+  name: chef_zero
+  # You may wish to disable always updating cookbooks in CI or other testing environments.
+  # For example:
+  #   always_update_cookbooks: <%= !ENV['CI'] %>
+  always_update_cookbooks: true
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: debian-8.10
+
+suites:
+  - name: default
+    run_list:
+      - recipe[postgresql::server]
+      - recipe[postgresql::client]
+      - recipe[zeus::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
