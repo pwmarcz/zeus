@@ -6,7 +6,6 @@ import heliosauth.jsonfield
 import helios.datatypes
 import helios.datatypes.djangofield
 import zeus.model_features
-import helios.byte_fields
 import django.core.files.storage
 import helios.models
 
