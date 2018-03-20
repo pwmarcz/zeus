@@ -119,7 +119,7 @@ class Migration(migrations.Migration):
             name='MixPart',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('data', helios.byte_fields.ByteaField(default=None, null=True, blank=True)),
+                ('data', models.BinaryField(default=None, null=True, blank=True)),
             ],
             options={
             },

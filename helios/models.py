@@ -46,7 +46,6 @@ from helios import utils as heliosutils
 from helios import datatypes
 from helios import exceptions
 from helios.datatypes.djangofield import LDObjectField
-from helios.byte_fields import ByteaField
 from helios.utils import force_utf8
 
 
@@ -174,9 +173,9 @@ class PollMix(models.Model):
         return True
 
     def zeus_mix(self):
-        filled_mix = ""
+        filled_mix = ''
         for part in self.parts.order_by("pk"):
-            filled_mix += part.data
+            filled_mix += str(part.data)
         return marshal.loads(filled_mix)
 
     def mix_parts_iter(self, mix):
@@ -229,7 +228,7 @@ class PollMix(models.Model):
 
 class MixPart(models.Model):
     mix = models.ForeignKey(PollMix, related_name="parts")
-    data = ByteaField()
+    data = models.BinaryField(blank=True, null=True)
 
 
 class ElectionManager(models.Manager):
