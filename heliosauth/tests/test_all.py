@@ -3,7 +3,7 @@ Unit Tests for Auth Systems
 """
 
 import unittest
-import models
+from .. import models
 
 from django.db import IntegrityError, transaction
 
@@ -12,9 +12,14 @@ from django.test import TestCase
 
 from django.core import mail
 
-from auth_systems import AUTH_SYSTEMS
+from ..auth_systems import AUTH_SYSTEMS
 
-class UserModelTests(unittest.TestCase):
+from .. import views
+from ..auth_systems import password as password_views
+from django.core.urlresolvers import reverse
+import pytest
+
+class UserModelTests(TestCase):
 
     def setUp(self):
         pass
@@ -25,13 +30,12 @@ class UserModelTests(unittest.TestCase):
         """
         for auth_system, auth_system_module in AUTH_SYSTEMS.iteritems():
             models.User.objects.create(user_type = auth_system, user_id = 'foobar', info={'name':'Foo Bar'})
-            
+
             def double_insert():
                 models.User.objects.create(user_type = auth_system, user_id = 'foobar', info={'name': 'Foo2 Bar'})
-                
+
             with pytest.raises(IntegrityError):
                 double_insert()
-            transaction.rollback()
 
     def test_create_or_update(self):
         """
@@ -79,12 +83,6 @@ class UserModelTests(unittest.TestCase):
 
             assert u == u2
 
-
-import views
-import auth_systems.password as password_views
-from django.core.urlresolvers import reverse
-import pytest
-
 # FIXME: login CSRF should make these tests more complicated
 # and should be tested for
 
@@ -93,25 +91,6 @@ class UserBlackboxTests(TestCase):
     def setUp(self):
         # create a bogus user
         self.test_user = models.User.objects.create(user_type='password',user_id='foobar-test@adida.net',name="Foobar User", info={'password':'foobaz'})
-
-    def test_password_login(self):
-        ## we can't test this anymore until it's election specific
-        pass
-
-        # get to the login page
-        # login_page_response = self.client.get(reverse(views.start, kwargs={'system_name':'password'}), follow=True)
-
-        # log in and follow all redirects
-        # response = self.client.post(reverse(password_views.password_login_view), {'username' : 'foobar_user', 'password': 'foobaz'}, follow=True)
-
-        # self.assertContains(response, "logged in as")
-        # self.assertContains(response, "Foobar User")
-
-    def test_logout(self):
-        response = self.client.post(reverse(views.logout), follow=True)
-        
-        self.assertContains(response, "not logged in")
-        self.assertNotContains(response, "Foobar User")
 
     def test_email(self):
         """using the test email backend"""
