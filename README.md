@@ -22,6 +22,8 @@ This is a fork of Ben Adida's Helios server. The differences from Helios are as 
 
 Install Postgres (`postgres-server`, `libpq-dev`).
 
+Install math libraries (`libgmp-dev`, `libmpfr-dev`, `libmpc-dev`).
+
 If necessary, create a Postgres user. Then create a database:
 
     sudo -u postgres createuser -s $(whoami)

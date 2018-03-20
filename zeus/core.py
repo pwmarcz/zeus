@@ -29,7 +29,7 @@ import inspect
 import importlib
 from time import time, sleep
 
-from gmpy import mpz
+from gmpy2 import mpz
 _pow = pow
 
 def pow(b, e, m):
