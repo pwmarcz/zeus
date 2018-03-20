@@ -37,25 +37,28 @@
         password: "{{ zeus_db_password }}"
       become_user: postgres
 
-    - name: git repo
-      git:
-        repo: https://github.com/pwmarcz/zeus.git
-        dest: /srv/zeus/install
-      become_user: zeus
+    - name: config dir
+      file:
+        path: /srv/zeus/config
+        state: directory
+        owner: zeus
+        group: zeus
 
     - name: secrets.json
       copy:
         src: 'secrets/zeus-secrets-{{ inventory_hostname }}.json'
-        dest: /srv/zeus/secrets.json
+        dest: /srv/zeus/config/secrets.json
         owner: zeus
         group: zeus
-        mode: 0700
+        mode: 0770
 
-    - name: settings/local.py
+    - name: settings_local.py
       template:
         src: templates/zeus_settings_local.py
-        dest: /srv/zeus/install/settings/local.py
+        dest: /srv/zeus/config/settings_local.py
         owner: zeus
+        group: zeus
+        mode: 0770
 
     - name: uwsgi.ini
       template:

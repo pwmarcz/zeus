@@ -1,6 +1,7 @@
 from fabric.api import task, env, cd, sudo, hide
 from fabric.contrib.files import exists
 
+GIT_REPO = 'https://github.com/pwmarcz/zeus.git'
 
 VENV = '/srv/zeus/virtualenv'
 IN_VENV = '. /srv/zeus/virtualenv/bin/activate &&'
@@ -40,9 +41,12 @@ def start():
 
 @task
 def update_source():
+    if not exists('/srv/zeus/install'):
+        sudo(f'git clone {GIT_REPO} /srv/zeus/install', user='zeus')
     with cd('/srv/zeus/install'):
         sudo('git fetch', user='zeus')
         sudo(f'git reset --hard origin/{env.git_branch}', user='zeus')
+        sudo('ln -sf /srv/zeus/config/settings_local.py settings/local.py', user='zeus')
 
 
 @task

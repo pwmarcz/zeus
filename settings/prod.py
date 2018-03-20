@@ -2,7 +2,7 @@ from .base import *
 
 import json
 
-with open('/srv/zeus/secrets.json') as f:
+with open('/srv/zeus/config/secrets.json') as f:
     SECRETS = json.load(f)
 
 DEBUG = False
