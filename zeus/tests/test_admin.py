@@ -9,6 +9,10 @@ from helios.models import Election
 from zeus.tests.utils import SetUpAdminAndClientMixin
 
 
+def today_plus_days(days):
+    return datetime.date.today() + datetime.timedelta(days=days)
+
+
 class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestHomeView, self).setUp()
@@ -169,20 +173,21 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
 
         election_a = self.create_election(
             name='election A',
-            voting_starts_at_0=(datetime.date.today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d'),
-            voting_ends_at_0=(datetime.date.today() + datetime.timedelta(days=2)).strftime('%Y-%m-%d')
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
         )
         election_b = self.create_election(
             name='election B',
-            voting_starts_at_0=(datetime.date.today() + datetime.timedelta(days=4)).strftime('%Y-%m-%d'),
-            voting_ends_at_0=(datetime.date.today() + datetime.timedelta(days=5)).strftime('%Y-%m-%d')
+            voting_starts_at_0=today_plus_days(days=4).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=5).strftime('%Y-%m-%d')
         )
         election_c = self.create_election(
             name='election C',
             trial=True
         )
+        election_a
         for i, e in enumerate([election_a, election_b, election_c]):
-            e.completed_at = '2016-06-%02d' % (i+1)
+            e.completed_at = today_plus_days(days=6+i)
             e.save()
 
         # in the default case elections should be sorted by created_at, desc
@@ -204,7 +209,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert elections[1] == election_b
 
         request = RequestFactory().get(reverse('elections_report_csv'), {
-            'start_date': (datetime.date.today() + datetime.timedelta(days=3)).strftime('%d %b %Y'),
+            'start_date': today_plus_days(days=3).strftime('%d %b %Y'),
         })
         request.user = self.admin
         elections = find_elections(request)
@@ -212,7 +217,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert elections[0] == election_b
 
         request = RequestFactory().get(reverse('elections_report_csv'), {
-            'end_date': (datetime.date.today() + datetime.timedelta(days=3)).strftime('%d %b %Y'),
+            'end_date': today_plus_days(days=3).strftime('%d %b %Y'),
         })
         request.user = self.admin
         elections = find_elections(request)
