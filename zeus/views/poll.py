@@ -48,6 +48,8 @@ from helios.crypto import utils as crypto_utils
 from helios.crypto import electionalgs
 from helios.utils import force_utf8
 
+from zeus.core import to_canonical, from_canonical
+
 
 @auth.election_admin_required
 def list(request, election):
@@ -1238,3 +1240,24 @@ def sms_delivery(request, election, poll):
         poll.logger.error("Cannot resolve voter for sms delivery code: %r", code)
         pass
     return HttpResponse("OK")
+
+
+@auth.election_view(check_access=False)
+@auth.requires_election_features('can_upload_remote_mix')
+@require_http_methods(["POST", "GET"])
+@csrf_exempt
+def remote_mix(request, election, poll, mix_key):
+    method = request.method
+    if not election.check_mix_key(mix_key):
+        raise PermissionDenied
+    if method == 'GET':
+        resp = poll.zeus.get_last_mix()
+        # Use X_SEND_FILE
+        return HttpResponse(to_canonical(resp),
+                        content_type="application/octet-stream")
+    if method == 'POST':
+        data = from_canonical(request.body or '')
+        result = poll.add_remote_mix(data)
+        return HttpResponse(result, content_type="plain/text")
+
+    raise PermissionDenied

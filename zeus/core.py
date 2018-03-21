@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 PYTHON_MAJOR = sys.version_info[0]
 from datetime import datetime

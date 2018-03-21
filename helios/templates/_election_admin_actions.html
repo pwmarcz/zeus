@@ -4,6 +4,20 @@
   <div class="panel">
     <h4>{% trans "Election status" %}</h4>
     {{ election.status_display }}
+	{% if election.feature_can_close_remote_mixing %}
+	<div class="subpael" style="margin-top: 20px">
+    {% blocktrans %}Use the following URL to append additional mixes{% endblocktrans %}
+	<br />
+	<br />
+    <pre style="border: 1px solid #222; font-weight: bold; margin:0; padding:10px; white-space: normal; overflow: auto">{{ election.remote_mix_url }}</pre>
+    <br />
+    <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 4px;">{% trans "Mixing status" %}</h4>
+    <dl>
+    {% for poll in election.polls.all %}
+    <dt style="float: left; width: 50%; border-bottom: 1px solid #ddd">{{ poll.name }}</dt><dd style="font-weight: bold; border-bottom: 1px solid #ddd">{{ poll.finished_mixes.count }}</dd>
+    {% endfor %}
+	</div>
+	{% endif %}
   </div>
 </div>
 
@@ -20,6 +34,11 @@
 {% if election.feature_can_close %}
 {% trans "Close election" as label %}
 {% reveal_action label "#close-admin-action" "" "close-election"%}
+{% endif %}
+
+{% if election.feature_can_close_remote_mixing %}
+{% trans "Close mixing" as label %}
+{% reveal_action label "#close-mixing-admin-action" "" "close-mixing"%}
 {% endif %}
 
 {% if election.feature_can_cancel %}
@@ -46,3 +65,4 @@
 {% endwith %}
 {% endif %}
 </div>
+
