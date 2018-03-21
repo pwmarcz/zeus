@@ -70,7 +70,7 @@ By default, in development all Celery tasks run synchronously. If you
 want to run a Celery worker, first disable this behaviour by editing
 `settings/local.py`:
 
-    CELERY_ALWAYS_EAGER = False
+    CELERY_TASK_ALWAYS_EAGER = False
 
 You need to also install `redis` and make sure it's running on
 localhost.
