@@ -1,5 +1,7 @@
+from __future__ import print_function
+
 import copy
-import datetime
+from datetime import datetime
 import cStringIO as StringIO
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -79,6 +81,7 @@ class HomeView(View):
 
         return HttpResponseRedirect(reverse('admin_home'))
 
+
 def find_elections(request):
     order_by = request.GET.get('order', 'completed_at')
     order_type = request.GET.get('order_type', 'desc')
@@ -92,18 +95,12 @@ def find_elections(request):
         'completed_at__isnull': False,
     }
 
-    """
-    _all = request.GET.get('full', 0)
-    if not _all:
-        filter['include_in_reports'] = True
-    """
-
     # filter by date
     if start_date:
         filter['voting_starts_at__gte'] = datetime.strptime(start_date, "%d %b %Y")
 
     if end_date:
-        filter['voting_starts_at__lte'] = datetime.strptime(end_date, "%d %b %Y")
+        filter['voting_ends_at__lte'] = datetime.strptime(end_date, "%d %b %Y")
 
     # filter by query
     q_filters = get_filters(
@@ -123,6 +120,7 @@ def find_elections(request):
         elections = elections.reverse()
 
     return elections
+
 
 @auth.manager_or_superadmin_required
 def elections_report_csv(request):
@@ -147,6 +145,7 @@ def elections_report_csv(request):
     response = HttpResponse(fd, content_type='application/csv')
     response['Content-Disposition'] = 'attachment; filename=%s.csv' % filename
     return response
+
 
 @auth.manager_or_superadmin_required
 def elections_report(request):
