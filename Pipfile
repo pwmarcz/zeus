@@ -8,8 +8,7 @@ name = "pypi"
 [packages]
 
 django = ">=1.8,<1.9"
-django-celery = "*"
-django-kombu = "*"
+celery = "*"
 pyicu = "*"
 django-pagination = "==1.0.7"
 "psycopg2" = "*"
