@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-06 19:03+0200\n"
+"POT-Creation-Date: 2018-03-13 12:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,68 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-
-msgid "Simple election with one or more questions"
-msgstr "Απλή ψηφοφορία με μία ή περισσότερες ερωτήσεις"
-
-msgid "Ballot"
-msgstr "Ψηφοδέλτιο"
-
-msgid "Question"
-msgstr "Ερώτηση"
-
-msgid "Answer"
-msgstr "Απάντηση"
-
-msgid "Add questions to the election"
-msgstr "Προσθήκη ερωτήσεων στην ψηφοφορία"
-
-msgid "Too many choices"
-msgstr "Περισσότερες επιλογές από το επιτρεπτό"
-
-#, python-brace-format
-msgid "Question '{0}' requires at least {1} choices."
-msgstr "Η ερώτηση '{0}' απαιτεί τουλάχιστον {1} επιλογές."
-
-msgid "Results"
-msgstr "Αποτελέσματα"
-
-msgid "Party lists election"
-msgstr "Ψηφοφορία με συνδυασμούς"
-
-msgid "Candidate"
-msgstr "Υποψήφιος"
-
-msgid "Party"
-msgstr "Συνδυασμός"
-
-msgid "Score voting election"
-msgstr "Ψηφοφορία με βαθμολογία"
-
-msgid "Manage questions"
-msgstr "Διαχείριση ερωτήσεων"
-
-msgid "No questions set"
-msgstr "Δεν υπάρχουν ερωτήσεις ακόμη"
-
-msgid "Single transferable vote election"
-msgstr "Ψηφοφορία με ταξινομική ψήφο"
-
-msgid "Candidates List"
-msgstr "Λίστα υποψηφίων"
-
-msgid "Electors: Group A"
-msgstr "Εκλέκτορες: Ομάδα Α"
-
-msgid "Electors: Group B"
-msgstr "Εκλέκτορες: Ομάδα Β"
-
-msgid "Greek Universities single governing bodies election"
-msgstr ""
-"Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
-
-msgid "Voter excluded"
-msgstr "Έχει εξαιρεθεί"
 
 #, python-format
 msgid "%s is not a valid character."
@@ -126,6 +64,9 @@ msgstr "Μη έγκυρη λίστα μελών εφορευτικής επιτ�
 
 msgid "Choice"
 msgstr "Επιλογή"
+
+msgid "Question"
+msgstr "Ερώτηση"
 
 msgid "Min answers"
 msgstr "Ελάχιστος αριθμός επιλογών"
@@ -468,6 +409,9 @@ msgstr "Τμήματα"
 msgid "Round "
 msgstr "Γύρος "
 
+msgid "Candidate"
+msgstr "Υποψήφιος"
+
 msgid "Votes"
 msgstr "Ψήφοι"
 
@@ -536,6 +480,9 @@ msgstr "Λευκά: %d"
 msgid "Zeus Elections - Poll Results"
 msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς» — Αποτελέσματα"
 
+msgid "Results"
+msgstr "Αποτελέσματα"
+
 #, python-format
 msgid "Start: %(date)s"
 msgstr "Έναρξη: %(date)s"
@@ -547,15 +494,6 @@ msgstr "Λήξη: %(date)s"
 #, python-format
 msgid "Extension: %(date)s"
 msgstr "Παράταση: %(date)s"
-
-msgid "Are you sure ?"
-msgstr "Επιβεβαιώστε"
-
-msgid "Are you sure?"
-msgstr "Επιβεβαιώστε"
-
-msgid "(all voters selected)"
-msgstr "σύνολο ψηφοφόρων"
 
 msgid "Registration ID"
 msgstr "Αριθμός Καταχώρισης"
@@ -604,6 +542,71 @@ msgstr "Σύνολο κάλπεων"
 
 msgid "Administrators"
 msgstr "Διαχειριστές"
+
+msgid "Simple election with one or more questions"
+msgstr "Απλή ψηφοφορία με μία ή περισσότερες ερωτήσεις"
+
+msgid "Ballot"
+msgstr "Ψηφοδέλτιο"
+
+msgid "Answer"
+msgstr "Απάντηση"
+
+msgid "Add questions to the election"
+msgstr "Προσθήκη ερωτήσεων στην ψηφοφορία"
+
+msgid "Too many choices"
+msgstr "Περισσότερες επιλογές από το επιτρεπτό"
+
+#, python-brace-format
+msgid "Question '{0}' requires at least {1} choices."
+msgstr "Η ερώτηση '{0}' απαιτεί τουλάχιστον {1} επιλογές."
+
+msgid "Party lists election"
+msgstr "Ψηφοφορία με συνδυασμούς"
+
+msgid "Manage ballot"
+msgstr "Διαχείριση ψηφοδελτίου"
+
+msgid "Party"
+msgstr "Συνδυασμός"
+
+msgid "Score voting election"
+msgstr "Ψηφοφορία με βαθμολογία"
+
+msgid "Manage questions"
+msgstr "Διαχείριση ερωτήσεων"
+
+msgid "No questions set"
+msgstr "Δεν υπάρχουν ερωτήσεις ακόμη"
+
+msgid "Single transferable vote election"
+msgstr "Ψηφοφορία με ταξινομική ψήφο"
+
+msgid "Candidates List"
+msgstr "Λίστα υποψηφίων"
+
+msgid "Electors: Group A"
+msgstr "Εκλέκτορες: Ομάδα Α"
+
+msgid "Electors: Group B"
+msgstr "Εκλέκτορες: Ομάδα Β"
+
+msgid "Greek Universities single governing bodies election"
+msgstr ""
+"Ανάδειξη μονομελών οργάνων διοίκησης των Α.Ε.Ι (3453/2017 Αριθ. 159165/Ζ1)"
+
+msgid "Voter excluded"
+msgstr "Έχει εξαιρεθεί"
+
+msgid "Are you sure ?"
+msgstr "Επιβεβαιώστε"
+
+msgid "Are you sure?"
+msgstr "Επιβεβαιώστε"
+
+msgid "(all voters selected)"
+msgstr "σύνολο ψηφοφόρων"
 
 msgid "Uninitialized shibboleth session."
 msgstr "Μη αρχικοποιημένη σύνδεση shibboleth"

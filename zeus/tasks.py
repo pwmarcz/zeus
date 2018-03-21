@@ -252,7 +252,7 @@ def election_mix(election_id):
 def poll_mix(poll_id):
     poll = Poll.objects.get(pk=poll_id)
     poll.mix()
-    if poll.election.polls_feature_mix_finished:
+    if poll.election.polls_feature_mixing_finished:
         subject = "Mixing finished"
         msg = "Mixing finished"
         poll.election.notify_admins(msg=msg, subject=subject)
