@@ -26,6 +26,8 @@
         - libmpfr-dev
         - libmpc-dev
         - g++
+        # TODO configure Redis, set up a password
+        - redis-server
 
     - name: zeus database
       postgresql_db:
