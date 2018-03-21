@@ -101,8 +101,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pagination',
-    'djcelery',
-    'kombu.transport.django',
     'heliosauth',
     'helios',
     'zeus',
@@ -219,15 +217,12 @@ EMAIL_USE_TLS = False
     #format = '%(asctime)s %(levelname)s %(message)s'
 #)
 
-# set up django-celery
-import djcelery
-djcelery.setup_loader()
-BROKER_URL = 'django://'
-CELERY_RESULT_DBURI = DATABASES['default']
+CELERY_BROKER_URL = 'redis://'
+CELERY_RESULT_BACKEND = 'redis://'
 
 # for testing
-CELERY_ALWAYS_EAGER = True
-CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
 
 
 BOOTH_STATIC_PATH = ROOT_PATH + '/zeus/static/booth/'

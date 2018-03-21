@@ -6,7 +6,6 @@ import urllib, urllib2
 import logging
 
 from functools import wraps
-from celery.decorators import task as celery_task
 
 from helios.models import Election, Voter, Poll
 from helios.view_utils import render_template_raw
@@ -24,6 +23,7 @@ from zeus import mobile
 from zeus import utils
 from zeus.contact import ContactBackend
 from email.Utils import formataddr
+from zeus.celery import app
 
 
 logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def task(*taskargs, **taskkwargs):
         # prevent magic kwargs passthrough
         if not 'accept_magic_kwargs' in taskkwargs:
             taskkwargs['accept_magic_kwargs'] = False
-        return celery_task(*taskargs, **taskkwargs)(inner)
+        return app.task(*taskargs, **taskkwargs)(inner)
     return wrapper
 
 
