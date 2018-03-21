@@ -72,13 +72,16 @@ want to run a Celery worker, first disable this behaviour by editing
 
     CELERY_ALWAYS_EAGER = False
 
+You need to also install `redis` and make sure it's running on
+localhost.
+
 Then, run:
 
-    python manage.py celery worker -l INFO
+    celery worker -l INFO
 
 ## Test
 
-    py.test -v
+    pytest -v
 
 ## Python packages
 
