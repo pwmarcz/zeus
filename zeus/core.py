@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-PYTHON_MAJOR = sys.version_info[0]
 from datetime import datetime
 from random import randint, choice as rand_choice
 from collections import deque
@@ -11,13 +10,13 @@ from itertools import izip, izip_longest, cycle, chain, repeat
 from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
-inverse = number.inverse
 from Crypto import Random
 from os import (fork, kill, getpid, waitpid, ftruncate, lseek, fstat,
                 read, write, unlink, open as os_open, close, path,
                 O_CREAT, O_RDWR, O_APPEND, SEEK_CUR, SEEK_SET)
 from fcntl import flock, LOCK_EX, LOCK_UN
 from multiprocessing import Semaphore, Queue as mpQueue
+from multiprocessing import Pool
 from Queue import Empty, Full
 from select import select
 from signal import SIGKILL
@@ -31,6 +30,7 @@ from time import time, sleep
 
 from gmpy2 import mpz
 _pow = pow
+inverse = number.inverse
 
 def pow(b, e, m):
     return int(_pow(mpz(b), e, m))
@@ -2179,6 +2179,7 @@ def strbin_to_int_mul(string):
 def strbin_to_int_native(string):
     return int.from_bytes(string)
 
+PYTHON_MAJOR = sys.version_info[0]
 if PYTHON_MAJOR == 3:
     strbin_to_int = strbin_to_int_native
 else:
@@ -2654,34 +2655,13 @@ def compute_decryption_factors1(modulus, generator, order, secret, ciphers,
             teller.advance()
     return factors
 
-def compute_some_decryption_factors(modulus, generator, order,
-                                    secret, public, ciphers,
-                                    teller=None, async_channel=None,
-                                    report_thresh=16):
-    count = 0
-    factors = []
-    append = factors.append
-
-    for alpha, beta in ciphers:
-        factor = pow(alpha, secret, modulus)
-        proof = prove_ddh_tuple(modulus, generator, order,
-                                alpha, public, factor, secret)
-        append([factor, proof])
-        count += 1
-        if count >= report_thresh:
-            if teller is not None:
-                teller.advance(count)
-            if async_channel is not None:
-                async_channel.send_shared(count)
-            count = 0
-
-    if count:
-        if teller is not None:
-            teller.advance(count)
-        if async_channel is not None:
-            async_channel.send_shared(count)
-
-    return factors
+def _compute_decryption_factor(data):
+    modulus, generator, order, secret, public, cipher = data
+    alpha, beta = cipher
+    factor = pow(alpha, secret, modulus)
+    proof = prove_ddh_tuple(modulus, generator, order,
+                            alpha, public, factor, secret)
+    return [factor, proof]
 
 def compute_decryption_factors(modulus, generator, order, secret, ciphers,
                                teller=_teller, nr_parallel=1):
@@ -2691,29 +2671,23 @@ def compute_decryption_factors(modulus, generator, order, secret, ciphers,
 
     public = pow(generator, secret, modulus)
     nr_ciphers = len(ciphers)
-    async = AsyncController(parallel=nr_parallel)
-    compute_some = async.make_async(compute_some_decryption_factors)
+    pool = Pool(nr_parallel, Random.atfork)
 
     d, q = divmod(nr_ciphers, nr_parallel)
     if not d:
         d = nr_ciphers
-    index = range(0, nr_ciphers, d)
+    factors = []
     with teller.task("Computing decryption factors", total=nr_ciphers):
-        channels = [compute_some(modulus, generator, order,
-                                 secret, public, ciphers[i:i+d])
-                    for i in index]
-        count = 0
-        while count < nr_ciphers:
-            nr = async.receive_shared(wait=1)
-            teller.advance(nr)
-            count += nr
+        args = [
+            (modulus, generator, order, secret, public, ciphers[i])
+            for i in range(nr_ciphers)
+        ]
+        for r in pool.imap(_compute_decryption_factor, args, d):
+            teller.advance()
+            factors.append(r)
 
-        factors = []
-        for c in channels:
-            r = c.receive(wait=1)
-            factors.extend(r)
-
-    async.shutdown()
+    pool.close()
+    pool.join()
     return factors
 
 def verify_decryption_factors1(modulus, generator, order, public,
@@ -2733,37 +2707,13 @@ def verify_decryption_factors1(modulus, generator, order, public,
             teller.advance()
     return 1
 
-def verify_some_decryption_factors(modulus, generator, order,
-                                   public, ciphers, factors,
-                                   teller=None, async_channel=None,
-                                   report_thresh=16):
-    count = 0
-    for cipher, factor in izip(ciphers, factors):
-        alpha, beta = cipher
-        factor, proof = factor
-        if not verify_ddh_tuple(modulus, generator, order, alpha, public,
-                                factor, *proof):
-            if async_channel is not None:
-                async_channel.send_shared(-1)
-            if teller is not None:
-                teller.fail()
-            return 0
+def _verify_decryption_factor(data):
+    modulus, generator, order, public, cipher, factor = data
+    alpha, beta = cipher
+    factor, proof = factor
+    return verify_ddh_tuple(modulus, generator, order, alpha, public,
+                            factor, *proof)
 
-        count += 1
-        if count >= report_thresh:
-            if teller is not None:
-                teller.advance(count)
-            if async_channel is not None:
-                async_channel.send_shared(count)
-            count = 0
-
-    if count:
-        if teller is not None:
-            teller.advance(count)
-        if async_channel is not None:
-            async_channel.send_shared(count)
-
-    return 1
 
 def verify_decryption_factors(modulus, generator, order, public,
                               ciphers, factors, teller=_teller,
@@ -2775,31 +2725,27 @@ def verify_decryption_factors(modulus, generator, order, public,
     nr_ciphers = len(ciphers)
     if nr_ciphers != len(factors):
         return 0
-
-    async = AsyncController(parallel=nr_parallel)
-    verify_some = async.make_async(verify_some_decryption_factors)
+    pool = Pool(nr_parallel, Random.atfork)
 
     d, q = divmod(nr_ciphers, nr_parallel)
     if not d:
         d = nr_ciphers
-    index = range(0, nr_ciphers, d)
     with teller.task("Verifying decryption factors", total=nr_ciphers):
-        channels = [verify_some(modulus, generator, order,
-                                public, ciphers[i:i+d], factors[i:i+d])
-                    for i in index]
-
-        count = 0
-        while count < nr_ciphers:
-            nr = async.receive_shared(wait=1)
-            if nr < 0:
-                async.shutdown()
-                teller.fail()
+        args = [
+            (modulus, generator, order, public, ciphers[i], factors[i])
+            for i in range(nr_ciphers)
+        ]
+        for r in pool.imap(_verify_decryption_factor, args, d):
+            if not r:
+                pool.terminate()
+                pool.join()
                 return 0
-            teller.advance(nr)
-            count += nr
+            teller.advance()
 
-    async.shutdown()
+    pool.close()
+    pool.join()
     return 1
+
 
 def combine_decryption_factors(modulus, factor_collection):
     if not factor_collection:
