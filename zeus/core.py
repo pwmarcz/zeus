@@ -4,29 +4,16 @@
 import sys
 from datetime import datetime
 from random import randint, choice as rand_choice
-from collections import deque
-from hashlib import sha256, sha1
+from hashlib import sha256
 from itertools import izip, izip_longest, cycle, chain, repeat
 from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
 from Crypto import Random
-from os import (fork, kill, getpid, waitpid, ftruncate, lseek, fstat,
-                read, write, unlink, open as os_open, close, path,
-                O_CREAT, O_RDWR, O_APPEND, SEEK_CUR, SEEK_SET)
-from fcntl import flock, LOCK_EX, LOCK_UN
-from multiprocessing import Semaphore, Queue as mpQueue
 from multiprocessing import Pool
-from Queue import Empty, Full
-from select import select
-from signal import SIGKILL
-from errno import ESRCH
 from cStringIO import StringIO
-from marshal import loads as marshal_loads, dumps as marshal_dumps
 from json import load as json_load
-import inspect
-import importlib
-from time import time, sleep
+from time import time
 
 from gmpy2 import mpz
 _pow = pow
