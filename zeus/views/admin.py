@@ -23,7 +23,6 @@ class HomeView(View):
     @auth.election_admin_required
     def get(request, *args, **kwargs):
         page = int(request.GET.get('page', 1))
-        limit = int(request.GET.get('limit', 10))
         q_param = request.GET.get('q', '')
 
         default_elections_per_page = getattr(settings, 'ELECTIONS_PER_PAGE', 20)

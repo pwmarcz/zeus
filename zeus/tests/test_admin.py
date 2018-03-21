@@ -1,23 +1,28 @@
+from __future__ import print_function
+
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from helios.models import Election
 
-class TestHomeView(SetUpAdminAndClientMixin, TestCase):
 
+class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestHomeView, self).setUp()
 
     def login(self):
         self.c.post(self.locations['login'], self.login_data)
 
-    def create_election(self):
+    def create_election(self, name=None):
         self.election_form['departments'] = 'test_departments'
         self.election_form['election_module'] = 'simple'
-        self.c.post(self.locations['create'], self.election_form, follow=True)
+        form = dict(self.election_form)
+        # if name is specified, update the form for this request only
+        form['name'] = name
+        self.c.post(self.locations['create'], form, follow=True)
 
-        return Election.objects.all()[0]
+        return Election.objects.all().latest('created_at')
 
     def post_and_get_response(self):
         """
@@ -99,7 +104,12 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         self.admin.save()
 
         self.login()
-        election = self.create_election()
+
+        # when there are no elections created, we should get a redirect
+        response = self.c.get(reverse('admin_home'), {})
+        self.assertEqual(response.status_code, 302)
+
+        election = self.create_election(name='first_election')
 
         response = self.c.get(
             reverse('admin_home'),
@@ -110,3 +120,30 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         self.assertContains(response, '<select name="official">')
         self.assertContains(response, '<input type="submit"')
         self.assertContains(response, '<input type="hidden"')
+
+        # ensure the ordering works
+        newer_newer = self.create_election(name='second_election')
+
+        response = self.c.get(reverse('admin_home'), {'order': 'name', 'order_type': 'desc'})
+        self.assertEqual(response.context['elections_administered'][0].name, 'second_election')
+        self.assertEqual(response.context['elections_administered'][1].name, 'first_election')
+
+        response = self.c.get(reverse('admin_home'), {'order': 'created_at', 'order_type': 'asc'})
+        self.assertEqual(response.context['elections_administered'][0].name, 'first_election')
+        self.assertEqual(response.context['elections_administered'][1].name, 'second_election')
+
+        # when the order param is invalid, should sort by name, descending
+        response = self.c.get(reverse('admin_home'), {'order': 'boom'})
+        self.assertEqual(response.context['elections_administered'][0].name, 'second_election')
+        self.assertEqual(response.context['elections_administered'][1].name, 'first_election')
+
+        # ensure elections_per_page is handled right
+        response = self.c.get(reverse('admin_home'), {'limit': 1})
+        self.assertEqual(response.context['elections_per_page'], 1)
+
+        response = self.c.get(reverse('admin_home'), {'limit': '1'})
+        self.assertEqual(response.context['elections_per_page'], 1)
+
+        # when limit is invalid, it should fall back to the default
+        response = self.c.get(reverse('admin_home'), {'limit': 'boom'})
+        self.assertEqual(response.context['elections_per_page'], 20)
