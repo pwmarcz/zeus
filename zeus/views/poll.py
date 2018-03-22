@@ -58,19 +58,6 @@ def list(request, election):
     set_menu('polls', context)
     return render_template(request, "election_polls_list", context)
 
-@auth.election_admin_required
-@transaction.atomic
-@require_http_methods(["POST"])
-def rename(request, election, poll):
-    newname = request.POST.get('name', '').strip()
-    if newname:
-        oldname = poll.name
-        poll.name = newname
-        poll.save()
-        poll.logger.info("Renamed from %s to %s", oldname, newname)
-    url = election_reverse(election, 'polls_list')
-    return HttpResponseRedirect(url)
-
 @transaction.atomic
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
