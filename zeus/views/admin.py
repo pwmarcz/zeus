@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import copy
-from datetime import datetime
+import datetime
 import cStringIO as StringIO
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -97,10 +97,10 @@ def find_elections(request):
 
     # filter by date
     if start_date:
-        filter['voting_starts_at__gte'] = datetime.strptime(start_date, "%d %b %Y")
+        filter['voting_starts_at__gte'] = datetime.datetime.strptime(start_date, "%d %b %Y")
 
     if end_date:
-        filter['voting_ends_at__lte'] = datetime.strptime(end_date, "%d %b %Y")
+        filter['voting_ends_at__lte'] = datetime.datetime.strptime(end_date, "%d %b %Y")
 
     # filter by query
     q_filters = get_filters(
@@ -135,8 +135,7 @@ def elections_report_csv(request):
         report.parse_csv(csv_path)
     report.parse_object()
     # ext is not needed
-    date = datetime.datetime.now()
-    str_date = date.strftime("%Y-%m-%d")
+    str_date = datetime.date.today().strftime("%Y-%m-%d")
     filename = 'elections_report_' + str_date
     fd = StringIO.StringIO()
     report.make_output(fd)

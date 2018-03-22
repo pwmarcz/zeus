@@ -224,3 +224,47 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert len(elections) == 1
         assert elections[0] == election_a
 
+    def test_elections_report_csv(self):
+        self.admin.superadmin_p = True
+        self.admin.save()
+        self.login()
+
+        election = self.create_election(
+            name='election',
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+        )
+        election.completed_at = today_plus_days(days=3)
+        election.save()
+
+        response = self.c.get(reverse('elections_report_csv'), {})
+        date = datetime.date.today().strftime('%Y-%m-%d')
+        # make sure that the headers are right and the response body contains
+        # at least one comma
+        assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
+        assert response.content.find(',') > -1
+
+    def test_elections_report(self):
+        self.admin.superadmin_p = True
+        self.admin.save()
+        self.login()
+
+        response = self.c.get(reverse('elections_report'), {})
+        assert response.context['elections_count'] == 0
+        assert response.context['polls_count'] == 0
+        assert response.context['voters_count'] == 0
+        assert response.context['voters_voted_count'] == 0
+        assert response.context['percentage_voted'] == 0
+        assert len(response.context['elections']) == 0
+
+        election = self.create_election(
+            name='election',
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+        )
+        election.completed_at = today_plus_days(days=3)
+        election.save()
+
+        response = self.c.get(reverse('elections_report'), {})
+        assert response.context['elections_count'] == 1
+        assert len(response.context['elections']) == 1
