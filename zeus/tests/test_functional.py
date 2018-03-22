@@ -998,27 +998,19 @@ class TestSimpleElection(TestElectionBase):
         self.c.post(self.locations['login'], self.login_data)
         self.c.post(self.locations['create'], self.election_form, follow=True)
         election = Election.objects.get()
-
-        self.c.get(self.locations['logout'])
-        self.c.post(self.locations['login'], self.login_data)
-        assert election.polls.all().count() == 0
-        location = '/elections/%s/polls/add' % election.uuid
-        for i in range(0, self.polls_number):
-            post_data = {
-                'name': 'test_poll-{}'.format(i)
-            }
-            post_data.update(self._get_poll_params(i, None))
-            self.c.post(location, post_data)
-        assert election.polls.all().count() == self.polls_number
-        self.verbose('+ Polls were created')
-        self.p_uuids = []
-        for poll in election.polls.all():
-            self.p_uuids.append(poll.uuid)
-
+        self.e_uuid = election.uuid
+        self.create_polls()
         poll = Poll.objects.all()[0]
         response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
 
         assert response.status_code == 302
+        self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
+                             fetch_redirect_response=True)
+
+        self.c.get(self.locations['logout'])
+        self.assertTemplateUsed('questions_list_template')
+
+
 
 
 class TestPartyElection(TestElectionBase):
