@@ -17,29 +17,28 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 try:
-  from collections import OrderedDict
+    from collections import OrderedDict
 except ImportError:
-  from django.utils.datastructures import SortedDict as OrderedDict
+    from django.utils.datastructures import SortedDict as OrderedDict
 
 def json_handler(obj):
-  if hasattr(obj, 'isoformat'):
-    return obj.isoformat()
-  raise TypeError
+    if hasattr(obj, 'isoformat'):
+        return obj.isoformat()
+    raise TypeError
 
 class Command(BaseCommand):
     args = ''
     help = 'Election report'
 
     def handle(self, *args, **options):
-      elections = Election.objects.filter(uuid__in=args)
-      for e in args:
+        elections = Election.objects.filter(uuid__in=args)
+        for e in args:
 
-        _reports = OrderedDict()
-        _reports['election'] = list(reports.election_report(elections))
-        _reports['voters'] = list(reports.election_voters_report(elections))
-        _reports['votes'] = list(reports.election_votes_report(elections,
-                                                               False))
+            _reports = OrderedDict()
+            _reports['election'] = list(reports.election_report(elections))
+            _reports['voters'] = list(reports.election_voters_report(elections))
+            _reports['votes'] = list(reports.election_votes_report(elections,
+                                                                   False))
 
-        json.dump(_reports, sys.stdout, default=json_handler, ensure_ascii=False,
-                 indent=4)
-
+            json.dump(_reports, sys.stdout, default=json_handler, ensure_ascii=False,
+                     indent=4)

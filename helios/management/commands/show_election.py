@@ -63,4 +63,3 @@ class Command(BaseCommand):
                 print "voters visits:        ", poll.voters_visited_count()
                 print "last voter visit:     ", last_visit_text
                 print ""
-

@@ -96,7 +96,6 @@ class ContactBackend():
         sent_hook(voter, result, error)
 
 
-
 class EmailBackend(ContactBackend):
 
     def do_notify(self, voter, id, subject, body, attachments):

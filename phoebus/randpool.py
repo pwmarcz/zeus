@@ -51,7 +51,6 @@ class RandomPool:
     randomize([N]) : get N bytes of randomness from external source
     """
 
-
     def __init__(self, numbytes = 160, cipher=None, hash=None):
         if hash is None:
             from hashlib import sha1 as hash
@@ -167,7 +166,6 @@ class RandomPool:
         # Restore the old value of the entropy.
         self.entropy=entropy
 
-
     def get_bytes (self, N):
         """get_bytes(N:int) : string
         Return N bytes of random data.
@@ -190,7 +188,6 @@ class RandomPool:
         self._getPos = i
         self._updateEntropyEstimate(- 8*N)
         return s[:N]
-
 
     def add_event(self, s=''):
         """add_event(s:string)
@@ -238,7 +235,6 @@ class RandomPool:
         # entropy as a result of this call.
         delta=delta % 0xff
         return int(delta)
-
 
     def _measureTickSize(self):
         # _measureTickSize() tries to estimate a rough average of the
@@ -329,6 +325,7 @@ _kb = 0
 if not _kb:
     try:
         import msvcrt
+
         class KeyboardEntry:
             def getch(self):
                 c = msvcrt.getch()
@@ -336,6 +333,7 @@ if not _kb:
                     # function key
                     c += msvcrt.getch()
                 return c
+
             def close(self, delay = 0):
                 if delay:
                     time.sleep(delay)
@@ -349,6 +347,7 @@ if not _kb:
 if not _kb:
     try:
         import termios
+
         class KeyboardEntry:
             def __init__(self, fd = 0):
                 self._fd = fd
@@ -356,9 +355,11 @@ if not _kb:
                 new = termios.tcgetattr(fd)
                 new[3]=new[3] & ~termios.ICANON & ~termios.ECHO
                 termios.tcsetattr(fd, termios.TCSANOW, new)
+
             def getch(self):
                 termios.tcflush(0, termios.TCIFLUSH) # XXX Leave this in?
                 return os.read(self._fd, 1)
+
             def close(self, delay = 0):
                 if delay:
                     time.sleep(delay)

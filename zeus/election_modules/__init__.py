@@ -134,15 +134,15 @@ class ElectionModuleBase(ElectionHooks):
                                 (election, poll, name, ext))
 
     def get_election_result_file_path(self, name, ext, lang=None):
-            RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
-                os.path.join(settings.MEDIA_ROOT, 'results'))
-            election = self.election.short_name
-            if lang:
-                return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' % \
-                                    (election, name, lang, ext))
-            else:
-                return os.path.join(RESULTS_PATH, '%s-%s-results.%s' % \
-                                    (election, name, ext))
+        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
+            os.path.join(settings.MEDIA_ROOT, 'results'))
+        election = self.election.short_name
+        if lang:
+            return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' % \
+                                (election, name, lang, ext))
+        else:
+            return os.path.join(RESULTS_PATH, '%s-%s-results.%s' % \
+                                (election, name, ext))
 
     def generate_json_file(self):
         results_json = self.poll.zeus.get_results()
@@ -294,7 +294,6 @@ class ElectionModuleBase(ElectionHooks):
 
     def can_edit_polls(self):
         return True
-
 
 
 from zeus.election_modules.simple import *

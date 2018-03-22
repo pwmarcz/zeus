@@ -165,7 +165,6 @@ class ShufflingProof:
         self._mappings = []
         self._challenge = None
 
-
     @classmethod
     def from_dict(cls, d, pk, nbits):
         from .CiphertextCollectionMapping import CiphertextCollectionMapping
@@ -198,7 +197,6 @@ class ShufflingProof:
 
         data['challenge'] = self._challenge
         return data
-
 
     def _generate_challenge(self, original_collection, shuffled_collection):
         """
@@ -261,7 +259,6 @@ class ShufflingProof:
         hexdigest = c.hexdigest()
 
         return hexdigest
-
 
     @classmethod
     def new(cls, original_collection, shuffled_collection, mapping):
@@ -380,7 +377,6 @@ class ShufflingProof:
         # return the proof object
         return proof
 
-
     def verify(self, original_collection, shuffled_collection):
         """
         Verifies that original_collection and shuffled_collection are
@@ -419,7 +415,6 @@ class ShufflingProof:
             "The length of the private properties self._collections and " \
             "self._mappings of ShufflingProof must always be the same."
         security_parameter = len(self._collections)
-
 
         # Get the security parameter specified in params
         minimum_allowed_security_parameter = params.SHUFFLING_PROOF_SECURITY_PARAMETER

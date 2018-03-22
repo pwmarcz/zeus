@@ -17,4 +17,3 @@ class Command(BaseCommand):
         e = Election.objects.get(uuid=args[0])
         d = e.ecounting_dict()
         sys.stdout.write(json.dumps(d, indent=2, ensure_ascii=0, encoding='utf-8'))
-

@@ -23,7 +23,6 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     if isinstance(voting_ends, basestring):
         voting_ends = datetime.strptime(voting_ends, "%d/%m/%Y %H:%M")
 
-
     constituencies = {}
     schools = el_data['schools']
     answers = {}
@@ -74,7 +73,6 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     handler.close()
     stv_stream.seek(0)
     results.append(stv_stream.read())
-
 
     poll_name, poll_results, questions, poll_voters = \
         pollName, results, questions, voters

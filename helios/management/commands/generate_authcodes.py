@@ -23,4 +23,3 @@ class Command(BaseCommand):
         uuid = args[0]
         voter_logins = args[1:]
         generate_authcodes(uuid, voter_logins)
-

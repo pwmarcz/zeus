@@ -96,14 +96,14 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_can_close_remote_mixing(self):
-      return self.mix_key and \
-        self.polls_feature_mix_finished and \
-        not self.feature_remote_mixing_finished
+        return self.mix_key and \
+          self.polls_feature_mix_finished and \
+          not self.feature_remote_mixing_finished
 
     @election_feature()
     def _feature_voting_started(self):
-      return  self.feature_frozen and \
-              self.voting_starts_at <= datetime.datetime.now()
+        return  self.feature_frozen and \
+                self.voting_starts_at <= datetime.datetime.now()
 
     @election_feature()
     def _feature_canceled(self):
@@ -220,7 +220,7 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_voting_finished(self):
-      return self.feature_frozen and not self.feature_voting
+        return self.feature_frozen and not self.feature_voting
 
     @election_feature()
     def _feature_can_close(self):
@@ -312,8 +312,8 @@ class PollFeatures(FeaturesMixin):
 
     @poll_feature()
     def _feature_voting_started(self):
-      return bool(self.election.frozen_at) and \
-              self.election.voting_starts_at <= datetime.datetime.now()
+        return bool(self.election.frozen_at) and \
+                self.election.voting_starts_at <= datetime.datetime.now()
 
     @poll_feature()
     def _feature_votes_cast(self):

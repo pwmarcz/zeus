@@ -11,7 +11,7 @@ class DiscreteLogProof(LDObject):
         'challenge' : 'core/BigInteger',
         'commitment' : 'core/BigInteger',
         'response' : 'core/BigInteger'}
-    
+
 class PublicKey(LDObject):
     WRAPPED_OBJ_CLASS = crypto_elgamal.PublicKey
 

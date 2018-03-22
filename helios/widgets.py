@@ -32,15 +32,15 @@ class SelectTimeWidget(Widget):
     """
     A Widget that splits time input into <select> elements.
     Allows form to show as 24hr: <hour>:<minute>:<second>, (default)
-    or as 12hr: <hour>:<minute>:<second> <am|pm> 
-    
+    or as 12hr: <hour>:<minute>:<second> <am|pm>
+
     Also allows user-defined increments for minutes/seconds
     """
     hour_field = '%s_hour'
     minute_field = '%s_minute'
     meridiem_field = '%s_meridiem'
     twelve_hr = False # Default to 24hr.
-    
+
     def __init__(self, attrs=None, hour_step=None, minute_step=None, twelve_hr=False):
         """
         hour_step, minute_step, second_step are optional step values for
@@ -48,19 +48,19 @@ class SelectTimeWidget(Widget):
         twelve_hr: If True, forces the output to be in 12-hr format (rather than 24-hr)
         """
         self.attrs = attrs or {}
-        
+
         if twelve_hr:
             self.twelve_hr = True # Do 12hr (rather than 24hr)
             self.meridiem_val = 'a.m.' # Default to Morning (A.M.)
-        
+
         if hour_step and twelve_hr:
-            self.hours = range(1,13,hour_step) 
+            self.hours = range(1,13,hour_step)
         elif hour_step: # 24hr, with stepping.
             self.hours = range(0,24,hour_step)
         elif twelve_hr: # 12hr, no stepping
             self.hours = range(1,13)
         else: # 24hr, no stepping
-            self.hours = range(0,24) 
+            self.hours = range(0,24)
 
         if minute_step:
             self.minutes = range(0,60,minute_step)
@@ -82,8 +82,8 @@ class SelectTimeWidget(Widget):
                 if match:
                     time_groups = match.groups();
                     hour_val = int(time_groups[HOURS]) % 24 # force to range(0-24)
-                    minute_val = int(time_groups[MINUTES]) 
-                    
+                    minute_val = int(time_groups[MINUTES])
+
                     # check to see if meridiem was passed in
                     if time_groups[MERIDIEM] is not None:
                         self.meridiem_val = time_groups[MERIDIEM]
@@ -95,7 +95,6 @@ class SelectTimeWidget(Widget):
                                 self.meridiem_val = 'a.m.'
                         else:
                             self.meridiem_val = None
-                    
 
         # If we're doing a 12-hr clock, there will be a meridiem value, so make sure the
         # hours get printed correctly
@@ -104,7 +103,7 @@ class SelectTimeWidget(Widget):
                 hour_val = hour_val % 12
         elif hour_val == 0:
             hour_val = 12
-            
+
         output = []
         if 'id' in self.attrs:
             id_ = self.attrs['id']
@@ -129,7 +128,7 @@ class SelectTimeWidget(Widget):
         if self.twelve_hr:
             #  If we were given an initial value, make sure the correct meridiem gets selected.
             if self.meridiem_val is not None and  self.meridiem_val.startswith('p'):
-                    meridiem_choices = [('p.m.','p.m.'), ('a.m.','a.m.')]
+                meridiem_choices = [('p.m.','p.m.'), ('a.m.','a.m.')]
             else:
                 meridiem_choices = [('a.m.','a.m.'), ('p.m.','p.m.')]
 
@@ -146,17 +145,17 @@ class SelectTimeWidget(Widget):
     def value_from_datadict(self, data, files, name):
         # if there's not h:m:s data, assume zero:
         h = data.get(self.hour_field % name, 0) # hour
-        m = data.get(self.minute_field % name, 0) # minute 
+        m = data.get(self.minute_field % name, 0) # minute
 
         meridiem = data.get(self.meridiem_field % name, None)
 
         #NOTE: if meridiem is None, assume 24-hr
         if meridiem is not None:
             if meridiem.lower().startswith('p') and int(h) != 12:
-                h = (int(h)+12)%24 
+                h = (int(h)+12)%24
             elif meridiem.lower().startswith('a') and int(h) == 12:
                 h = 0
-        
+
         if (int(h) == 0 or h) and m and s:
             return '%s:%s:%s' % (h, m, s)
 
@@ -166,9 +165,10 @@ class SplitSelectDateTimeWidget(MultiWidget):
     """
     MultiWidget = A widget that is composed of multiple widgets.
 
-    This class combines SelectTimeWidget and SelectDateWidget so we have something 
+    This class combines SelectTimeWidget and SelectDateWidget so we have something
     like SpliteDateTimeWidget (in django.forms.widgets), but with Select elements.
     """
+
     def __init__(self, attrs=None, hour_step=None, minute_step=None, twelve_hr=None, years=None):
         """ pass all these parameters to their respective widget constructors..."""
         widgets = (SelectDateWidget(attrs=attrs, years=years), SelectTimeWidget(attrs=attrs, hour_step=hour_step, minute_step=minute_step, twelve_hr=twelve_hr))
@@ -183,9 +183,8 @@ class SplitSelectDateTimeWidget(MultiWidget):
         """
         Given a list of rendered widgets (as strings), it inserts an HTML
         linebreak between them.
-        
+
         Returns a Unicode string representing the HTML for the whole lot.
         """
         rendered_widgets.insert(-1, '<br/>')
         return u''.join(rendered_widgets)
-

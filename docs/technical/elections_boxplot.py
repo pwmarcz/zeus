@@ -9,7 +9,7 @@ with open(sys.argv[1], 'r') as elections_file:
 
 voters_count = []
 voters_cast_count = []
-    
+
 for election in elections_json.items():
     voters = election[1]['election']['voters_count']
     cast = election[1]['election']['voters_cast_count']
@@ -18,7 +18,7 @@ for election in elections_json.items():
 
 print "Total voters", sum(voters_count)
 print "Total voted", sum(voters_cast_count)
-    
+
 num_stacks = len(voters_count)
 print num_stacks
 ind = np.arange(num_stacks)
@@ -37,4 +37,3 @@ ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
 
 plt.savefig('elections_to_date_boxplot.pdf', format='pdf')
 plt.show()
-

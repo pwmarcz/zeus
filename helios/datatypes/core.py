@@ -7,7 +7,7 @@ from helios.datatypes import LDObject
 class BigInteger(LDObject):
     """
     A big integer is an integer serialized as a string.
-    We may want to b64 encode here soon.    
+    We may want to b64 encode here soon.
     """
     WRAPPED_OBJ_CLASS = int
 
@@ -27,4 +27,3 @@ class Timestamp(LDObject):
             return str(self.wrapped_obj)
         else:
             return None
-    

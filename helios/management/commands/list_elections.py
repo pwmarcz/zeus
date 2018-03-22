@@ -40,4 +40,3 @@ class Command(BaseCommand):
                 print ','.join((uuid, name, poll_uuid, poll_name,
                                 admin, institution, voter_count, voted_count,
                                 start, end))
-

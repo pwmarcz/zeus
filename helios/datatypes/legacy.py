@@ -203,4 +203,3 @@ class Eligibility(ListObject, LegacyObject):
 
 class MixedTally(Tally):
     WRAPPED_OBJ_CLASS = mixnet.Tally
-

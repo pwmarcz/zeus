@@ -247,7 +247,6 @@ class CiphertextCollectionMapping:
         # Return the generated mapping
         return mapping
 
-
     def apply(self, collection):
         """
         Apply this mapping to the given collection.
@@ -474,5 +473,3 @@ class CiphertextCollectionMapping:
             assert result._reencryptions.count(None) == 0
 
         return result
-
-

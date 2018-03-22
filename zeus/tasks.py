@@ -87,7 +87,6 @@ def single_voter_email(voter_uuid,
             'sms': body_template_sms
         }
 
-
         def sent_hook(voter, method, error=None):
             if error:
                 return

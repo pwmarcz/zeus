@@ -13,11 +13,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if args:
-	    election = Election.objects.get(uuid=args[0])
+            election = Election.objects.get(uuid=args[0])
             voters = Voter.objects.filter(election=election)
         else:
             voters = Voter.objects.all()
 
         for v in voters:
             print v.voter_email, v.voter_surname, v.voter_name, v.voter_fathername
-

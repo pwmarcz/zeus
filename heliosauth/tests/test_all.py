@@ -51,7 +51,6 @@ class UserModelTests(TestCase):
                 assert u.id == u2.id
                 assert u2.info['name'] == new_name
 
-
     def test_status_update(self):
         """
         check that a user set up with status update ability reports it as such,

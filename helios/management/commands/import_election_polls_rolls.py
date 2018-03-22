@@ -32,11 +32,11 @@ def validate_voter(mobile, email, throw=True):
         mobile = mobile.replace('-', '')
         if len(mobile) < 4 or not mobile[1:].isdigit or \
             (mobile[0] != '+' and not mobile[0].isdigit()):
-                m = "Malformed mobile phone number: %s" % mobile
-                if throw:
-                    raise ValidationError(m)
-                else:
-                    return False
+            m = "Malformed mobile phone number: %s" % mobile
+            if throw:
+                raise ValidationError(m)
+            else:
+                return False
     try:
         django_validate_email(email)
     except ValidationError, e:
@@ -98,7 +98,6 @@ class Command(BaseCommand):
                         skip += 1
                         print u"Skip import of existing voter {}".format(voter.voter_email)
 
-
             existing = poll.voters.all()
             stray = 0
             for voter in existing.exclude(voter_login_id__in=ids):
@@ -106,4 +105,3 @@ class Command(BaseCommand):
                 print u"Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email)
 
         print "Found: {}  New: {}  Existing: {}  Updated: {}  Stray: {}".format(voters_count, add, skip, updated, stray)
-

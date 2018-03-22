@@ -619,8 +619,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message,
             )
 
-
-
     def test_edit_institution(self):
         inst = Institution.objects.get(name='test_inst')
         self.c.post(self.locations['login'], self.manager_creds, follow=True)

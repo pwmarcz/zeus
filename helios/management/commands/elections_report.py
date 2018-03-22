@@ -49,6 +49,5 @@ class Command(BaseCommand):
                 if not poll.result:
                     continue
 
-		print '|'.join((institution, voter_count, voted_count, start,
+                print '|'.join((institution, voter_count, voted_count, start,
                                 end, poll_uuid, poll_name, admin))
-

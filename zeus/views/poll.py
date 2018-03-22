@@ -561,7 +561,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         ('info', _('Additional Info')),
     ]
 
-
     default_template = 'vote'
 
     if not election.any_poll_feature_can_send_voter_mail:
@@ -724,7 +723,6 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                 else:
                     log_obj.logger.info("Notifying voters, [template: %s, filter: %r]", template, q_param)
                 tasks.voters_email.delay(_poll.pk, **task_kwargs)
-
 
             filters = get_voters_filters_with_constraints(q_param,
                         voter_constraints_include, voter_constraints_exclude)

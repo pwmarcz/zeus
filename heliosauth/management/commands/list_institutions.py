@@ -16,7 +16,6 @@ class Command(BaseCommand):
     args = ''
     help = 'List institutions'
 
-
     def handle(self, *args, **options):
         info = False
         if len(args) > 0 and args[0] == "1":
@@ -26,5 +25,3 @@ class Command(BaseCommand):
         for inst in Institution.objects.all():
             users_count = inst.user_set.count()
             print institution_row % (inst.pk, inst.name, users_count)
-
-

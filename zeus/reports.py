@@ -11,9 +11,9 @@ from django.db.models import Count
 from django.utils.translation import ugettext as _
 
 try:
-  from collections import OrderedDict
+    from collections import OrderedDict
 except ImportError:
-  from django.utils.datastructures import SortedDict as OrderedDict
+    from django.utils.datastructures import SortedDict as OrderedDict
 
 def zeus_report(elections):
     return {
@@ -57,8 +57,8 @@ def election_report(elections, votes_report=True, filter_sensitive=True):
             ]))
 
         if filter_sensitive:
-          for key in [k for k in entry if k in SENSITIVE_DATA]:
-            del entry[key]
+            for key in [k for k in entry if k in SENSITIVE_DATA]:
+                del entry[key]
 
         yield entry
 
@@ -279,12 +279,12 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
             writerow([])
             writerow([strforce(_("Elected")), strforce(_("Departments"))])
             for winner_data in results_winners:
-                 winner_id = winner_data[0]
-                 winner = indexed_cands[str(winner_id)]
-                 winner = winner.split(':')
-                 winner_name = winner[0]
-                 winner_department = winner[1]
-                 writerow([strforce(winner_name), strforce(winner_department)])
+                winner_id = winner_data[0]
+                winner = indexed_cands[str(winner_id)]
+                winner = winner.split(':')
+                winner_name = winner[0]
+                winner_department = winner[1]
+                writerow([strforce(winner_name), strforce(winner_department)])
             for num, round in rounds:
                 round_name = _('Round ')
                 round_name +=str(num)
@@ -306,7 +306,6 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     cand_name = cand_name.split(':')[0]
                     writerow([strforce(cand_name),strforce(votes),\
                     strforce(draw), strforce(action)])
-
 
 
 def csv_from_score_polls(election, polls, lang, outfile=None):
@@ -484,7 +483,6 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         csvout = csv.writer(outfile, dialect='excel', delimiter=',')
         writerow = csvout.writerow
         make_csv_intro(writerow, election, lang)
-
 
         def get(g, key):
             keys = key.split('.')

@@ -228,7 +228,6 @@ REPORT_EXTRA_HEADERS = []
 REPORT_BOOL_KEYS_MAP = {}
 
 
-
 def parse_q_param(q):
     args = []
     for special_arg in q.split(" "):
@@ -274,8 +273,6 @@ def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
     if constraints_exclude:
         q =  q & ~Q(**constraints_exclude)
     return q
-
-
 
 
 class CSVReader(object):
@@ -325,6 +322,7 @@ class UTF8Recoder(object):
     """
     Iterator that reads an encoded stream and reencodes the input to UTF-8
     """
+
     def __init__(self, f, encoding):
         self.reader = getreader(encoding)(f)
 

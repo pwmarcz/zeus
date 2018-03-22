@@ -44,7 +44,6 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
     else:
         cls += " disabled"
 
-
     csrf_token = ""
     if 'csrf_token' in context:
         csrf_token = u"""<input type="hidden" """ + \

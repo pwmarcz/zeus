@@ -49,8 +49,6 @@ class UniPollHooks(PollHooks):
     pass
 
 
-
-
 def UNIGOV_ROUND(result):
     return math.floor(result) if ((result - math.floor(result)) < 0.5) else math.ceil(result)
 

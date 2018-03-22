@@ -22,4 +22,3 @@ class Command(BaseCommand):
                                            poll=poll).order_by('voter__voter_surname',
                                                                        'cast_at'):
                 print u"%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at)
-

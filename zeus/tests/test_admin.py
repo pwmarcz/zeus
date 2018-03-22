@@ -32,7 +32,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
                 'uuid': [election.uuid]
             }
         )
-        
+
     def test_post_without_login(self):
         """
         If someone tries to do a POST request on admin_home
@@ -76,7 +76,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def test_get_without_superadmin(self):
         """
         If someone does a GET request on admin_home
-        without superadmin access the template 
+        without superadmin access the template
         returned should not contain a form.
         """
         self.login()
@@ -92,7 +92,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def test_get_with_superadmin(self):
         """
         If someone does a GET request on admin_home
-        with superadmin access the template 
+        with superadmin access the template
         returned should contain a form.
         """
         self.admin.superadmin_p = True

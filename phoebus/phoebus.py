@@ -244,7 +244,6 @@ def verify_gamma_encoding(n, completeness=1):
             m = ("Duplicate decoding for %d: %s!" % (encoded, choices))
         choice_set.add(choices)
 
-
     if not completeness:
         return
 
@@ -553,7 +552,6 @@ class Election(object):
 
     _generic_elections = {}
 
-
     def __init__(self,  candidates,
                         public_key                      =   None,
                         max_choices                     =   None,
@@ -785,10 +783,10 @@ class Election(object):
             owner = vote.owner
             eb = vote.encrypted_ballot
             if 'proof' in eb and eb['proof']:
-              if not verify_encryption(pk.p, pk.g, eb['a'], eb['b'], eb['proof']):
-                  m = ("Invalid encryption proof for vote #%d, from %s"
-                          % (len(owners), owner))
-                  raise InvalidVoteError(m)
+                if not verify_encryption(pk.p, pk.g, eb['a'], eb['b'], eb['proof']):
+                    m = ("Invalid encryption proof for vote #%d, from %s"
+                            % (len(owners), owner))
+                    raise InvalidVoteError(m)
 
             timestamp = get_timestamp()
             if owner in owners:
@@ -957,7 +955,6 @@ class Ballot(object):
 
         ballot = cls(election, answers=answers)
         return ballot
-
 
     def calculate_ballot_id(self, answers):
         election = self.election
@@ -1142,7 +1139,6 @@ def main(argv):
         c += 1
 
 
-
 g = _default_crypto.g
 p = _default_crypto.p
 q = _default_crypto.q
@@ -1153,4 +1149,3 @@ if __name__ == '__main__':
     cross_check_encodings(7)
     main(sys.argv)
     raise KeyboardInterrupt
-

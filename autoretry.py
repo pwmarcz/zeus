@@ -1,7 +1,7 @@
 def autoretry_datastore_timeouts(attempts=5.0, interval=0.1, exponent=2.0):
     """
     Copyright (C)  2009  twitter.com/rcb
-    
+
     Permission is hereby granted, free of charge, to any person
     obtaining a copy of this software and associated documentation
     files (the "Software"), to deal in the Software without
@@ -21,48 +21,48 @@ def autoretry_datastore_timeouts(attempts=5.0, interval=0.1, exponent=2.0):
     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     OTHER DEALINGS IN THE SOFTWARE.
-    
+
     ======================================================================
-    
-    This function wraps the AppEngine Datastore API to autoretry 
-    datastore timeouts at the lowest accessible level.  
+
+    This function wraps the AppEngine Datastore API to autoretry
+    datastore timeouts at the lowest accessible level.
 
     The benefits of this approach are:
 
-    1. Small Footprint:  Does not monkey with Model internals 
+    1. Small Footprint:  Does not monkey with Model internals
                          which may break in future releases.
-    2. Max Performance:  Retrying at this lowest level means 
-                         serialization and key formatting is not 
+    2. Max Performance:  Retrying at this lowest level means
+                         serialization and key formatting is not
                          needlessly repeated on each retry.
     At initialization time, execute this:
-    
+
     >>> autoretry_datastore_timeouts()
-    
+
     Should only be called once, subsequent calls have no effect.
-    
+
     >>> autoretry_datastore_timeouts() # no effect
-    
+
     Default (5) attempts: .1, .2, .4, .8, 1.6 seconds
-    
+
     Parameters can each be specified as floats.
-    
+
     :param attempts: maximum number of times to retry.
     :param interval: base seconds to sleep between retries.
     :param exponent: rate of exponential back-off.
     """
-    
+
     import time, logging
     from google.appengine.api import apiproxy_stub_map
     from google.appengine.runtime import apiproxy_errors
     from google.appengine.datastore import datastore_pb
-    
+
     attempts = float(attempts)
     interval = float(interval)
     exponent = float(exponent)
     wrapped = apiproxy_stub_map.MakeSyncCall
     errors = {datastore_pb.Error.TIMEOUT:'Timeout',
         datastore_pb.Error.CONCURRENT_TRANSACTION:'TransactionFailedError'}
-    
+
     def wrapper(*args, **kwargs):
         count = 0.0
         while True:

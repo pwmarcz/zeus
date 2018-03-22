@@ -418,7 +418,6 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
         else:
             extended_until = ""
 
-
         if not isinstance(data, list):
             data = [(name, data)]
 
@@ -517,7 +516,6 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             extended_until.strftime(DATE_FMT)}
         else:
             extended_until = ""
-
 
         # reset pdfdoc timestamp in order to force a fresh one to be used in
         # pdf document metadata.

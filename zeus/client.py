@@ -36,12 +36,12 @@ def get_http_connection(url):
     parsed = urlparse(url)
     kwargs = {}
     if parsed.scheme == 'https':
-            default_port = '443'
-            Conn = HTTPSConnection
-            kwargs['context'] = ssl._create_unverified_context()
+        default_port = '443'
+        Conn = HTTPSConnection
+        kwargs['context'] = ssl._create_unverified_context()
     else:
-            default_port = '80'
-            Conn = HTTPConnection
+        default_port = '80'
+        Conn = HTTPConnection
     host, sep, port = parsed.netloc.partition(':')
     if not port:
         port = default_port
@@ -298,7 +298,7 @@ def do_download_mix(url, savefile):
         polls = loads(save_data)
         for i, url in enumerate(polls):
             do_download_mix(url, "{}.{}".format(savefile, i))
-	return
+        return
 
     with open(savefile, "w") as f:
         f.write(save_data)
@@ -434,7 +434,6 @@ def do_decrypt(savefile, outfile, keyfile, nr_parallel):
     public = int(pk['y'])
     del key
 
-
     while(os.path.isfile(curr_file)):
 
         curr_outfile = outfile + ".%d" % poll_index
@@ -567,4 +566,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main(sys.argv)
-

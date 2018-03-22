@@ -148,7 +148,6 @@ class Command(BaseCommand):
         if voter_id:
             voters = voters.filter(voter_login_id=voter_id)
 
-
         if not status:
             print "Will send %d messages" % voters.count()
 

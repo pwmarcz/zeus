@@ -23,33 +23,33 @@ def locale_comparator(locale='el_GR.UTF-8'):
     return Collator.createInstance(PyICU.Locale(locale)).compare
 
 def force_utf8(s):
-  if isinstance(s, unicode):
-    return s.encode('utf8')
-  else:
-    return s
+    if isinstance(s, unicode):
+        return s.encode('utf8')
+    else:
+        return s
 
 def do_hmac(k,s):
-  """
-  HMAC a value with a key, hex output
-  """
-  mac = hmac.new(k, s, hashlib.sha1)
-  return mac.hexdigest()
+    """
+    HMAC a value with a key, hex output
+    """
+    mac = hmac.new(k, s, hashlib.sha1)
+    return mac.hexdigest()
 
 
 def split_by_length(str, length, rejoin_with=None):
-  """
-  split a string by a given length
-  """
-  str_arr = []
-  counter = 0
-  while counter<len(str):
-    str_arr.append(str[counter:counter+length])
-    counter += length
+    """
+    split a string by a given length
+    """
+    str_arr = []
+    counter = 0
+    while counter<len(str):
+        str_arr.append(str[counter:counter+length])
+        counter += length
 
-  if rejoin_with:
-    return rejoin_with.join(str_arr)
-  else:
-    return str_arr
+    if rejoin_with:
+        return rejoin_with.join(str_arr)
+    else:
+        return str_arr
 
 
 def urlencode(str):
@@ -77,10 +77,10 @@ def urldecode(str):
     return urllib.unquote(str)
 
 def dictToURLParams(d):
-  if d:
-    return '&'.join([i + '=' + urlencode(v) for i,v in d.items()])
-  else:
-    return None
+    if d:
+        return '&'.join([i + '=' + urlencode(v) for i,v in d.items()])
+    else:
+        return None
 ##
 ## XML escaping and unescaping
 ##
@@ -141,10 +141,10 @@ def random_string(length=20):
     return r_string
 
 def get_host():
-  return settings.SERVER_HOST
+    return settings.SERVER_HOST
 
 def get_prefix():
-  return settings.SERVER_PREFIX
+    return settings.SERVER_PREFIX
 
 
 ##
@@ -152,10 +152,10 @@ def get_prefix():
 ##
 
 def string_to_datetime(str, fmt="%Y-%m-%d %H:%M"):
-  if str == None:
-    return None
+    if str == None:
+        return None
 
-  return datetime.datetime.strptime(str, fmt)
+    return datetime.datetime.strptime(str, fmt)
 
 ##
 ## email
@@ -164,10 +164,9 @@ def string_to_datetime(str, fmt="%Y-%m-%d %H:%M"):
 from django.core import mail as django_mail
 
 def send_email(sender, recpt_lst, subject, body):
-  # subject up until the first newline
-  subject = subject.split("\n")[0]
-  django_mail.send_mail(subject, body, sender, recpt_lst, fail_silently=True)
-
+    # subject up until the first newline
+    subject = subject.split("\n")[0]
+    django_mail.send_mail(subject, body, sender, recpt_lst, fail_silently=True)
 
 
 ##
@@ -175,31 +174,31 @@ def send_email(sender, recpt_lst, subject, body):
 ##
 
 def one_val_raw_sql(raw_sql, values=[]):
-  """
-  for a simple aggregate
-  """
-  from django.db import connection, transaction
-  cursor = connection.cursor()
+    """
+    for a simple aggregate
+    """
+    from django.db import connection, transaction
+    cursor = connection.cursor()
 
-  cursor.execute(raw_sql, values)
-  return cursor.fetchone()[0]
+    cursor.execute(raw_sql, values)
+    return cursor.fetchone()[0]
 
 def lock_row(model, pk):
-  """
-  you almost certainly want to use lock_row inside a commit_on_success function
-  Eventually, in Django 1.2, this should move to the .for_update() support
-  """
+    """
+    you almost certainly want to use lock_row inside a commit_on_success function
+    Eventually, in Django 1.2, this should move to the .for_update() support
+    """
 
-  from django.db import connection, transaction
-  cursor = connection.cursor()
+    from django.db import connection, transaction
+    cursor = connection.cursor()
 
-  cursor.execute("select * from " + model._meta.db_table + " where id = %s for update", [pk])
-  row = cursor.fetchone()
+    cursor.execute("select * from " + model._meta.db_table + " where id = %s for update", [pk])
+    row = cursor.fetchone()
 
-  # if this is under transaction management control, mark the transaction dirty
-  try:
-    transaction.set_dirty()
-  except:
-    pass
+    # if this is under transaction management control, mark the transaction dirty
+    try:
+        transaction.set_dirty()
+    except:
+        pass
 
-  return row
+    return row

@@ -312,6 +312,7 @@ def arrayOf(element_type):
 
 class DictObject(object):
     "when the wrapped object is actually dictionary"
+
     def _getattr_wrapped(self, attr):
         return self.wrapped_obj[attr]
 
@@ -324,4 +325,3 @@ class ListObject(object):
 
     def toDict(self, complete=False):
         return self.wrapped_obj
-

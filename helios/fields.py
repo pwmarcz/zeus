@@ -32,7 +32,6 @@ class SplitDateTimeField(fields.MultiValueField):
         return None
 
 
-
 from django.core import validators
 from django.core import exceptions
 from django.db import models
@@ -45,6 +44,7 @@ class Creator(object):
     """
     A placeholder class that provides a way to set the attribute on the model.
     """
+
     def __init__(self, field):
         self.field = field
 

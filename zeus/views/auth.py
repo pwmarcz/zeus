@@ -244,7 +244,6 @@ def jwt_login(request):
         messages.error(request, message)
         return redirect('home')
 
-
     AUDIENCE = 'zeus' # add to settings
 
     try:

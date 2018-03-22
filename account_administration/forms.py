@@ -59,7 +59,6 @@ class userForm(ModelForm):
         except User.DoesNotExist:
             return self.cleaned_data['user_id']
 
-
     def clean_institution(self):
         inst_name = self.cleaned_data['institution']
         try:

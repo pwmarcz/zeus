@@ -24,4 +24,3 @@ class Command(BaseCommand):
             print "login url : %s" % v.get_quick_login_url()
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify
-

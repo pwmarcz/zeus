@@ -84,7 +84,6 @@ def task_fields(task):
         #setattr(self, error_field, '')
         self.save()
 
-
     key = task._features_key
     extra_fields['_feature_can_%s' % task_name] = \
             feature(key, 'can_%s' % task_name)(feat_can)

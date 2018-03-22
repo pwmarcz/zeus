@@ -49,4 +49,3 @@ class Command(BaseCommand):
 
         for t in output:
             print '|'.join(str(x) for x in t)
-

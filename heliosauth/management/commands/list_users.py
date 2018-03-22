@@ -14,7 +14,6 @@ class Command(BaseCommand):
     args = ''
     help = 'List users'
 
-
     def handle(self, *args, **options):
         info = False
 
@@ -26,4 +25,3 @@ class Command(BaseCommand):
                               '%-2d - %s' % (user.institution.pk, user.institution.name),
                               str(user.ecounting_account),
                               elections_count)
-

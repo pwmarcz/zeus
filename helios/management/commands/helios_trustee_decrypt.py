@@ -18,7 +18,7 @@ from helios.models import *
 class Command(BaseCommand):
     args = ''
     help = 'decrypt elections where helios is the trustee'
-    
+
     def handle(self, *args, **options):
         # query for elections where decryption is ready to go and Helios is the trustee
         active_helios_trustees = Trustee.objects.exclude(secret_key = None).exclude(election__encrypted_tally = None).filter(decryption_factors = None)

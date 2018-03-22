@@ -70,7 +70,6 @@ class ElectionForm(forms.ModelForm):
                                widget=forms.Textarea,
                                help_text=help.trustees)
 
-
     remote_mixes = forms.BooleanField(label=_('Multiple mixnets'),
                                       required=False,
                                       help_text=help.remote_mixes)
@@ -225,7 +224,6 @@ class ElectionForm(forms.ModelForm):
                 instance.logger.info("Field '%s' changed from %r to %r", field,
                                     inital, newvalue)
 
-
     def save(self, *args, **kwargs):
         remote_mixes = self.cleaned_data.get('remote_mixes')
         if remote_mixes:
@@ -329,7 +327,6 @@ class QuestionForm(QuestionBaseForm):
         self.fields['min_answers'].choices = max_choices
         self.fields['min_answers'].initial = 0
 
-
     def clean(self):
         max_answers = int(self.cleaned_data.get('max_answers'))
         min_answers = int(self.cleaned_data.get('min_answers'))
@@ -363,6 +360,7 @@ class ScoresForm(QuestionBaseForm):
 
     min_answers = forms.ChoiceField(label=_("Min answers"), required=True)
     max_answers = forms.ChoiceField(label=_("Max answers"), required=True)
+
     def __init__(self, *args, **kwargs):
         super(ScoresForm, self).__init__(*args, **kwargs)
         if type(self.data) != dict:
@@ -380,7 +378,6 @@ class ScoresForm(QuestionBaseForm):
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = self._scores_len
         self.fields['min_answers'].choices = max_choices
-
 
     def clean(self):
         super(ScoresForm, self).clean()
@@ -407,11 +404,11 @@ class ScoresForm(QuestionBaseForm):
 class RequiredFormset(BaseFormSet):
 
     def __init__(self, *args, **kwargs):
-            super(RequiredFormset, self).__init__(*args, **kwargs)
-            try:
-                self.forms[0].empty_permitted = False
-            except IndexError:
-                pass
+        super(RequiredFormset, self).__init__(*args, **kwargs)
+        try:
+            self.forms[0].empty_permitted = False
+        except IndexError:
+            pass
 
 class CandidateWidget(MultiWidget):
 
@@ -505,7 +502,6 @@ class StvForm(QuestionBaseForm):
                              forms.CharField(
                                  label=label_text,
                                  help_text=elig_help_text))
-
 
     min_answers = None
     max_answers = None
@@ -606,7 +602,6 @@ class PollForm(forms.ModelForm):
             ('other', 'other')
         )
 
-
         ordered_dict_prepend(self.fields, 'jwt_file',
                              forms.FileField(
                                  label="JWT public keyfile",
@@ -649,7 +644,6 @@ class PollForm(forms.ModelForm):
                 self.initial['shibboleth_constraints'] = json.dumps(shib)
         if self.election.feature_frozen:
             self.fields['name'].widget.attrs['readonly'] = True
-
 
         auth_title = _('2-factor authentication')
         auth_help = _('2-factor authentication help text')
@@ -703,7 +697,7 @@ class PollForm(forms.ModelForm):
                 raise forms.ValidationError(message)
         if self.election.feature_frozen and\
             (self.cleaned_data['name'] != self.instance.name):
-                raise forms.ValidationError(_("Poll name cannot be changed\
+            raise forms.ValidationError(_("Poll name cannot be changed\
                                                after freeze"))
 
         oauth2_field_names = ['type', 'client_type', 'client_id', 'client_secret',
@@ -724,7 +718,7 @@ class PollForm(forms.ModelForm):
                         ((_("This URL is invalid"),))
         else:
             for field_name in oauth2_field_names:
-               data[field_name] = ''
+                data[field_name] = ''
 
         shibboleth_field_names = []
         if data['shibboleth_auth']:
