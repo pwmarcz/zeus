@@ -1007,12 +1007,7 @@ class TestSimpleElection(TestElectionBase):
         self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
                              fetch_redirect_response=True)
 
-        self.c.get(self.locations['logout'])
-        self.assertTemplateUsed('questions_list_template')
-
-
-
-
+        # todo: 
 class TestPartyElection(TestElectionBase):
 
     def setUp(self):
