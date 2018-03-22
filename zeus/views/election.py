@@ -7,13 +7,16 @@ from collections import OrderedDict
 
 from zeus.forms import ElectionForm
 from zeus.forms import PollForm, PollFormSet
-from zeus.utils import *
-from zeus.views.utils import *
+from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
+from zeus.views.utils import set_menu, common_json_handler
+
 from zeus import tasks
 from zeus import reports
 from zeus import auth
 from zeus.views.poll import voters_email
 
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, Http404

@@ -3,12 +3,12 @@ import csv
 from functools import partial
 
 from cStringIO import StringIO
-from helios.models import *
 from collections import defaultdict
 from zeus.core import gamma_decode
 from zeus.utils import CSVReader
 from django.db.models import Count
 from django.utils.translation import ugettext as _
+from django.utils import translation
 
 try:
     from collections import OrderedDict
@@ -16,6 +16,7 @@ except ImportError:
     from django.utils.datastructures import SortedDict as OrderedDict
 
 def zeus_report(elections):
+    from helios.models import CastVote, Voter
     return {
         'elections': elections,
         'votes': CastVote.objects.filter(election__in=elections, voter__excluded_at__isnull=True).count(),
@@ -64,7 +65,7 @@ def election_report(elections, votes_report=True, filter_sensitive=True):
 
 
 def election_votes_report(elections, include_alias=False, filter_sensitive=True):
-    from helios.models import CastVote
+    from helios.models import CastVote, Voter
     for vote in CastVote.objects.filter(poll__election__in=elections,
                                     voter__excluded_at__isnull=True).values('voter__alias','voter',
                                                                            'cast_at').order_by('-cast_at'):
@@ -82,6 +83,7 @@ def election_votes_report(elections, include_alias=False, filter_sensitive=True)
 
 
 def election_voters_report(elections):
+    from helios.models import Voter
     for voter in Voter.objects.filter(poll__election__in=elections,
                                       excluded_at__isnull=True).annotate(cast_count=Count('cast_votes')).order_by('voter_surname'):
         entry = OrderedDict([

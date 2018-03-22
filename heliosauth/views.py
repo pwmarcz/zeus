@@ -5,11 +5,12 @@ Ben Adida
 2009-07-05
 """
 
-from django.http import *
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
-from view_utils import *
+from .view_utils import render_template, render_template_raw
 from heliosauth.security import get_user
 
 import auth_systems
@@ -31,21 +32,21 @@ def index(request):
     user = get_user(request)
 
     # single auth system?
-    if len(auth.ENABLED_AUTH_SYSTEMS) == 1 and not user:
-        return HttpResponseRedirect(reverse(start, args=[auth.ENABLED_AUTH_SYSTEMS[0]])+ '?return_url=' + request.GET.get('return_url', ''))
+    if len(heliosauth.ENABLED_AUTH_SYSTEMS) == 1 and not user:
+        return HttpResponseRedirect(reverse(start, args=[heliosauth.ENABLED_AUTH_SYSTEMS[0]])+ '?return_url=' + request.GET.get('return_url', ''))
 
-    #if auth.DEFAULT_AUTH_SYSTEM and not user:
-    #  return HttpResponseRedirect(reverse(start, args=[auth.DEFAULT_AUTH_SYSTEM])+ '?return_url=' + request.GET.get('return_url', ''))
+    #if heliosauth.DEFAULT_AUTH_SYSTEM and not user:
+    #  return HttpResponseRedirect(reverse(start, args=[heliosauth.DEFAULT_AUTH_SYSTEM])+ '?return_url=' + request.GET.get('return_url', ''))
 
     default_auth_system_obj = None
-    if auth.DEFAULT_AUTH_SYSTEM:
-        default_auth_system_obj = AUTH_SYSTEMS[auth.DEFAULT_AUTH_SYSTEM]
+    if heliosauth.DEFAULT_AUTH_SYSTEM:
+        default_auth_system_obj = AUTH_SYSTEMS[heliosauth.DEFAULT_AUTH_SYSTEM]
 
     #form = password.LoginForm()
 
     return render_template(request,'index', {'return_url' : request.GET.get('return_url', reverse('home')),
-                                             'enabled_auth_systems' : auth.ENABLED_AUTH_SYSTEMS,
-                                             'default_auth_system': auth.DEFAULT_AUTH_SYSTEM,
+                                             'enabled_auth_systems' : heliosauth.ENABLED_AUTH_SYSTEMS,
+                                             'default_auth_system': heliosauth.DEFAULT_AUTH_SYSTEM,
                                              'default_auth_system_obj': default_auth_system_obj})
 
 def login_box_raw(request, return_url=None, auth_systems = None):
@@ -55,20 +56,20 @@ def login_box_raw(request, return_url=None, auth_systems = None):
     if return_url is None:
         return_url = reverse('home')
     default_auth_system_obj = None
-    if auth.DEFAULT_AUTH_SYSTEM:
-        default_auth_system_obj = AUTH_SYSTEMS[auth.DEFAULT_AUTH_SYSTEM]
+    if heliosauth.DEFAULT_AUTH_SYSTEM:
+        default_auth_system_obj = AUTH_SYSTEMS[heliosauth.DEFAULT_AUTH_SYSTEM]
 
     # make sure that auth_systems includes only available and enabled auth systems
     if auth_systems != None:
-        enabled_auth_systems = set(auth_systems).intersection(set(auth.ENABLED_AUTH_SYSTEMS)).intersection(set(AUTH_SYSTEMS.keys()))
+        enabled_auth_systems = set(auth_systems).intersection(set(heliosauth.ENABLED_AUTH_SYSTEMS)).intersection(set(AUTH_SYSTEMS.keys()))
     else:
-        enabled_auth_systems = set(auth.ENABLED_AUTH_SYSTEMS).intersection(set(AUTH_SYSTEMS.keys()))
+        enabled_auth_systems = set(heliosauth.ENABLED_AUTH_SYSTEMS).intersection(set(AUTH_SYSTEMS.keys()))
 
     form = password.LoginForm()
 
     return render_template_raw(request, 'login_box', {
         'enabled_auth_systems': enabled_auth_systems, 'return_url': return_url,
-        'default_auth_system': auth.DEFAULT_AUTH_SYSTEM, 'default_auth_system_obj': default_auth_system_obj,
+        'default_auth_system': heliosauth.DEFAULT_AUTH_SYSTEM, 'default_auth_system_obj': default_auth_system_obj,
         'form' : form})
 
 def do_local_logout(request):
@@ -138,7 +139,7 @@ def _do_auth(request):
         return HttpResponse("an error occurred trying to contact " + system_name +", try again later")
 
 def start(request, system_name):
-    if not (system_name in auth.ENABLED_AUTH_SYSTEMS):
+    if not (system_name in heliosauth.ENABLED_AUTH_SYSTEMS):
         return HttpResponseRedirect(reverse(index))
 
     # why is this here? Let's try without it

@@ -11,7 +11,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from helios import utils as helios_utils
-from helios.models import *
+from helios.models import Voter
 
 class Command(BaseCommand):
     args = ''

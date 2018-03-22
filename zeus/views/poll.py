@@ -25,10 +25,11 @@ from django.template import Template, Context
 from zeus.forms import ElectionForm
 from zeus import auth
 from zeus.forms import PollForm, PollFormSet, EmailVotersForm
-from zeus.utils import *
-from zeus.views.utils import *
+from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
+from zeus.views.utils import set_menu, common_json_handler
 from zeus import tasks
 
+from django.conf import settings
 from django.utils.encoding import smart_unicode
 from django.db import transaction
 from django.shortcuts import get_object_or_404

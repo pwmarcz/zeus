@@ -1,4 +1,4 @@
-from .prod import *
+from .prod import *  # noqa
 from copy import deepcopy
 
 DATABASES = deepcopy(DATABASES)

@@ -13,7 +13,7 @@ import datetime
 
 from helios import utils as helios_utils
 
-from helios.models import *
+from helios.models import User, Voter, VoterFile
 
 def process_csv_file(election, f):
     reader = csv_reader(f.read())

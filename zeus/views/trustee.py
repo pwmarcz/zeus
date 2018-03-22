@@ -12,9 +12,9 @@ from django.contrib import messages
 
 from zeus.forms import ElectionForm
 from zeus import auth
-from zeus.utils import *
-from zeus.views.utils import *
-from zeus.views.common import *
+from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
+from zeus.views.utils import set_menu, common_json_handler
+from zeus.views.common import ELGAMAL_PARAMS_LD_OBJECT
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404

@@ -3,8 +3,7 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Poll
 
 def strforce(thing):
     if isinstance(thing, unicode):

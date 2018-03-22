@@ -7,15 +7,15 @@ Ben Adida (ben@adida.net)
 # nicely update the wrapper function
 from functools import update_wrapper
 
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.core.exceptions import *
+from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseNotAllowed
+from django.core.exceptions import PermissionDenied
 from django.conf import settings
 
 import oauth
 
 import uuid
 
-from heliosauth.models import *
+from heliosauth.models import User
 
 FIELDS_TO_SAVE = 'FIELDS_TO_SAVE'
 

@@ -2,7 +2,7 @@
 """
 from django.core.management.base import BaseCommand
 
-from helios.models import *
+from helios.models import Election, Voter
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')

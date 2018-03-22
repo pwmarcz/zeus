@@ -3,7 +3,7 @@ from helios.crypto.elgamal import Plaintext, Ciphertext
 from helios.crypto import algs
 
 # we are extending homomorphic workflow
-from helios.workflows.homomorphic import *
+from helios.workflows.homomorphic import WorkflowObject, DLogTable, EncryptedVote, EncryptedAnswer
 
 from phoebus import phoebus
 

@@ -3,7 +3,7 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.models import *
+from heliosauth.models import User
 
 import pprint
 

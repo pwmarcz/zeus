@@ -64,7 +64,15 @@ from Crypto.Random.random import StrongRandom
 import params
 
 # Use some PloneVoteCryptoLib exceptions
-from PVCExceptions import *
+from PVCExceptions import (
+    InvalidPloneVoteCryptoFileError,
+    KeyLengthMismatch,
+    KeyLengthNonBytableError,
+    KeyLengthTooLowError,
+    NotAGeneratorError,
+    NotASafePrimeError,
+    EGCSUnconstructedStateError,
+)
 
 # Include support for serialization
 import serialize as serialize

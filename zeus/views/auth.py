@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from zeus import auth
-from zeus.utils import *
+from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 
 from django.db import transaction

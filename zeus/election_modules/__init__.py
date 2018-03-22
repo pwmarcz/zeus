@@ -296,8 +296,8 @@ class ElectionModuleBase(ElectionHooks):
         return True
 
 
-from zeus.election_modules.simple import *
-from zeus.election_modules.parties import *
-from zeus.election_modules.score import *
-from zeus.election_modules.stv import *
-from zeus.election_modules.unigovgr import *
+from zeus.election_modules.simple import *  # noqa
+from zeus.election_modules.parties import * # noqa
+from zeus.election_modules.score import * # noqa
+from zeus.election_modules.stv import * # noqa
+from zeus.election_modules.unigovgr import * # noqa

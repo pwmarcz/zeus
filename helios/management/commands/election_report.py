@@ -8,7 +8,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.utils.timesince import timesince
 
 from helios import utils as helios_utils
-from helios.models import *
+from helios.models import Election
 
 from zeus import reports
 

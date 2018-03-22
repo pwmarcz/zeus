@@ -3,7 +3,6 @@
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from helios.models import *
 from zeus.models import generate_authcodes
 import sys
 reload(sys)
