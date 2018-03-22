@@ -162,10 +162,6 @@ class ElectionFeatures(FeaturesMixin):
         return (not self.feature_frozen) and self.get_module().can_edit_polls()
 
     @election_feature()
-    def _feature_can_rename_poll(self):
-        return not self.feature_voting_started
-
-    @election_feature()
     def _feature_can_send_trustee_email(self):
         # TODO: Fine grain status check
         return not self.feature_completed
