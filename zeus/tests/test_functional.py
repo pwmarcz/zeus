@@ -993,6 +993,33 @@ class TestSimpleElection(TestElectionBase):
         election.refresh_from_db()
         assert election.cancelation_reason == 'canceled because of reasons'
 
+    def test_poll_questions(self):
+        self.election_form['election_module'] = self.election_type
+        self.c.post(self.locations['login'], self.login_data)
+        self.c.post(self.locations['create'], self.election_form, follow=True)
+        election = Election.objects.get()
+
+        self.c.get(self.locations['logout'])
+        self.c.post(self.locations['login'], self.login_data)
+        assert election.polls.all().count() == 0
+        location = '/elections/%s/polls/add' % election.uuid
+        for i in range(0, self.polls_number):
+            post_data = {
+                'name': 'test_poll-{}'.format(i)
+            }
+            post_data.update(self._get_poll_params(i, None))
+            self.c.post(location, post_data)
+        assert election.polls.all().count() == self.polls_number
+        self.verbose('+ Polls were created')
+        self.p_uuids = []
+        for poll in election.polls.all():
+            self.p_uuids.append(poll.uuid)
+
+        poll = Poll.objects.all()[0]
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
+
+        assert response.status_code == 302
+
 
 class TestPartyElection(TestElectionBase):
 
