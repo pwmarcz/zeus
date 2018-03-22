@@ -478,12 +478,12 @@ class ZeusDjangoElection(ZeusCoreElection):
         return factors
 
     def do_get_last_mix(self):
-        mixnet = helios_models.PollMix.objects.filter(
+        mixes = helios_models.PollMix.objects.filter(
             poll=self.poll,
             status='finished').order_by('-mix_order')
-        if mixnet.count() == 0:
+        if mixes.count() == 0:
             return self.extract_votes_for_mixing()[0]
-        return mixnet[0].zeus_mix()
+        return mixes[0].zeus_mix()
 
     def do_store_mix(self, mix):
         pass

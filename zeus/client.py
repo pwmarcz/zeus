@@ -294,6 +294,12 @@ def do_download_mix(url, savefile):
     response = conn.getresponse()
     save_data = response.read()
 
+    if "polls" not in url:
+        polls = loads(save_data)
+        for i, url in enumerate(polls):
+            do_download_mix(url, "{}.{}".format(savefile, i))
+	return
+
     with open(savefile, "w") as f:
         f.write(save_data)
 
@@ -343,6 +349,16 @@ def do_download_ciphers(url, savefile):
 
 
 def do_upload_mix(outfile, url):
+
+    if "polls" not in url:
+        conn = get_http_connection(url)
+        conn.request('GET', conn.path)
+        response = conn.getresponse()
+        polls = loads(response.read())
+        for i, poll in enumerate(polls):
+            do_upload_mix("{}.{}".format(outfile, i), poll)
+        return
+
     with open(outfile) as f:
         out_data = f.read()
     conn = get_http_connection(url)
@@ -377,6 +393,14 @@ def do_mix(mixfile, newfile, nr_rounds, nr_parallel, module):
         m = "file '%s' already exists, will not overwrite" % (newfile,)
         raise ValueError(m)
 
+    if os.path.exists("{}.0".format(mixfile)):
+        i = 0
+        while os.path.exists("{}.{}".format(mixfile, i)):
+            do_mix("{}.{}".format(mixfile, i), "{}.{}".format(newfile, i),
+                   nr_rounds, nr_parallel, module)
+            i = i + 1
+        return
+
     with open(mixfile) as f:
         mix = from_canonical(f)
 
@@ -386,6 +410,14 @@ def do_mix(mixfile, newfile, nr_rounds, nr_parallel, module):
         to_canonical(new_mix, out=f)
 
     return new_mix
+
+
+def do_automix(url, prefix, nr_rounds, nr_parallel, module):
+    do_download_mix(url, "{}-votes".format(prefix))
+    do_mix("{}-votes".format(prefix), "{}-mix".format(prefix), nr_rounds,
+            nr_parallel, module)
+    do_upload_mix("{}-mix".format(prefix), url)
+
 
 def do_decrypt(savefile, outfile, keyfile, nr_parallel):
     poll_index = 0
@@ -455,7 +487,7 @@ def main_help():
              "       {0} verify   <vote_signature_file> [randomness [plaintext]]\n"
              "\n"
              "       {0} download mix <url> <input.mix>\n"
-             "       {0} mix          <input.mix> <output.mix> <nr_rounds> <nr_parallel>\n"
+             "       {0} mix          [<url> <mix-name>|<input.mix> <output.mix>] <nr_rounds> <nr_parallel>\n"
              "       {0} upload mix   <output.mix> <url>\n"
              "\n"
              "       {0} download ciphers <url> <ballots_savefile>\n"
@@ -464,7 +496,8 @@ def main_help():
     sys.stderr.write(usage)
     raise SystemExit
 
-def main(argv):
+def main(argv=None):
+    argv = argv or sys.argv
     argc = len(argv)
     if argc < 2:
         main_help()
@@ -493,7 +526,12 @@ def main(argv):
         if argc < 6:
             main_help()
         import zeus_sk as shuffle_module
-        do_mix(argv[2], argv[3], int(argv[4]), int(argv[5]), shuffle_module)
+        if argv[2].startswith("http"):
+            do_automix(argv[2], argv[3], int(argv[4]), int(argv[5]),
+                shuffle_module)
+        else:
+            do_mix(argv[2], argv[3], int(argv[4]), int(argv[5]),
+                shuffle_module)
     elif cmd == 'decrypt':
         if argc < 6:
             main_help()

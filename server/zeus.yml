@@ -23,7 +23,11 @@
         - python-psycopg2
         - libicu-dev
         - libgmp-dev
+        - libmpfr-dev
+        - libmpc-dev
         - g++
+        # TODO configure Redis, set up a password
+        - redis-server
 
     - name: zeus database
       postgresql_db:
@@ -74,10 +78,17 @@
         group: zeus
         mode: 0770
 
-    - name: systemd service configuration
+    - name: uwsgi service configuration
       template:
         src: templates/zeus-uwsgi.service
         dest: /etc/systemd/system/zeus-uwsgi.service
+      notify: systemctl daemon-reload
+
+    - name: worker service configuration
+      template:
+        src: templates/zeus-worker.service
+        dest: /etc/systemd/system/zeus-worker.service
+      notify: systemctl daemon-reload
 
     - name: nginx template
       template:
@@ -109,9 +120,11 @@
       when: git_repo.changed
       block:
 
-      - name: stop service
-        service: name=zeus-uwsgi state=stopped
-        tags: [deploy]
+      - name: stop services
+        service: name="{{ item }}" state=stopped
+        with_items:
+          - zeus-uwsgi
+          - zeus-worker
 
       - name: update source
         git:
@@ -137,9 +150,14 @@
           chdir: /srv/zeus/install
         become_user: zeus
 
-      - name: start service
-        service: name=zeus-uwsgi state=started
+      - name: start services
+        service: name="{{ item }}" state=started
+        with_items:
+          - zeus-uwsgi
+          - zeus-worker
 
   handlers:
     - name: reload nginx
       service: name=nginx state=reloaded
+    - name: systemctl daemon-reload
+      command: systemctl daemon-reload

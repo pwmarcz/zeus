@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 PYTHON_MAJOR = sys.version_info[0]
 from datetime import datetime
@@ -29,7 +30,7 @@ import inspect
 import importlib
 from time import time, sleep
 
-from gmpy import mpz
+from gmpy2 import mpz
 _pow = pow
 
 def pow(b, e, m):

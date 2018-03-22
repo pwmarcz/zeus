@@ -118,7 +118,6 @@ class ElectionForm(forms.ModelForm):
                                                     choices=choices,
                                                     initial=lang,
                                                     help_text = help_text)
-        self.fields['remote_mixes'].widget = forms.HiddenInput()
         self.fields['linked_polls'].widget = forms.HiddenInput()
         if owner.sms_data:
             help_text = _("Notify voters using SMS (%d deliveries available for your account)") % owner.sms_data.left

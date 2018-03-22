@@ -192,6 +192,24 @@ def index(request, election, poll=None):
 
 
 @auth.election_admin_required
+@auth.requires_election_features('can_close_remote_mixing')
+@require_http_methods(["POST"])
+def close_mixing(request, election):
+    election.logger.info("Closing remote mixes")
+
+    election.remote_mixing_finished_at = datetime.datetime.now()
+    election.save()
+
+    tasks.election_validate_mixing(election.id)
+    # hacky delay. Hopefully validate create task will start running
+    # before the election view redirect.
+    import time
+    time.sleep(getattr(settings, 'ZEUS_ELECTION_FREEZE_DELAY', 4))
+    url = election_reverse(election, 'index')
+    return HttpResponseRedirect(url)
+
+
+@auth.election_admin_required
 @auth.requires_election_features('can_freeze')
 @require_http_methods(["POST"])
 def freeze(request, election):
@@ -200,7 +218,7 @@ def freeze(request, election):
 
     # hacky delay. Hopefully validate create task will start running
     # before the election view redirect.
-    if not settings.CELERY_ALWAYS_EAGER:
+    if not settings.CELERY_TASK_ALWAYS_EAGER:
         import time
         time.sleep(getattr(settings, 'ZEUS_ELECTION_FREEZE_DELAY', 4))
 
@@ -245,15 +263,6 @@ def endnow(request, election):
 def close(request, election):
     election.close_voting()
     tasks.election_validate_voting(election.pk)
-    url = election_reverse(election, 'index')
-    return HttpResponseRedirect(url)
-
-
-@auth.election_admin_required
-@auth.requires_election_features('can_validate_voting')
-@require_http_methods(["POST"])
-def validate_voting(request, election):
-    tasks.election_validate_voting(election_id=election.id)
     url = election_reverse(election, 'index')
     return HttpResponseRedirect(url)
 
@@ -419,3 +428,13 @@ def nocookies(request):
                             urllib.urlencode({
                             'continue_url' : request.GET['continue_url']}))
     return render_template(request, 'nocookies', {'retest_url': retest_url})
+
+
+@auth.election_view(check_access=False)
+def remote_mix(request, election, mix_key):
+    urls = []
+    if not election.check_mix_key(mix_key):
+        raise PermissionDenied
+
+    urls = map(lambda p: p.remote_mix_url, election.polls.all())
+    return HttpResponse(json.dumps(urls), content_type="application/json")

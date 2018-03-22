@@ -22,6 +22,10 @@ This is a fork of Ben Adida's Helios server. The differences from Helios are as 
 
 Install Postgres (`postgres-server`, `libpq-dev`).
 
+Install the following libraries:
+
+    libicu-dev libgmp-dev libmpfr-dev libmpc-dev
+
 If necessary, create a Postgres user. Then create a database:
 
     sudo -u postgres createuser -s $(whoami)
@@ -60,9 +64,24 @@ Create an institution and admin user:
 
     python manage.py runserver 0.0.0.0:8000
 
+### Celery
+
+By default, in development all Celery tasks run synchronously. If you
+want to run a Celery worker, first disable this behaviour by editing
+`settings/local.py`:
+
+    CELERY_TASK_ALWAYS_EAGER = False
+
+You need to also install `redis` and make sure it's running on
+localhost.
+
+Then, run:
+
+    celery worker -l INFO
+
 ## Test
 
-    py.test -v
+    pytest -v
 
 ## Python packages
 
