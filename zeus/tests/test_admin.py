@@ -1,6 +1,8 @@
 from __future__ import print_function
 
+import csv
 import datetime
+from io import StringIO
 
 from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
@@ -242,6 +244,8 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         # at least one comma
         assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
         assert response.content.find(',') > -1
+        lines = [l for l in csv.reader(StringIO(unicode(response.content)))]
+        assert len(lines) == 2
 
     def test_elections_report(self):
         self.admin.superadmin_p = True
