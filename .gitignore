@@ -23,3 +23,7 @@ deploy/config.yaml
 .pytest_cache
 settings/local.py
 .idea/
+*.zeus
+sitestatic/
+*,cover
+htmlcov/
