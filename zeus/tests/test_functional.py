@@ -16,6 +16,7 @@ from django.core import mail
 from helios import datatypes
 from helios.crypto import algs
 from helios.models import Election, Voter, Poll, Trustee
+from heliosauth.models import User
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
@@ -1004,7 +1005,20 @@ class TestSimpleElection(TestElectionBase):
         self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
                              fetch_redirect_response=True)
 
-        # TODO test logged-out version
+        self.submit_voters_file()
+        voter = Voter.objects.all()[0]
+        url = voter.get_quick_login_url()
+
+        self.c.post(self.locations['logout'])
+
+        self.voter_login(voter, url)
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
+
+        assert response.status_code == 200
+        module = poll.get_module()
+        tpl = getattr(module, 'questions_list_template', 'election_poll_questions')
+
+        self.assertTemplateUsed(response, tpl + '.html')
 
 
 class TestPartyElection(TestElectionBase):
