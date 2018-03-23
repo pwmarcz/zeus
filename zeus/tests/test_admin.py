@@ -108,7 +108,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        self.assertNotContains(response, '<select name="official">')
+        assert '<select name="official">' not in response.content
 
     def test_get_with_superadmin(self):
         """
@@ -123,7 +123,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
 
         # when there are no elections created, we should get a redirect
         response = self.c.get(reverse('admin_home'), {})
-        self.assertEqual(response.status_code, 302)
+        assert response.status_code == 302
 
         election = self.create_election(name='first_election')
 
@@ -132,37 +132,37 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        self.assertContains(response, '</form>')
-        self.assertContains(response, '<select name="official">')
-        self.assertContains(response, '<input type="submit"')
-        self.assertContains(response, '<input type="hidden"')
+        assert '</form>' in response.content
+        assert '<select name="official">' in response.content
+        assert '<input type="submit"' in response.content
+        assert '<input type="hidden"' in response.content
 
         # ensure the ordering works
         newer_newer = self.create_election(name='second_election')
 
         response = self.c.get(reverse('admin_home'), {'order': 'name', 'order_type': 'desc'})
-        self.assertEqual(response.context['elections_administered'][0].name, 'second_election')
-        self.assertEqual(response.context['elections_administered'][1].name, 'first_election')
+        assert response.context['elections_administered'][0].name == 'second_election'
+        assert response.context['elections_administered'][1].name == 'first_election'
 
         response = self.c.get(reverse('admin_home'), {'order': 'created_at', 'order_type': 'asc'})
-        self.assertEqual(response.context['elections_administered'][0].name, 'first_election')
-        self.assertEqual(response.context['elections_administered'][1].name, 'second_election')
+        assert response.context['elections_administered'][0].name == 'first_election'
+        assert response.context['elections_administered'][1].name == 'second_election'
 
         # when the order param is invalid, should sort by name, descending
         response = self.c.get(reverse('admin_home'), {'order': 'boom'})
-        self.assertEqual(response.context['elections_administered'][0].name, 'second_election')
-        self.assertEqual(response.context['elections_administered'][1].name, 'first_election')
+        assert response.context['elections_administered'][0].name == 'second_election'
+        assert response.context['elections_administered'][1].name == 'first_election'
 
         # ensure elections_per_page is handled right
         response = self.c.get(reverse('admin_home'), {'limit': 1})
-        self.assertEqual(response.context['elections_per_page'], 1)
+        assert response.context['elections_per_page'] == 1
 
         response = self.c.get(reverse('admin_home'), {'limit': '1'})
-        self.assertEqual(response.context['elections_per_page'], 1)
+        assert response.context['elections_per_page'] == 1
 
         # when limit is invalid, it should fall back to the default
         response = self.c.get(reverse('admin_home'), {'limit': 'boom'})
-        self.assertEqual(response.context['elections_per_page'], 20)
+        assert response.context['elections_per_page'] == 20
 
     def test_find_elections(self):
         from zeus.views.admin import find_elections
@@ -185,7 +185,6 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             name='election C',
             trial=True
         )
-        election_a
         for i, e in enumerate([election_a, election_b, election_c]):
             e.completed_at = today_plus_days(days=6+i)
             e.save()
