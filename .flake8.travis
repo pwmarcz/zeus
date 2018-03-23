@@ -1,0 +1,21 @@
+[flake8]
+exclude = docs
+select =
+    # trailing whitespace
+    E111,
+    # expected 1 blank line, found 0
+    E301,
+    # too many blank lines
+    E303,
+    # indentation contains tabs
+    W191,
+    # indentation not a multiple of four
+    W291,
+    # blank line contains whitespace
+    W293,
+    # blank line at end of file
+    W391,
+    # 'import *' used
+    F403,
+    # undefined name
+    F821,
