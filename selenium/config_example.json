@@ -1,5 +1,6 @@
 {
   "site_url": "http://localhost:8000",
   "admin_username": "admin",
-  "admin_password": "xxx"
+  "admin_password": "password",
+  "run_testserver": true
 }

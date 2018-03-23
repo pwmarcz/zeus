@@ -1,0 +1,45 @@
+[
+  {
+    "fields": {
+      "name": "default",
+      "election_types": "simple,stv,score,parties"
+    },
+    "model": "heliosauth.usergroup",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "name": "demo",
+      "election_types": "simple,stv,score,parties"
+    },
+    "model": "heliosauth.usergroup",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "info": "{\"password\": \"pbkdf2_sha256$20000$B2EplakGvGV1$7CRd9I4wrYlA5+jMu7aakT0gdb6XBThjUvOFP+y93g8=\", \"name\": \"admin\"}",
+      "superadmin_p": true,
+      "user_id": "admin",
+      "name": null,
+      "is_disabled": false,
+      "user_type": "password",
+      "user_groups": [],
+      "management_p": false,
+      "token": null,
+      "sms_data": null,
+      "ecounting_account": false,
+      "institution": 1,
+      "admin_p": true
+    },
+    "model": "heliosauth.user",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "ecounting_id": "",
+      "name": "ZEUS"
+    },
+    "model": "zeus.institution",
+    "pk": 1
+  }
+]

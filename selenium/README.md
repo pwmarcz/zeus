@@ -11,8 +11,8 @@ Install Python virtualenv:
     pipenv sync
     pipenv shell
 
-Copy `config_example.json` to `config.json`, customize with your installation's
-defaults.
+Copy `config_example.json` to `config.json`. You can customize it, or keep the
+defaults so that the tests will be run against Django's testserver.
 
 ## Running
 
