@@ -1,7 +1,7 @@
 from zeus.core import (
         ZeusError, pow, sha256, ALPHA, BETA,
         get_random_int, bit_iterator, get_random_permutation,
-        Random, MIN_MIX_ROUNDS, _teller)
+        MIN_MIX_ROUNDS, _teller)
 from multiprocessing import Pool
 from Crypto import Random
 
