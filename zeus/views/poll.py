@@ -21,6 +21,7 @@ from django.utils.html import mark_safe, escape
 from django.shortcuts import redirect
 from django import forms
 from django.template import Template, Context
+from django.conf import settings
 
 from zeus.forms import ElectionForm
 from zeus import auth
@@ -29,7 +30,6 @@ from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_c
 from zeus.views.utils import set_menu, common_json_handler
 from zeus import tasks
 
-from django.conf import settings
 from django.utils.encoding import smart_unicode
 from django.db import transaction
 from django.shortcuts import get_object_or_404

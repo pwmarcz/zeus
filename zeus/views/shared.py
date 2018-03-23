@@ -1,12 +1,12 @@
-import json
-import base64
 import os
+import base64
 
-from django.http import HttpResponse
-from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 from django.core.context_processors import csrf
+from django.views.decorators.http import require_http_methods
 
-@require_http_methods(["GET"])
+
+@require_http_methods(['GET'])
 def get_randomness(request, *args, **kwargs):
     token = request.GET.get('token', False)
     data = {
@@ -14,4 +14,4 @@ def get_randomness(request, *args, **kwargs):
     }
     if token:
         data['token'] = unicode(csrf(request)['csrf_token'])
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    return JsonResponse(data)
