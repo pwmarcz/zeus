@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import copy
 import datetime
 import cStringIO as StringIO
@@ -23,7 +25,6 @@ class HomeView(View):
     @auth.election_admin_required
     def get(request, *args, **kwargs):
         page = int(request.GET.get('page', 1))
-        limit = int(request.GET.get('limit', 10))
         q_param = request.GET.get('q', '')
 
         default_elections_per_page = getattr(settings, 'ELECTIONS_PER_PAGE', 20)
@@ -80,6 +81,7 @@ class HomeView(View):
 
         return HttpResponseRedirect(reverse('admin_home'))
 
+
 def find_elections(request):
     order_by = request.GET.get('order', 'completed_at')
     order_type = request.GET.get('order_type', 'desc')
@@ -93,18 +95,12 @@ def find_elections(request):
         'completed_at__isnull': False,
     }
 
-    """
-    _all = request.GET.get('full', 0)
-    if not _all:
-        filter['include_in_reports'] = True
-    """
-
     # filter by date
     if start_date:
-        filter['voting_starts_at__gte'] = datetime.strptime(start_date, "%d %b %Y")
+        filter['voting_starts_at__gte'] = datetime.datetime.strptime(start_date, "%d %b %Y")
 
     if end_date:
-        filter['voting_starts_at__lte'] = datetime.strptime(end_date, "%d %b %Y")
+        filter['voting_ends_at__lte'] = datetime.datetime.strptime(end_date, "%d %b %Y")
 
     # filter by query
     q_filters = get_filters(
@@ -125,6 +121,7 @@ def find_elections(request):
 
     return elections
 
+
 @auth.manager_or_superadmin_required
 def elections_report_csv(request):
     """
@@ -138,8 +135,7 @@ def elections_report_csv(request):
         report.parse_csv(csv_path)
     report.parse_object()
     # ext is not needed
-    date = datetime.datetime.now()
-    str_date = date.strftime("%Y-%m-%d")
+    str_date = datetime.date.today().strftime("%Y-%m-%d")
     filename = 'elections_report_' + str_date
     fd = StringIO.StringIO()
     report.make_output(fd)
@@ -148,6 +144,7 @@ def elections_report_csv(request):
     response = HttpResponse(fd, content_type='application/csv')
     response['Content-Disposition'] = 'attachment; filename=%s.csv' % filename
     return response
+
 
 @auth.manager_or_superadmin_required
 def elections_report(request):

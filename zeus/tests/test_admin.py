@@ -1,23 +1,46 @@
-from django.test import TestCase
+from __future__ import print_function
+
+import csv
+import datetime
+from io import StringIO
+
+from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
 
-from zeus.tests.utils import SetUpAdminAndClientMixin
 from helios.models import Election
+from zeus.tests.utils import SetUpAdminAndClientMixin
+
+
+def today_plus_days(days):
+    return datetime.date.today() + datetime.timedelta(days=days)
+
 
 class TestHomeView(SetUpAdminAndClientMixin, TestCase):
-
     def setUp(self):
         super(TestHomeView, self).setUp()
 
     def login(self):
         self.c.post(self.locations['login'], self.login_data)
 
-    def create_election(self):
+    def create_election(self, **kwargs):
+        '''
+        Create an election instance for testing. The fields can be customised
+        using the following kwargs:
+            - name: string
+            - voting_starts_at_0: date string
+            - voting_ends_at_0: date string
+            - trial: boolean
+        '''
         self.election_form['departments'] = 'test_departments'
         self.election_form['election_module'] = 'simple'
-        self.c.post(self.locations['create'], self.election_form, follow=True)
 
-        return Election.objects.all()[0]
+        # create a copy of the form and customize it sing the provided params
+        form = dict(self.election_form)
+        for param, value in kwargs.items():
+            form[param] = value
+        self.c.post(self.locations['create'], form, follow=True)
+
+        return Election.objects.all().latest('created_at')
 
     def post_and_get_response(self):
         """
@@ -87,7 +110,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        self.assertNotContains(response, '<select name="official">')
+        assert '<select name="official">' not in response.content
 
     def test_get_with_superadmin(self):
         """
@@ -99,14 +122,153 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         self.admin.save()
 
         self.login()
-        election = self.create_election()
+
+        # when there are no elections created, we should get a redirect
+        response = self.c.get(reverse('admin_home'), {})
+        assert response.status_code == 302
+
+        election = self.create_election(name='first_election')
 
         response = self.c.get(
             reverse('admin_home'),
             {}
         )
 
-        self.assertContains(response, '</form>')
-        self.assertContains(response, '<select name="official">')
-        self.assertContains(response, '<input type="submit"')
-        self.assertContains(response, '<input type="hidden"')
+        assert '</form>' in response.content
+        assert '<select name="official">' in response.content
+        assert '<input type="submit"' in response.content
+        assert '<input type="hidden"' in response.content
+
+        # ensure the ordering works
+        newer_newer = self.create_election(name='second_election')
+
+        response = self.c.get(reverse('admin_home'), {'order': 'name', 'order_type': 'desc'})
+        assert response.context['elections_administered'][0].name == 'second_election'
+        assert response.context['elections_administered'][1].name == 'first_election'
+
+        response = self.c.get(reverse('admin_home'), {'order': 'created_at', 'order_type': 'asc'})
+        assert response.context['elections_administered'][0].name == 'first_election'
+        assert response.context['elections_administered'][1].name == 'second_election'
+
+        # when the order param is invalid, should sort by name, descending
+        response = self.c.get(reverse('admin_home'), {'order': 'boom'})
+        assert response.context['elections_administered'][0].name == 'second_election'
+        assert response.context['elections_administered'][1].name == 'first_election'
+
+        # ensure elections_per_page is handled right
+        response = self.c.get(reverse('admin_home'), {'limit': 1})
+        assert response.context['elections_per_page'] == 1
+
+        response = self.c.get(reverse('admin_home'), {'limit': '1'})
+        assert response.context['elections_per_page'] == 1
+
+        # when limit is invalid, it should fall back to the default
+        response = self.c.get(reverse('admin_home'), {'limit': 'boom'})
+        assert response.context['elections_per_page'] == 20
+
+    def test_find_elections(self):
+        from zeus.views.admin import find_elections
+
+        self.admin.superadmin_p = True
+        self.admin.save()
+        self.login()
+
+        election_a = self.create_election(
+            name='election A',
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+        )
+        election_b = self.create_election(
+            name='election B',
+            voting_starts_at_0=today_plus_days(days=4).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=5).strftime('%Y-%m-%d')
+        )
+        election_c = self.create_election(
+            name='election C',
+            trial=True
+        )
+        for i, e in enumerate([election_a, election_b, election_c]):
+            e.completed_at = today_plus_days(days=6+i)
+            e.save()
+
+        # in the default case elections should be sorted by created_at, desc
+        request = RequestFactory().get(reverse('elections_report_csv'), {})
+        request.user = self.admin
+        elections = find_elections(request)
+        assert len(elections) == 2
+        assert elections[0] == election_b
+        assert elections[1] == election_a
+
+        request = RequestFactory().get(reverse('elections_report_csv'), {
+            'order': 'name',
+            'order_type': 'asc',
+        })
+        request.user = self.admin
+        elections = find_elections(request)
+        assert len(elections) == 2
+        assert elections[0] == election_a
+        assert elections[1] == election_b
+
+        request = RequestFactory().get(reverse('elections_report_csv'), {
+            'start_date': today_plus_days(days=3).strftime('%d %b %Y'),
+        })
+        request.user = self.admin
+        elections = find_elections(request)
+        assert len(elections) == 1
+        assert elections[0] == election_b
+
+        request = RequestFactory().get(reverse('elections_report_csv'), {
+            'end_date': today_plus_days(days=3).strftime('%d %b %Y'),
+        })
+        request.user = self.admin
+        elections = find_elections(request)
+        assert len(elections) == 1
+        assert elections[0] == election_a
+
+    def test_elections_report_csv(self):
+        self.admin.superadmin_p = True
+        self.admin.save()
+        self.login()
+
+        election = self.create_election(
+            name='election',
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+        )
+        election.completed_at = today_plus_days(days=3)
+        election.save()
+
+        response = self.c.get(reverse('elections_report_csv'), {})
+        date = datetime.date.today().strftime('%Y-%m-%d')
+        # make sure that the headers are right and the response body contains
+        # at least one comma
+        assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
+        assert response.content.find(',') > -1
+        lines = [l for l in csv.reader(StringIO(unicode(response.content)))]
+        assert len(lines) == 2
+        assert lines[0] == ['Institution', 'Electors', 'Voters', 'Start', 'End', 'uuid', 'Name', 'Polls', 'Administrator', 'Official']
+
+    def test_elections_report(self):
+        self.admin.superadmin_p = True
+        self.admin.save()
+        self.login()
+
+        response = self.c.get(reverse('elections_report'), {})
+        assert response.context['elections_count'] == 0
+        assert response.context['polls_count'] == 0
+        assert response.context['voters_count'] == 0
+        assert response.context['voters_voted_count'] == 0
+        assert response.context['percentage_voted'] == 0
+        assert len(response.context['elections']) == 0
+
+        election = self.create_election(
+            name='election',
+            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+        )
+        election.completed_at = today_plus_days(days=3)
+        election.save()
+
+        response = self.c.get(reverse('elections_report'), {})
+        assert response.context['elections_count'] == 1
+        assert len(response.context['elections']) == 1
