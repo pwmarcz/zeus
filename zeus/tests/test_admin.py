@@ -246,6 +246,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert response.content.find(',') > -1
         lines = [l for l in csv.reader(StringIO(unicode(response.content)))]
         assert len(lines) == 2
+        assert lines[0] == ['Institution', 'Electors', 'Voters', 'Start', 'End', 'uuid', 'Name', 'Polls', 'Administrator', 'Official']
 
     def test_elections_report(self):
         self.admin.superadmin_p = True
