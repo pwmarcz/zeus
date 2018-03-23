@@ -115,4 +115,3 @@ class Result(LegacyObject):
 
     def toDict(self, complete=False):
         return self.wrapped_obj
-

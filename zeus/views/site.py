@@ -76,11 +76,9 @@ def stv_count(request):
                     else:
                         context['error'] = _("Invalid ballot data")
 
-
         context['import'] = 1
         context['form'] = form
         context['ballots_form'] = ballots_form
-
 
     if request.GET.get('reset', None):
         del request.session['stvcount']
@@ -113,7 +111,6 @@ def stv_count(request):
     return render_template(request, "zeus/stvcount", context)
 
 
-
 def setlang(request):
     lang = request.REQUEST.get('language')
     if not lang in map(lambda x:x[0], settings.LANGUAGES):
@@ -143,7 +140,6 @@ def terms(request):
     return render_template(request, "zeus/terms", {
         'content': terms_contents
     })
-
 
 
 def faqs_trustee(request):
@@ -341,7 +337,6 @@ def error(request, code=None, message=None, type='error'):
     })
     response.status_code = int(code)
     return response
-
 
 
 def handler403(request):

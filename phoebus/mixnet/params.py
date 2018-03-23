@@ -63,7 +63,6 @@ SECURITY_LEVELS_ENUM = Enumerate(       # Do not modify this enumeration
 SECURITY_LEVEL = SECURITY_LEVELS_ENUM.NORMAL
 
 
-
 # ============================================================================
 # Expert parameters
 # ============================================================================
@@ -171,4 +170,3 @@ else:
                         SECURITY_LEVELS_ENUM.HIGHEST : 200,
                         SECURITY_LEVELS_ENUM.OVERKILL : 256,
                         }[SECURITY_LEVEL]
-

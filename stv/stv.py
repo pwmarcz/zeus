@@ -191,7 +191,6 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
     Returns true if the candidate is elected, false otherwise.
     """
 
-
     quota_exceeded = False
     # If there is a quota limit, check if it is exceeded
     if quota_limit > 0 and candidate in constituencies:

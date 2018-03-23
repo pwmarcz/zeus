@@ -1,7 +1,7 @@
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
-    from .dev import *
+    from .dev import *  # noqa
 
 import os, errno
 import datetime

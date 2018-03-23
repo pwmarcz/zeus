@@ -37,8 +37,8 @@ class StvElection(ElectionModuleBase):
 
     results_template = "election_modules/stv/results.html"
 
-    pdf_result = True 
-    csv_result = True 
+    pdf_result = True
+    csv_result = True
     json_result = True
 
     def questions_update_view(self, request, election, poll):
@@ -59,10 +59,9 @@ class StvElection(ElectionModuleBase):
         questions_formset = formset_factory(StvForm, extra=extra,
                                             can_delete=True, can_order=True)
 
-
         if request.method == 'POST':
             formset = questions_formset(request.POST, initial=initial)
-            
+
             if formset.is_valid():
                 questions_data = []
 
@@ -172,7 +171,7 @@ class StvElection(ElectionModuleBase):
             self.get_election_result_file_path('pdf', 'pdf', lang[0]))
 
     def compute_election_results(self):
-        for lang in settings.LANGUAGES: 
+        for lang in settings.LANGUAGES:
             self.generate_election_result_docs(lang)
             self.generate_election_csv_file(lang)
             self.generate_election_zip_file(lang)
@@ -222,7 +221,7 @@ class StvElection(ElectionModuleBase):
 
         # build docs
         self.generate_json_file()
-        for lang in settings.LANGUAGES: 
+        for lang in settings.LANGUAGES:
             #self.generate_csv_file(lang)
             self.generate_result_docs(lang)
             self.generate_csv_file(lang)

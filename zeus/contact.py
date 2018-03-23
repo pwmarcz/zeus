@@ -21,9 +21,6 @@ class ContactBackend():
         self.logger = logger
         self.data = data
 
-    def notify(self, voter, subject, body, vars):
-        raise NotImplemented
-
     def can_notify(self, voter):
         raise NotImplemented
 
@@ -94,7 +91,6 @@ class ContactBackend():
             self.logger.exception(e)
             return False
         sent_hook(voter, result, error)
-
 
 
 class EmailBackend(ContactBackend):

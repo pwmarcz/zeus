@@ -244,7 +244,6 @@ def verify_gamma_encoding(n, completeness=1):
             m = ("Duplicate decoding for %d: %s!" % (encoded, choices))
         choice_set.add(choices)
 
-
     if not completeness:
         return
 
@@ -475,7 +474,10 @@ def sign_message(modulus, base, order, key, message):
             break
     return {'r': r, 's': s, 'm': message}
 
+
+# TODO: dead code?
 def verify_signature(modulus, base, order, signature):
+    w = None
     r = signature['r']
     s = signature['s']
     m = signature['m']
@@ -552,7 +554,6 @@ class Election(object):
     _ballot_owners = None
 
     _generic_elections = {}
-
 
     def __init__(self,  candidates,
                         public_key                      =   None,
@@ -763,6 +764,7 @@ class Election(object):
             n *= g
             print "%d / %d" % (i, top)
 
+    # TODO: dead code?
     def cast_votes(self, votes=None):
         if votes is None:
             m = "Add votes expects a vote or list of votes as argument)"
@@ -785,16 +787,16 @@ class Election(object):
             owner = vote.owner
             eb = vote.encrypted_ballot
             if 'proof' in eb and eb['proof']:
-              if not verify_encryption(pk.p, pk.g, eb['a'], eb['b'], eb['proof']):
-                  m = ("Invalid encryption proof for vote #%d, from %s"
-                          % (len(owners), owner))
-                  raise InvalidVoteError(m)
+                if not verify_encryption(pk.p, pk.g, eb['a'], eb['b'], eb['proof']):
+                    m = ("Invalid encryption proof for vote #%d, from %s"
+                            % (len(owners), owner))
+                    raise InvalidVoteError(m)
 
             timestamp = get_timestamp()
             if owner in owners:
                 m = ("Owner %s attempts to vote again. "
                      "Original vote was #%d at %s, second attempt (now) #%d."
-                     % (owner, onwers[owner][0], owners[owner][1],
+                     % (owner, owners[owner][0], owners[owner][1],
                         len(owners), timestamp))
 
                 raise InvalidVoteError(m)
@@ -958,7 +960,6 @@ class Ballot(object):
         ballot = cls(election, answers=answers)
         return ballot
 
-
     def calculate_ballot_id(self, answers):
         election = self.election
         nr_candidates = election.nr_candidates
@@ -977,18 +978,6 @@ class Ballot(object):
         self.answers = answers
         self.ballot_id = sumus
         return answers
-
-    def verify_ballot_id(self, ballot_id):
-        election = self.election
-        nr_candidates = election.nr_candidates
-        max_choices = election.max_choices
-        answers = ballot_decode(sumus, nr_candidates, max_choices)
-        if answers != self.answers:
-            m = ("Ballot id: %d corresponds to answers %s, "
-                 "which do not correspond to ballot answers %s",
-                 (self.ballot_id, answers, self.answers))
-            raise AssertionError(m)
-        return 1
 
     def encode(self):
         enc = self.election.q_encode
@@ -1142,7 +1131,6 @@ def main(argv):
         c += 1
 
 
-
 g = _default_crypto.g
 p = _default_crypto.p
 q = _default_crypto.q
@@ -1153,4 +1141,3 @@ if __name__ == '__main__':
     cross_check_encodings(7)
     main(sys.argv)
     raise KeyboardInterrupt
-

@@ -87,7 +87,6 @@ def single_voter_email(voter_uuid,
             'sms': body_template_sms
         }
 
-
         def sent_hook(voter, method, error=None):
             if error:
                 return
@@ -138,7 +137,7 @@ def voters_email(poll_id,
     ))
 
     poll.logger.info("Notifying %d voters via %r" % (voters.count(), contact_methods))
-    if len(poll.linked_polls) > 1 and 'vote_body' in body_template:
+    if len(poll.linked_polls) > 1 and 'vote_body' in body_template_email:
         body_template_email = body_template_email.replace("_body.txt", "_linked_body.txt")
         #TODO: Handle linked polls sms notification
 

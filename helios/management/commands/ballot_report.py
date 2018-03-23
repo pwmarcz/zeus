@@ -3,10 +3,9 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Poll
 
-from zeus.core import *
+from zeus.core import gamma_decode, to_absolute_answers
 
 def strforce(thing):
     if isinstance(thing, unicode):

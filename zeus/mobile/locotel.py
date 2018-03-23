@@ -78,7 +78,7 @@ class Loco(object):
         http_response = urllib.urlopen(self.apiurl, data=_msg)
         self._last_uid = uid
         try:
-	    resp = http_response.read()
+            resp = http_response.read()
             response = etree.fromstring(resp)
             status = response.find("status").text
             if status not in ['OK', 'FAIL']:

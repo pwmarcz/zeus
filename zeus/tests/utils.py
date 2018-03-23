@@ -2,8 +2,10 @@ import pytest
 
 from django.test.client import Client
 from django.contrib.auth.hashers import make_password
+from django.conf import settings
+import datetime
+from datetime import timedelta
 
-from helios.models import *
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 

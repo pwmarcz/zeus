@@ -84,7 +84,6 @@ def task_fields(task):
         #setattr(self, error_field, '')
         self.save()
 
-
     key = task._features_key
     extra_fields['_feature_can_%s' % task_name] = \
             feature(key, 'can_%s' % task_name)(feat_can)
@@ -249,9 +248,6 @@ class ElectionTasks(TaskModel):
         self.get_module().compute_election_results()
 
 class PollTasks(TaskModel):
-
-    class Meta:
-        abstract = True
 
     @poll_task('validate_create', ('frozen',))
     def validate_create(self):

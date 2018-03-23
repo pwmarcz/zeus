@@ -1,4 +1,3 @@
-import uuid
 import threading
 import re
 
@@ -63,7 +62,7 @@ def election_view(check_access=True):
             _locals.ip = get_ip(request)
 
             if allow_manager and user.is_manager:
-               _check_access = False
+                _check_access = False
 
             if 'election_uuid' in kwargs:
                 uuid = kwargs.pop('election_uuid')
@@ -176,7 +175,6 @@ def requires_election_features(*features):
             return func(*args, **kwargs)
         return inner
     return wrapper
-
 
 
 def requires_poll_features(*features):

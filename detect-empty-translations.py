@@ -49,4 +49,3 @@ for po_file in po_files:
        or (state == 2 and msgid is not None):
         # last-in-file empty translation
         print "%s:%d: %s" % (po_file, msgid_line, msgid),
-

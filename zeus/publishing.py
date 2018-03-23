@@ -31,4 +31,3 @@ if __name__ == '__main__':
     zeus_results = zeus_finished['results']
     ballots = extract_ecounting_ballots(zeus_results, nr_candidates)
     json.dump(ballots, sys.stdout, indent=2)
-

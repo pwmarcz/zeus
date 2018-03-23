@@ -6,7 +6,6 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.models import *
 from heliosauth.auth_systems.password import make_password
 from helios.models import Voter, Poll, Election
 from zeus import utils
@@ -147,7 +146,6 @@ class Command(BaseCommand):
 
         if voter_id:
             voters = voters.filter(voter_login_id=voter_id)
-
 
         if not status:
             print "Will send %d messages" % voters.count()

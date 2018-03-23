@@ -7,13 +7,16 @@ from collections import OrderedDict
 
 from zeus.forms import ElectionForm
 from zeus.forms import PollForm, PollFormSet
-from zeus.utils import *
-from zeus.views.utils import *
+from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
+from zeus.views.utils import set_menu, common_json_handler
+
 from zeus import tasks
 from zeus import reports
 from zeus import auth
 from zeus.views.poll import voters_email
 
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -274,24 +277,6 @@ def start_mixing(request, election):
     tasks.start_mixing.delay(election_id=election.id)
     url = election_reverse(election, 'index')
     return HttpResponseRedirect(url)
-
-
-@auth.election_admin_required
-@auth.requires_election_features('completed')
-@require_http_methods(["GET"])
-def public_stats(request, election):
-    stats = {}
-    stats['election'] = list(reports.election_report([election], True, True))
-    stats['votes'] = list(reports.election_votes_report([election], True, True))
-    stats['results'] = list(reports.election_results_report([election]))
-
-    def handler(obj):
-        if hasattr(obj, 'isoformat'):
-            return obj.isoformat()
-        raise TypeError
-
-    return HttpResponse(json.dumps(stats, default=handler),
-                        content_type="application/json")
 
 
 @auth.election_admin_required

@@ -37,7 +37,7 @@ with open(sys.argv[1], 'r') as elections_file:
 
 voters_count = []
 voters_cast_count = []
-    
+
 for key, election in elections_json.iteritems():
     if key not in to_keep:
         continue
@@ -57,4 +57,3 @@ voters_turnout_arr = 100 * voters_cast_count_arr / (1.0 * voters_count_arr)
 print st.describe(voters_count_arr)
 print st.describe(voters_cast_count_arr)
 print st.describe(voters_turnout_arr)
-

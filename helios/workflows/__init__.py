@@ -28,14 +28,12 @@ def get_datatype(workflow_type, datatype_name):
 
 def get_workflow_module(workflow_type):
 
-  if workflow_type == "homomorphic":
-    from helios.workflows import homomorphic
-    return homomorphic
+    if workflow_type == "homomorphic":
+        from helios.workflows import homomorphic
+        return homomorphic
 
-  if workflow_type == "mixnet":
-    from helios.workflows import mixnet
-    return mixnet
+    if workflow_type == "mixnet":
+        from helios.workflows import mixnet
+        return mixnet
 
-  raise Exception("Invalid workflow '%s'" % workflow_type)
-
-
+    raise Exception("Invalid workflow '%s'" % workflow_type)

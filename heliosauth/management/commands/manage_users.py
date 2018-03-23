@@ -4,7 +4,7 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.models import *
+from heliosauth.models import User, UserGroup, SMSBackendData
 from heliosauth.auth_systems.password import make_password
 from zeus.models import Institution
 
@@ -186,5 +186,3 @@ class Command(BaseCommand):
             newuser.ecounting_account = False
             newuser.save()
             newuser.user_groups = [UserGroup.objects.get(name="default")]
-
-

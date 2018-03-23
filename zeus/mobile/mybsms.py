@@ -9,13 +9,6 @@ escape_dict = {
 }
 
 
-def Element(tag, text=None, *args, **kwargs):
-    e = etree.Element(tag, *args, **kwargs)
-    if text:
-        e.text = text
-    return e
-
-
 class Client(object):
 
     apiurl = "https://mybsms.gr/ws/send.json"

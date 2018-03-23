@@ -11,7 +11,7 @@ from zeus.core import get_random_int
 class Institution(models.Model):
     name = models.CharField(max_length=255, unique=True)
     ecounting_id = models.CharField(max_length=255)
-    
+
     def __str__(self):
         return self.name
 
@@ -43,7 +43,6 @@ class SecretAuthcode(models.Model):
     class Meta:
         unique_together = ('election_uuid', 'voter_login')
         app_label = 'zeus'
-
 
 
 def generate_authcodes(election_uuid, voter_logins=()):

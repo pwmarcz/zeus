@@ -59,7 +59,7 @@ class Oauth2Base(object):
 
     def can_exchange(self, request):
         if (request.GET.get('code') and request.GET.get('state') and
-                request.session.get('oauth2_voter_uuid') and 
+                request.session.get('oauth2_voter_uuid') and
                 request.session.get('oauth2_voter_email')):
             self.code = request.GET.get('code')
             self.session_email = request.session['oauth2_voter_email']
@@ -120,7 +120,7 @@ class Oauth2Google(Oauth2Base):
 class Oauth2FB(Oauth2Base):
 
     type_id = 'facebook'
-    
+
     def __init__(self, poll):
         super(Oauth2FB, self).__init__(poll)
         self.code_post_data['scope'] = 'email'
