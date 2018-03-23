@@ -53,7 +53,7 @@ def get_class(datatype):
     dynamic_module = __import__(".".join(parsed_datatype[:-1]), globals(), locals(), [], level=-1)
 
     if not dynamic_module:
-        raise Exception("no module for %s" % datatpye)
+        raise Exception("no module for %s" % datatype)
 
     # go down the attributes to get to the class
     try:

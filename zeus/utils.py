@@ -103,10 +103,6 @@ def render_template(request, template_name, vars = {}):
                               context)
 
 
-def render_json(obj):
-    return HttpResponse(json.dumps(obj), "application/json")
-
-
 def sanitize_mobile_number(num):
     size = len(num)
     if size == 12:

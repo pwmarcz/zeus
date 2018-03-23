@@ -95,7 +95,7 @@ def election_voters_report(elections):
             ('votes_count', voter.cast_count)
         ])
         if len(elections) > 1:
-            entry['election'] = vote.election.name
+            entry['election'] = voter.election.name
         yield entry
 
 
@@ -129,18 +129,16 @@ def election_results_report(elections):
                                                        len(poll.questions[0]['answers'])))
                 ])
             if len(elections) > 1:
-                entry['election'] = vote.election.name
-                entry['poll'] = vote.poll.election.name
+                entry['election'] = election.name
+                entry['poll'] = poll.election.name
         yield entry
+
 
 def strforce(thing, encoding='utf8'):
     if isinstance(thing, unicode):
         return thing.encode(encoding)
     return str(thing)
 
-def uwriterow(uni_string, csvout):
-    string = strforce(uni_string)
-    write
 
 def make_csv_intro(writerow, election, lang):
     with translation.override(lang):

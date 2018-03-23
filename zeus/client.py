@@ -150,18 +150,6 @@ def get_poll_info(url):
     poll_info['poll_data'] = loads(response.read())
     return conn, headers, poll_info
 
-def extract_poll_info(poll_info):
-    csrf_token = poll_info['token']
-    voter_path = conn.path
-    poll_data = poll_info['poll_data']
-    pk = poll_data['public_key']
-    p = int(pk['p'])
-    g = int(pk['g'])
-    q = int(pk['q'])
-    y = int(pk['y'])
-    answers = poll_data['questions'][0]['answers']
-    cast_path = poll_data['cast_url']
-    return cast_path, csrf_token, answers, p, g, q, y
 
 def do_cast_vote(conn, cast_path, token, headers, vote):
     body = urlencode({'encrypted_vote': dumps(vote), 'csrfmiddlewaretoken': token})
@@ -271,12 +259,17 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
     for t in threads:
         t.join()
 
+
 def main_show(url):
+    raise NotImplemented()
+    '''
     conn, cast_path, token, headers, answers, p, g, q, y = get_election(url)
     for i, c in enumerate(answers):
         if isinstance(c, unicode):
             c = c.encode('utf-8')
         print "%d: %s" % (i, c)
+    '''
+
 
 def main_vote(url, choice_str):
     choices = [int(x) for x in choice_str.split(',')]

@@ -55,7 +55,7 @@ from CiphertextCollectionMapping import CiphertextCollectionMapping, \
     new_collection_mapping
 
 # Exceptions:
-from PVCExceptions import InvalidCiphertextCollectionMappingError
+from PVCExceptions import InvalidCiphertextCollectionMappingError, InvalidShuffilingProofError
 
 
 class ShufflingProof:

@@ -163,8 +163,10 @@ class EncryptedAnswer(HeliosObject):
             ea.answer = d['answer']
         return ea
 
+    # TODO dead code?
     @classmethod
     def fromElectionAndAnswer(cls, election, question_num, answer):
+        import phoebus
         pk = election.public_key
         question = election.questions[question_num]
         ballot = phoebus.Ballot.from_dict({

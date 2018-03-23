@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from helios.models import Poll
 
-from zeus.core import gammad_decode, to_absolute_answers
+from zeus.core import gamma_decode, to_absolute_answers
 
 def strforce(thing):
     if isinstance(thing, unicode):

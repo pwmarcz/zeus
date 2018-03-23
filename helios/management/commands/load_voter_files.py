@@ -10,13 +10,15 @@ ben@adida.net
 
 from django.core.management.base import BaseCommand, CommandError
 import datetime
+import csv
+import uuid
 
 from helios import utils as helios_utils
 
 from helios.models import User, Voter, VoterFile
 
 def process_csv_file(election, f):
-    reader = csv_reader(f.read())
+    reader = csv.reader(f.read())
 
     num_voters = 0
     for voter in reader:

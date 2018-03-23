@@ -110,6 +110,9 @@ def get_ecounting_user(username, password):
     return user
 
 # the view for logging in
+
+
+# TODO dead code?
 def password_login_view(request):
     from heliosauth.view_utils import render_template
     from heliosauth.views import after
@@ -143,7 +146,7 @@ def password_login_view(request):
                         if not user:
                             raise User.DoesNotExist
 
-                if password_check(user, password):
+                if check_password(user, password):
                     request.session['password_user'] = user
                     return HttpResponseRedirect(reverse(after))
             except User.DoesNotExist:

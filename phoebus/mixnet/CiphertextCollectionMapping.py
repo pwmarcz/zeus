@@ -54,7 +54,7 @@ import multiprocessing
 from CiphertextCollection import CiphertextCollection
 from .CiphertextReencryptionInfo import CiphertextReencryptionInfo
 # Exceptions:
-from PVCExceptions import IncompatibleCiphertextCollectionError
+from PVCExceptions import IncompatibleCiphertextCollectionError, IncompatibleCiphertextError
 from PVCExceptions import IncompatibleReencryptionInfoError
 from PVCExceptions import IncompatibleCiphertextCollectionMappingError
 

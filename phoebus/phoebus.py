@@ -474,7 +474,10 @@ def sign_message(modulus, base, order, key, message):
             break
     return {'r': r, 's': s, 'm': message}
 
+
+# TODO: dead code?
 def verify_signature(modulus, base, order, signature):
+    w = None
     r = signature['r']
     s = signature['s']
     m = signature['m']
@@ -761,6 +764,7 @@ class Election(object):
             n *= g
             print "%d / %d" % (i, top)
 
+    # TODO: dead code?
     def cast_votes(self, votes=None):
         if votes is None:
             m = "Add votes expects a vote or list of votes as argument)"
@@ -792,7 +796,7 @@ class Election(object):
             if owner in owners:
                 m = ("Owner %s attempts to vote again. "
                      "Original vote was #%d at %s, second attempt (now) #%d."
-                     % (owner, onwers[owner][0], owners[owner][1],
+                     % (owner, owners[owner][0], owners[owner][1],
                         len(owners), timestamp))
 
                 raise InvalidVoteError(m)
@@ -974,18 +978,6 @@ class Ballot(object):
         self.answers = answers
         self.ballot_id = sumus
         return answers
-
-    def verify_ballot_id(self, ballot_id):
-        election = self.election
-        nr_candidates = election.nr_candidates
-        max_choices = election.max_choices
-        answers = ballot_decode(sumus, nr_candidates, max_choices)
-        if answers != self.answers:
-            m = ("Ballot id: %d corresponds to answers %s, "
-                 "which do not correspond to ballot answers %s",
-                 (self.ballot_id, answers, self.answers))
-            raise AssertionError(m)
-        return 1
 
     def encode(self):
         enc = self.election.q_encode
