@@ -1001,13 +1001,15 @@ class TestSimpleElection(TestElectionBase):
         self.e_uuid = election.uuid
         self.create_polls()
         poll = Poll.objects.all()[0]
-        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
 
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
         assert response.status_code == 302
         self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
                              fetch_redirect_response=True)
 
-        # todo: 
+        # TODO test logged-out version
+
+
 class TestPartyElection(TestElectionBase):
 
     def setUp(self):
