@@ -14,12 +14,13 @@ from helios.models import Election, Voter, iter_voter_data
 
 from zeus import reports
 from StringIO import StringIO
+import os
 
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-import os
+
 UPDATE = os.environ.get('UPDATE_EXISTING', 0)
 
 def validate_voter(mobile, email, throw=True):

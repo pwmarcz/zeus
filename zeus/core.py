@@ -3,7 +3,6 @@
 
 import os
 import sys
-PYTHON_MAJOR = sys.version_info[0]
 from datetime import datetime
 from random import randint, choice as rand_choice
 from collections import deque
@@ -12,7 +11,6 @@ from itertools import izip, izip_longest, cycle, chain, repeat
 from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
-inverse = number.inverse
 from Crypto import Random
 from os import (fork, kill, getpid, waitpid, ftruncate, lseek, fstat,
                 read, write, unlink, open as os_open, close, path,
@@ -37,6 +35,8 @@ def pow(b, e, m):
     return int(_pow(mpz(b), e, m))
 
 bit_length = lambda num: num.bit_length()
+
+inverse = number.inverse
 
 class ZeusError(Exception):
     pass
@@ -2180,6 +2180,7 @@ def strbin_to_int_mul(string):
 def strbin_to_int_native(string):
     return int.from_bytes(string)
 
+PYTHON_MAJOR = sys.version_info[0]
 if PYTHON_MAJOR == 3:
     strbin_to_int = strbin_to_int_native
 else:

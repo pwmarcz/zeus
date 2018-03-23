@@ -5,6 +5,7 @@ except ImportError:
 
 import os, errno
 import datetime
+import multiprocessing
 
 DEBUG = False
 TEMPLATE_DEBUG = True
@@ -38,7 +39,6 @@ SOUTH_TESTS_MIGRATE = False
     #}
 #}
 
-import multiprocessing
 ZEUS_MIXNET_NR_PARALLEL = multiprocessing.cpu_count()
 ZEUS_MIXNET_NR_ROUNDS = 16
 

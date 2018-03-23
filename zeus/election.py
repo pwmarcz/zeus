@@ -23,7 +23,7 @@ from stv.stv import count_stv, Ballot
 
 from django.db import connection
 from hashlib import sha256
-
+import importlib
 
 # Parameters for everything
 ELGAMAL_PARAMS = elgamal.Cryptosystem()
@@ -40,7 +40,6 @@ MIXNET_NR_PARALLEL = getattr(settings, 'ZEUS_MIXNET_NR_PARALLEL', 2)
 MIXNET_NR_ROUNDS = getattr(settings, 'ZEUS_MIXNET_NR_ROUNDS', 128)
 SHUFFLE_MODULE = getattr(settings, 'SHUFFLE_MODULE', 'zeus.zeus_sk')
 
-import importlib
 shuffle_module = importlib.import_module(SHUFFLE_MODULE)
 
 

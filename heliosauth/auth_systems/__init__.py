@@ -1,7 +1,7 @@
+import password
 
 AUTH_SYSTEMS = {}
 
-import password
 AUTH_SYSTEMS['password'] = password
 
 # not ready

@@ -3,13 +3,6 @@ import urllib2
 import urllib
 import json
 
-JWT_SUPPORT = True
-try:
-    import jwt
-except ImportError:
-    jwt = None
-    JWT_SUPPORT = False
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
@@ -29,6 +22,13 @@ from django.utils.translation import ugettext_lazy as _
 from helios.view_utils import render_template
 from helios.models import Voter, Poll
 from zeus.forms import LoginForm
+
+JWT_SUPPORT = True
+try:
+    import jwt
+except ImportError:
+    jwt = None
+    JWT_SUPPORT = False
 
 
 logger = logging.getLogger(__name__)

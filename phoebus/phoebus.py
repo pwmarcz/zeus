@@ -15,6 +15,7 @@ from mixnet.EGCryptoSystem import EGCryptoSystem as MixCryptosystem
 from mixnet.PublicKey import PublicKey as MixPublicKey
 from mixnet.Ciphertext import Ciphertext as MixCiphertext
 from mixnet.CiphertextCollection import CiphertextCollection as MixCiphertextCollection
+from cryptosystems import c2048 as crypto
 
 """
 Question 1: Who is your candidate #1?
@@ -34,7 +35,7 @@ Answers: [0]
 
 _default_crypto = Crypto()
 # from helios/views.py
-from cryptosystems import c2048 as crypto
+
 
 p, q, g, x, y = crypto()
 _default_crypto.p = p

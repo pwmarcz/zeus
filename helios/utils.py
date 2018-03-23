@@ -15,6 +15,7 @@ from PyICU import Collator
 from heliosauth.utils import from_json, to_json, JSONtoDict, JSONFiletoDict
 
 from django.conf import settings
+from django.core import mail as django_mail
 
 import random, logging
 import hashlib, hmac, base64
@@ -160,8 +161,6 @@ def string_to_datetime(str, fmt="%Y-%m-%d %H:%M"):
 ##
 ## email
 ##
-
-from django.core import mail as django_mail
 
 def send_email(sender, recpt_lst, subject, body):
     # subject up until the first newline

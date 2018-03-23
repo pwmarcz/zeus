@@ -40,6 +40,7 @@ from django.forms import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.utils import translation
+from django.core.files import storage
 
 from helios.crypto import electionalgs, algs, utils
 from helios import utils as heliosutils
@@ -102,7 +103,6 @@ class PollMixManager(models.Manager):
     def get_queryset(self):
         return PollMixQuerySet(self.model)
 
-from django.core.files import storage
 default_mixes_path = settings.MEDIA_ROOT + "/zeus_mixes/"
 ZEUS_MIXES_PATH = getattr(settings, 'ZEUS_MIXES_PATH', default_mixes_path)
 zeus_mixes_storage = storage.FileSystemStorage(location=ZEUS_MIXES_PATH)
