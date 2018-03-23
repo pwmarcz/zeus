@@ -11,7 +11,7 @@ import csv, datetime
 
 from helios import utils as helios_utils
 
-from helios.models import *
+from helios.models import CastVote
 
 def get_cast_vote_to_verify():
     # fixme: add "select for update" functionality here
@@ -24,7 +24,7 @@ def get_cast_vote_to_verify():
 class Command(BaseCommand):
     args = ''
     help = 'verify votes that were cast'
-    
+
     def handle(self, *args, **options):
         while True:
             cast_vote = get_cast_vote_to_verify()
@@ -35,4 +35,3 @@ class Command(BaseCommand):
 
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify
-            

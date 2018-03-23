@@ -1,17 +1,28 @@
-language: python
-python:
-  - "2.7"
-install:
-  # postgresql should be installed by default
-  - sudo apt-get install libpq-dev libicu-dev libgmp-dev libmpfr-dev libmpc-dev
-  - sudo -u postgres createuser -s `whoami` || true
-  - createdb zeus_test
-  - pip install pipenv
-  - pipenv --python python2
-  - pipenv sync --dev
+matrix:
+  include:
+    - language: python
+      python: "2.7"
+      env: NAME=tests
+      install:
+        # postgresql should be installed by default
+        - sudo apt-get install libpq-dev libicu-dev libgmp-dev libmpfr-dev libmpc-dev
+        - sudo -u postgres createuser -s `whoami` || true
+        - createdb zeus_test
+        - pip install pipenv
+        - pipenv --python python2
+        - pipenv sync --dev
 
-script:
-  - pipenv run pytest -v --cov
+      script:
+        - pipenv run pytest -v --cov
 
-after_success:
-  - pipenv run codecov
+      after_success:
+        - pipenv run codecov
+
+    - language: python
+      env: NAME=flake8
+      python: "2.7"
+      install:
+        pip install flake8
+
+      script:
+        - flake8 --config=.flake8.travis

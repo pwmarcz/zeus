@@ -25,7 +25,7 @@
 
 __revision__ = "$Id$"
 
-from Crypto.PublicKey.pubkey import *
+from Crypto.PublicKey.pubkey import bignum, GCD, pubkey, inverse
 from Crypto.Util import number
 
 class error (Exception):
@@ -182,4 +182,3 @@ def main_generate():
 if __name__ == '__main__':
     main_generate()
     pass
-

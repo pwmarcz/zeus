@@ -1,7 +1,7 @@
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
-    from .dev import *
+    from .dev import *  # noqa
 
 import os, errno
 import datetime
@@ -27,8 +27,8 @@ if os.environ.get('ZEUS_TEST_DATABASE'):
         }
     }
 
-CELERY_ALWAYS_EAGER = True
-CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+CELERY_TASK_ALWAYS_EAGER = True
+CELERY_TASK_EAGER_PROPAGATES = True
 
 SOUTH_TESTS_MIGRATE = False
 #DATABASES = {

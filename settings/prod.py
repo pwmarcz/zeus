@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # noqa
 
 import json
 
@@ -19,4 +19,4 @@ HELIOS_CRYPTOSYSTEM_PARAMS['g'] = 1916706618702204743647841337288082431343867879
 
 SECRET_KEY = SECRETS['secret_key']
 
-CELERY_ALWAYS_EAGER = False
+CELERY_TASK_ALWAYS_EAGER = False

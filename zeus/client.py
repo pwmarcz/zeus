@@ -23,7 +23,6 @@ from httplib import HTTPConnection, HTTPSConnection
 from urlparse import urlparse, parse_qsl
 from urllib import urlencode, unquote
 from os.path import exists
-from sys import argv, stderr
 from json import loads, dumps, load, dump
 from Queue import Queue, Empty
 from threading import Thread
@@ -36,12 +35,12 @@ def get_http_connection(url):
     parsed = urlparse(url)
     kwargs = {}
     if parsed.scheme == 'https':
-            default_port = '443'
-            Conn = HTTPSConnection
-            kwargs['context'] = ssl._create_unverified_context()
+        default_port = '443'
+        Conn = HTTPSConnection
+        kwargs['context'] = ssl._create_unverified_context()
     else:
-            default_port = '80'
-            Conn = HTTPConnection
+        default_port = '80'
+        Conn = HTTPConnection
     host, sep, port = parsed.netloc.partition(':')
     if not port:
         port = default_port
@@ -150,18 +149,6 @@ def get_poll_info(url):
     poll_info['poll_data'] = loads(response.read())
     return conn, headers, poll_info
 
-def extract_poll_info(poll_info):
-    csrf_token = poll_info['token']
-    voter_path = conn.path
-    poll_data = poll_info['poll_data']
-    pk = poll_data['public_key']
-    p = int(pk['p'])
-    g = int(pk['g'])
-    q = int(pk['q'])
-    y = int(pk['y'])
-    answers = poll_data['questions'][0]['answers']
-    cast_path = poll_data['cast_url']
-    return cast_path, csrf_token, answers, p, g, q, y
 
 def do_cast_vote(conn, cast_path, token, headers, vote):
     body = urlencode({'encrypted_vote': dumps(vote), 'csrfmiddlewaretoken': token})
@@ -271,12 +258,17 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
     for t in threads:
         t.join()
 
+
 def main_show(url):
+    raise NotImplemented()
+    '''
     conn, cast_path, token, headers, answers, p, g, q, y = get_election(url)
     for i, c in enumerate(answers):
         if isinstance(c, unicode):
             c = c.encode('utf-8')
         print "%d: %s" % (i, c)
+    '''
+
 
 def main_vote(url, choice_str):
     choices = [int(x) for x in choice_str.split(',')]
@@ -298,7 +290,7 @@ def do_download_mix(url, savefile):
         polls = loads(save_data)
         for i, url in enumerate(polls):
             do_download_mix(url, "{}.{}".format(savefile, i))
-	return
+        return
 
     with open(savefile, "w") as f:
         f.write(save_data)
@@ -434,7 +426,6 @@ def do_decrypt(savefile, outfile, keyfile, nr_parallel):
     public = int(pk['y'])
     del key
 
-
     while(os.path.isfile(curr_file)):
 
         curr_outfile = outfile + ".%d" % poll_index
@@ -567,4 +558,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main(sys.argv)
-

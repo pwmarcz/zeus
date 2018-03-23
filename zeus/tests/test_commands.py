@@ -15,4 +15,3 @@ class CreateUserTest(TestCase):
         call_command('manage_users', "kotek", create_user=True, institution=institution.id)
         user = User.objects.get(user_id="kotek")
         assert user.user_groups.all()[0] == UserGroup.objects.get(name='default')
-

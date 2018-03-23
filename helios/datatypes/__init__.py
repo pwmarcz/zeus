@@ -53,7 +53,7 @@ def get_class(datatype):
     dynamic_module = __import__(".".join(parsed_datatype[:-1]), globals(), locals(), [], level=-1)
 
     if not dynamic_module:
-        raise Exception("no module for %s" % datatpye)
+        raise Exception("no module for %s" % datatype)
 
     # go down the attributes to get to the class
     try:
@@ -312,6 +312,7 @@ def arrayOf(element_type):
 
 class DictObject(object):
     "when the wrapped object is actually dictionary"
+
     def _getattr_wrapped(self, attr):
         return self.wrapped_obj[attr]
 
@@ -324,4 +325,3 @@ class ListObject(object):
 
     def toDict(self, complete=False):
         return self.wrapped_obj
-

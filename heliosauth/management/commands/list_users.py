@@ -3,7 +3,7 @@ from optparse import make_option
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.models import *
+from heliosauth.models import User
 
 import pprint
 
@@ -13,7 +13,6 @@ user_row_header = user_row.replace("d", "s")
 class Command(BaseCommand):
     args = ''
     help = 'List users'
-
 
     def handle(self, *args, **options):
         info = False
@@ -26,4 +25,3 @@ class Command(BaseCommand):
                               '%-2d - %s' % (user.institution.pk, user.institution.name),
                               str(user.ecounting_account),
                               elections_count)
-

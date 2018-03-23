@@ -67,9 +67,6 @@ class ZeusDjangoElection(ZeusCoreElection):
     """
     Implement required core do_store/do_get methods.
     """
-    def __init__(self, **kwargs):
-        kwargs['shuffle_module'] = shuffle_module
-        ZeusCoreElection.__init__(self, **kwargs)
 
     @classmethod
     def from_election(self, election):
@@ -465,16 +462,16 @@ class ZeusDjangoElection(ZeusCoreElection):
         zeus_trustees = {}
 
         for t in trustees:
-          public = t.public_key.y
-          zeus_trustees[public] = [t.pok.commitment, t.pok.challenge,
-                                   t.pok.response]
+            public = t.public_key.y
+            zeus_trustees[public] = [t.pok.commitment, t.pok.challenge,
+                                     t.pok.response]
         return zeus_trustees
 
     def do_get_all_trustee_factors(self):
         factors = {}
         for trustee in self.election.trustees.filter(
             secret_key__isnull=True):
-          factors[trustee.public_key.y] = self._get_zeus_factors(trustee)
+            factors[trustee.public_key.y] = self._get_zeus_factors(trustee)
         return factors
 
     def do_get_last_mix(self):
@@ -664,7 +661,7 @@ class ZeusDjangoElection(ZeusCoreElection):
                     if len(b['candidates']) == 1 and \
                        party in b['parties'] and \
                        b['candidates'][0][1] not in candidates:
-                            empty_party_count += 1
+                        empty_party_count += 1
                 data['candidates']['Χωρίς επιλογή'] = empty_party_count
             parties.append(data)
 

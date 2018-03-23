@@ -13,4 +13,3 @@ urlpatterns = patterns('zeus.views.site',
     url(r'^demo$', 'demo', name='site_demo'),
     url(r'^error/(?P<code>[0-9]+)$', 'error', name='error')
 )
-

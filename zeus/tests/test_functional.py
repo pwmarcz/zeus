@@ -37,7 +37,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             "    \|_______|\|__| \|_|\n"
             )
 
-
     def verbose(self, message):
         if self.local_verbose:
             print message
@@ -125,6 +124,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.c.post(self.locations['create'], self.election_form, follow=True)
         e = Election.objects.all()[0]
     '''
+
     def stv_election_form_must_have_departments(self, post_data):
         post_data['departments'] = ''
         self.c.get(self.locations['login'], self.login_data)
@@ -291,7 +291,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         assert r.status_code == 403
         e = Election.objects.all()[0]
         assert e.polls.all().count() == self.polls_number
-
 
     def edit_poll_name_after_freeze(self):
         self.c.get(self.locations['logout'])
@@ -554,7 +553,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 self.verbose('+ Trustee %s decrypted poll %s'
                              % (t.name, p.name))
 
-
     def check_cast_votes(self):
         # check validity of sums of cast votes based on voter weights
         for p_uuid in self.p_uuids:
@@ -573,7 +571,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             assert len(p.result[0]) > 0
             self.verbose('+ Results generated for poll %s' % p.name)
             assert p.compute_results_error is None
-
 
     def check_docs_exist(self, ext_dict):
         e_exts = ext_dict['el']
@@ -654,12 +651,12 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for lang in settings.LANGUAGES:
             all_files_paths = []
             for ext in el_exts:
-                    path = el_module.get_election_result_file_path(
-                        ext,
-                        ext,
-                        lang[0]
-                        )
-                    all_files_paths.append(path)
+                path = el_module.get_election_result_file_path(
+                    ext,
+                    ext,
+                    lang[0]
+                    )
+                all_files_paths.append(path)
             for poll in e.polls.all():
                 p_module = poll.get_module()
                 for ext in poll_exts:
@@ -992,6 +989,22 @@ class TestSimpleElection(TestElectionBase):
         assert response.status_code == 302
         election.refresh_from_db()
         assert election.cancelation_reason == 'canceled because of reasons'
+
+    def test_poll_questions(self):
+        self.election_form['election_module'] = self.election_type
+        self.c.post(self.locations['login'], self.login_data)
+        self.c.post(self.locations['create'], self.election_form, follow=True)
+        election = Election.objects.get()
+        self.e_uuid = election.uuid
+        self.create_polls()
+        poll = Poll.objects.all()[0]
+
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
+        assert response.status_code == 302
+        self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
+                             fetch_redirect_response=True)
+
+        # TODO test logged-out version
 
 
 class TestPartyElection(TestElectionBase):

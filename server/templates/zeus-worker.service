@@ -1,0 +1,14 @@
+[Unit]
+Description=%i Celery worker
+After=syslog.target
+
+[Service]
+ExecStart=/srv/zeus/virtualenv/bin/celery worker -A zeus.celery -l INFO
+WorkingDirectory=/srv/zeus/install
+User=www-data
+Group=www-data
+Restart=on-failure
+KillSignal=SIGTERM
+Type=simple
+StandardError=syslog
+NotifyAccess=all

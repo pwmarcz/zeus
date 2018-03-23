@@ -96,14 +96,14 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_can_close_remote_mixing(self):
-      return self.mix_key and \
-        self.polls_feature_mix_finished and \
-        not self.feature_remote_mixing_finished
+        return self.mix_key and \
+          self.polls_feature_mix_finished and \
+          not self.feature_remote_mixing_finished
 
     @election_feature()
     def _feature_voting_started(self):
-      return  self.feature_frozen and \
-              self.voting_starts_at <= datetime.datetime.now()
+        return  self.feature_frozen and \
+                self.voting_starts_at <= datetime.datetime.now()
 
     @election_feature()
     def _feature_canceled(self):
@@ -149,10 +149,6 @@ class ElectionFeatures(FeaturesMixin):
         return not self.feature_frozen
 
     @election_feature()
-    def _feature_delete_trustee(self):
-        return not self.feature_frozen
-
-    @election_feature()
     def _feature_pending_issues(self):
         pending = len(self.election_issues_before_freeze) > 0
         return pending or self.feature_pending_polls_issues
@@ -160,10 +156,6 @@ class ElectionFeatures(FeaturesMixin):
     @election_feature()
     def _feature_can_add_poll(self):
         return (not self.feature_frozen) and self.get_module().can_edit_polls()
-
-    @election_feature()
-    def _feature_can_rename_poll(self):
-        return not self.feature_voting_started
 
     @election_feature()
     def _feature_can_send_trustee_email(self):
@@ -174,10 +166,6 @@ class ElectionFeatures(FeaturesMixin):
                       'trustee_can_access_election')
     def _feature_trustee_can_login(self):
         return not self.feature_completed
-
-    @election_feature('trustee_can_generate_key', 'trustee_can_upload_pk')
-    def _feature_trustee_checks(self):
-        return not self.feature_completed and not self.feature_frozen
 
     @election_feature()
     def _feature_trustee_can_check_sk(self):
@@ -220,7 +208,7 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_voting_finished(self):
-      return self.feature_frozen and not self.feature_voting
+        return self.feature_frozen and not self.feature_voting
 
     @election_feature()
     def _feature_can_close(self):
@@ -312,8 +300,8 @@ class PollFeatures(FeaturesMixin):
 
     @poll_feature()
     def _feature_voting_started(self):
-      return bool(self.election.frozen_at) and \
-              self.election.voting_starts_at <= datetime.datetime.now()
+        return bool(self.election.frozen_at) and \
+                self.election.voting_starts_at <= datetime.datetime.now()
 
     @poll_feature()
     def _feature_votes_cast(self):

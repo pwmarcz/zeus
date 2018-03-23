@@ -17,7 +17,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from zeus import auth
-from zeus.utils import *
+from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 
 from django.db import transaction
@@ -29,7 +29,6 @@ from django.utils.translation import ugettext_lazy as _
 from helios.view_utils import render_template
 from helios.models import Voter, Poll
 from zeus.forms import LoginForm
-from zeus import auth
 
 
 logger = logging.getLogger(__name__)
@@ -243,7 +242,6 @@ def jwt_login(request):
         message = "No json web token provided"
         messages.error(request, message)
         return redirect('home')
-
 
     AUDIENCE = 'zeus' # add to settings
 

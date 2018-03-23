@@ -408,7 +408,7 @@ class Command(NoArgsCommand):
         if verbosity > 1:
             self.stdout.write('examining files with the extensions: %s\n'
                              % get_text_list(list(extensions), 'and'))
-        
+
         for locale in locales:
             make_messages(locale, domain, verbosity, process_all, extensions,
                 symlinks, ignore_patterns, no_wrap, no_location, no_obsolete, self.stdout)

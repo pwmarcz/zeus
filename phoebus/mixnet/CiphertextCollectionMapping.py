@@ -54,7 +54,7 @@ import multiprocessing
 from CiphertextCollection import CiphertextCollection
 from .CiphertextReencryptionInfo import CiphertextReencryptionInfo
 # Exceptions:
-from PVCExceptions import IncompatibleCiphertextCollectionError
+from PVCExceptions import IncompatibleCiphertextCollectionError, IncompatibleCiphertextError
 from PVCExceptions import IncompatibleReencryptionInfoError
 from PVCExceptions import IncompatibleCiphertextCollectionMappingError
 
@@ -246,7 +246,6 @@ class CiphertextCollectionMapping:
 
         # Return the generated mapping
         return mapping
-
 
     def apply(self, collection):
         """
@@ -474,5 +473,3 @@ class CiphertextCollectionMapping:
             assert result._reencryptions.count(None) == 0
 
         return result
-
-

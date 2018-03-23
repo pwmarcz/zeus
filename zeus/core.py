@@ -1360,14 +1360,14 @@ def gamma_decode_to_range_ballot(encoded, candidates_and_points):
 
 
 def combine_candidates_and_points(candidates, points):
-      candidates_and_points = []
-      append = candidates_and_points.append
-      for c, p in izip_longest(candidates, points):
-          if c is not None:
-              append(c)
-          if p is not None:
-              append(str(p))
-      return candidates_and_points
+    candidates_and_points = []
+    append = candidates_and_points.append
+    for c, p in izip_longest(candidates, points):
+        if c is not None:
+            append(c)
+        if p is not None:
+            append(str(p))
+    return candidates_and_points
 
 
 def gamma_count_range(encoded_list, candidates_and_points, params):
@@ -3568,8 +3568,8 @@ class ZeusCoreElection(object):
         if not verify_decryption_factors(modulus, generator, order,
                                          zeus_public, mixed_ballots,
                                          zeus_factors, teller=teller):
-                m = "Invalid zeus factors proof!"
-                raise ZeusError(m)
+            m = "Invalid zeus factors proof!"
+            raise ZeusError(m)
 
         teller.finish()
 
