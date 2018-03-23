@@ -1,6 +1,7 @@
 matrix:
   include:
     - language: python
+      cache: pip
       python: "2.7"
       env: NAME=tests
       install:
