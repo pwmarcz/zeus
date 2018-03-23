@@ -2,6 +2,7 @@ from itertools import izip
 import tempfile
 import shutil
 import os
+import pytest
 
 from zeus.core import (
     _default_crypto,
@@ -66,11 +67,13 @@ def test_decryption():
     assert sorted(pts) == sorted(texts)
 
 
-def test_generate():
+# Test both single-process and parallel version.
+@pytest.mark.parametrize('processes', [0, 2])
+def test_generate(processes):
     d = tempfile.mkdtemp(prefix='zeus')
     try:
         filename = os.path.join(d, 'election.json')
-        main(['--generate', filename])
+        main(['--generate', filename, '--parallel', str(processes)])
         # Parse the results back.
         with open(filename) as f:
             election = from_canonical(f)
