@@ -1,7 +1,6 @@
 import json
 import logging
 import datetime
-import json
 
 import traceback
 from django.core import mail

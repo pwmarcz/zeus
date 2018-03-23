@@ -348,7 +348,7 @@ if not _kb:
     try:
         import termios
 
-        class KeyboardEntry:
+        class KeyboardEntry:  # noqa
             def __init__(self, fd = 0):
                 self._fd = fd
                 self._old = termios.tcgetattr(fd)

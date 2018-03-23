@@ -21,9 +21,6 @@ class ContactBackend():
         self.logger = logger
         self.data = data
 
-    def notify(self, voter, subject, body, vars):
-        raise NotImplemented
-
     def can_notify(self, voter):
         raise NotImplemented
 

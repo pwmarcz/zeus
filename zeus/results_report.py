@@ -5,7 +5,6 @@ import copy
 import json
 import os
 import datetime
-from django.utils.translation import ugettext as _
 from collections import OrderedDict
 
 from xml.sax.saxutils import escape

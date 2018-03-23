@@ -149,10 +149,6 @@ class ElectionFeatures(FeaturesMixin):
         return not self.feature_frozen
 
     @election_feature()
-    def _feature_delete_trustee(self):
-        return not self.feature_frozen
-
-    @election_feature()
     def _feature_pending_issues(self):
         pending = len(self.election_issues_before_freeze) > 0
         return pending or self.feature_pending_polls_issues
@@ -174,10 +170,6 @@ class ElectionFeatures(FeaturesMixin):
                       'trustee_can_access_election')
     def _feature_trustee_can_login(self):
         return not self.feature_completed
-
-    @election_feature('trustee_can_generate_key', 'trustee_can_upload_pk')
-    def _feature_trustee_checks(self):
-        return not self.feature_completed and not self.feature_frozen
 
     @election_feature()
     def _feature_trustee_can_check_sk(self):

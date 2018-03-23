@@ -7,7 +7,6 @@ from helios.workflows.homomorphic import WorkflowObject, DLogTable, EncryptedVot
 
 from phoebus import phoebus
 
-import random
 import copy
 
 TYPE = 'mixnet'

@@ -14,7 +14,6 @@ from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.admin import widgets
 from django.db import transaction
 from django.conf import settings
 from django.db.models import Q

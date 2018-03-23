@@ -167,9 +167,6 @@ class ShufflingProof:
 
     @classmethod
     def from_dict(cls, d, pk, nbits):
-        from .CiphertextCollectionMapping import CiphertextCollectionMapping
-        from .CiphertextCollection import CiphertextCollection
-
         proof = cls()
         proof._challenge = d['challenge']
 

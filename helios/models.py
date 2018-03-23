@@ -369,25 +369,6 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     def voting_end_date(self):
         return self.voting_extended_until or self.voting_ends_at
 
-    @property
-    def zeus_stage(self):
-        if not self.pk or not self.frozen_at:
-            return 'CREATING'
-
-        if not self.voting_ended_at:
-            return 'VOTING'
-
-        if not self.tallying_finished_at:
-            return 'MIXING'
-
-        if self.mix_key and not self.remote_mixing_finished_at:
-            return 'MIXING'
-
-        if not self.mix_finished_at:
-            return 'DECRYPTING'
-
-        return 'FINISHED'
-
     def reset_logger(self):
         self._logger = None
 

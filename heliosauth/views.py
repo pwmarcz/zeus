@@ -13,7 +13,6 @@ from django.conf import settings
 from .view_utils import render_template, render_template_raw
 from heliosauth.security import get_user
 
-import auth_systems
 from auth_systems import AUTH_SYSTEMS
 from auth_systems import password
 

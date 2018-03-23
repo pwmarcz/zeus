@@ -68,10 +68,6 @@ class ZeusDjangoElection(ZeusCoreElection):
     Implement required core do_store/do_get methods.
     """
 
-    def __init__(self, **kwargs):
-        kwargs['shuffle_module'] = shuffle_module
-        ZeusCoreElection.__init__(self, **kwargs)
-
     @classmethod
     def from_election(self, election):
         return ZeusDjangoElection(election=election, poll=None)

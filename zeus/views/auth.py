@@ -29,7 +29,6 @@ from django.utils.translation import ugettext_lazy as _
 from helios.view_utils import render_template
 from helios.models import Voter, Poll
 from zeus.forms import LoginForm
-from zeus import auth
 
 
 logger = logging.getLogger(__name__)

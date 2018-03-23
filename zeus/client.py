@@ -23,7 +23,6 @@ from httplib import HTTPConnection, HTTPSConnection
 from urlparse import urlparse, parse_qsl
 from urllib import urlencode, unquote
 from os.path import exists
-from sys import argv, stderr
 from json import loads, dumps, load, dump
 from Queue import Queue, Empty
 from threading import Thread

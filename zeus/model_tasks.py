@@ -249,9 +249,6 @@ class ElectionTasks(TaskModel):
 
 class PollTasks(TaskModel):
 
-    class Meta:
-        abstract = True
-
     @poll_task('validate_create', ('frozen',))
     def validate_create(self):
         e = self._select_for_update(self.election)

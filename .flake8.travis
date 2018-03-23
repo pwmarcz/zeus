@@ -19,3 +19,5 @@ select =
     F403,
     # undefined name
     F821,
+    # redefinition of unused 'x'
+    F811,

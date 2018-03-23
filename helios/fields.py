@@ -8,7 +8,6 @@ from django.db import models
 from django.forms import fields
 from django.core import validators
 from django.core import exceptions
-from django.db import models
 from django.forms.fields import MultipleChoiceField
 from django.utils import six
 from django.utils.text import capfirst

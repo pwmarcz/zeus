@@ -1,4 +1,3 @@
-import uuid
 import threading
 import re
 
