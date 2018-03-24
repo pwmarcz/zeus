@@ -1031,7 +1031,7 @@ class TestSimpleElection(TestElectionBase):
         self.create_polls()
         poll = Poll.objects.all()[0]
 
-        with open(os.path.join(os.path.dirname(__file__), 'test_sample_survey_for_linked_elecetion.yml')) as batch_file:
+        with open(os.path.join(os.path.dirname(__file__), 'test_sample_survey_for_linked_election.yml')) as batch_file:
             response = self.c.post('/elections/{}/polls/add'.format(election.uuid),
                                    {
                                        'batch_file': batch_file,
