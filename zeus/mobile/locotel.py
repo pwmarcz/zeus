@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 import uuid
 import urllib
-import urlparse
 
 from xml.etree import ElementTree as etree
-from xml.sax.saxutils import escape, quoteattr
+from xml.sax.saxutils import escape
 
 escape_dict = {
 }

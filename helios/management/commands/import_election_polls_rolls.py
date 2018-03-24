@@ -5,14 +5,11 @@ import uuid
 
 from django.forms import ValidationError
 from django.core.validators import validate_email as django_validate_email
-from django.conf import settings
 from django.db import transaction
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
 from helios.models import Election, Voter, iter_voter_data
 
-from zeus import reports
 from StringIO import StringIO
 import os
 

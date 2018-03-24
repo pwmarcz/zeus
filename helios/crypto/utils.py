@@ -2,7 +2,7 @@
 Crypto Utils
 """
 
-import hmac, base64
+import base64
 
 import json
 

@@ -1,4 +1,3 @@
-import pytest
 
 from django.test.client import Client
 from django.contrib.auth.hashers import make_password

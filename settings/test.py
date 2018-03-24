@@ -3,7 +3,8 @@ try:
 except ImportError:
     from .dev import *  # noqa
 
-import os, errno
+import os
+import errno
 import datetime
 import multiprocessing
 

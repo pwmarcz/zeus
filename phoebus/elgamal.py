@@ -8,8 +8,8 @@ Ben Adida
 ben@adida.net
 """
 
-import math, hashlib, logging
-import number
+import hashlib
+import logging
 
 from algs import Utils
 
@@ -429,7 +429,6 @@ class Ciphertext:
         """
         when a ciphertext is decrypted by a dec factor, the proof needs to be checked
         """
-        pass
 
     def decrypt(self, decryption_factors, public_key):
         """

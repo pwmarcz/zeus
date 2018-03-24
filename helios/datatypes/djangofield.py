@@ -6,12 +6,8 @@ http://www.djangosnippets.org/snippets/377/
 and adapted to LDObject
 """
 
-import datetime
 import json
 from django.db import models
-from django.db.models import signals
-from django.conf import settings
-from django.core.serializers.json import DjangoJSONEncoder
 
 from . import LDObject
 

@@ -12,7 +12,6 @@ import logging
 import uuid
 import random
 import StringIO
-import copy
 import base64
 import zipfile
 import os
@@ -23,9 +22,7 @@ import marshal
 import itertools
 import urllib
 
-from functools import wraps
 from datetime import timedelta
-from collections import defaultdict
 
 from django.template.loader import render_to_string
 from django.db import models, transaction
@@ -33,7 +30,6 @@ from django.db.models.query import QuerySet
 from django.db.models import Count
 from django.conf import settings
 from django.core.mail import send_mail, mail_admins
-from django.core.files import File
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email as django_validate_email
 from django.forms import ValidationError
@@ -42,7 +38,7 @@ from django.core.context_processors import csrf
 from django.utils import translation
 from django.core.files import storage
 
-from helios.crypto import electionalgs, algs, utils
+from helios.crypto import electionalgs, utils
 from helios import utils as heliosutils
 from helios import datatypes
 from helios import exceptions
@@ -50,9 +46,8 @@ from helios.datatypes.djangofield import LDObjectField
 from helios.utils import force_utf8
 
 
-from heliosauth.models import User, AUTH_SYSTEMS, SMSBackendData
+from heliosauth.models import SMSBackendData, User
 from heliosauth.jsonfield import JSONField
-from helios.datatypes import LDObject
 
 from zeus.core import (numbers_hash, gamma_encoding_max,
                        gamma_decode, to_absolute_answers, to_canonical,
@@ -1304,7 +1299,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     @property
     def pretty_result(self):
-        from helios.counter import Counter
         cands_count = len(self.questions[0]['answers'])
         answers = self.questions[0]['answers']
         candidates_selections = []

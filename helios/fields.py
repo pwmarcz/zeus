@@ -1,11 +1,7 @@
 ## https://github.com/ulule/django-separatedvaluesfield/blob/master/separatedvaluesfield/models.py
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from time import strptime, strftime
-import datetime
-from django import forms
 from django.db import models
-from django.forms import fields
 from django.core import validators
 from django.core import exceptions
 from django.forms.fields import MultipleChoiceField

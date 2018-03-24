@@ -1,18 +1,14 @@
 import json
 import logging
-import datetime
 
-import traceback
-from django.core import mail
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 
-from zeus.forms import ElectionForm
 from zeus import auth
-from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
-from zeus.views.utils import set_menu, common_json_handler
+from zeus.utils import election_reverse
+from zeus.views.utils import set_menu
 from zeus.views.common import ELGAMAL_PARAMS_LD_OBJECT
 
 from django.db import transaction
@@ -21,7 +17,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from helios.view_utils import render_template
-from helios.models import Election, Trustee
+from helios.models import Trustee
 from heliosauth import utils
 from helios.crypto import algs
 

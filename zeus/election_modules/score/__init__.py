@@ -1,5 +1,3 @@
-import zipfile
-import os
 from itertools import izip_longest
 
 from django.utils.translation import ugettext_lazy as _
@@ -31,8 +29,7 @@ class ScoreBallotElection(ElectionModuleBase):
 
     def questions_update_view(self, request, election, poll):
         from zeus.utils import poll_reverse
-        from zeus.forms import ScoresForm, RequiredFormset, DEFAULT_ANSWERS_COUNT, \
-                MAX_QUESTIONS_LIMIT
+        from zeus.forms import ScoresForm, RequiredFormset, DEFAULT_ANSWERS_COUNT
 
         extra = 1
         if poll.questions_data:

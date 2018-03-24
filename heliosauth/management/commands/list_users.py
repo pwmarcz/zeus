@@ -1,11 +1,8 @@
-from optparse import make_option
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from heliosauth.models import User
 
-import pprint
 
 user_row = "%-3d %-15s %-20s %-60s %-10s %-2d"
 user_row_header = user_row.replace("d", "s")

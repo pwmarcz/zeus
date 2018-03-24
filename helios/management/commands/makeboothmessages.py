@@ -10,7 +10,6 @@ from subprocess import PIPE, Popen
 import django
 from django.core.management.base import CommandError, NoArgsCommand
 from django.utils.text import get_text_list
-from django.utils.jslex import prepare_js_for_gettext
 
 plural_forms_re = re.compile(r'^(?P<value>"Plural-Forms.+?\\n")\s*$', re.MULTILINE | re.DOTALL)
 

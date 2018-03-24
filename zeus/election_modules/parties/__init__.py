@@ -1,10 +1,6 @@
-import json
-import zipfile
-import os
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.conf import settings
 

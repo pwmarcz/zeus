@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
 

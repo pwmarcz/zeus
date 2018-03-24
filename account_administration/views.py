@@ -1,6 +1,5 @@
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext as _

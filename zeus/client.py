@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
 import sys
 import os
-import time
 import ssl
 
 from zeus.core import (c2048, get_random_selection,
@@ -16,12 +14,11 @@ from zeus.core import (c2048, get_random_selection,
                        compute_decryption_factors,
                        verify_vote_signature,
                        parties_from_candidates,
-                       gamma_decode_to_party_ballot,
                        FormatError)
 
 from httplib import HTTPConnection, HTTPSConnection
 from urlparse import urlparse, parse_qsl
-from urllib import urlencode, unquote
+from urllib import urlencode
 from os.path import exists
 from json import loads, dumps, load, dump
 from Queue import Queue, Empty

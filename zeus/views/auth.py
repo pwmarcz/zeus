@@ -1,7 +1,5 @@
 import logging
 import urllib2
-import urllib
-import json
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
@@ -13,7 +11,6 @@ from zeus import auth
 from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 
-from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
@@ -138,7 +135,6 @@ def oauth2_login(request):
             messages.error(request, 'oauth2 error')
             return HttpResponseRedirect(reverse('error',
                                                 kwargs={'code': 400}))
-            pass
     else:
         poll.logger.info("[thirdparty] oauth2 '%s' can_exchange failed",
                          poll.remote_login_display)

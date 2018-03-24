@@ -16,7 +16,6 @@ from django.core import mail
 from helios import datatypes
 from helios.crypto import algs
 from helios.models import Election, Voter, Poll, Trustee
-from heliosauth.models import User
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth

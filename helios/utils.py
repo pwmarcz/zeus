@@ -5,20 +5,22 @@ Ben Adida - ben@adida.net
 2005-04-11
 """
 
-import urllib, re, sys, datetime, urlparse, string
-import threading
+import datetime
+import re
+import string
+import urllib
 import PyICU
 
 from PyICU import Collator
 
 # utils from auth, too
-from heliosauth.utils import from_json, to_json, JSONtoDict, JSONFiletoDict
 
 from django.conf import settings
 from django.core import mail as django_mail
 
-import random, logging
-import hashlib, hmac, base64
+import random
+import hashlib
+import hmac
 
 def locale_comparator(locale='el_GR.UTF-8'):
     return Collator.createInstance(PyICU.Locale(locale)).compare
@@ -176,7 +178,7 @@ def one_val_raw_sql(raw_sql, values=[]):
     """
     for a simple aggregate
     """
-    from django.db import connection, transaction
+    from django.db import connection
     cursor = connection.cursor()
 
     cursor.execute(raw_sql, values)

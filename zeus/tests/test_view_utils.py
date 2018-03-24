@@ -1,6 +1,5 @@
 import datetime
 
-import pytest
 
 from zeus.views import utils
 

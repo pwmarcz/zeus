@@ -1,8 +1,5 @@
 # -- coding: utf-8 --
-import os
 import copy
-import json
-import zipfile
 import math
 from decimal import Decimal
 
@@ -11,18 +8,14 @@ from collections import OrderedDict
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.forms import ValidationError
-from django.http import HttpResponseRedirect
 from django.conf import settings
 
 from zeus.election_modules import election_module
-from zeus.views.utils import set_menu
 from zeus.utils import election_reverse
 from zeus.reports import csv_from_unigovgr_results
 
 from zeus.election_modules.simple import SimpleElection
 from zeus.election_modules import PollHooks, ElectionHooks
-from helios.view_utils import render_template
 
 
 class UniElectionHooks(ElectionHooks):

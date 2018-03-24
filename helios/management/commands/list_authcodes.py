@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from helios.models import Poll
-from zeus.models import list_authcodes
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')

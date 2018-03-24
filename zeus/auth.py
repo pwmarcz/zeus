@@ -1,20 +1,17 @@
-import threading
 import re
 
 from base64 import b64decode
 
 from functools import wraps
 
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.conf import settings
 
 from helios.models import Election, Poll, Trustee, Voter
 from heliosauth.models import User
 
-from zeus.log import init_election_logger, init_poll_logger, _locals
+from zeus.log import _locals
 
 import logging
 logger = logging.getLogger(__name__)
@@ -333,7 +330,6 @@ def get_users_from_request(request):
             voter = Voter.objects.get(pk=voter)
         except Voter.DoesNotExist:
             voter = None
-            pass
 
         if not voter or voter.excluded_at:
             del request.session[VOTER_SESSION_KEY]

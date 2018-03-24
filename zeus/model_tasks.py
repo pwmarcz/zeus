@@ -1,16 +1,10 @@
-import os
-import new
 import datetime
-import json
-import zipfile
 
 from Crypto import Random
 
-from django.conf import settings
 from django.db import models
 from django.db.models.base import ModelBase
 from django.db import transaction
-from django.utils.translation import ugettext_lazy as _
 
 from zeus.model_features import feature
 

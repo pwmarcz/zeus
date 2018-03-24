@@ -1,7 +1,6 @@
 import copy
 import json
 import os
-import logging
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _

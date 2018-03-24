@@ -1,4 +1,4 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('zeus.views.trustee',
     url(r'l/(?P<trustee_email>[^/]+)/(?P<trustee_secret>[^/]+)$',

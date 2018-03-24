@@ -3,7 +3,6 @@ import csv
 from functools import partial
 
 from cStringIO import StringIO
-from collections import defaultdict
 from zeus.core import gamma_decode
 from zeus.utils import CSVReader
 from django.db.models import Count

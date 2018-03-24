@@ -1,4 +1,3 @@
-from django.core.urlresolvers import reverse
 
 
 def set_menu(menu, ctx):

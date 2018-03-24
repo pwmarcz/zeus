@@ -2,29 +2,25 @@
 """
 Forms for Zeus
 """
-import uuid
 import copy
 import json
 
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django import forms
-from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.db import transaction
 from django.conf import settings
-from django.db.models import Q
 from django.utils.safestring import mark_safe
 from django.contrib.auth.hashers import check_password, make_password
 from django.forms.models import BaseModelFormSet
-from django.forms.widgets import Select, MultiWidget, DateInput, TextInput,\
+from django.forms.widgets import Select, MultiWidget, TextInput,\
     HiddenInput
 from django.forms.formsets import BaseFormSet
 
-from helios.models import Election, Poll, Trustee, Voter
+from helios.models import Election, Poll, Voter
 from heliosauth.models import User
 
 from zeus.utils import extract_trustees, election_trustees_to_text

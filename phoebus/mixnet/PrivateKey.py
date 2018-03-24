@@ -39,9 +39,8 @@
 # Imports and constant definitions:
 # ============================================================================
 
-from EGCryptoSystem import EGCryptoSystem, EGStub
+from EGCryptoSystem import EGCryptoSystem
 from PublicKey import PublicKey
-from Ciphertext import Ciphertext
 from PVCExceptions import InvalidPloneVoteCryptoFileError, \
                           IncompatibleCiphertextError
 from BitStream import BitStream

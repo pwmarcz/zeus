@@ -1,5 +1,4 @@
 import os
-import json
 from stv.stv import count_stv, Ballot
 import StringIO
 import logging

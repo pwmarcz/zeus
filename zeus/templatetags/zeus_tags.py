@@ -1,13 +1,10 @@
 import json
 import urllib
 
-from functools import partial
 
 from django import template
-from django.template.defaultfilters import stringfilter
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext as _n
-from django.template.loader import render_to_string
 from django.template import Template
 from django.utils.html import escape
 

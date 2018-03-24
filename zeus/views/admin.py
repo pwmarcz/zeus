@@ -1,13 +1,11 @@
 from __future__ import print_function
 
-import copy
 import datetime
 import cStringIO as StringIO
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.contrib import messages
 from django.views.generic import View
 
 from zeus.reports import ElectionsReportCSV, ElectionsReport

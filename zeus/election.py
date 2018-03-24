@@ -6,12 +6,11 @@ import copy
 import re
 
 from django.utils.datastructures import SortedDict
-from django.utils.translation import ugettext_lazy as _
 
 from zeus.core import ZeusCoreElection, Teller, sk_from_args, \
-    TellerStream, gamma_count_parties, gamma_count_range
+    gamma_count_parties, gamma_count_range
 from zeus.core import V_CAST_VOTE, V_PUBLIC_AUDIT, V_AUDIT_REQUEST, \
-    gamma_decode, to_absolute_answers, ZeusError
+    ZeusError
 
 from django.conf import settings
 
@@ -19,10 +18,7 @@ from helios.crypto import electionalgs, elgamal
 from helios.crypto import utils
 from helios import models as helios_models
 from helios import datatypes
-from stv.stv import count_stv, Ballot
 
-from django.db import connection
-from hashlib import sha256
 import importlib
 
 # Parameters for everything

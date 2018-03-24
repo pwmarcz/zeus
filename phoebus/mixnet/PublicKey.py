@@ -45,7 +45,7 @@ import math
 from Crypto.Random.random import StrongRandom
 from hashlib import sha256
 
-from EGCryptoSystem import EGCryptoSystem, EGStub
+from EGCryptoSystem import EGCryptoSystem
 from PVCExceptions import InvalidPloneVoteCryptoFileError
 from Ciphertext import Ciphertext
 from BitStream import BitStream

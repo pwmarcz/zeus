@@ -3,7 +3,6 @@ import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker
 
 to_keep = set([
     "ae80de84-19b1-11e2-9f63-aa000039f982", # Harokopeio University

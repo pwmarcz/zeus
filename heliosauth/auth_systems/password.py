@@ -4,7 +4,6 @@
 Username/Password Authentication
 """
 
-import httplib
 import urllib
 import json
 
@@ -16,12 +15,10 @@ from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import smart_str, smart_unicode
 from django.contrib.auth.hashers import check_password, make_password
 
 from heliosauth.utils import force_utf8
 
-import logging
 
 # some parameters to indicate that status updating is possible
 STATUS_UPDATES = False
