@@ -5,7 +5,7 @@ Ben Adida
 2009-07-05
 """
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
