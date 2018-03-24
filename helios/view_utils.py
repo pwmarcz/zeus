@@ -4,7 +4,7 @@ Utilities for all views
 Ben Adida (12-30-2008)
 """
 
-from django.template import Context, loader, TemplateSyntaxError, \
+from django.template import loader, TemplateSyntaxError, \
     TemplateDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -101,8 +101,7 @@ def render_template_raw(request, template_name, vars={}):
     else:
         full_vars = vars
 
-    c = Context(full_vars)
-    return t.render(c)
+    return t.render(full_vars)
 
 
 def render_json(json_txt):

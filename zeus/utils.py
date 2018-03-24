@@ -7,9 +7,9 @@ from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
 from django.db.models import Q
-from django.template import RequestContext, loader
+from django.template import loader
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email, ValidationError
@@ -97,9 +97,8 @@ def render_template(request, template_name, vars = {}):
     if request.session.has_key('csrf_token'):
         vars_with_user['csrf_token'] = request.session['csrf_token']
 
-    context = RequestContext(request, vars_with_user)
-    return render_to_response('server_ui/templates/%s.html' % template_name,
-                              context)
+    return render(request, 'server_ui/templates/%s.html' % template_name,
+                  vars_with_user)
 
 
 def sanitize_mobile_number(num):

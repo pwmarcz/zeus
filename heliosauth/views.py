@@ -5,15 +5,14 @@ Ben Adida
 2009-07-05
 """
 
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from .view_utils import render_template, render_template_raw
+from .view_utils import render_template
 from heliosauth.security import get_user
 
 from auth_systems import AUTH_SYSTEMS
-from auth_systems import password
 
 import heliosauth
 import urllib
