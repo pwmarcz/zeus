@@ -28,7 +28,7 @@ from zeus.auth import ZeusUser
 
 from zeus.stv_count_reports import stv_count_and_report
 
-from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
