@@ -577,7 +577,10 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         if not voter or (voter and not voter.excluded_at):
             TEMPLATES.append(('extension', _('Voting end date extended')))
 
-    template = request.REQUEST.get('template', default_template)
+    if request.method == 'POST':
+        template = request.POST.get('template', default_template)
+    else:
+        template = request.GET.get('template', default_template)
 
     if not template in [t[0] for t in TEMPLATES]:
         raise Exception("bad template")
