@@ -14,7 +14,7 @@ matrix:
         - pipenv sync --dev
 
       script:
-        - pipenv run pytest -v --cov
+        - pipenv run pytest -v --cov -n 2
 
       after_success:
         - pipenv run codecov
