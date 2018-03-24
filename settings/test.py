@@ -7,9 +7,11 @@ import os
 import errno
 import datetime
 import multiprocessing
+from copy import deepcopy
 
 DEBUG = False
-TEMPLATE_DEBUG = True
+TEMPLATES = deepcopy(TEMPLATES)
+TEMPLATES[0]['OPTIONS']['debug'] = True
 
 ZEUS_TASK_DEBUG = True
 

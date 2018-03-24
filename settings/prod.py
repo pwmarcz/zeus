@@ -6,7 +6,6 @@ with open('/srv/zeus/config/secrets.json') as f:
     SECRETS = json.load(f)
 
 DEBUG = False
-TEMPLATE_DEBUG = False
 
 # TODO
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
