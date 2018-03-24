@@ -212,7 +212,7 @@ class StvElection(ElectionModuleBase):
         stv_stream.seek(0)
         results.append(stv_stream.read())
         stv_stream.close()
-        self.poll.stv_results = json.dumps(results)
+        self.poll.stv_results = results
         self.poll.save()
 
         # build docs
