@@ -1,9 +1,7 @@
 import datetime
-import pytest
 
 from django.conf import settings
 from django.test.client import Client
-from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 
 from helios.models import Election

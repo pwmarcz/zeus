@@ -7,7 +7,6 @@ from io import StringIO
 from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
 
-from helios.models import Election
 from zeus.tests.utils import SetUpAdminAndClientMixin, get_election
 
 

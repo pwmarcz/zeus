@@ -6,8 +6,6 @@ import pytest
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
-from zeus.views import shared
-
 
 @pytest.mark.django_db
 def test_get_randomness():

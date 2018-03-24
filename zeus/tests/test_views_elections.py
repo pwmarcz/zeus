@@ -1,6 +1,5 @@
 from urllib import urlencode
 
-import pytest
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from helios.models import Election
@@ -81,5 +80,3 @@ class TestElectionView(SetUpAdminAndClientMixin, TestCase):
         assert response.status_code == 302
         election.refresh_from_db()
         assert election.name == 'election B'
-
-
