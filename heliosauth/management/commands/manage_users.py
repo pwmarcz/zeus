@@ -13,7 +13,7 @@ class Command(BaseCommand):
     help = 'Create a non ecounting elections admin user'
 
     def add_arguments(self, parser):
-
+        parser.add_argument('param', nargs='?')
         parser.add_argument('--name',
                            action='store',
                            dest='name',
@@ -79,24 +79,24 @@ class Command(BaseCommand):
             return User.objects.get(pk=pk)
         return User.objects.get(user_id=userid)
 
-    def handle(self, *args, **options):
+    def handle(self, **options):
         reload(sys)
         sys.setdefaultencoding('utf-8')
 
         if options.get('create_institution'):
-            if not len(args):
+            if not options['param']:
                 print "Provide the institution name"
                 exit()
 
-            name = args[0].strip()
-            Institution.objects.create(name=args[0].strip())
+            name = options['param'].strip()
+            Institution.objects.create(name=options['param'].strip())
 
         if options.get('remove_user'):
-            if not len(args):
+            if not options['param']:
                 print "Provide a user id"
                 exit()
 
-            user = User.objects.get(pk=int(args[0].strip()))
+            user = User.objects.get(pk=int(options['param'].strip()))
             print "User has %d elections objects which will be removed" % user.elections.count()
             confirm = raw_input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
             if confirm == "yes of course":
@@ -106,17 +106,17 @@ class Command(BaseCommand):
             print "User removed"
 
         if options.get("reset_password"):
-            if not len(args):
+            if not options['param']:
                 print "Provide a user id and a password"
                 exit()
-            user = self.get_user(args[0])
+            user = self.get_user(options['param'])
             password = getpass.getpass("Password:")
             password_confirm = getpass.getpass("Confirm password:")
             user.info['password'] = make_password(password)
             user.save()
 
         if options.get("enable_sms"):
-            if not len(args):
+            if not options['param']:
                 print "Provide a user id and sms backend sender id"
                 exit()
 
@@ -124,7 +124,7 @@ class Command(BaseCommand):
             creds = getpass.getpass("Credentials (e.g. username:pass):")
             username, password = creds.split(":")
 
-            user = self.get_user(args[0])
+            user = self.get_user(options['param'])
             if user.sms_data:
                 backend = user.sms_data
             else:
@@ -139,12 +139,12 @@ class Command(BaseCommand):
             user.save()
 
         if options.get("sms_limit"):
-            user = self.get_user(args[0])
+            user = self.get_user(options['param'])
             user.sms_data.limit = options.get("sms_limit")
             user.sms_data.save()
 
         if options.get('create_user'):
-            username = args[0].strip()
+            username = options['param'].strip()
             superadmin = options.get('superuser', False)
             manager = options.get('manager', False)
             name = options.get('name', None)
