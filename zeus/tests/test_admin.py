@@ -8,7 +8,7 @@ from django.test import TestCase, RequestFactory
 from django.core.urlresolvers import reverse
 
 from helios.models import Election
-from zeus.tests.utils import SetUpAdminAndClientMixin
+from zeus.tests.utils import SetUpAdminAndClientMixin, get_election
 
 
 def today_plus_days(days):
@@ -22,32 +22,12 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def login(self):
         self.c.post(self.locations['login'], self.login_data)
 
-    def create_election(self, **kwargs):
-        '''
-        Create an election instance for testing. The fields can be customised
-        using the following kwargs:
-            - name: string
-            - voting_starts_at_0: date string
-            - voting_ends_at_0: date string
-            - trial: boolean
-        '''
-        self.election_form['departments'] = 'test_departments'
-        self.election_form['election_module'] = 'simple'
-
-        # create a copy of the form and customize it sing the provided params
-        form = dict(self.election_form)
-        for param, value in kwargs.items():
-            form[param] = value
-        self.c.post(self.locations['create'], form, follow=True)
-
-        return Election.objects.all().latest('created_at')
-
     def post_and_get_response(self):
         """
         Create an election and post on admin_home
         to change their official status.
         """
-        election = self.create_election()
+        election = get_election()
         return self.c.post(
             reverse('admin_home'),
             {
@@ -103,7 +83,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         returned should not contain a form.
         """
         self.login()
-        election = self.create_election()
+        election = get_election()
 
         response = self.c.get(
             reverse('admin_home'),
@@ -127,7 +107,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         response = self.c.get(reverse('admin_home'), {})
         assert response.status_code == 302
 
-        election = self.create_election(name='first_election')
+        election = get_election(name='first_election')
 
         response = self.c.get(
             reverse('admin_home'),
@@ -140,7 +120,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert '<input type="hidden"' in response.content
 
         # ensure the ordering works
-        newer_newer = self.create_election(name='second_election')
+        newer_newer = get_election(name='second_election')
 
         response = self.c.get(reverse('admin_home'), {'order': 'name', 'order_type': 'desc'})
         assert response.context['elections_administered'][0].name == 'second_election'
@@ -173,17 +153,17 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         self.admin.save()
         self.login()
 
-        election_a = self.create_election(
+        election_a = get_election(
             name='election A',
-            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
-            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+            voting_starts_at=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at=today_plus_days(days=2).strftime('%Y-%m-%d')
         )
-        election_b = self.create_election(
+        election_b = get_election(
             name='election B',
-            voting_starts_at_0=today_plus_days(days=4).strftime('%Y-%m-%d'),
-            voting_ends_at_0=today_plus_days(days=5).strftime('%Y-%m-%d')
+            voting_starts_at=today_plus_days(days=4).strftime('%Y-%m-%d'),
+            voting_ends_at=today_plus_days(days=5).strftime('%Y-%m-%d')
         )
-        election_c = self.create_election(
+        election_c = get_election(
             name='election C',
             trial=True
         )
@@ -230,10 +210,10 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         self.admin.save()
         self.login()
 
-        election = self.create_election(
+        election = get_election(
             name='election',
-            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
-            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+            voting_starts_at=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at=today_plus_days(days=2).strftime('%Y-%m-%d')
         )
         election.completed_at = today_plus_days(days=3)
         election.save()
@@ -261,10 +241,10 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert response.context['percentage_voted'] == 0
         assert len(response.context['elections']) == 0
 
-        election = self.create_election(
+        election = get_election(
             name='election',
-            voting_starts_at_0=today_plus_days(days=1).strftime('%Y-%m-%d'),
-            voting_ends_at_0=today_plus_days(days=2).strftime('%Y-%m-%d')
+            voting_starts_at=today_plus_days(days=1).strftime('%Y-%m-%d'),
+            voting_ends_at=today_plus_days(days=2).strftime('%Y-%m-%d')
         )
         election.completed_at = today_plus_days(days=3)
         election.save()

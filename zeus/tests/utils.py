@@ -1,17 +1,17 @@
+import datetime
 import pytest
 
-from django.test.client import Client
-from django.contrib.auth.hashers import make_password
 from django.conf import settings
-import datetime
-from datetime import timedelta
+from django.test.client import Client
+from django.core.urlresolvers import reverse
+from django.contrib.auth.hashers import make_password
 
+from helios.models import Election
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
 
 class SetUpAdminAndClientMixin():
-
     def tearDown(self):
         self.institution.delete()
 
@@ -62,8 +62,8 @@ class SetUpAdminAndClientMixin():
         self.stv_election_max_answers_number =\
             conf.get('STV_MAX_NR_CANDIDATES', 2)
 
-        start_date = datetime.datetime.now() + timedelta(hours=48)
-        end_date = datetime.datetime.now() + timedelta(hours=56)
+        start_date = datetime.datetime.now() + datetime.timedelta(hours=48)
+        end_date = datetime.datetime.now() + datetime.timedelta(hours=56)
 
         self.election_form = {
             'trial': conf.get('trial', False),
@@ -82,6 +82,32 @@ class SetUpAdminAndClientMixin():
 
         self.login_data = {'username': 'test_admin', 'password': 'test_admin'}
         self.c = Client()
+
+
+def get_institution(**kwargs):
+    '''
+    Create, or retrieve an instituion. For testing purposes we only need one, so
+    this instance is effectively a singleton.
+    '''
+    instituion, _ = Institution.objects.get_or_create(**kwargs)
+    return instituion
+
+
+def get_election(**kwargs):
+    '''
+    Create an election instance for testing. The field values can be customised
+    using the names of the Election model, e.g.:
+        - `name`: string
+        - `voting_starts_at`: date string
+        - `voting_ends_at`: date string
+        - `trial`: boolean
+    The only thing that cannot be modified is `institution`.
+    etc.
+    '''
+    institution = get_institution()
+    election, _ = Election.objects.get_or_create(institution=institution, **kwargs)
+    return election
+
 
 def get_messages_from_response(response):
     messages = []
