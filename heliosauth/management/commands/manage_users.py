@@ -1,5 +1,4 @@
 import sys
-from optparse import make_option
 
 from django.core.management.base import BaseCommand
 
@@ -13,58 +12,58 @@ class Command(BaseCommand):
     args = '<username>'
     help = 'Create a non ecounting elections admin user'
 
-    option_list = BaseCommand.option_list + (
-    make_option('--name',
-                       action='store',
-                       dest='name',
-                       default=None,
-                       help='Full user name'),
-    make_option('--superuser',
-                       action='store_true',
-                       dest='superuser',
-                       default=False,
-                       help='Give superuser permissions to user'),
-    make_option('--manager',
-                        action='store_true',
-                        dest='manager',
-                        default=False,
-                        help='Give manager permissions to user'),
-    make_option('--institution',
-                       action='store',
-                       dest='institution',
-                       default=None,
-                       help='Institution id (used in --create-user)'),
-    make_option('--create-institution',
-                       action='store_true',
-                       dest='create_institution',
-                       default=False,
-                       help='Institution id'),
-    make_option('--create-user',
-                       action='store_true',
-                       dest='create_user',
-                       default=False,
-                       help='Create a new user'),
-    make_option('--remove-user',
-                       action='store_true',
-                       dest='remove_user',
-                       default=False,
-                       help='Remove an existing user'),
-    make_option('--reset-password',
-                       action='store_true',
-                       dest='reset_password',
-                       default=False,
-                       help='Reset a user\'s password'),
-    make_option('--enable-sms',
-                       action='store',
-                       dest='enable_sms',
-                       default=False,
-                       help='enable user sms backend. Provide sender id as value to this argument.'),
-    make_option('--sms-limit',
-                       action='store',
-                       dest='sms_limit',
-                       default=False,
-                       help='update sms limit for user'),
-    )
+    def add_arguments(self, parser):
+
+        parser.add_argument('--name',
+                           action='store',
+                           dest='name',
+                           default=None,
+                           help='Full user name')
+        parser.add_argument('--superuser',
+                           action='store_true',
+                           dest='superuser',
+                           default=False,
+                           help='Give superuser permissions to user')
+        parser.add_argument('--manager',
+                            action='store_true',
+                            dest='manager',
+                            default=False,
+                            help='Give manager permissions to user')
+        parser.add_argument('--institution',
+                           action='store',
+                           dest='institution',
+                           default=None,
+                           help='Institution id (used in --create-user)')
+        parser.add_argument('--create-institution',
+                           action='store_true',
+                           dest='create_institution',
+                           default=False,
+                           help='Institution id')
+        parser.add_argument('--create-user',
+                           action='store_true',
+                           dest='create_user',
+                           default=False,
+                           help='Create a new user')
+        parser.add_argument('--remove-user',
+                           action='store_true',
+                           dest='remove_user',
+                           default=False,
+                           help='Remove an existing user')
+        parser.add_argument('--reset-password',
+                           action='store_true',
+                           dest='reset_password',
+                           default=False,
+                           help='Reset a user\'s password')
+        parser.add_argument('--enable-sms',
+                           action='store',
+                           dest='enable_sms',
+                           default=False,
+                           help='enable user sms backend. Provide sender id as value to this argument.')
+        parser.add_argument('--sms-limit',
+                           action='store',
+                           dest='sms_limit',
+                           default=False,
+                           help='update sms limit for user')
 
     def get_user(self, pk_or_userid):
         pk_or_userid = pk_or_userid.strip()
