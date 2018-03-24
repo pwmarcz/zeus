@@ -502,7 +502,7 @@ class StvForm(QuestionBaseForm):
     max_answers = None
 
     def clean(self):
-        from django.forms.util import ErrorList
+        from django.forms.utils import ErrorList
         message = _("This field is required.")
         answers = len(filter(lambda k: k.startswith("%s-answer_" %
                                                 self.prefix), self.data)) / 2
