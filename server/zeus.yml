@@ -102,6 +102,13 @@
         state: link
       notify: reload nginx
 
+    - name: make virtualenv with pipenv
+      pip:
+        name: pipenv
+        virtualenv: /srv/zeus/virtualenv
+        virtualenv_python: python2.7
+      become_user: zeus
+
     # Deploy!
 
     - name: check git repo
