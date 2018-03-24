@@ -5,7 +5,7 @@ import json
 import copy
 import re
 
-from django.utils.datastructures import SortedDict
+from collections import OrderedDict
 
 from zeus.core import ZeusCoreElection, Teller, sk_from_args, \
     gamma_count_parties, gamma_count_range
@@ -593,13 +593,13 @@ class ZeusDjangoElection(ZeusCoreElection):
         return results
 
     def get_results_pretty_score(self):
-        pretty = SortedDict()
+        pretty = OrderedDict()
 
         results = self.get_results()
 
         for i, q in enumerate(self.poll.questions_data):
             entry = copy.copy(q)
-            entry['results'] = SortedDict()
+            entry['results'] = OrderedDict()
             scores = filter(lambda a: a[1].startswith("%s:" % q['question']), results['totals'])
             for score, answer in scores:
                 qanswer = answer.replace("%s:" % q['question'], "")
@@ -633,7 +633,7 @@ class ZeusDjangoElection(ZeusCoreElection):
                                     party_candidates.keys())
             candidate_keys.sort()
             candidates = [party_candidates[c] for c in candidate_keys]
-            candidate_counts = SortedDict([(c, 0) for c in \
+            candidate_counts = OrderedDict([(c, 0) for c in \
                                            candidates])
             candidate_sums = 0
 

@@ -12,10 +12,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from django.utils.datastructures import SortedDict as OrderedDict
+from collections import OrderedDict
+
 
 def json_handler(obj):
     if hasattr(obj, 'isoformat'):
