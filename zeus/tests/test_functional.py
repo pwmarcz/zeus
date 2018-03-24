@@ -1031,7 +1031,7 @@ class TestSimpleElection(TestElectionBase):
         self.create_polls()
         poll = Poll.objects.all()[0]
 
-        with open('test_sample_survey_for_linked_election.yml') as batch_file:
+        with open(os.path.join(os.path.dirname(__file__), 'test_sample_survey_for_linked_elecetion.yml')) as batch_file:
             response = self.c.post('/elections/{}/polls/add'.format(election.uuid),
                                    {
                                        'batch_file': batch_file,
@@ -1041,6 +1041,17 @@ class TestSimpleElection(TestElectionBase):
         self.assertRedirects(response, '/elections/{}/polls/'.format(election.uuid))
 
         #todo: invalid contents
+
+    def test_poll_remove(self):
+        self.election_form['election_module'] = self.election_type
+        self.c.post(self.locations['login'], self.login_data)
+        self.c.post(self.locations['create'], self.election_form, follow=True)
+        election = Election.objects.get()
+        election.linked_polls = True
+        election.save()
+        self.e_uuid = election.uuid
+        self.create_polls()
+        poll = Poll.objects.all()[0]
 
 
 class TestPartyElection(TestElectionBase):
