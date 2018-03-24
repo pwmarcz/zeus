@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 from elgamal import (   Cryptosystem as Crypto,
-                        PublicKey, SecretKey, Plaintext, Ciphertext,
-                        fiatshamir_challenge_generator  )
+                        PublicKey, SecretKey, Plaintext, Ciphertext )
 from datetime import datetime
-from random import randint, shuffle
+from random import randint
 from collections import defaultdict
 from hashlib import sha256
 from math import log

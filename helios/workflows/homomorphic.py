@@ -7,10 +7,6 @@ reworked 2011-01-09
 """
 
 from helios.crypto import algs, utils
-import logging
-import uuid
-import datetime
-from helios import models
 from . import WorkflowObject
 
 TYPE = 'homomorphic'

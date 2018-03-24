@@ -1,16 +1,11 @@
-import os
-import new
 import datetime
-import json
-import zipfile
 
 from Crypto import Random
 
-from django.conf import settings
 from django.db import models
 from django.db.models.base import ModelBase
 from django.db import transaction
-from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 from zeus.model_features import feature
 
@@ -209,6 +204,8 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
                     setattr(self, started_field, None)
                     setattr(self, status_field, 'pending')
                     self.save()
+                if settings.DEBUG or settings.ZEUS_TASK_DEBUG:
+                    raise
 
         setattr(inner, '_task', True)
         setattr(inner, '_task_name', name)

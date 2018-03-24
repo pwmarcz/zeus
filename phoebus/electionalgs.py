@@ -6,7 +6,6 @@ Ben Adida
 """
 
 import algs
-import logging
 import utils
 import uuid
 import datetime

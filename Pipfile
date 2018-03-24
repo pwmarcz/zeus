@@ -4,10 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = ">=1.8,<1.9"
+django = ">=1.9,<1.10"
 "celery[redis]" = "*"
-pyicu = "*"
-django-pagination = "==1.0.7"
+dj-pagination = "*"
 "psycopg2" = "*"
 pycryptodome = "*"
 "gmpy2" = "*"

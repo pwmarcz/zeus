@@ -7,10 +7,12 @@ Ben Adida
 ben@adida.net
 """
 
-import math, hashlib, logging
-import randpool, number
+import math
+import hashlib
+import logging
+import randpool
+import number
 
-import numtheory
 
 # some utilities
 class Utils:
@@ -568,7 +570,6 @@ class EGCiphertext:
         """
         when a ciphertext is decrypted by a dec factor, the proof needs to be checked
         """
-        pass
 
     def decrypt(self, decryption_factors, public_key):
         """

@@ -12,7 +12,11 @@
 
 __revision__ = "$Id: randpool.py,v 1.14 2004/05/06 12:56:54 akuchling Exp $"
 
-import time, array, types, warnings, os.path
+import time
+import array
+import types
+import warnings
+import os.path
 from number import long_to_bytes
 try:
     import Crypto.Util.winrandom as winrandom
@@ -375,7 +379,7 @@ class KeyboardRandomPool (PersistentRandomPool):
 
     def randomize(self, N = 0):
         "Adds N bits of entropy to random pool.  If N is 0, fill up pool."
-        import os, string, time
+        import os
         if N <= 0:
             bits = self.bits - self.entropy
         else:
@@ -407,7 +411,8 @@ if __name__ == '__main__':
     print 'random pool entropy', pool.entropy, 'bits'
     pool.add_event('something')
     print `pool.get_bytes(100)`
-    import tempfile, os
+    import tempfile
+    import os
     fname = tempfile.mktemp()
     pool = KeyboardRandomPool(filename=fname)
     print 'keyboard random pool entropy', pool.entropy, 'bits'

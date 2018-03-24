@@ -26,7 +26,7 @@ And when data comes in:
   LDObject.deserialize(json_string, type=...)
 """
 
-from helios import utils
+from heliosauth.utils import to_json
 from helios.crypto import utils as cryptoutils
 
 ##
@@ -182,7 +182,7 @@ class LDObject(object):
 
     def serialize(self):
         d = self.toDict(complete = True)
-        return utils.to_json(d)
+        return to_json(d)
 
     def toDict(self, alternate_fields=None, complete=False):
         val = {}

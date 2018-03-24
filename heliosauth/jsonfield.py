@@ -4,12 +4,9 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
-import datetime
 import json
 
 from django.db import models
-from django.db.models import signals
-from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
 class JSONField(models.TextField):

@@ -28,7 +28,7 @@ from zeus.auth import ZeusUser
 
 from zeus.stv_count_reports import stv_count_and_report
 
-from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
@@ -112,7 +112,7 @@ def stv_count(request):
 
 
 def setlang(request):
-    lang = request.REQUEST.get('language')
+    lang = request.POST.get('language')
     if not lang in map(lambda x:x[0], settings.LANGUAGES):
         return HttpResponseRedirect(reverse('home'))
     return set_language(request)

@@ -408,7 +408,6 @@ class EGCryptoSystem:
                 generator::int) -- Loads an EGCryptoSystem with key size nbits,
                                    prime p and generator g. Verifies parameters.
         """
-        pass
 
     @classmethod
     def new(cls, nbits=params.DEFAULT_KEY_SIZE, task_monitor=None):

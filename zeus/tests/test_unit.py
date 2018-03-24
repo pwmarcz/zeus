@@ -1,4 +1,3 @@
-from functools import partial
 from django.test import TestCase
 
 from zeus.utils import parse_q_param, get_filters, VOTER_TABLE_HEADERS, \

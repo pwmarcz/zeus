@@ -5,11 +5,7 @@ Ben Adida (ben@adida.net)
 """
 
 # nicely update the wrapper function
-from functools import update_wrapper
 
-from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseNotAllowed
-from django.core.exceptions import PermissionDenied
-from django.conf import settings
 
 import uuid
 

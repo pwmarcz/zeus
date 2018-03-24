@@ -1,25 +1,19 @@
 """
 """
-import datetime
 import json
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
-from django.utils.timesince import timesince
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
 from helios.models import Election
 
 from zeus import reports
 
 import sys
+from collections import OrderedDict
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from django.utils.datastructures import SortedDict as OrderedDict
 
 def json_handler(obj):
     if hasattr(obj, 'isoformat'):

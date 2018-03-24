@@ -37,8 +37,6 @@
 # secure version of python's random:
 from Crypto.Random.random import StrongRandom
 
-from EGCryptoSystem import EGCryptoSystem
-from PublicKey import PublicKey
 from PrivateKey import PrivateKey
 
 class KeyPair:

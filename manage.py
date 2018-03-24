@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import os, sys
+import os
+import sys
 
 # HACK until we upgrade Kombu.
 # See https://stackoverflow.com/questions/34198538/cannot-import-name-uuid-generate-random-in-heroku-django

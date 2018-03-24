@@ -1,12 +1,9 @@
 import json
-import os
-import zipfile
 import logging
 import StringIO
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
@@ -43,8 +40,7 @@ class StvElection(ElectionModuleBase):
 
     def questions_update_view(self, request, election, poll):
         from zeus.utils import poll_reverse
-        from zeus.forms import StvForm, DEFAULT_ANSWERS_COUNT, \
-                MAX_QUESTIONS_LIMIT
+        from zeus.forms import StvForm, DEFAULT_ANSWERS_COUNT
 
         if not poll.questions_data:
             poll.questions_data = [{}]

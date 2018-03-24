@@ -1,7 +1,7 @@
 from django.conf.urls import include, patterns, url
-from django.conf import settings
 
 from zeus.urls.trustee import election_patterns
+import zeus.views.poll
 
 election_patterns = patterns('zeus.views.election',
 
@@ -26,7 +26,7 @@ election_patterns = patterns('zeus.views.election',
     url(r'^report$', 'report', name="election_report"),
     url(r'^close_mixing$', 'close_mixing', name="election_close_mixing"),
     url(r'^mix/(?P<mix_key>[^/]+)$', 'remote_mix', name="election_remote_mix"),
-    url(r'^email-voters$', 'voters_email', name="election_voters_email"),
+    url(r'^email-voters$', zeus.views.poll.voters_email, name="election_voters_email"),
     url(r'^results/(?P<shortname>.*)-(?P<language>.*)\.pdf$', 'results_file',
         name="election_pdf_results",
         kwargs={'ext': 'pdf'}),

@@ -8,7 +8,7 @@ ben@adida.net
 2010-05-22
 """
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 import datetime
 import csv
 import uuid

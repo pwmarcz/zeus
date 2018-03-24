@@ -3,18 +3,14 @@ import os
 
 from optparse import make_option
 
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.auth_systems.password import make_password
 from helios.models import Voter, Poll, Election
 from zeus import utils
 from zeus import mobile as mobile_api
 
-from zeus.models import Institution
 from zeus import tasks
 
-import getpass
 
 class Command(BaseCommand):
 

@@ -1,10 +1,10 @@
 import json
-import urllib, urllib2
+import urllib
+import urllib2
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from helios.models import Poll
 
 OAUTH2_REGISTRY = {}
 

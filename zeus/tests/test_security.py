@@ -3,9 +3,7 @@ from datetime import timedelta
 
 from django.contrib.auth.hashers import make_password
 from django.test import TestCase
-from django.test.client import Client
 
-from zeus.models.zeus_models import Institution
 from heliosauth.models import User, UserGroup
 from helios.models import Election
 

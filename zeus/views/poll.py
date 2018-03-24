@@ -1,29 +1,23 @@
 import yaml
 import copy
 import os
-import csv
 import json
 import urllib
-import base64
 
-from collections import OrderedDict
 
 from django.core.urlresolvers import reverse
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
-from django.db.models.query import QuerySet
-from django.db.models import Q, Max
+from django.db.models import Max
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django.utils.html import mark_safe, escape
 from django.shortcuts import redirect
-from django import forms
 from django.template import Template, Context
 from django.conf import settings
 
-from zeus.forms import ElectionForm
 from zeus import auth
 from zeus.forms import PollForm, PollFormSet, EmailVotersForm
 from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_constraints
@@ -41,13 +35,12 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 
 from helios.view_utils import render_template
-from helios.models import Election, Poll, Voter, VoterFile, CastVote, \
+from helios.models import Poll, Voter, VoterFile, CastVote, \
     AuditedBallot
 from helios import datatypes
 from helios import exceptions
 from helios.crypto import utils as crypto_utils
 from helios.crypto import electionalgs
-from helios.utils import force_utf8
 
 from zeus.core import to_canonical, from_canonical
 
@@ -584,7 +577,10 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         if not voter or (voter and not voter.excluded_at):
             TEMPLATES.append(('extension', _('Voting end date extended')))
 
-    template = request.REQUEST.get('template', default_template)
+    if request.method == 'POST':
+        template = request.POST.get('template', default_template)
+    else:
+        template = request.GET.get('template', default_template)
 
     if not template in [t[0] for t in TEMPLATES]:
         raise Exception("bad template")
@@ -1224,7 +1220,6 @@ def sms_delivery(request, election, poll):
         voter.save()
     except Voter.DoesNotExist:
         poll.logger.error("Cannot resolve voter for sms delivery code: %r", code)
-        pass
     return HttpResponse("OK")
 
 

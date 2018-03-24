@@ -3,17 +3,14 @@ import csv
 from functools import partial
 
 from cStringIO import StringIO
-from collections import defaultdict
 from zeus.core import gamma_decode
 from zeus.utils import CSVReader
 from django.db.models import Count
 from django.utils.translation import ugettext as _
 from django.utils import translation
 
-try:
-    from collections import OrderedDict
-except ImportError:
-    from django.utils.datastructures import SortedDict as OrderedDict
+from collections import OrderedDict
+
 
 def zeus_report(elections):
     from helios.models import CastVote, Voter

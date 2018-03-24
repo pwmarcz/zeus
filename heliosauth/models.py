@@ -11,9 +11,8 @@ from django.db import models
 from jsonfield import JSONField
 from helios.fields import SeparatedValuesField
 
-import datetime, logging
 
-from auth_systems import AUTH_SYSTEMS, can_check_constraint, can_list_categories
+from auth_systems import AUTH_SYSTEMS
 
 # an exception to catch when a user is no longer authenticated
 class AuthenticationExpired(Exception):

@@ -4,14 +4,13 @@ Utilities for all views
 Ben Adida (12-30-2008)
 """
 
-from django.template import Context, Template, loader, TemplateSyntaxError, \
+from django.template import Context, loader, TemplateSyntaxError, \
     TemplateDoesNotExist
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.shortcuts import render
 
 import utils
 
-from helios import datatypes
 
 # nicely update the wrapper function
 from functools import update_wrapper

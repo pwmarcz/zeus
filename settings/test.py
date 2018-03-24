@@ -3,12 +3,15 @@ try:
 except ImportError:
     from .dev import *  # noqa
 
-import os, errno
+import os
+import errno
 import datetime
 import multiprocessing
 
 DEBUG = False
 TEMPLATE_DEBUG = True
+
+ZEUS_TASK_DEBUG = True
 
 LANGUAGES = (('en', 'EN'), ('el', 'EL'))
 LANGUAGE_CODE = 'en'

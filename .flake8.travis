@@ -7,6 +7,8 @@ select =
     E301,
     # too many blank lines
     E303,
+    # multiple imports on one line
+    E401,
     # module level import not at top of file
     E402,
     # indentation contains tabs
@@ -17,6 +19,8 @@ select =
     W293,
     # blank line at end of file
     W391,
+    # imported but unused
+    F401,
     # 'import *' used
     F403,
     # undefined name

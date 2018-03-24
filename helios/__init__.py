@@ -1,6 +1,5 @@
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 
 TEMPLATE_BASE = settings.HELIOS_TEMPLATE_BASE or "helios/templates/base.html"
 

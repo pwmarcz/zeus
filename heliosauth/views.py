@@ -7,7 +7,6 @@ Ben Adida
 
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from .view_utils import render_template, render_template_raw
@@ -17,7 +16,7 @@ from auth_systems import AUTH_SYSTEMS
 from auth_systems import password
 
 import heliosauth
-import copy, urllib
+import urllib
 
 from models import User
 from security import FIELDS_TO_SAVE

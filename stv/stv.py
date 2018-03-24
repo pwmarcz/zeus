@@ -30,7 +30,6 @@
 # as representing official policies, either expressed or implied, of
 # GRNET S.A.
 
-from operator import mul, itemgetter
 from random import random, seed
 import logging
 import sys

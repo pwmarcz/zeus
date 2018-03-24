@@ -1,5 +1,5 @@
 from helios.workflows.homomorphic import Tally as HomomorphicTally
-from helios.crypto.elgamal import Plaintext, Ciphertext
+from helios.crypto.elgamal import Ciphertext
 from helios.crypto import algs
 
 # we are extending homomorphic workflow
@@ -7,7 +7,6 @@ from helios.workflows.homomorphic import WorkflowObject, DLogTable, EncryptedVot
 
 from phoebus import phoebus
 
-import copy
 
 TYPE = 'mixnet'
 
@@ -113,7 +112,6 @@ class Tally(HomomorphicTally):
         Each decryption factor set is a list of lists of decryption factors (questions/answers).
         """
 
-        from phoebus import phoebus as ph
         # pre-compute a dlog table
         dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
 

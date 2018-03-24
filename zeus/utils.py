@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
 from cStringIO import StringIO
 from csv import (Sniffer, excel, Error as csvError,
                  reader as imported_csv_reader)
@@ -8,7 +7,7 @@ from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
 from django.db.models import Q
-from django.template import Context, Template, loader, RequestContext
+from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.conf import settings

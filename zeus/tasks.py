@@ -1,28 +1,19 @@
-import traceback
 import copy
 import datetime
-import json
-import urllib, urllib2
 import logging
 
 from functools import wraps
 
 from helios.models import Election, Voter, Poll
-from helios.view_utils import render_template_raw
 
-from django.template import Context, Template, loader
-from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import translation
-from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.db import transaction
 
-from zeus.core import from_canonical
 from zeus import mobile
 from zeus import utils
 from zeus.contact import ContactBackend
-from email.Utils import formataddr
 from zeus.celery import app
 
 

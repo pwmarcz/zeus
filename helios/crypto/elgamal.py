@@ -8,10 +8,8 @@ Ben Adida
 ben@adida.net
 """
 
-import math, hashlib, logging
-import randpool, number
+import logging
 
-import numtheory
 
 from algs import Utils
 from zeus.core import prove_dlog, prove_ddh_tuple

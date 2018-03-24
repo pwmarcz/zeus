@@ -13,13 +13,10 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.platypus import Spacer, Image, PageBreak
+from reportlab.platypus import PageBreak, Spacer
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfdoc
-from django.conf import settings
 from django.utils import translation
 from django.utils.translation import ugettext as _
 

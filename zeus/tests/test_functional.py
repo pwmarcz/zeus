@@ -16,7 +16,6 @@ from django.core import mail
 from helios import datatypes
 from helios.crypto import algs
 from helios.models import Election, Voter, Poll, Trustee
-from heliosauth.models import User
 from zeus.tests.utils import SetUpAdminAndClientMixin
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
@@ -962,7 +961,8 @@ class TestSimpleElection(TestElectionBase):
             raise Exception(raised_error)
         orig = PollTasks.mix
         PollTasks.mix = mix
-        self.broken_mix_election_process()
+        with self.settings(ZEUS_TASK_DEBUG=False):
+            self.broken_mix_election_process()
         PollTasks.mix = orig
         admins = settings.ADMINS
         prefix = settings.EMAIL_SUBJECT_PREFIX

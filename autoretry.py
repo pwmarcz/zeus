@@ -51,7 +51,8 @@ def autoretry_datastore_timeouts(attempts=5.0, interval=0.1, exponent=2.0):
     :param exponent: rate of exponential back-off.
     """
 
-    import time, logging
+    import time
+    import logging
     from google.appengine.api import apiproxy_stub_map
     from google.appengine.runtime import apiproxy_errors
     from google.appengine.datastore import datastore_pb
