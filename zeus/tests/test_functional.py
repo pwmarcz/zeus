@@ -1020,6 +1020,28 @@ class TestSimpleElection(TestElectionBase):
 
         self.assertTemplateUsed(response, tpl + '.html')
 
+    def test_poll_add_batch_file(self):
+        self.election_form['election_module'] = self.election_type
+        self.c.post(self.locations['login'], self.login_data)
+        self.c.post(self.locations['create'], self.election_form, follow=True)
+        election = Election.objects.get()
+        election.linked_polls = True
+        election.save()
+        self.e_uuid = election.uuid
+        self.create_polls()
+        poll = Poll.objects.all()[0]
+
+        with open('test_sample_survey_for_linked_election.yml') as batch_file:
+            response = self.c.post('/elections/{}/polls/add'.format(election.uuid),
+                                   {
+                                       'batch_file': batch_file,
+                                    })
+
+        assert response.status_code == 302
+        self.assertRedirects(response, '/elections/{}/polls/'.format(election.uuid))
+
+        #todo: invalid contents
+
 
 class TestPartyElection(TestElectionBase):
 
