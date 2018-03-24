@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
+    'dj_pagination.middleware.PaginationMiddleware',
     'zeus.middleware.AuthenticationMiddleware',
     'zeus.middleware.ExceptionsMiddleware',
 )
@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'pagination',
+    'dj_pagination',
     'heliosauth',
     'helios',
     'zeus',
