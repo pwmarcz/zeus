@@ -47,28 +47,6 @@ def index(request):
                                              'default_auth_system': heliosauth.DEFAULT_AUTH_SYSTEM,
                                              'default_auth_system_obj': default_auth_system_obj})
 
-def login_box_raw(request, return_url=None, auth_systems = None):
-    """
-    a chunk of HTML that shows the various login options
-    """
-    if return_url is None:
-        return_url = reverse('home')
-    default_auth_system_obj = None
-    if heliosauth.DEFAULT_AUTH_SYSTEM:
-        default_auth_system_obj = AUTH_SYSTEMS[heliosauth.DEFAULT_AUTH_SYSTEM]
-
-    # make sure that auth_systems includes only available and enabled auth systems
-    if auth_systems != None:
-        enabled_auth_systems = set(auth_systems).intersection(set(heliosauth.ENABLED_AUTH_SYSTEMS)).intersection(set(AUTH_SYSTEMS.keys()))
-    else:
-        enabled_auth_systems = set(heliosauth.ENABLED_AUTH_SYSTEMS).intersection(set(AUTH_SYSTEMS.keys()))
-
-    form = password.LoginForm()
-
-    return render_template_raw(request, 'login_box', {
-        'enabled_auth_systems': enabled_auth_systems, 'return_url': return_url,
-        'default_auth_system': heliosauth.DEFAULT_AUTH_SYSTEM, 'default_auth_system_obj': default_auth_system_obj,
-        'form' : form})
 
 def do_local_logout(request):
     """
@@ -209,7 +187,7 @@ def change_password(request):
         form = ChangePasswordForm(user, request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('heliosauth.views.change_password') + \
+            return HttpResponseRedirect(reverse('change_password') + \
                                         '?password_changed=1')
 
     return render_template(request, 'change_password', {'form': form,
