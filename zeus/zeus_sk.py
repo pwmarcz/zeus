@@ -1,7 +1,9 @@
 from zeus.core import (
         ZeusError, pow, sha256, ALPHA, BETA,
         get_random_int, bit_iterator, get_random_permutation,
-        Random, AsyncController, MIN_MIX_ROUNDS, _teller)
+        MIN_MIX_ROUNDS, _teller)
+from multiprocessing import Pool
+from Crypto import Random
 
 
 def reencrypt(modulus, generator, order, public, alpha, beta, secret=None):
@@ -42,7 +44,7 @@ def compute_mix_challenge(cipher_mix):
 
 
 def shuffle_ciphers(modulus, generator, order, public, ciphers,
-                    teller=None, report_thresh=128, async_channel=None):
+                    teller=None, report_thresh=128):
     nr_ciphers = len(ciphers)
     mixed_offsets = get_random_permutation(nr_ciphers)
     mixed_ciphers = list([None]) * nr_ciphers
@@ -60,16 +62,16 @@ def shuffle_ciphers(modulus, generator, order, public, ciphers,
         if count >= report_thresh:
             if teller:
                 teller.advance(count)
-            if async_channel:
-                async_channel.send_shared(count, wait=1)
             count = 0
 
     if count:
         if teller:
             teller.advance(count)
-        if async_channel:
-            async_channel.send_shared(count, wait=1)
     return [mixed_ciphers, mixed_offsets, mixed_randoms]
+
+
+def _shuffle_ciphers(data):
+    return shuffle_ciphers(*data)
 
 
 def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
@@ -81,11 +83,6 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
 
     original_ciphers = ciphers_for_mixing['mixed_ciphers']
     nr_ciphers = len(original_ciphers)
-
-    if nr_parallel > 0:
-        Random.atfork()
-        async = AsyncController(parallel=nr_parallel)
-        async_shuffle_ciphers = async.make_async(shuffle_ciphers)
 
     teller.task('Mixing %d ciphers for %d rounds' % (nr_ciphers, nr_rounds))
 
@@ -100,18 +97,17 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
     total = nr_ciphers * nr_rounds
     with teller.task('Producing ciphers for proof', total=total):
         if nr_parallel > 0:
-            channels = [async_shuffle_ciphers(p, g, q, y, original_ciphers,
-                                              teller=None)
-                        for _ in xrange(nr_rounds)]
-
-            count = 0
-            while count < total:
-                nr = async.receive_shared()
-                teller.advance(nr)
-                count += nr
-
-            collections = [channel.receive(wait=1) for channel in channels]
-            async.shutdown()
+            pool = Pool(nr_parallel, Random.atfork)
+            data = [
+                (p, g, q, y, original_ciphers)
+                for _ in xrange(nr_rounds)
+            ]
+            collections = []
+            for r in pool.imap(_shuffle_ciphers, data):
+                teller.advance()
+                collections.append(r)
+            pool.close()
+            pool.join()
         else:
             collections = [shuffle_ciphers(p, g, q, y,
                                            original_ciphers, teller=teller)
@@ -174,9 +170,10 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
 
 def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
                      ciphers, randoms, offsets,
-                     teller=None, report_thresh=128, async_channel=None):
+                     teller=None, report_thresh=128):
     nr_ciphers = len(original_ciphers)
     count = 0
+    total = 0
     if bit == 0:
         for j in xrange(nr_ciphers):
             original_cipher = original_ciphers[j]
@@ -191,9 +188,8 @@ def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
                      'ROUND %d CIPHER %d bit 0' % (i, j))
                 raise AssertionError(m)
             count += 1
+            total += 1
             if count >= report_thresh:
-                if async_channel:
-                    async_channel.send_shared(count)
                 if teller:
                     teller.advance(count)
                 count = 0
@@ -211,9 +207,8 @@ def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
                      'ROUND %d CIPHER %d bit 1' % (i, j))
                 raise AssertionError(m)
             count += 1
+            total += 1
             if count >= report_thresh:
-                if async_channel:
-                    async_channel.send_shared(count)
                 if teller:
                     teller.advance(count)
                 count = 0
@@ -222,10 +217,13 @@ def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
         raise AssertionError(m)
 
     if count:
-        if async_channel:
-            async_channel.send_shared(count)
         if teller:
             teller.advance(count)
+    return total
+
+
+def _verify_mix_round(data):
+    return verify_mix_round(*data)
 
 
 def verify_cipher_mix(cipher_mix, teller=_teller, nr_parallel=0):
@@ -263,41 +261,30 @@ def verify_cipher_mix(cipher_mix, teller=_teller, nr_parallel=0):
     #    m = "Invalid cryptosystem"
     #    raise AssertionError(m)
 
-    if nr_parallel > 0:
-        async = AsyncController(parallel=nr_parallel)
-        async_verify_mix_round = async.make_async(verify_mix_round)
-
     total = nr_rounds * nr_ciphers
     with teller.task('Verifying ciphers', total=total):
-        channels = []
-        append = channels.append
+        data = []
         for i, bit in zip(xrange(nr_rounds), bit_iterator(int(challenge, 16))):
             ciphers = cipher_collections[i]
             randoms = random_collections[i]
             offsets = offset_collections[i]
-            if nr_parallel <= 0:
-                verify_mix_round(p, g, q, y,
-                                 i, bit, original_ciphers,
-                                 mixed_ciphers, ciphers,
-                                 randoms, offsets,
-                                 teller=teller)
-            else:
-                append(async_verify_mix_round(p, g, q, y, i, bit,
-                                              original_ciphers,
-                                              mixed_ciphers,
-                                              ciphers, randoms, offsets,
-                                              teller=None))
-        if nr_parallel > 0:
-            count = 0
-            while count < total:
-                nr = async.receive_shared(wait=1)
-                teller.advance(nr)
-                count += nr
+            data.append((p, g, q, y,
+                         i, bit, original_ciphers,
+                         mixed_ciphers, ciphers,
+                         randoms, offsets))
 
-            for channel in channels:
-                channel.receive(wait=1)
+        if nr_parallel <= 0:
+            for args in data:
+                verify_mix_round(*args, teller=teller)
 
-            async.shutdown()
+        else:
+            pool = Pool(nr_parallel, Random.atfork)
+            try:
+                for count in pool.imap(_verify_mix_round, data):
+                    teller.advance(count)
+            finally:
+                pool.terminate()
+                pool.join()
 
     teller.finish('Verifying mixing')
     return 1

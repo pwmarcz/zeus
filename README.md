@@ -58,7 +58,7 @@ Run migrations:
 Create an institution and admin user:
 
     python manage.py manage_users --create-institution "ZEUS"
-    python manage.py manage_users --create-user <username> --institution=1
+    python manage.py manage_users --create-user <username> --institution=1 --superuser
 
 ## Run
 
