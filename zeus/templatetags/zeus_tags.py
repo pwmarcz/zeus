@@ -97,7 +97,7 @@ def _action(context, label, url, icon="", cls="", extra_cls="",
         'extra_cls': extra_cls,
         'tag_content': tag_content
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)
@@ -147,7 +147,7 @@ def menu_action(context, label, url, icon="", cls=""):
         'url': url,
         'icon': icon
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)
@@ -206,7 +206,7 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
         'csrf_token': csrf_token,
         'q_hidden_field': q_field,
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)
