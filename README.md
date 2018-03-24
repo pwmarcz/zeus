@@ -24,7 +24,7 @@ Install Postgres (`postgres-server`, `libpq-dev`).
 
 Install the following libraries:
 
-    libicu-dev libgmp-dev libmpfr-dev libmpc-dev
+    libgmp-dev libmpfr-dev libmpc-dev
 
 If necessary, create a Postgres user. Then create a database:
 

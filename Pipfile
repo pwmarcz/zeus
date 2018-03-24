@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 django = ">=1.9,<1.10"
 "celery[redis]" = "*"
-pyicu = "*"
 dj-pagination = "*"
 "psycopg2" = "*"
 pycryptodome = "*"
