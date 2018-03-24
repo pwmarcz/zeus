@@ -10,8 +10,9 @@ def get_from_env(var, default):
 
 ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
 
+TESTING = False
 DEBUG = False
-TEMPLATE_DEBUG = False
+ZEUS_TASK_DEBUG = False
 
 ADMINS = (
     ('Grnet user', 'test@grnet.gr'),

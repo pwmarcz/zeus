@@ -961,7 +961,8 @@ class TestSimpleElection(TestElectionBase):
             raise Exception(raised_error)
         orig = PollTasks.mix
         PollTasks.mix = mix
-        self.broken_mix_election_process()
+        with self.settings(ZEUS_TASK_DEBUG=False):
+            self.broken_mix_election_process()
         PollTasks.mix = orig
         admins = settings.ADMINS
         prefix = settings.EMAIL_SUBJECT_PREFIX
