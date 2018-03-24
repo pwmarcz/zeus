@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+import zipfile
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -186,7 +187,7 @@ class ElectionModuleBase(ElectionHooks):
         election_pdfpath = self.get_election_result_file_path('pdf', 'pdf',
                                                                 lang[0])
         if not os.path.exists(election_pdfpath):
-            module.generate_election_result_docs(lang)
+            self.module.generate_election_result_docs(lang)
         basename = os.path.basename(election_pdfpath)
         all_docs_zip.write(election_pdfpath, basename)
 
@@ -295,6 +296,7 @@ class ElectionModuleBase(ElectionHooks):
         return True
 
 
+# TODO change to explicit imports
 from zeus.election_modules.simple import *  # noqa
 from zeus.election_modules.parties import * # noqa
 from zeus.election_modules.score import * # noqa
