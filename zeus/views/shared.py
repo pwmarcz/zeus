@@ -2,7 +2,7 @@ import os
 import base64
 
 from django.http import JsonResponse
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.views.decorators.http import require_http_methods
 
 

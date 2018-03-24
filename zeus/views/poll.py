@@ -10,7 +10,7 @@ from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
 from django.db.models import Max
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django.utils.html import mark_safe, escape

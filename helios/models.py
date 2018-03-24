@@ -34,7 +34,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email as django_validate_email
 from django.forms import ValidationError
 from django.core.urlresolvers import reverse
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.utils import translation
 from django.core.files import storage
 
