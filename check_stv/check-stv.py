@@ -49,11 +49,10 @@ if __name__ == "__main__":
                               quota_limit=2 if hasLimit else 0,
                               rnd_gen=rnd_gen)
 
-    
     #-------------------------------------------------------
-    
+
     #take correct local_results format str8 from stv.py
-    local_results = [] 
+    local_results = []
     for item in count_results[0]:
         for candidate in count_results[2]:
             if item[0] == candidate[0]:
@@ -64,11 +63,9 @@ if __name__ == "__main__":
                 temp_list.append(candidate[1])
                 local_results.append(temp_list)
 
-
-
     for item in ecounting_results:
         item[0] = str(item[0])
-    
+
     if ecounting_results != local_results:
         if len(ecounting_results) != len(local_results):
             print "Different number of elected candidates!"

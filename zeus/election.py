@@ -5,13 +5,12 @@ import json
 import copy
 import re
 
-from django.utils.datastructures import SortedDict
-from django.utils.translation import ugettext_lazy as _
+from collections import OrderedDict
 
 from zeus.core import ZeusCoreElection, Teller, sk_from_args, \
-    TellerStream, gamma_count_parties, gamma_count_range
+    gamma_count_parties, gamma_count_range
 from zeus.core import V_CAST_VOTE, V_PUBLIC_AUDIT, V_AUDIT_REQUEST, \
-    gamma_decode, to_absolute_answers, ZeusError
+    ZeusError
 
 from django.conf import settings
 
@@ -19,11 +18,8 @@ from helios.crypto import electionalgs, elgamal
 from helios.crypto import utils
 from helios import models as helios_models
 from helios import datatypes
-from stv.stv import count_stv, Ballot
 
-from django.db import connection
-from hashlib import sha256
-
+import importlib
 
 # Parameters for everything
 ELGAMAL_PARAMS = elgamal.Cryptosystem()
@@ -40,7 +36,6 @@ MIXNET_NR_PARALLEL = getattr(settings, 'ZEUS_MIXNET_NR_PARALLEL', 2)
 MIXNET_NR_ROUNDS = getattr(settings, 'ZEUS_MIXNET_NR_ROUNDS', 128)
 SHUFFLE_MODULE = getattr(settings, 'SHUFFLE_MODULE', 'zeus.zeus_sk')
 
-import importlib
 shuffle_module = importlib.import_module(SHUFFLE_MODULE)
 
 
@@ -67,9 +62,6 @@ class ZeusDjangoElection(ZeusCoreElection):
     """
     Implement required core do_store/do_get methods.
     """
-    def __init__(self, **kwargs):
-        kwargs['shuffle_module'] = shuffle_module
-        ZeusCoreElection.__init__(self, **kwargs)
 
     @classmethod
     def from_election(self, election):
@@ -465,16 +457,16 @@ class ZeusDjangoElection(ZeusCoreElection):
         zeus_trustees = {}
 
         for t in trustees:
-          public = t.public_key.y
-          zeus_trustees[public] = [t.pok.commitment, t.pok.challenge,
-                                   t.pok.response]
+            public = t.public_key.y
+            zeus_trustees[public] = [t.pok.commitment, t.pok.challenge,
+                                     t.pok.response]
         return zeus_trustees
 
     def do_get_all_trustee_factors(self):
         factors = {}
         for trustee in self.election.trustees.filter(
             secret_key__isnull=True):
-          factors[trustee.public_key.y] = self._get_zeus_factors(trustee)
+            factors[trustee.public_key.y] = self._get_zeus_factors(trustee)
         return factors
 
     def do_get_last_mix(self):
@@ -601,13 +593,13 @@ class ZeusDjangoElection(ZeusCoreElection):
         return results
 
     def get_results_pretty_score(self):
-        pretty = SortedDict()
+        pretty = OrderedDict()
 
         results = self.get_results()
 
         for i, q in enumerate(self.poll.questions_data):
             entry = copy.copy(q)
-            entry['results'] = SortedDict()
+            entry['results'] = OrderedDict()
             scores = filter(lambda a: a[1].startswith("%s:" % q['question']), results['totals'])
             for score, answer in scores:
                 qanswer = answer.replace("%s:" % q['question'], "")
@@ -641,7 +633,7 @@ class ZeusDjangoElection(ZeusCoreElection):
                                     party_candidates.keys())
             candidate_keys.sort()
             candidates = [party_candidates[c] for c in candidate_keys]
-            candidate_counts = SortedDict([(c, 0) for c in \
+            candidate_counts = OrderedDict([(c, 0) for c in \
                                            candidates])
             candidate_sums = 0
 
@@ -664,7 +656,7 @@ class ZeusDjangoElection(ZeusCoreElection):
                     if len(b['candidates']) == 1 and \
                        party in b['parties'] and \
                        b['candidates'][0][1] not in candidates:
-                            empty_party_count += 1
+                        empty_party_count += 1
                 data['candidates']['Χωρίς επιλογή'] = empty_party_count
             parties.append(data)
 

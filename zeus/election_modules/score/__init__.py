@@ -1,5 +1,3 @@
-import zipfile
-import os
 from itertools import izip_longest
 
 from django.utils.translation import ugettext_lazy as _
@@ -10,7 +8,6 @@ from django.conf import settings
 from zeus.election_modules import ElectionModuleBase, election_module
 from zeus.views.utils import set_menu
 from helios.view_utils import render_template
-
 
 
 @election_module
@@ -32,8 +29,7 @@ class ScoreBallotElection(ElectionModuleBase):
 
     def questions_update_view(self, request, election, poll):
         from zeus.utils import poll_reverse
-        from zeus.forms import ScoresForm, RequiredFormset, DEFAULT_ANSWERS_COUNT, \
-                MAX_QUESTIONS_LIMIT
+        from zeus.forms import ScoresForm, RequiredFormset, DEFAULT_ANSWERS_COUNT
 
         extra = 1
         if poll.questions_data:
@@ -67,7 +63,7 @@ class ScoreBallotElection(ElectionModuleBase):
                     for k in question.keys():
                         if k in ['DELETE', 'ORDER']:
                             del question[k]
-                    
+
                     questions_data.append(question)
 
                 poll.questions_data = questions_data
@@ -119,7 +115,6 @@ class ScoreBallotElection(ElectionModuleBase):
         params = "%d-%d" % (min, max)
         answers.append("%s" % (params, ))
 
-
         poll_answers = []
         scores = reversed(scores)
         for answer, score in izip_longest(answers[:-1], scores):
@@ -150,7 +145,7 @@ class ScoreBallotElection(ElectionModuleBase):
 
     def get_booth_template(self, request):
         raise NotImplemented
-    
+
     def compute_results(self):
         self.generate_json_file()
         for lang in settings.LANGUAGES:

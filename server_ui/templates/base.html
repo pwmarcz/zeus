@@ -132,7 +132,7 @@
           | <a href={% url "list_users" %}>{% trans "accounts" %}</a>
           {% endif %}
               {% if user.user_type == "password" %}
-              | <a href="{% url "heliosauth.views.change_password" %}">{% trans "change password" %}</a>
+              | <a href="{% url "change_password" %}">{% trans "change password" %}</a>
               {% endif %}
               <br />
 

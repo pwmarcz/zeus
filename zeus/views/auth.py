@@ -1,14 +1,5 @@
 import logging
 import urllib2
-import urllib
-import json
-
-JWT_SUPPORT = True
-try:
-    import jwt
-except ImportError:
-    jwt = None
-    JWT_SUPPORT = False
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
@@ -17,10 +8,9 @@ from django.contrib import messages
 from django.shortcuts import redirect
 
 from zeus import auth
-from zeus.utils import *
+from zeus.utils import poll_reverse
 from zeus.forms import ChangePasswordForm, VoterLoginForm
 
-from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_http_methods
@@ -29,7 +19,13 @@ from django.utils.translation import ugettext_lazy as _
 from helios.view_utils import render_template
 from helios.models import Voter, Poll
 from zeus.forms import LoginForm
-from zeus import auth
+
+JWT_SUPPORT = True
+try:
+    import jwt
+except ImportError:
+    jwt = None
+    JWT_SUPPORT = False
 
 
 logger = logging.getLogger(__name__)
@@ -139,7 +135,6 @@ def oauth2_login(request):
             messages.error(request, 'oauth2 error')
             return HttpResponseRedirect(reverse('error',
                                                 kwargs={'code': 400}))
-            pass
     else:
         poll.logger.info("[thirdparty] oauth2 '%s' can_exchange failed",
                          poll.remote_login_display)
@@ -243,7 +238,6 @@ def jwt_login(request):
         message = "No json web token provided"
         messages.error(request, message)
         return redirect('home')
-
 
     AUDIENCE = 'zeus' # add to settings
 

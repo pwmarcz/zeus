@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Election, Voter
 
 def strforce(thing):
     if isinstance(thing, unicode):
@@ -40,4 +37,3 @@ class Command(BaseCommand):
                 print ','.join((uuid, name, poll_uuid, poll_name,
                                 admin, institution, voter_count, voted_count,
                                 start, end))
-

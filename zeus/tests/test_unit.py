@@ -1,4 +1,3 @@
-from functools import partial
 from django.test import TestCase
 
 from zeus.utils import parse_q_param, get_filters, VOTER_TABLE_HEADERS, \
@@ -33,4 +32,3 @@ class TestUniGovGr(TestCase):
         assert UNIGOV_COUNT(A, B, G, S)[1] == 39.0
         S, G, A, B = 115, 178, 14, 34
         assert UNIGOV_COUNT(A, B, G, S)[1] == 18.0
-

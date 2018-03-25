@@ -335,17 +335,16 @@ class CiphertextReencryptionInfo:
         # Perform the subtraction of self - other_reencryption block by block
         # and store it on result.
         for i in range(0, self.get_length()):
-             gr1, yr1 = self[i]                     # g^{r_1} and y^{r_1}
-             gr2, yr2 = other_reencryption[i]       # g^{r_2} and y^{r_2}
+            gr1, yr1 = self[i]                     # g^{r_1} and y^{r_1}
+            gr2, yr2 = other_reencryption[i]       # g^{r_2} and y^{r_2}
 
-             # Remember that we can invert in Z_p by elevating to p - 2.
-             inv_gr2 = pow(gr2, prime - 2, prime)   # (g^{r_2})^{-1} = g^{-r_2}
-             inv_yr2 = pow(yr2, prime - 2, prime)   # (y^{r_2})^{-1} = y^{-r_2}
+            # Remember that we can invert in Z_p by elevating to p - 2.
+            inv_gr2 = pow(gr2, prime - 2, prime)   # (g^{r_2})^{-1} = g^{-r_2}
+            inv_yr2 = pow(yr2, prime - 2, prime)   # (y^{r_2})^{-1} = y^{-r_2}
 
-             gr = (gr1*inv_gr2) % prime             # g^{r_1 - r_2}
-             yr = (yr1*inv_yr2) % prime             # y^{r_1 - r_2}
+            gr = (gr1*inv_gr2) % prime             # g^{r_1 - r_2}
+            yr = (yr1*inv_yr2) % prime             # y^{r_1 - r_2}
 
-             result.add_block(gr, yr)
+            result.add_block(gr, yr)
 
         return result
-

@@ -37,7 +37,6 @@ def _get_logger(uuid, obj, user, fmt, extra={}):
         user_id = "SYSTEM"
         thread_ip = "SYSTEM"
 
-
     logger = logging.getLogger(key)
     logger.setLevel(logging.DEBUG)
     logger.propagate = False

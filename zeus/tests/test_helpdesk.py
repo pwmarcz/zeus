@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import pytest
 
 from django.test import TestCase
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import make_password
 from django.utils import translation
 
 from heliosauth.models import User, UserGroup
@@ -618,8 +617,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             'name',
             asrt_message,
             )
-
-
 
     def test_edit_institution(self):
         inst = Institution.objects.get(name='test_inst')

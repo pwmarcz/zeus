@@ -45,4 +45,3 @@ def get_institution(id):
     except Institution.DoesNotExist:
         inst = None
     return inst
-

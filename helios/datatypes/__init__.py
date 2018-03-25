@@ -26,7 +26,7 @@ And when data comes in:
   LDObject.deserialize(json_string, type=...)
 """
 
-from helios import utils
+from heliosauth.utils import to_json
 from helios.crypto import utils as cryptoutils
 
 ##
@@ -53,7 +53,7 @@ def get_class(datatype):
     dynamic_module = __import__(".".join(parsed_datatype[:-1]), globals(), locals(), [], level=-1)
 
     if not dynamic_module:
-        raise Exception("no module for %s" % datatpye)
+        raise Exception("no module for %s" % datatype)
 
     # go down the attributes to get to the class
     try:
@@ -182,7 +182,7 @@ class LDObject(object):
 
     def serialize(self):
         d = self.toDict(complete = True)
-        return utils.to_json(d)
+        return to_json(d)
 
     def toDict(self, alternate_fields=None, complete=False):
         val = {}
@@ -312,6 +312,7 @@ def arrayOf(element_type):
 
 class DictObject(object):
     "when the wrapped object is actually dictionary"
+
     def _getattr_wrapped(self, attr):
         return self.wrapped_obj[attr]
 
@@ -324,4 +325,3 @@ class ListObject(object):
 
     def toDict(self, complete=False):
         return self.wrapped_obj
-

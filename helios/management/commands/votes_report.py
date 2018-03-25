@@ -1,9 +1,6 @@
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Election, CastVote
 
 import sys
 reload(sys)
@@ -22,4 +19,3 @@ class Command(BaseCommand):
                                            poll=poll).order_by('voter__voter_surname',
                                                                        'cast_at'):
                 print u"%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at)
-

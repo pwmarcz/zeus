@@ -87,7 +87,6 @@ class CiphertextCollection:
         """
         return len(self._ciphertexts)
 
-
     def __getitem__(self, i):
         """
         Makes this object indexable.
@@ -103,13 +102,11 @@ class CiphertextCollection:
 
         return self._ciphertexts[i]
 
-
     def __iter__(self):
         """
         Return an iterator for the current ciphertext collection.
         """
         return self._ciphertexts.__iter__()
-
 
     def __eq__(self, other):
         """
@@ -132,7 +129,6 @@ class CiphertextCollection:
 
         return True
 
-
     def __ne__(self, other):
         """
         Implements CiphertextCollection inequality.
@@ -141,7 +137,6 @@ class CiphertextCollection:
         inequality its is negation.
         """
         return not self.__eq__(other)
-
 
     def __init__(self, public_key):
         """
@@ -154,7 +149,6 @@ class CiphertextCollection:
         # Cache the fingerprint to improve performance
         self._pk_fingerprint = self.public_key.get_fingerprint()
         self._ciphertexts = []
-
 
     def add_ciphertext(self, ciphertext):
         """
@@ -178,7 +172,6 @@ class CiphertextCollection:
 
         # Add the ciphertext
         self._ciphertexts.append(ciphertext)
-
 
     def shuffle_with_proof(self):
         """
@@ -260,4 +253,3 @@ class CiphertextCollection:
 
         # Form tuple and return it
         return (shuffled_collection, proof)
-

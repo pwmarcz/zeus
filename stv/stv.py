@@ -30,7 +30,6 @@
 # as representing official policies, either expressed or implied, of
 # GRNET S.A.
 
-from operator import mul, itemgetter
 from random import random, seed
 import logging
 import sys
@@ -190,7 +189,6 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
 
     Returns true if the candidate is elected, false otherwise.
     """
-
 
     quota_exceeded = False
     # If there is a quota limit, check if it is exceeded

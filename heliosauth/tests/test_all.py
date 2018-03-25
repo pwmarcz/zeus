@@ -2,21 +2,16 @@
 Unit Tests for Auth Systems
 """
 
-import unittest
 from .. import models
 
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError
 
-from django.test.client import Client
 from django.test import TestCase
 
 from django.core import mail
 
 from ..auth_systems import AUTH_SYSTEMS
 
-from .. import views
-from ..auth_systems import password as password_views
-from django.core.urlresolvers import reverse
 import pytest
 
 class UserModelTests(TestCase):
@@ -50,7 +45,6 @@ class UserModelTests(TestCase):
 
                 assert u.id == u2.id
                 assert u2.info['name'] == new_name
-
 
     def test_status_update(self):
         """

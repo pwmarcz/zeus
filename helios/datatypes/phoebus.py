@@ -2,9 +2,8 @@
 Legacy datatypes for Phoebus stv voting platform(v3.0)
 """
 
-from helios.datatypes import LDObject, arrayOf, DictObject, ListObject
-from helios.crypto import elgamal as crypto_elgamal
-from helios.workflows import homomorphic, mixnet
+from helios.datatypes import LDObject, arrayOf
+from helios.workflows import mixnet
 from helios import models
 
 
@@ -115,4 +114,3 @@ class Result(LegacyObject):
 
     def toDict(self, complete=False):
         return self.wrapped_obj
-

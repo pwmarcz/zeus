@@ -26,5 +26,3 @@ class ChangePasswordForm(forms.Form):
            self.cleaned_data.get('new_password_confirm'):
             raise forms.ValidationError(_('Passwords don\'t match'))
         return cl
-
-

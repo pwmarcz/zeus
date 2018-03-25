@@ -5,7 +5,6 @@ import copy
 import json
 import os
 import datetime
-from django.utils.translation import ugettext as _
 from collections import OrderedDict
 
 from xml.sax.saxutils import escape
@@ -14,13 +13,10 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.platypus import Spacer, Image, PageBreak
+from reportlab.platypus import PageBreak, Spacer
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfdoc
-from django.conf import settings
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
@@ -418,7 +414,6 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
         else:
             extended_until = ""
 
-
         if not isinstance(data, list):
             data = [(name, data)]
 
@@ -517,7 +512,6 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             extended_until.strftime(DATE_FMT)}
         else:
             extended_until = ""
-
 
         # reset pdfdoc timestamp in order to force a fresh one to be used in
         # pdf document metadata.

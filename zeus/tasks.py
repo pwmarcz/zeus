@@ -1,28 +1,19 @@
-import traceback
 import copy
 import datetime
-import json
-import urllib, urllib2
 import logging
 
 from functools import wraps
 
 from helios.models import Election, Voter, Poll
-from helios.view_utils import render_template_raw
 
-from django.template import Context, Template, loader
-from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.utils import translation
-from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.db import transaction
 
-from zeus.core import from_canonical
 from zeus import mobile
 from zeus import utils
 from zeus.contact import ContactBackend
-from email.Utils import formataddr
 from zeus.celery import app
 
 
@@ -87,7 +78,6 @@ def single_voter_email(voter_uuid,
             'sms': body_template_sms
         }
 
-
         def sent_hook(voter, method, error=None):
             if error:
                 return
@@ -138,7 +128,7 @@ def voters_email(poll_id,
     ))
 
     poll.logger.info("Notifying %d voters via %r" % (voters.count(), contact_methods))
-    if len(poll.linked_polls) > 1 and 'vote_body' in body_template:
+    if len(poll.linked_polls) > 1 and 'vote_body' in body_template_email:
         body_template_email = body_template_email.replace("_body.txt", "_linked_body.txt")
         #TODO: Handle linked polls sms notification
 

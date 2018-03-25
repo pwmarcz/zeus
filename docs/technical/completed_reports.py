@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import os
 import sys
 
 sys.path.append("/srv/zeus-server/")
@@ -33,4 +32,3 @@ def handler(obj):
     raise TypeError
 
 print json.dumps(DATA, default=handler, ensure_ascii=True)
-

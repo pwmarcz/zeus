@@ -2,15 +2,11 @@
 """
 import yaml
 
-from django.conf import settings
 from django.db import transaction
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
+from helios.models import Election
 
-from zeus import reports
-from StringIO import StringIO
 
 import sys
 reload(sys)

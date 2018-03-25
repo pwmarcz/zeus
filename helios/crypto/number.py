@@ -10,7 +10,10 @@
 # or implied. Use at your own risk or not at all.
 #
 
-__revision__ = "$Id: number.py,v 1.13 2003/04/04 18:21:07 akuchling Exp $"
+# __revision__ = "$Id: number.py,v 1.13 2003/04/04 18:21:07 akuchling Exp $"
+
+import struct
+import warnings
 
 bignum = long
 try:
@@ -142,8 +145,6 @@ sieve=[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59,
 # Improved conversion functions contributed by Barry Warsaw, after
 # careful benchmarking
 
-import struct
-
 def long_to_bytes(n, blocksize=0):
     """long_to_bytes(n:long, blocksize:int) : string
     Convert a long integer to a byte string.
@@ -192,7 +193,6 @@ def bytes_to_long(s):
     return acc
 
 # For backwards compatibility...
-import warnings
 def long2str(n, blocksize=0):
     warnings.warn("long2str() has been replaced by long_to_bytes()")
     return long_to_bytes(n, blocksize)

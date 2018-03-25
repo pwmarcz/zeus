@@ -1,10 +1,7 @@
-import csv, datetime
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import Poll, Voter
+from helios.models import Voter
 
 class Command(BaseCommand):
     args = ''
@@ -21,4 +18,3 @@ class Command(BaseCommand):
                 print v.get_quick_login_url()
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify
-

@@ -1,96 +1,88 @@
 import sys
 import os
 
-from optparse import make_option
-
-from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
-from heliosauth.models import *
-from heliosauth.auth_systems.password import make_password
 from helios.models import Voter, Poll, Election
 from zeus import utils
 from zeus import mobile as mobile_api
 
-from zeus.models import Institution
 from zeus import tasks
 
-import getpass
 
 class Command(BaseCommand):
 
     help = 'Notify voters by sms'
 
-    option_list = BaseCommand.option_list + (
-    make_option('--election',
-                       action='store',
-                       dest='election_uuid',
-                       default=None,
-                       help='Election UUID'),
-    make_option('--poll',
-                       action='store',
-                       dest='poll_uuid',
-                       default=None,
-                       help='Poll UUID'),
-    make_option('--template',
-                       action='store',
-                       dest='template',
-                       default=None,
-                       help='Path to the sms message template file'),
-    make_option('--voters-mobiles-file',
-                       action='store',
-                       dest='mobiles_map_file',
-                       default=None,
-                       help='Path to the voters mobiles csv file'),
-    make_option('--nodry',
-                       action='store_false',
-                       dest='dry',
-                       default=True,
-                       help='By default messages are printed to the ' + \
-                            'screen. Set this flag to actually send ' + \
-                            'messages using the sms API'),
-    #make_option('--async',
-                       #action='store_true',
-                       #dest='async',
-                       #default=False,
-                       #help='Send messages asynchronously'),
-    make_option('--list',
-                       action='store_true',
-                       dest='list_voters',
-                       help='Just list the voters'),
-    make_option('--voter',
-                       action='store',
-                       dest='voter_id',
-                       default=None,
-                       help='Voter registration number'),
-    make_option('--resend',
-                       action='store_true',
-                       dest='resend',
-                       default=False,
-                       help='Resend messages even if last_sms_send_at ' + \
-                            'flag is set to the voter instance'),
-    make_option('--status',
-                       action='store_true',
-                       dest='status',
-                       default=False,
-                       help='Query status of the last sms sent.'),
-    make_option('--voters-not-voted',
-                       action='store_true',
-                       dest='voters_not_voted',
-                       default=False,
-                       help='Exclude voters who have already voted.'),
-    make_option('--voters-voted',
-                       action='store_true',
-                       dest='voters_voted',
-                       default=False,
-                       help='Exclude voters who haven\'t yet voted.'),
-    make_option('--send-to',
-                       action='store',
-                       dest='send_to',
-                       default=None,
-                       help='Do not use voter mobile. Send message to the ' + \
-                            'number provided instead (for testing).'),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument('--election',
+                           action='store',
+                           dest='election_uuid',
+                           default=None,
+                           help='Election UUID')
+        parser.add_argument('--poll',
+                           action='store',
+                           dest='poll_uuid',
+                           default=None,
+                           help='Poll UUID')
+        parser.add_argument('--template',
+                           action='store',
+                           dest='template',
+                           default=None,
+                           help='Path to the sms message template file')
+        parser.add_argument('--voters-mobiles-file',
+                           action='store',
+                           dest='mobiles_map_file',
+                           default=None,
+                           help='Path to the voters mobiles csv file')
+        parser.add_argument('--nodry',
+                           action='store_false',
+                           dest='dry',
+                           default=True,
+                           help='By default messages are printed to the ' + \
+                                'screen. Set this flag to actually send ' + \
+                                'messages using the sms API')
+        #parser.add_argument('--async',
+                           #action='store_true',
+                           #dest='async',
+                           #default=False,
+                           #help='Send messages asynchronously')
+        parser.add_argument('--list',
+                           action='store_true',
+                           dest='list_voters',
+                           help='Just list the voters')
+        parser.add_argument('--voter',
+                           action='store',
+                           dest='voter_id',
+                           default=None,
+                           help='Voter registration number')
+        parser.add_argument('--resend',
+                           action='store_true',
+                           dest='resend',
+                           default=False,
+                           help='Resend messages even if last_sms_send_at ' + \
+                                'flag is set to the voter instance')
+        parser.add_argument('--status',
+                           action='store_true',
+                           dest='status',
+                           default=False,
+                           help='Query status of the last sms sent.')
+        parser.add_argument('--voters-not-voted',
+                           action='store_true',
+                           dest='voters_not_voted',
+                           default=False,
+                           help='Exclude voters who have already voted.')
+        parser.add_argument('--voters-voted',
+                           action='store_true',
+                           dest='voters_voted',
+                           default=False,
+                           help='Exclude voters who haven\'t yet voted.')
+        parser.add_argument('--send-to',
+                           action='store',
+                           dest='send_to',
+                           default=None,
+                           help='Do not use voter mobile. Send message to the ' + \
+                                'number provided instead (for testing).')
 
     def handle(self, *args, **options):
         reload(sys)
@@ -147,7 +139,6 @@ class Command(BaseCommand):
 
         if voter_id:
             voters = voters.filter(voter_login_id=voter_id)
-
 
         if not status:
             print "Will send %d messages" % voters.count()

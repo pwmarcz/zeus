@@ -1,7 +1,7 @@
 import copy
 import json
 import os
-import logging
+import zipfile
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -134,15 +134,15 @@ class ElectionModuleBase(ElectionHooks):
                                 (election, poll, name, ext))
 
     def get_election_result_file_path(self, name, ext, lang=None):
-            RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
-                os.path.join(settings.MEDIA_ROOT, 'results'))
-            election = self.election.short_name
-            if lang:
-                return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' % \
-                                    (election, name, lang, ext))
-            else:
-                return os.path.join(RESULTS_PATH, '%s-%s-results.%s' % \
-                                    (election, name, ext))
+        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
+            os.path.join(settings.MEDIA_ROOT, 'results'))
+        election = self.election.short_name
+        if lang:
+            return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' % \
+                                (election, name, lang, ext))
+        else:
+            return os.path.join(RESULTS_PATH, '%s-%s-results.%s' % \
+                                (election, name, ext))
 
     def generate_json_file(self):
         results_json = self.poll.zeus.get_results()
@@ -187,7 +187,7 @@ class ElectionModuleBase(ElectionHooks):
         election_pdfpath = self.get_election_result_file_path('pdf', 'pdf',
                                                                 lang[0])
         if not os.path.exists(election_pdfpath):
-            module.generate_election_result_docs(lang)
+            self.module.generate_election_result_docs(lang)
         basename = os.path.basename(election_pdfpath)
         all_docs_zip.write(election_pdfpath, basename)
 
@@ -296,9 +296,9 @@ class ElectionModuleBase(ElectionHooks):
         return True
 
 
-
-from zeus.election_modules.simple import *
-from zeus.election_modules.parties import *
-from zeus.election_modules.score import *
-from zeus.election_modules.stv import *
-from zeus.election_modules.unigovgr import *
+# TODO change to explicit imports
+from zeus.election_modules.simple import *  # noqa
+from zeus.election_modules.parties import * # noqa
+from zeus.election_modules.score import * # noqa
+from zeus.election_modules.stv import * # noqa
+from zeus.election_modules.unigovgr import * # noqa

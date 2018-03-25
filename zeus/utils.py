@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
 from cStringIO import StringIO
 from csv import (Sniffer, excel, Error as csvError,
                  reader as imported_csv_reader)
@@ -8,9 +7,9 @@ from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
 from django.db.models import Q
-from django.template import Context, Template, loader, RequestContext
+from django.template import loader
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email, ValidationError
@@ -98,13 +97,8 @@ def render_template(request, template_name, vars = {}):
     if request.session.has_key('csrf_token'):
         vars_with_user['csrf_token'] = request.session['csrf_token']
 
-    context = RequestContext(request, vars_with_user)
-    return render_to_response('server_ui/templates/%s.html' % template_name,
-                              context)
-
-
-def render_json(obj):
-    return HttpResponse(json.dumps(obj), "application/json")
+    return render(request, 'server_ui/templates/%s.html' % template_name,
+                  vars_with_user)
 
 
 def sanitize_mobile_number(num):
@@ -228,7 +222,6 @@ REPORT_EXTRA_HEADERS = []
 REPORT_BOOL_KEYS_MAP = {}
 
 
-
 def parse_q_param(q):
     args = []
     for special_arg in q.split(" "):
@@ -274,8 +267,6 @@ def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
     if constraints_exclude:
         q =  q & ~Q(**constraints_exclude)
     return q
-
-
 
 
 class CSVReader(object):
@@ -325,6 +316,7 @@ class UTF8Recoder(object):
     """
     Iterator that reads an encoded stream and reencodes the input to UTF-8
     """
+
     def __init__(self, f, encoding):
         self.reader = getreader(encoding)(f)
 

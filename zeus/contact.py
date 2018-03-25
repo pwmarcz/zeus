@@ -1,9 +1,8 @@
 import datetime
 
-from django.utils.translation import ugettext_lazy as _
 from email.Utils import formataddr
 from django.conf import settings
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from helios.view_utils import render_template_raw
 from django.db import transaction
@@ -20,9 +19,6 @@ class ContactBackend():
     def __init__(self, logger, data=None):
         self.logger = logger
         self.data = data
-
-    def notify(self, voter, subject, body, vars):
-        raise NotImplemented
 
     def can_notify(self, voter):
         raise NotImplemented
@@ -94,7 +90,6 @@ class ContactBackend():
             self.logger.exception(e)
             return False
         sent_hook(voter, result, error)
-
 
 
 class EmailBackend(ContactBackend):

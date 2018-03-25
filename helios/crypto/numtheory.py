@@ -1,15 +1,11 @@
 ##################################################
-# ent.py -- Element Number Theory 
+# ent.py -- Element Number Theory
 # (c) William Stein, 2004
 ##################################################
 
 
-
-
 from random import randrange
 from math import log, sqrt
-
-
 
 
 ##################################################
@@ -34,10 +30,9 @@ def gcd(a, b):                                        # (1)
     if b < 0:  b = -b
     if a == 0: return b
     if b == 0: return a
-    while b != 0: 
+    while b != 0:
         (a, b) = (b, a%b)
     return a
-
 
 
 ##################################################
@@ -46,7 +41,7 @@ def gcd(a, b):                                        # (1)
 
 def primes(n):
     """
-    Returns a list of the primes up to n, computed 
+    Returns a list of the primes up to n, computed
     using the Sieve of Eratosthenes.
     Input:
         n -- a positive integer
@@ -69,16 +64,14 @@ def primes(n):
     return P + X                                  # (8)
 
 
-
-
 ##################################################
 ## Integer Factorization
 ##################################################
 
 def trial_division(n, bound=None):
     """
-    Return the smallest prime divisor <= bound of the 
-    positive integer n, or n if there is no such prime.  
+    Return the smallest prime divisor <= bound of the
+    positive integer n, or n if there is no such prime.
     If the optional argument bound is omitted, then bound=n.
     Input:
         n -- a positive integer
@@ -93,11 +86,11 @@ def trial_division(n, bound=None):
     7
     >>> trial_division(11)
     11
-    >>> trial_division(387833, 300)   
+    >>> trial_division(387833, 300)
     387833
-    >>> # 300 is not big enough to split off a 
+    >>> # 300 is not big enough to split off a
     >>> # factor, but 400 is.
-    >>> trial_division(387833, 400)  
+    >>> trial_division(387833, 400)
     389
     """
     if n == 1: return 1
@@ -115,9 +108,9 @@ def trial_division(n, bound=None):
 
 def factor(n):
     """
-    Returns the factorization of the integer n as 
+    Returns the factorization of the integer n as
     a sorted list of tuples (p,e), where the integers p
-    are output by the split algorithm.  
+    are output by the split algorithm.
     Input:
         n -- an integer
     Output:
@@ -144,7 +137,6 @@ def factor(n):
         F.append((p,e))
     F.sort()
     return F
-
 
 
 ##################################################
@@ -188,7 +180,7 @@ def inversemod(a, n):
     """
     Returns the inverse of a modulo n, normalized to
     lie between 0 and n-1.  If a is not coprime to n,
-    raise an exception (this will be useful later for 
+    raise an exception (this will be useful later for
     the elliptic curve factorization method).
     Input:
         a -- an integer coprime to n
@@ -213,7 +205,7 @@ def inversemod(a, n):
 
 def solve_linear(a,b,n):
     """
-    If the equation ax = b (mod n) has a solution, return a 
+    If the equation ax = b (mod n) has a solution, return a
     solution normalized to lie between 0 and n-1, otherwise
     returns None.
     Input:
@@ -230,13 +222,13 @@ def solve_linear(a,b,n):
     """
     g, c, _ = xgcd(a,n)                 # (1)
     if b%g != 0: return None
-    return ((b/g)*c) % n                
+    return ((b/g)*c) % n
 
 def crt(a, b, m, n):
     """
-    Return the unique integer between 0 and m*n - 1 
+    Return the unique integer between 0 and m*n - 1
     that reduces to a modulo n and b modulo m, where
-    the integers m and n are coprime. 
+    the integers m and n are coprime.
     Input:
         a, b, m, n -- integers, with m and n coprime
     Output:
@@ -249,7 +241,7 @@ def crt(a, b, m, n):
     >>> crt(-1, -1, 100, 101)
     10099
     """
-    g, c, _ = xgcd(m, n)                       
+    g, c, _ = xgcd(m, n)
     assert g == 1, "m and n must be coprime."
     return (a + (b-a)*c*m) % (m*n)
 
@@ -281,7 +273,7 @@ def powermod(a, m, n):
         if m%2 != 0:
             ans = (ans * apow) % n            # (3)
         apow = (apow * apow) % n              # (4)
-        m /= 2   
+        m /= 2
     return ans % n
 
 
@@ -327,14 +319,14 @@ def primitive_root(p):
 def is_pseudoprime(n, bases = [2,3,5,7]):
     """
     Returns True if n is a pseudoprime to the given bases,
-    in the sense that n>1 and b**(n-1) = 1 (mod n) for each 
-    elements b of bases, with b not a multiple of n, and 
-    False otherwise.   
+    in the sense that n>1 and b**(n-1) = 1 (mod n) for each
+    elements b of bases, with b not a multiple of n, and
+    False otherwise.
     Input:
         n -- an integer
         bases -- a list of integers
     Output:
-        bool 
+        bool
     Examples:
     >>> is_pseudoprime(91)
     False
@@ -346,36 +338,36 @@ def is_pseudoprime(n, bases = [2,3,5,7]):
     True
     >>> s = [x for x in range(10000) if is_pseudoprime(x)]
     >>> t = primes(10000)
-    >>> s == t 
+    >>> s == t
     True
     >>> is_pseudoprime(29341) # first non-prime pseudoprime
     True
     >>> factor(29341)
     [(13, 1), (37, 1), (61, 1)]
     """
-    if n < 0: n = -n                                
+    if n < 0: n = -n
     if n <= 1: return False
-    for b in bases:                       
-        if b%n != 0 and powermod(b, n-1, n) != 1:       
+    for b in bases:
+        if b%n != 0 and powermod(b, n-1, n) != 1:
             return False
     return True
 
 
 def miller_rabin(n, num_trials=4):
     """
-    True if n is likely prime, and False if n 
+    True if n is likely prime, and False if n
     is definitely not prime.  Increasing num_trials
     increases the probability of correctness.
-    (One can prove that the probability that this 
+    (One can prove that the probability that this
     function returns True when it should return
     False is at most (1/4)**num_trials.)
     Input:
         n -- an integer
-        num_trials -- the number of trials with the 
-                      primality test.   
+        num_trials -- the number of trials with the
+                      primality test.
     Output:
         bool -- whether or not n is probably prime.
-    Examples:    
+    Examples:
     >>> miller_rabin(91)
     False                         #rand
     >>> miller_rabin(97)
@@ -385,7 +377,7 @@ def miller_rabin(n, num_trials=4):
     >>> print len(s), len(t)  # so 1 in 25 wrong
     175 168                       #rand
     >>> s = [x for x in range(1000) if miller_rabin(x)]
-    >>> s == t                    
+    >>> s == t
     True                          #rand
     """
     if n < 0: n = -n
@@ -399,7 +391,7 @@ def miller_rabin(n, num_trials=4):
     for i in range(num_trials):
         a = randrange(2,n-1)                  # (1)
         apow = powermod(a, m, n)
-        if not (apow in [1, n-1]):            
+        if not (apow in [1, n-1]):
             some_minus_one = False
             for r in range(k-1):              # (2)
                 apow = (apow**2)%n
@@ -433,7 +425,7 @@ def random_prime(num_digits, is_prime = miller_rabin):
     8599796717L              #rand
     >>> random_prime(40)
     1311696770583281776596904119734399028761L  #rand
-    """ 
+    """
     n = randrange(10**(num_digits-1), 10**num_digits)
     if n%2 == 0: n += 1
     while not is_prime(n): n += 2
@@ -442,7 +434,7 @@ def random_prime(num_digits, is_prime = miller_rabin):
 def dh_init(p):
     """
     Generates and returns a random positive
-    integer n < p and the power 2^n (mod p). 
+    integer n < p and the power 2^n (mod p).
     Input:
         p -- an integer that is prime
     Output:
@@ -467,18 +459,14 @@ def dh_secret(p, n, mpow):
         int -- the shared secret key.
     Examples:
     >>> p = random_prime(20)
-    >>> n, npow = dh_init(p)    
+    >>> n, npow = dh_init(p)
     >>> m, mpow = dh_init(p)
-    >>> dh_secret(p, n, mpow) 
+    >>> dh_secret(p, n, mpow)
     15695503407570180188L      #rand
-    >>> dh_secret(p, m, npow)    
+    >>> dh_secret(p, m, npow)
     15695503407570180188L      #rand
     """
     return powermod(mpow,n,p)
-
-
-
-
 
 
 ##################################################
@@ -487,15 +475,15 @@ def dh_secret(p, n, mpow):
 
 def str_to_numlist(s, bound):
     """
-    Returns a sequence of integers between 0 and bound-1 
-    that encodes the string s.   Randomization is included, 
-    so the same string is very likely to encode differently 
-    each time this function is called. 
+    Returns a sequence of integers between 0 and bound-1
+    that encodes the string s.   Randomization is included,
+    so the same string is very likely to encode differently
+    each time this function is called.
     Input:
         s -- a string
         bound -- an integer >= 256
     Output:
-        list -- encoding of s as a list of integers 
+        list -- encoding of s as a list of integers
     Examples:
     >>> str_to_numlist("Run!", 1000)
     [82, 117, 110, 33]               #rand
@@ -512,17 +500,17 @@ def str_to_numlist(s, bound):
             if j < salt:
                 c += randrange(1,256)*pow   # (5)
             else:
-                if i >= len(s): break 
+                if i >= len(s): break
                 c += ord(s[i])*pow          # (6)
                 i += 1
-            pow *= 256                      
+            pow *= 256
         v.append(c)
     return v
 
 def numlist_to_str(v, bound):
     """
-    Returns the string that the sequence v of 
-    integers encodes. 
+    Returns the string that the sequence v of
+    integers encodes.
     Input:
         v -- list of integers between 0 and bound-1
         bound -- an integer >= 256
@@ -556,16 +544,16 @@ def rsa_init(p, q):
     """
     Returns defining parameters (e, d, n) for the RSA
     cryptosystem defined by primes p and q.  The
-    primes p and q may be computed using the 
+    primes p and q may be computed using the
     random_prime functions.
     Input:
         p -- a prime integer
         q -- a prime integer
     Output:
-        Let m be (p-1)*(q-1). 
+        Let m be (p-1)*(q-1).
         e -- an encryption key, which is a randomly
              chosen integer between 2 and m-1
-        d -- the inverse of e modulo eulerphi(p*q), 
+        d -- the inverse of e modulo eulerphi(p*q),
              as an integer between 2 and m-1
         n -- the product p*q.
     Examples:
@@ -583,13 +571,13 @@ def rsa_init(p, q):
     m = (p-1)*(q-1)
     e = 3
     while gcd(e, m) != 1: e += 1
-    d = inversemod(e, m)                  
+    d = inversemod(e, m)
     return e, d, p*q
 
 def rsa_encrypt(plain_text, e, n):
     """
     Encrypt plain_text using the encrypt
-    exponent e and modulus n.  
+    exponent e and modulus n.
     Input:
         plain_text -- arbitrary string
         e -- an integer, the encryption exponent
@@ -612,7 +600,7 @@ def rsa_decrypt(cipher, d, n):
     Decrypt the cipher_text using the decryption
     exponent d and modulus n.
     Input:
-        cipher_text -- list of integers output 
+        cipher_text -- list of integers output
                        by rsa_encrypt
     Output:
         str -- the unencrypted plain text
@@ -668,7 +656,7 @@ def sqrtmod(a, p):
     """
     Returns a square root of a modulo p.
     Input:
-        a -- an integer that is a perfect 
+        a -- an integer that is a perfect
              square modulo p (this is checked)
         p -- a prime
     Output:
@@ -683,7 +671,7 @@ def sqrtmod(a, p):
     761044645L     #rand
     """
     a %= p
-    if p == 2: return a 
+    if p == 2: return a
     assert legendre(a, p) == 1, "a must be a square mod p."
     if p%4 == 3: return powermod(a, (p+1)/4, p)
 
@@ -694,9 +682,9 @@ def sqrtmod(a, p):
         ans = (1,0)
         xpow = x
         while n != 0:
-           if n%2 != 0: ans = mul(ans, xpow)
-           xpow = mul(xpow, xpow)
-           n /= 2
+            if n%2 != 0: ans = mul(ans, xpow)
+            xpow = mul(xpow, xpow)
+            n /= 2
         return ans
 
     while True:
@@ -715,13 +703,13 @@ def sqrtmod(a, p):
 
 def convergents(v):
     """
-    Returns the partial convergents of the continued 
+    Returns the partial convergents of the continued
     fraction v.
     Input:
         v -- list of integers [a0, a1, a2, ..., am]
     Output:
-        list -- list [(p0,q0), (p1,q1), ...] 
-                of pairs (pm,qm) such that the mth 
+        list -- list [(p0,q0), (p1,q1), ...]
+                of pairs (pm,qm) such that the mth
                 convergent of v is pm/qm.
     Examples:
     >>> convergents([1, 2])
@@ -739,7 +727,7 @@ def convergents(v):
 
 def contfrac_rat(numer, denom):
     """
-    Returns the continued fraction of the rational 
+    Returns the continued fraction of the rational
     number numer/denom.
     Input:
         numer -- an integer
@@ -771,12 +759,12 @@ def contfrac_float(x):
         x -- a floating point number (decimal)
     Output:
         list -- the continued fraction [a0, a1, ...]
-                obtained by applying the continued 
-                fraction procedure to x to the 
+                obtained by applying the continued
+                fraction procedure to x to the
                 precision of this computer.
-        list -- the list [(p0,q0), (p1,q1), ...] 
-                of pairs (pm,qm) such that the mth 
-                convergent of continued fraction 
+        list -- the list [(p0,q0), (p1,q1), ...]
+                of pairs (pm,qm) such that the mth
+                convergent of continued fraction
                 is pm/qm.
     Examples:
     >>> v, w = contfrac_float(3.14159); print v
@@ -804,7 +792,7 @@ def contfrac_float(x):
 
 def sum_of_two_squares(p):
     """
-    Uses continued fractions to efficiently compute 
+    Uses continued fractions to efficiently compute
     a representation of the prime p as a sum of
     two squares.   The prime p must be 1 modulo 4.
     Input:
@@ -822,7 +810,7 @@ def sum_of_two_squares(p):
     assert p%4 == 1, "p must be 1 modulo 4"
     r = sqrtmod(-1, p)                                # (1)
     v = contfrac_rat(-r, p)                           # (2)
-    n = int(sqrt(p))                          
+    n = int(sqrt(p))
     for a, b in convergents(v):                       # (3)
         c = r*b + p*a                                 # (4)
         if -n <= c and c <= n: return (abs(b),abs(c))
@@ -835,12 +823,12 @@ def sum_of_two_squares(p):
 
 def ellcurve_add(E, P1, P2):
     """
-    Returns the sum of P1 and P2 on the elliptic 
+    Returns the sum of P1 and P2 on the elliptic
     curve E.
     Input:
-         E -- an elliptic curve over Z/pZ, given by a 
+         E -- an elliptic curve over Z/pZ, given by a
               triple of integers (a, b, p), with p odd.
-         P1 --a pair of integers (x, y) or the 
+         P1 --a pair of integers (x, y) or the
               string "Identity".
          P2 -- same type as P1
     Output:
@@ -854,7 +842,7 @@ def ellcurve_add(E, P1, P2):
     'Identity'
     >>> ellcurve_add(E, "Identity", P2)
     (3, 3)
-    """ 
+    """
     a, b, p = E
     assert p > 2, "p must be odd."
     if P1 == "Identity": return P2
@@ -873,13 +861,13 @@ def ellcurve_add(E, P1, P2):
 
 def ellcurve_mul(E, m, P):
     """
-    Returns the multiple m*P of the point P on 
+    Returns the multiple m*P of the point P on
     the elliptic curve E.
     Input:
-        E -- an elliptic curve over Z/pZ, given by a 
+        E -- an elliptic curve over Z/pZ, given by a
              triple (a, b, p).
         m -- an integer
-        P -- a pair of integers (x, y) or the 
+        P -- a pair of integers (x, y) or the
              string "Identity"
     Output:
         A pair of integers or the string "Identity".
@@ -890,7 +878,7 @@ def ellcurve_mul(E, m, P):
     (1, 3)
     >>> ellcurve_mul(E, 9999, P)
     (1, 4)
-    """   
+    """
     assert m >= 0, "m must be nonnegative."
     power = P
     mP = "Identity"
@@ -907,7 +895,7 @@ def ellcurve_mul(E, m, P):
 
 def lcm_to(B):
     """
-    Returns the least common multiple of all 
+    Returns the least common multiple of all
     integers up to B.
     Input:
         B -- an integer
@@ -934,7 +922,7 @@ def pollard(N, m):
     Input:
         N -- a positive integer
         m -- a positive integer, the least common
-             multiple of the integers up to some 
+             multiple of the integers up to some
              bound, computed using lcm_to.
     Output:
         int -- an integer divisor of n
@@ -962,12 +950,12 @@ def pollard(N, m):
 
 def randcurve(p):
     """
-    Construct a somewhat random elliptic curve 
+    Construct a somewhat random elliptic curve
     over Z/pZ and a random point on that curve.
     Input:
         p -- a positive integer
     Output:
-        tuple -- a triple E = (a, b, p) 
+        tuple -- a triple E = (a, b, p)
         P -- a tuple (x,y) on E
     Examples:
     >>> p = random_prime(20); p
@@ -1017,7 +1005,7 @@ def elliptic_curve_method(N, m, tries=5):
         except ZeroDivisionError, x:           # (5)
             g = gcd(x[0],N)                    # (6)
             if g != 1 or g != N: return g      # (7)
-    return N             
+    return N
 
 
 ##################################################
@@ -1027,15 +1015,15 @@ def elliptic_curve_method(N, m, tries=5):
 def elgamal_init(p):
     """
     Constructs an ElGamal cryptosystem over Z/pZ, by
-    choosing a random elliptic curve E over Z/pZ, a 
+    choosing a random elliptic curve E over Z/pZ, a
     point B in E(Z/pZ), and a random integer n.  This
-    function returns the public key as a 4-tuple 
+    function returns the public key as a 4-tuple
     (E, B, n*B) and the private key n.
     Input:
         p -- a prime number
     Output:
         tuple -- the public key as a 3-tuple
-                 (E, B, n*B), where E = (a, b, p) is an 
+                 (E, B, n*B), where E = (a, b, p) is an
                  elliptic curve over Z/pZ, B = (x, y) is
                  a point on E, and n*B = (x',y') is
                  the sum of B with itself n times.
@@ -1054,7 +1042,7 @@ def elgamal_init(p):
     n = 12608319787599446459    #rand
     """
     E, B = randcurve(p)
-    n = randrange(2,p)    
+    n = randrange(2,p)
     nB = ellcurve_mul(E, n, B)
     return (E, B, nB), (E, n)
 
@@ -1067,7 +1055,7 @@ def elgamal_encrypt(plain_text, public_key):
        public_key -- a triple (E, B, n*B), as output
                      by elgamal_init.
     Output:
-       list -- a list of pairs of points on E that 
+       list -- a list of pairs of points on E that
                represent the encrypted message
     Examples:
     >>> public, private = elgamal_init(random_prime(20))
@@ -1076,21 +1064,21 @@ def elgamal_encrypt(plain_text, public_key):
      (7064405129585539806L, 8318592816457841619L))]    #rand
     """
     E, B, nB = public_key
-    a, b, p = E 
+    a, b, p = E
     assert p > 10000, "p must be at least 10000."
     v = [1000*x for x in \
            str_to_numlist(plain_text, p/1000)]       # (1)
     cipher = []
     for x in v:
         while not legendre(x**3+a*x+b, p)==1:        # (2)
-            x = (x+1)%p  
+            x = (x+1)%p
         y = sqrtmod(x**3+a*x+b, p)                   # (3)
-        P = (x,y)    
+        P = (x,y)
         r = randrange(1,p)
         encrypted = (ellcurve_mul(E, r, B), \
                 ellcurve_add(E, P, ellcurve_mul(E,r,nB)))
         cipher.append(encrypted)
-    return cipher   
+    return cipher
 
 def elgamal_decrypt(cipher_text, private_key):
     """
@@ -1125,7 +1113,8 @@ def elgamal_decrypt(cipher_text, private_key):
 # The variable order is x1, x2, x3, y1, y2, y3, a, b
 class Poly:                                     # (1)
     def __init__(self, d):                      # (2)
-        self.v = dict(d)                        
+        self.v = dict(d)
+
     def __cmp__(self, other):                   # (3)
         self.normalize(); other.normalize()     # (4)
         if self.v == other.v: return 0
@@ -1136,13 +1125,15 @@ class Poly:                                     # (1)
         for m in other.monomials():
             w[m] += other[m]
         return w
+
     def __sub__(self, other):
         w = Poly(self.v)
         for m in other.monomials():
             w[m] -= other[m]
         return w
+
     def __mul__(self, other):
-        if len(self.v) == 0 or len(other.v) == 0: 
+        if len(self.v) == 0 or len(other.v) == 0:
             return Poly([])
         m1 = self.monomials(); m2 = other.monomials()
         r = Poly([])
@@ -1151,11 +1142,13 @@ class Poly:                                     # (1)
                 z = [m1[i] + m2[i] for i in range(8)]
                 r[z] += self[m1]*other[m2]
         return r
+
     def __neg__(self):
         v = {}
         for m in self.v.keys():
             v[m] = -self.v[m]
         return Poly(v)
+
     def __div__(self, other):
         return Frac(self, other)
 
@@ -1163,13 +1156,16 @@ class Poly:                                     # (1)
         m = tuple(m)
         if not self.v.has_key(m): self.v[m] = 0
         return self.v[m]
+
     def __setitem__(self, m, c):
         self.v[tuple(m)] = c
+
     def __delitem__(self, m):
         del self.v[tuple(m)]
 
     def monomials(self):                        # (7)
         return self.v.keys()
+
     def normalize(self):                        # (8)
         while True:
             finished = True
@@ -1178,18 +1174,18 @@ class Poly:                                     # (1)
                     del self[m]
                     continue
                 for i in range(3):
-                    if m[3+i] >= 2:  
+                    if m[3+i] >= 2:
                         finished = False
-                        nx0 = list(m); nx0[3+i] -= 2; 
+                        nx0 = list(m); nx0[3+i] -= 2;
                         nx0[7] += 1
-                        nx1 = list(m); nx1[3+i] -= 2; 
+                        nx1 = list(m); nx1[3+i] -= 2;
                         nx1[i] += 1; nx1[6] += 1
-                        nx3 = list(m); nx3[3+i] -= 2; 
+                        nx3 = list(m); nx3[3+i] -= 2;
                         nx3[i] += 3
                         c = self[m]
                         del self[m]
-                        self[nx0] += c; 
-                        self[nx1] += c; 
+                        self[nx0] += c;
+                        self[nx1] += c;
                         self[nx3] += c
                 # end for
             # end for
@@ -1199,8 +1195,9 @@ class Poly:                                     # (1)
 one = Poly({(0,0,0,0,0,0,0,0):1})               # (9)
 
 class Frac:                                     # (10)
-    def __init__(self, num, denom=one):         
+    def __init__(self, num, denom=one):
         self.num = num; self.denom = denom
+
     def __cmp__(self, other):                   # (11)
         if self.num * other.denom == self.denom * other.num:
             return 0
@@ -1208,33 +1205,37 @@ class Frac:                                     # (10)
 
     def __add__(self, other):                   # (12)
         return Frac(self.num*other.denom + \
-                    self.denom*other.num, 
+                    self.denom*other.num,
                     self.denom*other.denom)
+
     def __sub__(self, other):
         return Frac(self.num*other.denom - \
                     self.denom*other.num,
                     self.denom*other.denom)
+
     def __mul__(self, other):
         return Frac(self.num*other.num, \
                     self.denom*other.denom)
+
     def __div__(self, other):
         return Frac(self.num*other.denom, \
                     self.denom*other.num)
+
     def __neg__(self):
         return Frac(-self.num,self.denom)
 
 def var(i):                                     # (14)
-    v = [0,0,0,0,0,0,0,0]; v[i]=1; 
+    v = [0,0,0,0,0,0,0,0]; v[i]=1;
     return Frac(Poly({tuple(v):1}))
 
 def prove_associative():                        # (15)
     x1 = var(0); x2 = var(1); x3 = var(2)
     y1 = var(3); y2 = var(4); y3 = var(5)
     a  = var(6); b  = var(7)
-    
-    lambda12 = (y1 - y2)/(x1 - x2)              
+
+    lambda12 = (y1 - y2)/(x1 - x2)
     x4       = lambda12*lambda12 - x1 - x2
-    nu12     = y1 - lambda12*x1   
+    nu12     = y1 - lambda12*x1
     y4       = -lambda12*x4 - nu12
     lambda23 = (y2 - y3)/(x2 - x3)
     x5       = lambda23*lambda23 - x2 - x3
@@ -1246,19 +1247,6 @@ def prove_associative():                        # (15)
                    - (x1 + x5)*(x1 - x5)*(x1 - x5))
     print "Associative?"
     print s1 == s2                              # (17)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ##########################################################
@@ -1280,7 +1268,7 @@ def examples():
     10000
     >>> 10**20
     100000000000000000000L
-    >>> range(10)            # range(n) is from 0 to n-1       
+    >>> range(10)            # range(n) is from 0 to n-1
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     >>> range(3,10)          # range(a,b) is from a to b-1
     [3, 4, 5, 6, 7, 8, 9]
@@ -1319,14 +1307,14 @@ def examples():
     >>> (a, b) = (1, 2)        # assignment assigns to each member
     >>> print a, b
     1 2
-    >>> for (c, d) in [(1,2), (5,6)]:   
+    >>> for (c, d) in [(1,2), (5,6)]:
     ...     print c, d
     1 2
     5 6
     >>> x = 1, 2          # parentheses optional in creation
     >>> x
     (1, 2)
-    >>> c, d = x          # parentheses also optional 
+    >>> c, d = x          # parentheses also optional
     >>> print c, d
     1 2
     >>> P = [p for p in range(200000) if is_pseudoprime(p)]
@@ -1422,13 +1410,14 @@ def examples():
     >>> P = [x for x in range(10**12, 10**12+1000)\
              if miller_rabin(x)]
     >>> Ps = [x for x in P if \
-             is_powersmooth(10000, x-1)]  
+             is_powersmooth(10000, x-1)]
     >>> print len(Ps), len(P), len(Ps)*1.0/len(P)
     2 37 0.0540540540541
-    
+
     """
 
 
 if __name__ ==  '__main__':
-    import doctest, sys
+    import doctest
+    import sys
     doctest.testmod(sys.modules[__name__])

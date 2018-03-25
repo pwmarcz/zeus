@@ -43,7 +43,7 @@ class userForm(ModelForm):
     institution = forms.CharField(required=True)
     user_groups = forms.ModelMultipleChoiceField(
         queryset=UserGroup.objects.filter(),
-        initial=[UserGroup.objects.get(name="default")],
+        initial=UserGroup.objects.filter(name="default"),
         widget=forms.CheckboxSelectMultiple
     )
 
@@ -58,7 +58,6 @@ class userForm(ModelForm):
             raise ValidationError(message)
         except User.DoesNotExist:
             return self.cleaned_data['user_id']
-
 
     def clean_institution(self):
         inst_name = self.cleaned_data['institution']

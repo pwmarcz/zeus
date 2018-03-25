@@ -5,13 +5,10 @@ Ben Adida
 ben@adida.net
 2010-05-22
 """
-import csv, datetime
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
+from helios.models import Election, Trustee
 
 class Command(BaseCommand):
     args = ''
@@ -19,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if args:
-	    election = Election.objects.get(uuid=args[0])
+            election = Election.objects.get(uuid=args[0])
             trustees = Trustee.objects.filter(election=election)
         else:
             trustees = Trustee.objects.all()
@@ -28,4 +25,3 @@ class Command(BaseCommand):
             print t.election.uuid, t.get_login_url()
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify
-

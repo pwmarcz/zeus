@@ -6,12 +6,8 @@ http://www.djangosnippets.org/snippets/377/
 and adapted to LDObject
 """
 
-import datetime
 import json
 from django.db import models
-from django.db.models import signals
-from django.conf import settings
-from django.core.serializers.json import DjangoJSONEncoder
 
 from . import LDObject
 
@@ -23,12 +19,12 @@ class LDObjectField(models.TextField):
     deserialization_params added on 2011-01-09 to provide additional hints at deserialization time
     """
 
-    # Used so to_python() is called
-    __metaclass__ = models.SubfieldBase
-
     def __init__(self, type_hint=None, **kwargs):
         self.type_hint = type_hint
         super(LDObjectField, self).__init__(**kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def to_python(self, value):
         """Convert our string value to LDObject after we load it from the DB"""

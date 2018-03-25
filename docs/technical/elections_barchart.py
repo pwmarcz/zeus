@@ -3,7 +3,6 @@ import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker
 
 to_keep = set([
     "ae80de84-19b1-11e2-9f63-aa000039f982", # Harokopeio University
@@ -29,7 +28,7 @@ to_keep = set([
     "ad95f546-3a26-11e2-bb7a-aa000039f982", # Technical University of Crete
     "b31e35c0-3d67-11e2-8a51-aa000039f982", # NTUA
     "5b3b3350-48f5-11e2-9fbe-aa000039f982", # TEI Piraeus
-    
+
     "24ead444-6471-11e2-beac-aa000039f982",
     "a9d888ac-657c-11e2-a63b-aa000039f982",
     "706912c0-80c6-11e2-a6e6-aa000039f982",
@@ -79,10 +78,10 @@ voters_count = []
 voters_cast_count = []
 
 elections_to_keep = dict((k, v) for k, v in elections_json.iteritems()
-                         if k in to_keep) 
+                         if k in to_keep)
 
 elections_to_discard = dict((k, v) for k, v in elections_json.iteritems()
-                            if k not in to_keep) 
+                            if k not in to_keep)
 
 elections_lost = set(k for k in to_keep if k not in elections_json)
 
@@ -98,7 +97,7 @@ for election in sorted(elections_to_keep.items(), key=order_elections_key):
 
 print "Total voters", sum(voters_count)
 print "Total voted", sum(voters_cast_count)
-    
+
 ind = np.arange(len(voters_count))
 xvals = range(len(voters_count))
 margin = 0
@@ -130,4 +129,3 @@ ax.legend((registered[0], voted[0]), ('Registered', 'Turnout') )
 
 plt.savefig('elections_to_date.pdf', format='pdf')
 plt.show()
-

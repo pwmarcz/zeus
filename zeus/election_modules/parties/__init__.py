@@ -1,10 +1,6 @@
-import json
-import zipfile
-import os
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.forms import ValidationError
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
@@ -89,10 +85,10 @@ class PartiesListElection(ElectionModuleBase):
         for lang in settings.LANGUAGES:
             self.generate_csv_file(lang)
             self.generate_result_docs(lang)
-    
+
     def compute_election_results(self):
         for lang in settings.LANGUAGES:
-            self.generate_election_csv_file(lang)   
+            self.generate_election_csv_file(lang)
             self.generate_election_result_docs(lang)
             self.generate_election_zip_file(lang)
 
@@ -124,4 +120,3 @@ class PartiesListElection(ElectionModuleBase):
             answers = answers + q_answers
         self.poll._init_questions(len(answers))
         self.poll.questions[0]['answers'] = answers
-

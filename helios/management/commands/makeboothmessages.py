@@ -4,13 +4,11 @@ import os
 import re
 import sys
 from itertools import dropwhile
-from optparse import make_option
 from subprocess import PIPE, Popen
 
 import django
 from django.core.management.base import CommandError, NoArgsCommand
 from django.utils.text import get_text_list
-from django.utils.jslex import prepare_js_for_gettext
 
 plural_forms_re = re.compile(r'^(?P<value>"Plural-Forms.+?\\n")\s*$', re.MULTILINE | re.DOTALL)
 
@@ -349,30 +347,6 @@ def make_messages(locale=None, domain='django', verbosity=1, all=False,
 
 
 class Command(NoArgsCommand):
-    option_list = NoArgsCommand.option_list + (
-        make_option('--locale', '-l', default=['el', 'en'], dest='locales',
-            action='append',
-            help='Creates or updates the message files for the given locale (e.g. pt_BR).'),
-        make_option('--domain', '-d', default='djangojs', dest='domain',
-            help='The domain of the message files (default: "django").'),
-        make_option('--all', '-a', action='store_true', dest='all',
-            default=False, help='Updates the message files for all existing locales.'),
-        make_option('--extension', '-e', dest='extensions',
-            help='The file extension(s) to examine (default: "html,txt", or "js" if the domain is "djangojs"). Separate multiple extensions with commas, or use -e multiple times.', default=["html", "js"],
-            action='append'),
-        make_option('--symlinks', '-s', action='store_true', dest='symlinks',
-            default=False, help='Follows symlinks to directories when examining source code and templates for translation strings.'),
-        make_option('--ignore', '-i', action='append', dest='ignore_patterns',
-            default=[], metavar='PATTERN', help='Ignore files or directories matching this glob-style pattern. Use multiple times to ignore more.'),
-        make_option('--no-default-ignore', action='store_false', dest='use_default_ignore_patterns',
-            default=True, help="Don't ignore the common glob-style patterns 'CVS', '.*' and '*~'."),
-        make_option('--no-wrap', action='store_true', dest='no_wrap',
-            default=False, help="Don't break long message lines into several lines"),
-        make_option('--no-location', action='store_true', dest='no_location',
-            default=False, help="Don't write '#: filename:line' lines"),
-        make_option('--no-obsolete', action='store_true', dest='no_obsolete',
-            default=False, help="Remove obsolete message strings"),
-    )
     help = ("Runs over the entire source tree of the current directory and "
 "pulls out all strings marked for translation. It creates (or updates) a message "
 "file in the conf/locale (in the django tree) or locale (for projects and "
@@ -381,6 +355,30 @@ class Command(NoArgsCommand):
 
     requires_model_validation = False
     can_import_settings = True
+
+    def add_arguments(self, parser):
+        parser.add_argument('--locale', '-l', default=['el', 'en'], dest='locales',
+            action='append',
+            help='Creates or updates the message files for the given locale (e.g. pt_BR).')
+        parser.add_argument('--domain', '-d', default='djangojs', dest='domain',
+            help='The domain of the message files (default: "django").')
+        parser.add_argument('--all', '-a', action='store_true', dest='all',
+            default=False, help='Updates the message files for all existing locales.')
+        parser.add_argument('--extension', '-e', dest='extensions',
+            help='The file extension(s) to examine (default: "html,txt", or "js" if the domain is "djangojs"). Separate multiple extensions with commas, or use -e multiple times.', default=["html", "js"],
+            action='append')
+        parser.add_argument('--symlinks', '-s', action='store_true', dest='symlinks',
+            default=False, help='Follows symlinks to directories when examining source code and templates for translation strings.')
+        parser.add_argument('--ignore', '-i', action='append', dest='ignore_patterns',
+            default=[], metavar='PATTERN', help='Ignore files or directories matching this glob-style pattern. Use multiple times to ignore more.')
+        parser.add_argument('--no-default-ignore', action='store_false', dest='use_default_ignore_patterns',
+            default=True, help="Don't ignore the common glob-style patterns 'CVS', '.*' and '*~'.")
+        parser.add_argument('--no-wrap', action='store_true', dest='no_wrap',
+            default=False, help="Don't break long message lines into several lines")
+        parser.add_argument('--no-location', action='store_true', dest='no_location',
+            default=False, help="Don't write '#: filename:line' lines")
+        parser.add_argument('--no-obsolete', action='store_true', dest='no_obsolete',
+            default=False, help="Remove obsolete message strings")
 
     def handle_noargs(self, *args, **options):
         # booth dir
@@ -408,7 +406,7 @@ class Command(NoArgsCommand):
         if verbosity > 1:
             self.stdout.write('examining files with the extensions: %s\n'
                              % get_text_list(list(extensions), 'and'))
-        
+
         for locale in locales:
             make_messages(locale, domain, verbosity, process_all, extensions,
                 symlinks, ignore_patterns, no_wrap, no_location, no_obsolete, self.stdout)

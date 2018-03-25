@@ -1,13 +1,19 @@
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
-    from .dev import *
+    from .dev import *  # noqa
 
-import os, errno
+import os
+import errno
 import datetime
+import multiprocessing
+from copy import deepcopy
 
 DEBUG = False
-TEMPLATE_DEBUG = True
+TEMPLATES = deepcopy(TEMPLATES)
+TEMPLATES[0]['OPTIONS']['debug'] = True
+
+ZEUS_TASK_DEBUG = True
 
 LANGUAGES = (('en', 'EN'), ('el', 'EL'))
 LANGUAGE_CODE = 'en'
@@ -38,7 +44,6 @@ SOUTH_TESTS_MIGRATE = False
     #}
 #}
 
-import multiprocessing
 ZEUS_MIXNET_NR_PARALLEL = multiprocessing.cpu_count()
 ZEUS_MIXNET_NR_ROUNDS = 16
 

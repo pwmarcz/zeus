@@ -12,7 +12,11 @@
 
 __revision__ = "$Id: randpool.py,v 1.14 2004/05/06 12:56:54 akuchling Exp $"
 
-import time, array, types, warnings, os.path
+import time
+import array
+import types
+import warnings
+import os.path
 from number import long_to_bytes
 try:
     import Crypto.Util.winrandom as winrandom
@@ -50,7 +54,6 @@ class RandomPool:
     get_bytes(int) : get N bytes of random data
     randomize([N]) : get N bytes of randomness from external source
     """
-
 
     def __init__(self, numbytes = 160, cipher=None, hash=None):
         if hash is None:
@@ -167,7 +170,6 @@ class RandomPool:
         # Restore the old value of the entropy.
         self.entropy=entropy
 
-
     def get_bytes (self, N):
         """get_bytes(N:int) : string
         Return N bytes of random data.
@@ -190,7 +192,6 @@ class RandomPool:
         self._getPos = i
         self._updateEntropyEstimate(- 8*N)
         return s[:N]
-
 
     def add_event(self, s=''):
         """add_event(s:string)
@@ -238,7 +239,6 @@ class RandomPool:
         # entropy as a result of this call.
         delta=delta % 0xff
         return int(delta)
-
 
     def _measureTickSize(self):
         # _measureTickSize() tries to estimate a rough average of the
@@ -329,6 +329,7 @@ _kb = 0
 if not _kb:
     try:
         import msvcrt
+
         class KeyboardEntry:
             def getch(self):
                 c = msvcrt.getch()
@@ -336,6 +337,7 @@ if not _kb:
                     # function key
                     c += msvcrt.getch()
                 return c
+
             def close(self, delay = 0):
                 if delay:
                     time.sleep(delay)
@@ -349,16 +351,19 @@ if not _kb:
 if not _kb:
     try:
         import termios
-        class KeyboardEntry:
+
+        class KeyboardEntry:  # noqa
             def __init__(self, fd = 0):
                 self._fd = fd
                 self._old = termios.tcgetattr(fd)
                 new = termios.tcgetattr(fd)
                 new[3]=new[3] & ~termios.ICANON & ~termios.ECHO
                 termios.tcsetattr(fd, termios.TCSANOW, new)
+
             def getch(self):
                 termios.tcflush(0, termios.TCIFLUSH) # XXX Leave this in?
                 return os.read(self._fd, 1)
+
             def close(self, delay = 0):
                 if delay:
                     time.sleep(delay)
@@ -374,7 +379,7 @@ class KeyboardRandomPool (PersistentRandomPool):
 
     def randomize(self, N = 0):
         "Adds N bits of entropy to random pool.  If N is 0, fill up pool."
-        import os, string, time
+        import os
         if N <= 0:
             bits = self.bits - self.entropy
         else:
@@ -406,7 +411,8 @@ if __name__ == '__main__':
     print 'random pool entropy', pool.entropy, 'bits'
     pool.add_event('something')
     print `pool.get_bytes(100)`
-    import tempfile, os
+    import tempfile
+    import os
     fname = tempfile.mktemp()
     pool = KeyboardRandomPool(filename=fname)
     print 'keyboard random pool entropy', pool.entropy, 'bits'

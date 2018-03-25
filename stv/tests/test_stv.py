@@ -1,5 +1,4 @@
 from stv.stv import main
-import pytest
 import tempfile
 import os
 import csv

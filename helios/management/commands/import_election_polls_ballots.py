@@ -3,13 +3,10 @@
 import yaml
 
 from django.db import transaction
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
+from helios.models import Election, Poll
 
-from zeus import reports
 
 import sys
 reload(sys)

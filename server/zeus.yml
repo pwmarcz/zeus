@@ -1,4 +1,5 @@
 - hosts: all
+  gather_facts: no
   become: yes
   vars:
     zeus_db_password: "{{ (lookup('file', 'secrets/zeus-secrets-{{ inventory_hostname }}.json') | from_json)['db_password'] }}"
@@ -21,7 +22,6 @@
         - postgresql-9.5
         - libpq-dev
         - python-psycopg2
-        - libicu-dev
         - libgmp-dev
         - libmpfr-dev
         - libmpc-dev
@@ -103,6 +103,13 @@
         state: link
       notify: reload nginx
 
+    - name: make virtualenv with pipenv
+      pip:
+        name: pipenv
+        virtualenv: /srv/zeus/virtualenv
+        virtualenv_python: python2.7
+      become_user: zeus
+
     # Deploy!
 
     - name: check git repo
@@ -115,10 +122,24 @@
       tags: [deploy]
       check_mode: yes
 
+    - name: check version file
+      copy:
+        dest: /srv/zeus/version
+        content: "{{ git_repo.after }}"
+        owner: zeus
+        group: zeus
+      register: version_file
+      check_mode: yes
+
     - name: deploy new version
       tags: [deploy]
-      when: git_repo.changed
+      when: version_file.changed
       block:
+
+      - name: remove version file
+        file:
+          path: /srv/zeus/version
+          state: absent
 
       - name: stop services
         service: name="{{ item }}" state=stopped
@@ -130,8 +151,17 @@
         git:
           repo: "{{ zeus_git_repo }}"
           dest: /srv/zeus/install
-          version: "{{ zeus_git_version }}"
+          version: "{{ git_repo.after }}"
+          refspec: "refs/heads/{{ zeus_git_version }}"
         become_user: zeus
+
+      - name: symlink settings/local.py
+        file:
+          src: /srv/zeus/config/settings_local.py
+          dest: /srv/zeus/install/settings/local.py
+          state: link
+          owner: zeus
+          group: zeus
 
       - name: pipenv sync
         shell: |
@@ -155,6 +185,13 @@
         with_items:
           - zeus-uwsgi
           - zeus-worker
+
+      - name: create version file
+        copy:
+          dest: /srv/zeus/version
+          content: "{{ git_repo.after }}"
+          owner: zeus
+          group: zeus
 
   handlers:
     - name: reload nginx

@@ -1,5 +1,4 @@
 import os
-import json
 from stv.stv import count_stv, Ballot
 import StringIO
 import logging
@@ -22,7 +21,6 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
         voting_starts = datetime.strptime(voting_starts, "%d/%m/%Y %H:%M")
     if isinstance(voting_ends, basestring):
         voting_ends = datetime.strptime(voting_ends, "%d/%m/%Y %H:%M")
-
 
     constituencies = {}
     schools = el_data['schools']
@@ -74,7 +72,6 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     handler.close()
     stv_stream.seek(0)
     results.append(stv_stream.read())
-
 
     poll_name, poll_results, questions, poll_voters = \
         pollName, results, questions, voters

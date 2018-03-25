@@ -4,12 +4,9 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
-import datetime
 import json
 
 from django.db import models
-from django.db.models import signals
-from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 
 class JSONField(models.TextField):
@@ -20,13 +17,13 @@ class JSONField(models.TextField):
     deserialization_params added on 2011-01-09 to provide additional hints at deserialization time
     """
 
-    # Used so to_python() is called
-    __metaclass__ = models.SubfieldBase
-
     def __init__(self, json_type=None, deserialization_params=None, **kwargs):
         self.json_type = json_type
         self.deserialization_params = deserialization_params
         super(JSONField, self).__init__(**kwargs)
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def to_python(self, value):
         """Convert our string value to JSON after we load it from the DB"""
@@ -68,7 +65,6 @@ class JSONField(models.TextField):
             the_dict = value
 
         return json.dumps(the_dict, cls=DjangoJSONEncoder)
-
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)

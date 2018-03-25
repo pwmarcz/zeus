@@ -3,14 +3,8 @@ import datetime
 
 from time import strptime, strftime
 from django import forms
-from django.db import models
 from django.forms import fields
-from django import forms
-from django.db import models
-from django.template.loader import render_to_string
-from django.forms.widgets import Select, MultiWidget, DateInput, TextInput
-
-from time import strftime
+from django.forms.widgets import DateInput, MultiWidget, Select
 
 
 hour_selections = [('','')]

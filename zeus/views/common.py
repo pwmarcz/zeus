@@ -17,4 +17,3 @@ ELGAMAL_PARAMS.g = DEFAULT_CRYPTOSYSTEM_PARAMS['g']
 # object ready for serialization
 ELGAMAL_PARAMS_LD_OBJECT = datatypes.LDObject.\
         instantiate(ELGAMAL_PARAMS, datatype='legacy/EGParams')
-

@@ -1,31 +1,31 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url
+from . import views
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', 'account_administration.views.list_users',
+urlpatterns = [
+    url(r'^$', views.list_users,
         name='list_users'),
-    url(r'^user_list/$', 'account_administration.views.list_users',
+    url(r'^user_list/$', views.list_users,
         name='list_users'),
-    url(r'^group_creation/$', 'account_administration.views.create_usergroup',
+    url(r'^group_creation/$', views.create_usergroup,
         name='create_usergroup'),
-    url(r'^user_creation/$', 'account_administration.views.create_user',
+    url(r'^user_creation/$', views.create_user,
         name='create_user'),
     url(r'^institution_creation/$',
-        'account_administration.views.create_institution',
+        views.create_institution,
         name='create_institution'),
     url(r'usergroup_list/$',
-        'account_administration.views.list_usergroups',
+        views.list_usergroups,
         name='list_usergroups'),
     url(r'institution_list/$',
-        'account_administration.views.list_institutions',
+        views.list_institutions,
         name='list_institutions'),
     url(r'user_management/$',
-        'account_administration.views.manage_user',
+        views.manage_user,
         name='user_management'),
     url(r'reset_password/$',
-        'account_administration.views.reset_password',
+        views.reset_password,
         name='reset_password'),
     url(r'reset_password_confirmed/$',
-        'account_administration.views.reset_password_confirmed',
+        views.reset_password_confirmed,
         name='reset_password_confirmed'),
-    )
+]

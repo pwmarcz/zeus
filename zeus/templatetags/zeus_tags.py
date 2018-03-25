@@ -1,15 +1,12 @@
 import json
 import urllib
 
-from functools import partial
 
 from django import template
-from django.template.defaultfilters import stringfilter
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext as _n
-from django.template.loader import render_to_string
 from django.template import Template
-from django.utils.html import escape
+from django.utils.html import escape, mark_safe
 
 register = template.Library()
 
@@ -44,7 +41,6 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
     else:
         cls += " disabled"
 
-
     csrf_token = ""
     if 'csrf_token' in context:
         csrf_token = u"""<input type="hidden" """ + \
@@ -73,7 +69,7 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
         'csrf_token': csrf_token,
         'onclick': onclick
     }
-    return html
+    return mark_safe(html)
 
 
 def _action(context, label, url, icon="", cls="", extra_cls="",
@@ -101,7 +97,7 @@ def _action(context, label, url, icon="", cls="", extra_cls="",
         'extra_cls': extra_cls,
         'tag_content': tag_content
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)
@@ -151,7 +147,7 @@ def menu_action(context, label, url, icon="", cls=""):
         'url': url,
         'icon': icon
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)
@@ -210,7 +206,7 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
         'csrf_token': csrf_token,
         'q_hidden_field': q_field,
     }
-    return html
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)

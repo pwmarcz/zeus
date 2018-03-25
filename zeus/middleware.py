@@ -9,7 +9,6 @@ from zeus import auth
 logger = logging.getLogger()
 
 
-
 class ForceDefaultLanguageMiddleware(object):
     """
     Ignore Accept-Language HTTP headers
@@ -20,11 +19,12 @@ class ForceDefaultLanguageMiddleware(object):
     Should be installed *before* any middleware that checks request.META['HTTP_ACCEPT_LANGUAGE'],
     namely django.middleware.locale.LocaleMiddleware
     """
+
     def process_request(self, request):
         if request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
             del request.META['HTTP_ACCEPT_LANGUAGE']
 
-	lang = request.GET.get('lang')
+        lang = request.GET.get('lang')
         if lang:
             request.session['django_language'] = lang
             return HttpResponseRedirect('/' + settings.SERVER_PREFIX + '/')

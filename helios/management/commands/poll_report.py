@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Poll
 
 def strforce(thing):
     if isinstance(thing, unicode):
@@ -49,4 +47,3 @@ class Command(BaseCommand):
 
         for t in output:
             print '|'.join(str(x) for x in t)
-

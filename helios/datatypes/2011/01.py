@@ -2,33 +2,33 @@
 data types for 2011/01 Helios
 """
 
-from helios.datatypes import LDObject, arrayOf, DictObject, ListObject
+from helios.datatypes import LDObject, ListObject, arrayOf
 
 class Trustee(LDObject):
-  """
-  a trustee
-  """
-  
-  FIELDS = ['uuid', 'public_key', 'public_key_hash', 'pok', 'decryption_factors', 'decryption_proofs', 'email']
-  STRUCTURED_FIELDS = {
-    'pok' : 'pkc/elgamal/DiscreteLogProof',
-    'public_key' : 'pkc/elgamal/PublicKey'
-    }
+    """
+    a trustee
+    """
 
-  # removed some public key processing for now
- 
+    FIELDS = ['uuid', 'public_key', 'public_key_hash', 'pok', 'decryption_factors', 'decryption_proofs', 'email']
+    STRUCTURED_FIELDS = {
+      'pok' : 'pkc/elgamal/DiscreteLogProof',
+      'public_key' : 'pkc/elgamal/PublicKey'
+      }
+
+    # removed some public key processing for now
+
 class Election(LDObject):
-  FIELDS = ['uuid', 'questions', 'name', 'short_name', 'description', 'voters_hash', 'openreg',
-            'frozen_at', 'public_key', 'cast_url', 'use_advanced_audit_features', 
-            'use_voter_aliases', 'voting_starts_at', 'voting_ends_at']
-  
-  STRUCTURED_FIELDS = {
-    'public_key' : 'pkc/elgamal/PublicKey',
-    'voting_starts_at': 'core/Timestamp',
-    'voting_ends_at': 'core/Timestamp',
-    'frozen_at': 'core/Timestamp',
-    'questions': '2011/01/Questions',
-    }
+    FIELDS = ['uuid', 'questions', 'name', 'short_name', 'description', 'voters_hash', 'openreg',
+              'frozen_at', 'public_key', 'cast_url', 'use_advanced_audit_features',
+              'use_voter_aliases', 'voting_starts_at', 'voting_ends_at']
+
+    STRUCTURED_FIELDS = {
+      'public_key' : 'pkc/elgamal/PublicKey',
+      'voting_starts_at': 'core/Timestamp',
+      'voting_ends_at': 'core/Timestamp',
+      'frozen_at': 'core/Timestamp',
+      'questions': '2011/01/Questions',
+      }
 
 class Voter(LDObject):
     FIELDS = ['election_uuid', 'uuid', 'voter_type', 'voter_id_hash', 'name']
@@ -46,4 +46,3 @@ class EncryptedAnswer(LDObject):
 
 class Questions(ListObject, LDObject):
     WRAPPED_OBJ = list
-

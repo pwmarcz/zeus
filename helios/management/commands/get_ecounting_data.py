@@ -1,9 +1,6 @@
-from django.conf import settings
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from helios import utils as helios_utils
-from helios.models import *
-from heliosauth.models import *
+from helios.models import Election
 import json
 import sys
 
@@ -17,4 +14,3 @@ class Command(BaseCommand):
         e = Election.objects.get(uuid=args[0])
         d = e.ecounting_dict()
         sys.stdout.write(json.dumps(d, indent=2, ensure_ascii=0, encoding='utf-8'))
-

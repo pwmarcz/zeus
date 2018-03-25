@@ -10,8 +10,9 @@ def get_from_env(var, default):
 
 ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
 
+TESTING = False
 DEBUG = False
-TEMPLATE_DEBUG = False
+ZEUS_TASK_DEBUG = False
 
 ADMINS = (
     ('Grnet user', 'test@grnet.gr'),
@@ -68,11 +69,34 @@ STATIC_ROOT = os.path.join(ROOT_PATH, 'sitestatic')
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = get_from_env('SECRET_KEY', 'replaceme')
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            ROOT_PATH,
+            os.path.join(ROOT_PATH, 'templates')
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.request",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.csrf",
+                "zeus.context_processors.user",
+                "zeus.context_processors.confirm_messages",
+                "zeus.context_processors.theme",
+                "zeus.context_processors.lang",
+                "zeus.context_processors.prefix",
+            ],
+        },
+    },
+]
+
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -80,7 +104,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'pagination.middleware.PaginationMiddleware',
+    'dj_pagination.middleware.PaginationMiddleware',
     'zeus.middleware.AuthenticationMiddleware',
     'zeus.middleware.ExceptionsMiddleware',
 )
@@ -88,10 +112,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 BOOTH_PATH = os.path.join('zeus', 'static', 'booth')
-TEMPLATE_DIRS = (
-    ROOT_PATH,
-    os.path.join(ROOT_PATH, 'templates')
-)
 
 LOCALE_PATHS = (os.path.join(BOOTH_PATH, 'locale'),)
 
@@ -100,29 +120,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pagination',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'dj_pagination',
     'heliosauth',
     'helios',
     'zeus',
     'server_ui',
     'account_administration'
-)
-
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-  "django.contrib.auth.context_processors.auth",
-  "django.core.context_processors.debug",
-  "django.core.context_processors.i18n",
-  "django.core.context_processors.media",
-  "django.core.context_processors.static",
-  "django.core.context_processors.request",
-  "django.contrib.messages.context_processors.messages",
-  "django.core.context_processors.csrf",
-  "zeus.context_processors.user",
-  "zeus.context_processors.confirm_messages",
-  "zeus.context_processors.theme",
-  "zeus.context_processors.lang",
-  "zeus.context_processors.prefix"
 )
 
 ##

@@ -2,10 +2,9 @@ import os
 import datetime
 import logging
 
-from collections import defaultdict
 from django.conf import settings
 
-from zeus.mobile import locotel, mybsms
+from zeus.mobile import mybsms
 
 logger = logging.getLogger(__name__)
 
