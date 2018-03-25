@@ -43,7 +43,7 @@ class userForm(ModelForm):
     institution = forms.CharField(required=True)
     user_groups = forms.ModelMultipleChoiceField(
         queryset=UserGroup.objects.filter(),
-        initial=[UserGroup.objects.get(name="default")],
+        initial=UserGroup.objects.filter(name="default"),
         widget=forms.CheckboxSelectMultiple
     )
 
