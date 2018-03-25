@@ -118,7 +118,7 @@ class PollMix(models.Model):
     name = models.CharField(max_length=255, null=False, default='Zeus mixnet')
     mix_type = models.CharField(max_length=255, choices=MIX_TYPE_CHOICES,
                               default='local')
-    poll = models.ForeignKey('Poll', related_name='mixes')
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='mixes')
     mix_order = models.PositiveIntegerField(default=0)
 
     remote_ip = models.CharField(max_length=255, null=True, blank=True)
@@ -217,7 +217,7 @@ class PollMix(models.Model):
 
 
 class MixPart(models.Model):
-    mix = models.ForeignKey(PollMix, related_name="parts")
+    mix = models.ForeignKey(PollMix, on_delete=models.CASCADE, related_name="parts")
     data = models.BinaryField(blank=True, null=True)
 
 
@@ -276,7 +276,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     private_key = LDObjectField(type_hint = 'legacy/EGSecretKey', null=True)
 
     admins = models.ManyToManyField(User, related_name="elections")
-    institution = models.ForeignKey('zeus.Institution', null=True)
+    institution = models.ForeignKey('zeus.Institution', on_delete=models.CASCADE, null=True)
 
     departments = models.TextField(_("Departments"), null=True,
                                    help_text=_("University Schools. e.g."
@@ -319,7 +319,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
                                     choices=OFFICIAL_CHOICES)
     objects = ElectionManager()
 
-    sms_data = models.ForeignKey(SMSBackendData, default=None, null=True)
+    sms_data = models.ForeignKey(SMSBackendData, on_delete=models.CASCADE, default=None, null=True)
     sms_api_enabled = models.BooleanField(default=False)
 
     cast_notify_once = models.BooleanField(default=True)
@@ -687,7 +687,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     name = models.CharField(_('Poll name'), max_length=255)
     short_name = models.CharField(max_length=255)
 
-    election = models.ForeignKey('Election', related_name="polls")
+    election = models.ForeignKey('Election', on_delete=models.CASCADE, related_name="polls")
 
     uuid = models.CharField(max_length=50, null=False, unique=True, db_index=True)
     zeus_fingerprint = models.TextField(null=True, default=None)
@@ -1401,7 +1401,7 @@ class ElectionLog(models.Model):
     VOTER_FILE_ADDED = "voter file added"
     DECRYPTIONS_COMBINED = "decryptions combined"
 
-    election = models.ForeignKey(Election)
+    election = models.ForeignKey(Election, on_delete=models.CASCADE)
     log = models.CharField(max_length=500)
     at = models.DateTimeField(auto_now_add=True)
 
@@ -1504,7 +1504,7 @@ class VoterFile(models.Model):
     # path where we store voter upload
     PATH = settings.VOTER_UPLOAD_REL_PATH
 
-    poll = models.ForeignKey(Poll)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
 
     # we move to storing the content in the DB
     voter_file = models.FileField(upload_to=PATH, max_length=250,null=True)
@@ -1668,7 +1668,7 @@ class VoterManager(models.Manager):
 
 
 class Voter(HeliosModel, VoterFeatures):
-    poll = models.ForeignKey(Poll, related_name="voters")
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="voters")
     uuid = models.CharField(max_length = 50)
 
     # if user is null, then you need a voter login ID and password
@@ -1972,8 +1972,8 @@ class CastVoteManager(models.Manager):
 
 class CastVote(HeliosModel):
     # the reference to the voter provides the voter_uuid
-    voter = models.ForeignKey(Voter, related_name="cast_votes")
-    poll = models.ForeignKey(Poll, related_name="cast_votes")
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name="cast_votes")
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="cast_votes")
 
     previous = models.CharField(max_length=255, default="")
 
@@ -2070,8 +2070,8 @@ class AuditedBallot(models.Model):
     """
     ballots for auditing
     """
-    poll = models.ForeignKey(Poll, related_name="audited_ballots")
-    voter = models.ForeignKey(Voter, null=True)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="audited_ballots")
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE, null=True)
     raw_vote = models.TextField()
     vote_hash = models.CharField(max_length=100)
     added_at = models.DateTimeField(auto_now_add=True)
@@ -2142,8 +2142,8 @@ class TrusteeDecryptionFactorsManager(models.Manager):
 
 class TrusteeDecryptionFactors(models.Model):
 
-    trustee = models.ForeignKey('Trustee', related_name='partial_decryptions')
-    poll = models.ForeignKey('Poll', related_name='partial_decryptions')
+    trustee = models.ForeignKey('Trustee', on_delete=models.CASCADE, related_name='partial_decryptions')
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE, related_name='partial_decryptions')
     decryption_factors = LDObjectField(
         type_hint=datatypes.arrayOf(datatypes.arrayOf('core/BigInteger')),
         null=True)
@@ -2173,7 +2173,7 @@ class TrusteeManager(models.Manager):
 
 
 class Trustee(HeliosModel, TrusteeFeatures):
-    election = models.ForeignKey(Election, related_name="trustees")
+    election = models.ForeignKey(Election, on_delete=models.CASCADE, related_name="trustees")
     uuid = models.CharField(max_length=50)
     name = models.CharField(max_length=200)
     email = models.EmailField()

@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
                 ('archived_at', models.DateTimeField(default=None, null=True)),
                 ('official', models.IntegerField(default=None, null=True, choices=[(None, 'Unresolved'), (0, 'Unofficial'), (1, 'Official')])),
                 ('admins', models.ManyToManyField(related_name='elections', to='heliosauth.User')),
-                ('institution', models.ForeignKey(to='zeus.Institution', null=True)),
+                ('institution', models.ForeignKey(to='zeus.Institution', on_delete=models.CASCADE, null=True)),
             ],
             options={
                 'ordering': ('-created_at',),
@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('log', models.CharField(max_length=500)),
                 ('at', models.DateTimeField(auto_now_add=True)),
-                ('election', models.ForeignKey(to='helios.Election')),
+                ('election', models.ForeignKey(to='helios.Election', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -193,7 +193,7 @@ class Migration(migrations.Migration):
                 ('jwt_issuer', models.CharField(max_length=255, null=True, blank=True)),
                 ('shibboleth_auth', models.BooleanField(default=False, verbose_name='Shibboleth login')),
                 ('shibboleth_constraints', heliosauth.jsonfield.JSONField(default=None, null=True, blank=True)),
-                ('election', models.ForeignKey(related_name='polls', to='helios.Election')),
+                ('election', models.ForeignKey(related_name='polls', to='helios.Election', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('link_id', 'index', 'created_at'),
@@ -214,7 +214,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(default=b'pending', max_length=255, choices=[(b'pending', b'Pending'), (b'mixing', b'Mixing'), (b'validating', b'Validating'), (b'error', b'Error'), (b'finished', b'Finished')])),
                 ('mix_error', models.TextField(null=True, blank=True)),
                 ('mix_file', models.FileField(default=None, storage=django.core.files.storage.FileSystemStorage(location=b'/srv/zeus-data/media/zeus_mixes/'), null=True, upload_to=helios.models.dummy_upload_to)),
-                ('poll', models.ForeignKey(related_name='mixes', to='helios.Poll')),
+                ('poll', models.ForeignKey(related_name='mixes', to='helios.Poll', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['-mix_order'],
@@ -235,7 +235,7 @@ class Migration(migrations.Migration):
                 ('pok', helios.datatypes.djangofield.LDObjectField(null=True)),
                 ('last_verified_key_at', models.DateTimeField(null=True)),
                 ('last_notified_at', models.DateTimeField(default=None, null=True)),
-                ('election', models.ForeignKey(related_name='trustees', to='helios.Election')),
+                ('election', models.ForeignKey(related_name='trustees', to='helios.Election', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -248,8 +248,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('decryption_factors', helios.datatypes.djangofield.LDObjectField(null=True)),
                 ('decryption_proofs', helios.datatypes.djangofield.LDObjectField(null=True)),
-                ('poll', models.ForeignKey(related_name='partial_decryptions', to='helios.Poll')),
-                ('trustee', models.ForeignKey(related_name='partial_decryptions', to='helios.Trustee')),
+                ('poll', models.ForeignKey(related_name='partial_decryptions', to='helios.Poll', on_delete=models.CASCADE)),
+                ('trustee', models.ForeignKey(related_name='partial_decryptions', to='helios.Trustee', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -284,7 +284,7 @@ class Migration(migrations.Migration):
                 ('last_visit', models.DateTimeField(null=True)),
                 ('excluded_at', models.DateTimeField(default=None, null=True)),
                 ('exclude_reason', models.TextField(default=b'')),
-                ('poll', models.ForeignKey(related_name='voters', to='helios.Poll')),
+                ('poll', models.ForeignKey(related_name='voters', to='helios.Poll', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -300,7 +300,7 @@ class Migration(migrations.Migration):
                 ('processing_started_at', models.DateTimeField(null=True)),
                 ('processing_finished_at', models.DateTimeField(null=True)),
                 ('num_voters', models.IntegerField(null=True)),
-                ('poll', models.ForeignKey(to='helios.Poll')),
+                ('poll', models.ForeignKey(to='helios.Poll', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -325,19 +325,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mixpart',
             name='mix',
-            field=models.ForeignKey(related_name='parts', to='helios.PollMix'),
+            field=models.ForeignKey(related_name='parts', to='helios.PollMix', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='castvote',
             name='poll',
-            field=models.ForeignKey(related_name='cast_votes', to='helios.Poll'),
+            field=models.ForeignKey(related_name='cast_votes', to='helios.Poll', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='castvote',
             name='voter',
-            field=models.ForeignKey(related_name='cast_votes', to='helios.Voter'),
+            field=models.ForeignKey(related_name='cast_votes', to='helios.Voter', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -347,13 +347,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='auditedballot',
             name='poll',
-            field=models.ForeignKey(related_name='audited_ballots', to='helios.Poll'),
+            field=models.ForeignKey(related_name='audited_ballots', to='helios.Poll', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='auditedballot',
             name='voter',
-            field=models.ForeignKey(to='helios.Voter', null=True),
+            field=models.ForeignKey(to='helios.Voter', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(

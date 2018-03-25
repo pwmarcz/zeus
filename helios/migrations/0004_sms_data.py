@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='election',
             name='sms_data',
-            field=models.ForeignKey(default=None, to='heliosauth.SMSBackendData', null=True),
+            field=models.ForeignKey(default=None, to='heliosauth.SMSBackendData', on_delete=models.CASCADE, null=True),
             preserve_default=True,
         ),
     ]
