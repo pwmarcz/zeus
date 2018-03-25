@@ -1,4 +1,5 @@
 - hosts: all
+  gather_facts: no
   become: yes
   vars:
     zeus_db_password: "{{ (lookup('file', 'secrets/zeus-secrets-{{ inventory_hostname }}.json') | from_json)['db_password'] }}"
