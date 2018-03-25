@@ -991,35 +991,6 @@ class TestSimpleElection(TestElectionBase):
         election.refresh_from_db()
         assert election.cancelation_reason == 'canceled because of reasons'
 
-    def test_poll_questions(self):
-        self.election_form['election_module'] = self.election_type
-        self.c.post(self.locations['login'], self.login_data)
-        self.c.post(self.locations['create'], self.election_form, follow=True)
-        election = Election.objects.get()
-        self.e_uuid = election.uuid
-        self.create_polls()
-        poll = Poll.objects.all()[0]
-
-        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
-        assert response.status_code == 302
-        self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
-                             fetch_redirect_response=True)
-
-        self.submit_voters_file()
-        voter = Voter.objects.all()[0]
-        url = voter.get_quick_login_url()
-
-        self.c.post(self.locations['logout'])
-
-        self.voter_login(voter, url)
-        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
-
-        assert response.status_code == 200
-        module = poll.get_module()
-        tpl = getattr(module, 'questions_list_template', 'election_poll_questions')
-
-        self.assertTemplateUsed(response, tpl + '.html')
-
 
 class TestPartyElection(TestElectionBase):
 
