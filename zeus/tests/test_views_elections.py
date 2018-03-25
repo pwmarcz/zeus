@@ -12,9 +12,6 @@ class TestAddOrUpdateElection(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestElectionView, self).setUp()
 
-    def login(self):
-        self.c.post(self.locations['login'], self.login_data)
-
     def test_election_create(self):
         # election-create form cannot be seen without logging in
         response = self.c.get(reverse('election_create'), {})

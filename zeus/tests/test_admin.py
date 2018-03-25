@@ -18,9 +18,6 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestHomeView, self).setUp()
 
-    def login(self):
-        self.c.post(self.locations['login'], self.login_data)
-
     def post_and_get_response(self):
         """
         Create an election and post on admin_home

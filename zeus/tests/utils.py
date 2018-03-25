@@ -84,6 +84,9 @@ class SetUpAdminAndClientMixin():
         self.login_data = {'username': 'test_admin', 'password': 'test_admin'}
         self.c = Client()
 
+    def login(self):
+        self.c.post(self.locations['login'], self.login_data)
+
 
 def get_institution(**kwargs):
     '''
