@@ -339,7 +339,7 @@ def error(request, code=None, message=None, type='error'):
     return response
 
 
-def handler403(request):
+def handler403(request, exception):
     msg = _("You do not have permission to access this page.")
     return error(request, 403, msg)
 
