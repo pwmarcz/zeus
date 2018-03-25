@@ -7,11 +7,11 @@
 #
 
 execute 'Create postgresql user and db' do
-  command 'sudo -u postgres createuser -s $(whoami)'
-  # not_if 'psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname=\'$(whoami)\'"'
+  command 'sudo -u postgres createuser -s vagrant'
+  # not_if 'psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname=\'vagrant\'"'
 end
 execute 'Create postgresql db' do
-  command 'createdb helios -O $(whoami)'
+  command "su vagrant -l -c 'createdb helios -O vagrant'"
   not_if 'psql -lqt | cut -d \| -f 1 | grep -qw helios'
 end
 
@@ -23,16 +23,23 @@ package 'Install rsync' do
   package_name 'rsync'
 end
 
-package 'Install gmp' do
-  package_name 'libgmp3-dev'
-end
-
 package 'Install icu' do
   package_name 'libicu-dev'
 end
 
+package 'Install gmp' do
+  package_name 'libgmp-dev'
+end
+
+package 'Install mpfr' do
+  package_name 'libmpfr-dev'
+end
+
+package 'Install mpc' do
+  package_name 'libmpc-dev'
+end
+
 execute 'Copy zeus dir to home' do
-  # command 'rsync -av --progress /vagrant /home/vagrant --exclude .git kitchen'
   command 'rsync -av --progress /zeus /home/vagrant --exclude .git --exclude kitchen'
   not_if {::File.exists?('/home/vagrant/zeus')}
 end
@@ -44,15 +51,18 @@ execute 'Change perms for gnu local' do
 end
 
 execute 'Install pipenv' do
-  command 'cd zeus; pip install pipenv'
+  command "cd zeus; sudo pip install pipenv"
+  action :run
 end
 
 execute 'Generate new venv' do
-  command 'cd zeus; pipenv --python python2'
+  command "su vagrant -l -c 'cd zeus; pipenv --python python2'"
+  action :run
 end
 
 execute 'Install dependencies' do
-  command 'cd zeus; pipenv sync --dev'
+  command "su vagrant -l -c 'cd zeus; pipenv sync --dev'"
+  action :run
 end
 
 # execute 'Create settings file' do
