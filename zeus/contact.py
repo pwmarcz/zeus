@@ -3,7 +3,7 @@ import datetime
 from email.Utils import formataddr
 from django.conf import settings
 from django.core.mail import EmailMessage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from helios.view_utils import render_template_raw
 from django.db import transaction
 from zeus import mobile

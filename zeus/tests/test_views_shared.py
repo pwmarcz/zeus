@@ -4,7 +4,7 @@ from base64 import b64decode
 import pytest
 
 from django.test.client import Client
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 @pytest.mark.django_db

@@ -6,7 +6,7 @@ from functools import wraps
 
 from helios.models import Election, Voter, Poll
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import translation
 from django.conf import settings
 from django.db import transaction

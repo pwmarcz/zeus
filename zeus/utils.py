@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from django.db.models import Q
 from django.template import loader
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _

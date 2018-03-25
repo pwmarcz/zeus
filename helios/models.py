@@ -33,7 +33,7 @@ from django.core.mail import send_mail, mail_admins
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email as django_validate_email
 from django.forms import ValidationError
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template.context_processors import csrf
 from django.utils import translation
 from django.core.files import storage

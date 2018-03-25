@@ -6,7 +6,7 @@ Ben Adida
 """
 
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 from .view_utils import render_template

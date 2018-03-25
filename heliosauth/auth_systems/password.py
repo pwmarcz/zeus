@@ -9,7 +9,7 @@ import json
 
 from email.Utils import formataddr
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django import forms
 from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
