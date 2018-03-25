@@ -49,12 +49,9 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             messages.append(unicode(item))
         return messages
 
-    def create_poll(self, **kwargs):
-        election = self.get_election(name="election", voting_starts_at=datetime.date.today(),
-                                     voting_ends_at=datetime.date.today() + datetime.timedelta(days=1),
-                                     trial=True)
+    def create_poll(self, election, **kwargs):
         self.c.post(self.locations['login'], self.login_data)
-        poll, _ = Poll.objects.get_or_create(**kwargs)
+        poll, _ = Poll.objects.get_or_create(election=election, **kwargs)
         self.p_uuids = []
         for poll in election.polls.all():
             self.p_uuids.append(poll.uuid)
@@ -96,21 +93,27 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
 class TestPollViews(TestElectionBase):
 
-    def test_poll_questions(self):
+    def setUp(self):
+        super(TestElectionBase, self).setUp()
         self.c.post(self.locations['login'], self.login_data)
-        election = self.get_election(name="election", voting_starts_at=datetime.date.today(),
+        self.election = self.get_election(name="election", voting_starts_at=datetime.date.today(),
                                      voting_ends_at=datetime.date.today() + datetime.timedelta(days=1),
                                      trial=True)
         user = User.objects.get()
-        election.admins.add(user)
-        poll = self.create_poll(election=election, name="poll")
+        self.election.admins.add(user)
+        self.election.save()
 
-        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
+        self.local_verbose = os.environ.get('ZEUS_TESTS_VERBOSE', None)
+
+    def test_poll_questions(self):
+        poll = self.create_poll(election=self.election, name="poll")
+
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(self.election.uuid, poll.uuid))
         assert response.status_code == 302
-        self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(election.uuid, poll.uuid),
+        self.assertRedirects(response, '/elections/{}/polls/{}/questions/manage'.format(self.election.uuid, poll.uuid),
                              fetch_redirect_response=True)
 
-        self.e_uuid = election.uuid
+        self.e_uuid = self.election.uuid
         self.submit_voters_file()
         voter = Voter.objects.all()[0]
         url = voter.get_quick_login_url()
@@ -118,12 +121,44 @@ class TestPollViews(TestElectionBase):
         self.c.post(self.locations['logout'])
 
         self.voter_login(voter, url)
-        response = self.c.get('/elections/{}/polls/{}/questions'.format(election.uuid, poll.uuid))
+        response = self.c.get('/elections/{}/polls/{}/questions'.format(self.election.uuid, poll.uuid))
 
         assert response.status_code == 200
         module = poll.get_module()
         tpl = getattr(module, 'questions_list_template', 'election_poll_questions')
 
         self.assertTemplateUsed(response, tpl + '.html')
+
+    def test_poll_add_batch_file(self):
+        self.election.linked_polls = True
+        self.election.save()
+        self.e_uuid = self.election.uuid
+        self.create_poll(self.election, name="linked_poll")
+        poll = Poll.objects.all()[0]
+
+        with open(os.path.join(os.path.dirname(__file__),
+                               'test_sample_survey_for_linked_election.yml')) as batch_file:
+            response = self.c.post('/elections/{}/polls/add'.format(self.election.uuid),
+                                   {
+                                       'batch_file': batch_file,
+                                   })
+
+        assert response.status_code == 302
+        self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
+
+        # todo: invalid contents
+
+    def test_poll_remove(self):
+        self.election.linked_polls = True
+        self.election.save()
+        self.e_uuid = self.election.uuid
+        self.create_poll(self.election, name="poll")
+        poll = Poll.objects.all()[0]
+
+        response = self.c.post('/elections/{}/polls/{}/remove'.format(self.election.uuid, poll.uuid))
+
+        assert response.status_code == 302
+        self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
+
 
 
