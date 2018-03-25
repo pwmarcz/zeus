@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from helios.view_utils import render_template
 from heliosauth.models import User, UserGroup
-from heliosauth.auth_systems.password import make_password
+from django.contrib.auth.hashers import make_password
 from zeus.models.zeus_models import Institution
 from zeus.auth import manager_or_superadmin_required, superadmin_required
 from account_administration.forms import userForm, institutionForm, userGroupForm

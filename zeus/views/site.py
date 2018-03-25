@@ -19,7 +19,7 @@ from django.views.i18n import set_language
 from django.forms.formsets import formset_factory
 
 from helios.view_utils import render_template
-from heliosauth.auth_systems.password import make_password
+from django.contrib.auth.hashers import make_password
 from helios.models import User, Election
 from heliosauth.models import UserGroup
 from zeus.models import Institution
