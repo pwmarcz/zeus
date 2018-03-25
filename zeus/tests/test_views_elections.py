@@ -8,7 +8,7 @@ from zeus.forms import ElectionForm
 from zeus.tests.utils import SetUpAdminAndClientMixin, get_election
 
 
-class TestElectionView(SetUpAdminAndClientMixin, TestCase):
+class TestAddOrUpdateElection(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestElectionView, self).setUp()
 
