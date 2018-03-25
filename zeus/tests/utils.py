@@ -89,8 +89,8 @@ def get_institution(**kwargs):
     Create, or retrieve an instituion. For testing purposes we only need one, so
     this instance is effectively a singleton.
     '''
-    instituion, _ = Institution.objects.get_or_create(**kwargs)
-    return instituion
+    institution, _ = Institution.objects.get_or_create(**kwargs)
+    return institution
 
 
 def get_election(**kwargs):
