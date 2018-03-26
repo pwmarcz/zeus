@@ -9,9 +9,6 @@ class WorkflowObject(LDObjectContainer):
 
     inject_params = True
 
-    def __init__(self, *args, **kwargs):
-        return super(WorkflowObject, self).__init__(self, *args,  **kwargs)
-
     def __new__(cls, *args, **kwargs):
         workflow = kwargs.pop('workflow', None)
         newcls = cls

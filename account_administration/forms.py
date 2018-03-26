@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 
 from heliosauth.models import User, UserGroup, election_types_choices
-from heliosauth.auth_systems.password import make_password
+from django.contrib.auth.hashers import make_password
 from zeus.models.zeus_models import Institution
 
 from utils import random_password
@@ -43,7 +43,7 @@ class userForm(ModelForm):
     institution = forms.CharField(required=True)
     user_groups = forms.ModelMultipleChoiceField(
         queryset=UserGroup.objects.filter(),
-        initial=[UserGroup.objects.get(name="default")],
+        initial=UserGroup.objects.filter(name="default"),
         widget=forms.CheckboxSelectMultiple
     )
 

@@ -5,7 +5,7 @@ import json
 import urllib
 
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.forms import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection

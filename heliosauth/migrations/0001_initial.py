@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('management_p', models.BooleanField(default=False)),
                 ('ecounting_account', models.BooleanField(default=True)),
                 ('is_disabled', models.BooleanField(default=False)),
-                ('institution', models.ForeignKey(to='zeus.Institution', null=True)),
+                ('institution', models.ForeignKey(to='zeus.Institution', on_delete=models.CASCADE, null=True)),
             ],
             options={
             },

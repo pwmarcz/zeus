@@ -1,7 +1,7 @@
 import logging
 import urllib2
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest
 from django.contrib import messages

@@ -14,7 +14,7 @@ from zeus import reports
 from zeus import auth
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib import messages

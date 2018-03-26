@@ -7,7 +7,7 @@ from collections import defaultdict
 from time import time
 from random import randint
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
@@ -19,7 +19,7 @@ from django.views.i18n import set_language
 from django.forms.formsets import formset_factory
 
 from helios.view_utils import render_template
-from heliosauth.auth_systems.password import make_password
+from django.contrib.auth.hashers import make_password
 from helios.models import User, Election
 from heliosauth.models import UserGroup
 from zeus.models import Institution
@@ -339,7 +339,7 @@ def error(request, code=None, message=None, type='error'):
     return response
 
 
-def handler403(request):
+def handler403(request, exception):
     msg = _("You do not have permission to access this page.")
     return error(request, 403, msg)
 

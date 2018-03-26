@@ -3,7 +3,7 @@ import sys
 from django.core.management.base import BaseCommand
 
 from heliosauth.models import User, UserGroup, SMSBackendData
-from heliosauth.auth_systems.password import make_password
+from django.contrib.auth.hashers import make_password
 from zeus.models import Institution
 
 import getpass
@@ -183,4 +183,4 @@ class Command(BaseCommand):
             newuser.institution = inst
             newuser.ecounting_account = False
             newuser.save()
-            newuser.user_groups = [UserGroup.objects.get(name="default")]
+            newuser.user_groups.set([UserGroup.objects.get(name="default")])

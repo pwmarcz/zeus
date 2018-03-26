@@ -1,7 +1,7 @@
 from urllib import urlencode
 
 from django.test import TestCase
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from helios.models import Election
 from zeus.forms import ElectionForm
 from zeus.tests.utils import SetUpAdminAndClientMixin, get_election

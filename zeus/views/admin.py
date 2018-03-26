@@ -4,7 +4,7 @@ import datetime
 import cStringIO as StringIO
 
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 from django.views.generic import View
 

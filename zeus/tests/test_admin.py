@@ -5,7 +5,7 @@ import datetime
 from io import StringIO
 
 from django.test import TestCase, RequestFactory
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from zeus.tests.utils import SetUpAdminAndClientMixin, get_election
 
