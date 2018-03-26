@@ -10,10 +10,10 @@ from bisect import bisect_right
 import Crypto.Util.number as number
 
 
-from mixnet.EGCryptoSystem import EGCryptoSystem as MixCryptosystem
-from mixnet.PublicKey import PublicKey as MixPublicKey
-from mixnet.Ciphertext import Ciphertext as MixCiphertext
-from mixnet.CiphertextCollection import CiphertextCollection as MixCiphertextCollection
+from plonevotecryptolib.EGCryptoSystem import EGCryptoSystem as MixCryptosystem
+from plonevotecryptolib.PublicKey import PublicKey as MixPublicKey
+from plonevotecryptolib.Ciphertext import Ciphertext as MixCiphertext
+from plonevotecryptolib.Mixnet.CiphertextCollection import CiphertextCollection as MixCiphertextCollection
 from cryptosystems import c2048 as crypto
 
 """

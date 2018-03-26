@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d59f1fe9e37267e62a68dbc90920551777c989d6a6be79cf7823e7d8d7aef627"
+            "sha256": "cab993e6d46d6b69d19dce1431ba1a9dace6161a96776d8c04abc3add6b24dc0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -186,6 +186,10 @@
                 "sha256:fcf64c91fd44485100a2965d23bb0e227d093e91f7e776c5ca3b32574766eb56"
             ],
             "version": "==5.0.0"
+        },
+        "plonevotecryptolib": {
+            "git": "https://github.com/HRodriguez/svelib.git",
+            "subdirectory": "PloneVoteCryptoLib"
         },
         "prompt-toolkit": {
             "hashes": [
