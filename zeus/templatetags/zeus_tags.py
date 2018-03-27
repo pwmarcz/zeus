@@ -1,5 +1,7 @@
 import json
-import urllib
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 
 from django import template
@@ -286,7 +288,7 @@ def complete_get_parameters(context, GET, new_order,
     if q:
         if isinstance(q, unicode):
             q = q.encode('utf8')
-        filter_param = '&q=%s' % urllib.quote_plus(q)
+        filter_param = '&q=%s' % six.moves.urllib.parse.quote_plus(q)
     params = '%s%s%s' % (page_param, order_param, filter_param)
     return params
 

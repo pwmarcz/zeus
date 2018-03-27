@@ -1,4 +1,6 @@
-import urllib
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 import datetime
 import json
 import os
@@ -387,7 +389,7 @@ def test_cookie(request):
     continue_url = request.GET['continue_url']
     request.session.set_test_cookie()
     next_url = "%s?%s" % (reverse('test_cookie_2'),
-                          urllib.urlencode({'continue_url': continue_url}))
+                          six.moves.urllib.parse.urlencode({'continue_url': continue_url}))
     return HttpResponseRedirect(next_url)
 
 
@@ -396,7 +398,7 @@ def test_cookie_2(request):
 
     if not request.session.test_cookie_worked():
         return HttpResponseRedirect("%s?%s" % (reverse('nocookies'),
-                                               urllib.urlencode({
+                                               six.moves.urllib.parse.urlencode({
                                                    'continue_url':
                                                    continue_url})))
 
@@ -406,7 +408,7 @@ def test_cookie_2(request):
 
 def nocookies(request):
     retest_url = "%s?%s" % (reverse('test_cookie'),
-                            urllib.urlencode({
+                            six.moves.urllib.parse.urlencode({
                             'continue_url' : request.GET['continue_url']}))
     return render_template(request, 'nocookies', {'retest_url': retest_url})
 

@@ -20,7 +20,9 @@ import tempfile
 import mmap
 import marshal
 import itertools
-import urllib
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 from datetime import timedelta
 
@@ -892,9 +894,9 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         vote_url = "%s/%s/booth/vote.html?%s" % (
                 settings.SECURE_URL_HOST,
                 settings.SERVER_PREFIX,
-                urllib.urlencode(url_params))
+                six.moves.urllib.parse.urlencode(url_params))
         return "%s?%s" % (reverse('test_cookie'),
-                          urllib.urlencode({'continue_url': vote_url}))
+                          six.moves.urllib.parse.urlencode({'continue_url': vote_url}))
 
     def get_absolute_url(self):
         return reverse('election_poll_index', args=[self.election.uuid,

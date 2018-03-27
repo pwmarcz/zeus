@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import uuid
-import urllib
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 from xml.etree import ElementTree as etree
 from xml.sax.saxutils import escape
@@ -62,8 +64,8 @@ class Loco(object):
             'slid': msgid,
         }
 
-        post_data = urllib.urlencode(params)
-        http_response = urllib.urlopen(self.report_apiurl, data=post_data)
+        post_data = six.moves.urllib.parse.urlencode(params)
+        http_response = six.moves.urllib.request.urlopen(self.report_apiurl, data=post_data)
         resp = http_response.read()
         status_code = resp.strip()
         return self.STATUS_MAP.get(status_code)
@@ -74,7 +76,7 @@ class Loco(object):
 
         msg = self._cosntruct(uid, mobile, msg, fields)
         _msg = etree.tostring(msg)
-        http_response = urllib.urlopen(self.apiurl, data=_msg)
+        http_response = six.moves.urllib.request.urlopen(self.apiurl, data=_msg)
         self._last_uid = uid
         try:
             resp = http_response.read()

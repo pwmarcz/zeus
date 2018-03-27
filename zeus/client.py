@@ -16,12 +16,12 @@ from zeus.core import (c2048, get_random_selection,
                        parties_from_candidates,
                        FormatError)
 
-from httplib import HTTPConnection, HTTPSConnection
-from urlparse import urlparse, parse_qsl
-from urllib import urlencode
+from six.moves.http_client import HTTPConnection, HTTPSConnection
+from six.moves.urllib.parse import urlparse, parse_qsl
+from six.moves.urllib.parse import urlencode
 from os.path import exists
 from json import loads, dumps, load, dump
-from Queue import Queue, Empty
+from six.moves.queue import Queue, Empty
 from threading import Thread
 from random import choice, shuffle, randint
 from base64 import b64encode

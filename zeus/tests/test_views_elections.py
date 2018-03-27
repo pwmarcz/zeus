@@ -1,4 +1,4 @@
-from urllib import urlencode
+from six.moves.urllib.parse import urlencode
 
 from django.test import TestCase
 from django.urls import reverse

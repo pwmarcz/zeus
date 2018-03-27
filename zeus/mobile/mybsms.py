@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import uuid
-import urllib
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 import json
 
 from xml.sax.saxutils import escape
@@ -44,7 +46,7 @@ class Client(object):
         mobile = mobile.replace("+", "")
         msg = self._construct(uid, mobile, msg)
         data = json.dumps(msg)
-        http_response = urllib.urlopen(self.apiurl, data=data)
+        http_response = six.moves.urllib.request.urlopen(self.apiurl, data=data)
         self._last_uid = uid
         try:
             resp = http_response.read()

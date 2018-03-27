@@ -2,8 +2,9 @@ import yaml
 import copy
 import os
 import json
-import urllib
-
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 from django.urls import reverse
 from django.forms import ValidationError
@@ -721,7 +722,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
             if poll:
                 url = poll_reverse(poll, 'voters')
             if q_param:
-                url += '?q=%s' % urllib.quote_plus(q_param)
+                url += '?q=%s' % six.moves.urllib.parse.quote_plus(q_param)
             return HttpResponseRedirect(url)
         else:
             message = _("Something went wrong")

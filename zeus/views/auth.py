@@ -1,5 +1,7 @@
 import logging
-import urllib2
+import six.moves.urllib.request
+import six.moves.urllib.error
+import six.moves.urllib.parse
 
 from django.urls import reverse
 from django.core.exceptions import PermissionDenied
@@ -130,7 +132,7 @@ def oauth2_login(request):
                 messages.error(request, 'oauth2 user does not match voter')
                 return HttpResponseRedirect(reverse('error',
                                                     kwargs={'code': 400}))
-        except urllib2.HTTPError as e:
+        except six.moves.urllib.error.HTTPError as e:
             poll.logger.exception(e)
             messages.error(request, 'oauth2 error')
             return HttpResponseRedirect(reverse('error',

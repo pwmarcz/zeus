@@ -1,6 +1,7 @@
 import json
-import urllib
-import urllib2
+import six.moves.urllib.request
+import six.moves.urllib.parse
+import six.moves.urllib.error
 
 from django.conf import settings
 from django.urls import reverse
@@ -53,7 +54,7 @@ class Oauth2Base(object):
 
     def get_code_url(self):
         code_data = self.code_post_data
-        encoded_data = urllib.urlencode(code_data)
+        encoded_data = six.moves.urllib.parse.urlencode(code_data)
         url = "{}?{}".format(self.poll.oauth2_code_url, encoded_data)
         return url
 
@@ -68,7 +69,7 @@ class Oauth2Base(object):
 
     def get_exchange_url(self):
         self.exchange_data['code'] = self.code
-        encoded_data = urllib.urlencode(self.exchange_data)
+        encoded_data = six.moves.urllib.parse.urlencode(self.exchange_data)
         return (self.exchange_url, encoded_data)
 
     def exchange(self, url):
@@ -90,7 +91,7 @@ class Oauth2Google(Oauth2Base):
 
     def exchange(self, url):
         self.poll.logger.info("[thirdparty] Exchange url %s", url)
-        response = urllib2.urlopen(url[0], url[1])
+        response = six.moves.urllib.request.urlopen(url[0], url[1])
         data = json.loads(response.read())
         self.access_token = data['access_token']
         self.id_token = data['id_token']
@@ -102,7 +103,7 @@ class Oauth2Google(Oauth2Base):
                               self.access_token, self.confirmation_url)
         get_params = 'access_token={}'.format(self.access_token)
         get_url = '{}?{}'.format(self.confirmation_url, get_params)
-        response = urllib2.urlopen(get_url)
+        response = six.moves.urllib.request.urlopen(get_url)
         resp = response.read()
         data = json.loads(resp)
         response_email = data
@@ -126,7 +127,7 @@ class Oauth2FB(Oauth2Base):
         self.code_post_data['scope'] = 'email'
 
     def exchange(self, url):
-        response = urllib2.urlopen(url[0], url[1])
+        response = six.moves.urllib.request.urlopen(url[0], url[1])
         data = response.read()
         split_data = data.split('&')
         for item in split_data:
@@ -138,7 +139,7 @@ class Oauth2FB(Oauth2Base):
     def confirm_email(self):
         get_params = 'fields=email&access_token={}'.format(self.access_token)
         get_url = '{}?{}'.format(self.confirmation_url, get_params)
-        response = urllib2.urlopen(get_url)
+        response = six.moves.urllib.request.urlopen(get_url)
         data = json.loads(response.read())
         response_email = data['email']
         if response_email == self.session_email:
@@ -156,7 +157,7 @@ class Oauth2Other(Oauth2Base):
         self.code_post_data['scope'] = 'email'
 
     def exchange(self, url):
-        response = urllib2.urlopen(url[0], url[1])
+        response = six.moves.urllib.request.urlopen(url[0], url[1])
         data = json.loads(response.read())
         self.access_token = data['access_token']
         self.id_token = data['id_token']
