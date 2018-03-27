@@ -26,7 +26,7 @@ from zeus.utils import election_reverse, poll_reverse, get_voters_filters_with_c
 from zeus.views.utils import set_menu, common_json_handler
 from zeus import tasks
 
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -805,7 +805,7 @@ def voter_exclude(request, election, poll, voter_uuid):
 def voters_csv(request, election, poll, fname):
     q_param = request.GET.get('q', None)
     response = HttpResponse(content_type='text/csv')
-    filename = smart_unicode("voters-%s.csv" % election.short_name)
+    filename = smart_text("voters-%s.csv" % election.short_name)
     if fname:
         filename = fname
     response['Content-Dispotition'] = \
