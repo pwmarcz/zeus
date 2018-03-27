@@ -31,18 +31,6 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         institution, _ = Institution.objects.get_or_create(**kwargs)
         return institution
 
-    def get_election(self, **kwargs):
-        self.c.post(self.locations['login'], self.login_data)
-        institution = self.get_institution()
-        election, _ = Election.objects.get_or_create(institution=institution, **kwargs)
-        return election
-
-    def get_messages_from_response(self, response):
-        messages = []
-        for item in response.context['messages']:
-            messages.append(unicode(item))
-        return messages
-
     def create_poll(self, election, **kwargs):
         self.c.post(self.locations['login'], self.login_data)
         poll, _ = Poll.objects.get_or_create(election=election, **kwargs)
@@ -123,19 +111,14 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         assert response.status_code == 302
         self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
 
-
         # todo: invalid contents
 
     def test_poll_remove(self):
         self.e_uuid = self.election.uuid
         self.create_poll(self.election, name="poll")
         poll = Poll.objects.all()[0]
-
         response = self.c.post('/elections/{}/polls/{}/remove'.format(self.election.uuid, poll.uuid))
 
         assert response.status_code == 302
         assert not Poll.objects.filter(name="poll").exists()
         self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
-
-
-
