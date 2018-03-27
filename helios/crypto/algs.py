@@ -20,16 +20,6 @@ class Utils:
     RAND = Random.new()
 
     @classmethod
-    def random_mpz(cls, n_bits):
-        low = 2**(n_bits-1)
-        high = low * 2
-
-        # increment and find a prime
-        # return randrange(low, high)
-
-        return number.getRandomNumber(n_bits, cls.RAND.read)
-
-    @classmethod
     def random_mpz_lt(cls, max):
         # return randrange(0, max)
         n_bits = int(math.floor(math.log(max, 2)))
@@ -43,19 +33,6 @@ class Utils:
     def is_prime(cls, mpz):
         #return numtheory.miller_rabin(mpz)
         return number.isPrime(mpz)
-
-    @classmethod
-    def xgcd(cls, a, b):
-        """
-        Euclid's Extended GCD algorithm
-        """
-        mod = a%b
-
-        if mod == 0:
-            return 0,1
-        else:
-            x,y = cls.xgcd(b, mod)
-            return y, x-(y*(a/b))
 
     @classmethod
     def inverse(cls, mpz, mod):
@@ -72,21 +49,6 @@ class Utils:
             q = (p-1)/2
             if cls.is_prime(q):
                 return p
-
-    @classmethod
-    def random_special_prime(cls, q_n_bits, p_n_bits):
-        p = None
-        q = None
-
-        z_n_bits = p_n_bits - q_n_bits
-
-        q = cls.random_prime(q_n_bits)
-
-        while True:
-            z = cls.random_mpz(z_n_bits)
-            p = q*z + 1
-            if cls.is_prime(p):
-                return p, q, z
 
 
 class ElGamal:
