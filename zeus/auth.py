@@ -207,13 +207,11 @@ class ZeusUser(object):
 
     @classmethod
     def from_request(self, request):
-        user = None
-        try:
-            users = get_users_from_request(request)
-            user = filter(lambda x:bool(x), users)[0]
-        except IndexError:
-            pass
-        return ZeusUser(user)
+        users = get_users_from_request(request)
+        for user in users:
+            if user:
+                return ZeusUser(user)
+        return ZeusUser(None)
 
     def __init__(self, user_obj):
         self._user = user_obj
