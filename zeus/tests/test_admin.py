@@ -89,7 +89,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        assert '<select name="official">' not in response.content
+        assert '<select name="official">' not in response.content.decode()
 
     def test_get_with_superadmin(self):
         """
@@ -113,10 +113,10 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
             {}
         )
 
-        assert '</form>' in response.content
-        assert '<select name="official">' in response.content
-        assert '<input type="submit"' in response.content
-        assert '<input type="hidden"' in response.content
+        assert '</form>' in response.content.decode()
+        assert '<select name="official">' in response.content.decode()
+        assert '<input type="submit"' in response.content.decode()
+        assert '<input type="hidden"' in response.content.decode()
 
         # ensure the ordering works
         newer_newer = get_election(name='second_election')
@@ -222,8 +222,8 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         # make sure that the headers are right and the response body contains
         # at least one comma
         assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
-        assert response.content.find(',') > -1
-        lines = [l for l in csv.reader(StringIO(str(response.content)))]
+        assert response.content.decode().find(',') > -1
+        lines = [l for l in csv.reader(StringIO(str(response.content.decode())))]
         assert len(lines) == 2
         assert lines[0] == ['Institution', 'Electors', 'Voters', 'Start', 'End', 'uuid', 'Name', 'Polls', 'Administrator', 'Official']
 
