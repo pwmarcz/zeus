@@ -9,25 +9,19 @@ from zeus.models import Institution
 from zeus.tests.utils import SetUpAdminAndClientMixin
 
 
-class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
+class TestPollViews(SetUpAdminAndClientMixin, TestCase):
 
     def setUp(self):
-        super(TestElectionBase, self).setUp()
-        self.local_verbose = os.environ.get('ZEUS_TESTS_VERBOSE', None)
-        self.celebration = (
-            " _________ ___  __\n"
-            "|\   __  \|\  \|\  \\\n"
-            "\ \  \ \  \ \  \/  /_\n"
-            " \ \  \ \  \ \   ___ \\\n"
-            "  \ \  \_\  \ \  \\\ \ \\ \n"
-            "   \ \_______\ \__\\\ \_\\\n"
-            "    \|_______|\|__| \|_|\n"
-            )
+        super(TestPollViews, self).setUp()
 
-    def verbose(self, message):
-        if self.local_verbose:
-            print message
-
+        self.c.post(self.locations['login'], self.login_data)
+        self.institution = self.get_institution()
+        self.election = Election.objects.create(name="election", voting_starts_at=datetime.date.today(),
+                                     voting_ends_at=datetime.date.today() + datetime.timedelta(days=1),
+                                     trial=True, institution=self.institution)
+        user = User.objects.get()
+        self.election.admins.add(user)
+        self.election.save()
 
     def get_institution(self, **kwargs):
         '''
@@ -64,46 +58,29 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             fname = '/tmp/random_voters%s.csv' % counter
             voter_files[p_uuid] = fname
             fp = file(fname, 'w')
-            for i in range(1, self.voters_num+1):
+            for i in range(1, self.voters_num + 1):
                 voter = "%s,voter%s@mail.com,test_name%s,test_surname%s\n" \
-                    % (i, i, i, i)
+                        % (i, i, i, i)
                 fp.write(voter)
             fp.close()
             counter += 1
-        self.verbose('+ Voters file created')
         return voter_files
 
     def submit_voters_file(self):
         voter_files = self.get_voters_file()
         for p_uuid in self.p_uuids:
             upload_voters_location = '/elections/%s/polls/%s/voters/upload' \
-                % (self.e_uuid, p_uuid)
+                                     % (self.e_uuid, p_uuid)
             self.c.post(
                 upload_voters_location,
                 {'voters_file': file(voter_files[p_uuid]),
                  'encoding': 'iso-8859-7'}
-                )
+            )
             self.c.post(upload_voters_location, {'confirm_p': 1, 'encoding': 'iso-8859-7'})
-        self.verbose('+ Voters file submitted')
 
     def voter_login(self, voter, voter_login_url=None):
         r = self.c.get(voter_login_url, follow=True)
         assert r.status_code == 200
-
-
-class TestPollViews(TestElectionBase):
-
-    def setUp(self):
-        super(TestElectionBase, self).setUp()
-        self.c.post(self.locations['login'], self.login_data)
-        self.election = self.get_election(name="election", voting_starts_at=datetime.date.today(),
-                                     voting_ends_at=datetime.date.today() + datetime.timedelta(days=1),
-                                     trial=True)
-        user = User.objects.get()
-        self.election.admins.add(user)
-        self.election.save()
-
-        self.local_verbose = os.environ.get('ZEUS_TESTS_VERBOSE', None)
 
     def test_poll_questions(self):
         poll = self.create_poll(election=self.election, name="poll")
@@ -146,11 +123,10 @@ class TestPollViews(TestElectionBase):
         assert response.status_code == 302
         self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
 
+
         # todo: invalid contents
 
     def test_poll_remove(self):
-        self.election.linked_polls = True
-        self.election.save()
         self.e_uuid = self.election.uuid
         self.create_poll(self.election, name="poll")
         poll = Poll.objects.all()[0]
@@ -158,6 +134,7 @@ class TestPollViews(TestElectionBase):
         response = self.c.post('/elections/{}/polls/{}/remove'.format(self.election.uuid, poll.uuid))
 
         assert response.status_code == 302
+        assert not Poll.objects.filter(name="poll").exists()
         self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
 
 
