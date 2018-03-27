@@ -10,7 +10,7 @@ ben@adida.net
 import math
 import hashlib
 import logging
-import number
+from Crypto.Util import number
 from Crypto import Random
 
 
@@ -22,7 +22,7 @@ class Utils:
     def random_mpz_lt(cls, max):
         # return randrange(0, max)
         n_bits = int(math.floor(math.log(max, 2)))
-        return (number.getRandomNumber(n_bits, cls.RAND.read) % max)
+        return (number.getRandomInteger(n_bits, cls.RAND.read) % max)
 
     @classmethod
     def random_prime(cls, n_bits):
