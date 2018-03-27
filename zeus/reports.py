@@ -465,11 +465,9 @@ class ElectionsReportCSV(ElectionsReport):
             close = True
 
         writer = csv.writer(fd, delimiter=',')
-        head_row = [c.encode('utf-8') for c in self.header]
-        writer.writerow(head_row)
+        writer.writerow(self.header)
         for row in data:
-            writer.writerow([row[k].encode('utf-8') if type(row[k]) != int
-                            else row[k] for k in keys])
+            writer.writerow(row[k] for k in keys)
         if close:
             fd.close()
 
