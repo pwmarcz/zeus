@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import datetime
 
-from email.Utils import formataddr
+from email.utils import formataddr
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.urls import reverse
