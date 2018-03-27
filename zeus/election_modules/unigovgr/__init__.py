@@ -1,4 +1,5 @@
 # -- coding: utf-8 --
+from __future__ import absolute_import
 import copy
 import math
 from decimal import Decimal

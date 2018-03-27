@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
 from django.utils import translation
@@ -7,7 +8,7 @@ from django.utils import translation
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
-from utils import SetUpAdminAndClientMixin, get_messages_from_response
+from .utils import SetUpAdminAndClientMixin, get_messages_from_response
 
 
 class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):

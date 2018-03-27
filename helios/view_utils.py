@@ -4,12 +4,13 @@ Utilities for all views
 Ben Adida (12-30-2008)
 """
 
+from __future__ import absolute_import
 from django.template import loader, TemplateSyntaxError, \
     TemplateDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 
-import utils
+from . import utils
 
 
 # nicely update the wrapper function

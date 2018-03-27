@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from setuptools import setup
 # To use a consistent encoding
 from codecs import open

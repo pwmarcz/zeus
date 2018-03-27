@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import logging
 import six.moves.urllib.request
 import six.moves.urllib.error

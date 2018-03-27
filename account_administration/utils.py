@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from random import SystemRandom
 from heliosauth.models import User
 from zeus.models.zeus_models import Institution

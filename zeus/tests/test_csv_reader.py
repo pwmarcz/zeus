@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from zeus.utils import (CSVReader, get_encoding, CSVCellError,
                         pick_sample, get_dialect)
 from unittest import TestCase, main

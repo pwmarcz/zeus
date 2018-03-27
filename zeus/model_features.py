@@ -2,6 +2,7 @@
 A collection of helper model mixins to decouple election/poll state identifiers
 """
 
+from __future__ import absolute_import
 import datetime
 
 from collections import defaultdict

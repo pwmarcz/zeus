@@ -5,8 +5,9 @@ Ben Adida
 2008-08-30
 """
 
-import algs
-import utils
+from __future__ import absolute_import
+from . import algs
+from . import utils
 import uuid
 import datetime
 

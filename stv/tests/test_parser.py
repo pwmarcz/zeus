@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from stv.parser import STVParser
 
 # The sample is completely nonsensical and serves only to cover the

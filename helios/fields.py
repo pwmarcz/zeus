@@ -1,6 +1,7 @@
 ## https://github.com/ulule/django-separatedvaluesfield/blob/master/separatedvaluesfield/models.py
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import absolute_import
 from django.db import models
 from django.core import validators
 from django.core import exceptions

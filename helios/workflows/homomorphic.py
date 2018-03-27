@@ -6,6 +6,7 @@ Ben Adida
 reworked 2011-01-09
 """
 
+from __future__ import absolute_import
 from helios.crypto import algs, utils
 from . import WorkflowObject
 

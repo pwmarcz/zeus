@@ -4,6 +4,7 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
+from __future__ import absolute_import
 import json
 
 from django.db import models

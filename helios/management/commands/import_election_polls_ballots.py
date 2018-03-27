@@ -1,5 +1,6 @@
 """
 """
+from __future__ import absolute_import
 import yaml
 
 from django.db import transaction

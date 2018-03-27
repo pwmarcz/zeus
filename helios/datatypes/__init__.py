@@ -26,6 +26,7 @@ And when data comes in:
   LDObject.deserialize(json_string, type=...)
 """
 
+from __future__ import absolute_import
 from heliosauth.utils import to_json
 from helios.crypto import utils as cryptoutils
 

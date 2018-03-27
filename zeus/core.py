@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from __future__ import absolute_import
 import sys
 from datetime import datetime
 from random import randint, choice as rand_choice
@@ -2294,7 +2295,7 @@ class ZeusCoreElection(object):
                         **kw):
         self.teller = teller
         if shuffle_module is None:
-            import zeus_sk as shuffle_module
+            from . import zeus_sk as shuffle_module
         self.shuffle_module = shuffle_module
         self.do_init_creating()
         self.do_init_voting()

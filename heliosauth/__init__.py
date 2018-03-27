@@ -1,6 +1,7 @@
 
+from __future__ import absolute_import
 from django.conf import settings
-import auth_systems
+from . import auth_systems
 
 TEMPLATE_BASE = settings.AUTH_TEMPLATE_BASE or "auth/templates/base.html"
 

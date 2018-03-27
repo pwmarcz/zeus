@@ -1,4 +1,5 @@
-import password
+from __future__ import absolute_import
+from . import password
 
 AUTH_SYSTEMS = {}
 

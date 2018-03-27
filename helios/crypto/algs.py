@@ -8,6 +8,7 @@ ben@adida.net
 """
 
 from __future__ import print_function
+from __future__ import absolute_import
 import math
 import hashlib
 import logging
@@ -174,7 +175,7 @@ class EGPublicKey:
 
     # quick hack FIXME
     def toJSON(self):
-        import utils
+        from . import utils
         return utils.to_json(self.toJSONDict())
 
     def __mul__(self,other):

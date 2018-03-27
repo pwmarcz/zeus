@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from hashlib import sha256
 
 from helios.workflows.homomorphic import Tally as HomomorphicTally

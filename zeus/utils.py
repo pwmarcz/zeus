@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import absolute_import
 from cStringIO import StringIO
 from csv import (Sniffer, excel, Error as csvError,
                  reader as imported_csv_reader)

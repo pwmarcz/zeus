@@ -8,10 +8,11 @@ Ben Adida
 ben@adida.net
 """
 
+from __future__ import absolute_import
 import logging
 
 
-from algs import Utils
+from .algs import Utils
 from zeus.core import prove_dlog, prove_ddh_tuple
 
 class Cryptosystem(object):

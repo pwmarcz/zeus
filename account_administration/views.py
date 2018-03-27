@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -11,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 from zeus.models.zeus_models import Institution
 from zeus.auth import manager_or_superadmin_required, superadmin_required
 from account_administration.forms import userForm, institutionForm, userGroupForm
-from utils import random_password, can_do, sanitize_get_param, \
+from .utils import random_password, can_do, sanitize_get_param, \
     get_user, get_institution
 
 

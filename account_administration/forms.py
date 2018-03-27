@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
@@ -7,7 +8,7 @@ from heliosauth.models import User, UserGroup, election_types_choices
 from django.contrib.auth.hashers import make_password
 from zeus.models.zeus_models import Institution
 
-from utils import random_password
+from .utils import random_password
 
 
 class userGroupForm(ModelForm):

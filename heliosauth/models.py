@@ -7,12 +7,13 @@ Ben Adida
 (ben@adida.net)
 """
 
+from __future__ import absolute_import
 from django.db import models
-from jsonfield import JSONField
+from .jsonfield import JSONField
 from helios.fields import SeparatedValuesField
 
 
-from auth_systems import AUTH_SYSTEMS
+from .auth_systems import AUTH_SYSTEMS
 
 # an exception to catch when a user is no longer authenticated
 class AuthenticationExpired(Exception):

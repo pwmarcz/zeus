@@ -2,6 +2,7 @@
 data types for 2011/01 Helios
 """
 
+from __future__ import absolute_import
 from helios.datatypes import LDObject
 from helios.crypto import elgamal as crypto_elgamal
 

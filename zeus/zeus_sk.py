@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from zeus.core import (
         ZeusError, pow, sha256, ALPHA, BETA,
         get_random_int, bit_iterator, get_random_permutation,

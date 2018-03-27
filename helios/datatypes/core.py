@@ -2,6 +2,7 @@
 core data types
 """
 
+from __future__ import absolute_import
 from helios.datatypes import LDObject
 
 class BigInteger(LDObject):

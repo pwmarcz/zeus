@@ -6,6 +6,7 @@ http://www.djangosnippets.org/snippets/377/
 and adapted to LDObject
 """
 
+from __future__ import absolute_import
 import json
 from django.db import models
 

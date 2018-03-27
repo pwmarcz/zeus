@@ -2,6 +2,7 @@
 Legacy datatypes for Phoebus stv voting platform(v3.0)
 """
 
+from __future__ import absolute_import
 from helios.datatypes import LDObject, arrayOf
 from helios.workflows import mixnet
 from helios import models

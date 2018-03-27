@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import datetime
 from datetime import timedelta
 
@@ -7,7 +8,7 @@ from django.test import TestCase
 from heliosauth.models import User, UserGroup
 from helios.models import Election
 
-from utils import SetUpAdminAndClientMixin
+from .utils import SetUpAdminAndClientMixin
 
 # subclass order is significant
 class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):

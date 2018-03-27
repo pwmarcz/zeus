@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import os
 from stv.stv import count_stv, Ballot
 import StringIO

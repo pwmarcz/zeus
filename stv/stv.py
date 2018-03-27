@@ -31,6 +31,7 @@
 # GRNET S.A.
 
 from __future__ import print_function
+from __future__ import absolute_import
 from random import random, seed
 import logging
 import sys

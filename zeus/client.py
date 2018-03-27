@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from __future__ import absolute_import
 import sys
 import os
 import ssl
@@ -514,7 +515,7 @@ def main(argv=None):
     elif cmd == 'mix':
         if argc < 6:
             main_help()
-        import zeus_sk as shuffle_module
+        from . import zeus_sk as shuffle_module
         if argv[2].startswith("http"):
             do_automix(argv[2], argv[3], int(argv[4]), int(argv[5]),
                 shuffle_module)
