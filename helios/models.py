@@ -208,7 +208,7 @@ class PollMix(models.Model):
 
         try:
             self._do_mix()
-        except Exception, e:
+        except Exception as e:
             self.status = 'error'
             self.mix_error = traceback.format_exc()
             self.parts.all().delete()
@@ -1190,7 +1190,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
         try:
             self.zeus.add_mix(remote_mix)
-        except Exception, e:
+        except Exception as e:
             logging.exception("Remote mix failed")
             status = 'error'
             error = traceback.format_exc()
@@ -1206,7 +1206,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                                         mix_error=error if error else None)
                 mix.store_mix(remote_mix)
                 mix.store_mix_in_file(remote_mix)
-        except Exception, e:
+        except Exception as e:
             logging.exception("Remote mix creation failed.")
             return e
 

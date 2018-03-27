@@ -239,7 +239,7 @@ def verify_cipher_mix(cipher_mix, teller=_teller, nr_parallel=0):
         cipher_collections = cipher_mix['cipher_collections']
         offset_collections = cipher_mix['offset_collections']
         random_collections = cipher_mix['random_collections']
-    except KeyError, e:
+    except KeyError as e:
         m = "Invalid cipher mix format"
         raise ZeusError(m, e)
 

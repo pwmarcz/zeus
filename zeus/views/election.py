@@ -151,7 +151,7 @@ def index(request, election, poll=None):
                 try:
                     voter = \
                         p.voters.get(voter_login_id=user._user.voter_login_id)
-                except Exception, e:
+                except Exception as e:
                     continue
                 burl = reverse('election_poll_voter_booth_linked_login',
                                args=(election.uuid, poll.uuid, voter.uuid,))

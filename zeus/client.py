@@ -220,7 +220,7 @@ def main_random_cast_thread(inqueue, outqueue):
             o = inqueue.get_nowait()
             if not o:
                 break
-        except Empty, e:
+        except Empty as e:
             break
         i, total, voter_url = o
         print "%d/%d" % (i+1, total)

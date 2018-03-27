@@ -86,7 +86,7 @@ class ContactBackend():
     def notify(self, voter, id, subject, body, attachments, sent_hook):
         try:
             result, error = self.do_notify(voter, id, subject, body, attachments)
-        except ContactBackend.Error, e:
+        except ContactBackend.Error as e:
             self.logger.exception(e)
             return False
         sent_hook(voter, result, error)
@@ -105,7 +105,7 @@ class EmailBackend(ContactBackend):
                 message.attach(*attachment)
             try:
                 return message.send(fail_silently=False), None
-            except Exception, e:
+            except Exception as e:
                 return None, e
         else:
             return voter.user.send_message(subject, body), None

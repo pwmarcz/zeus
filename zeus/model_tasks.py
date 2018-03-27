@@ -195,7 +195,7 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
                         self.notify_task(name, 'waiting')
                         setattr(self, status_field, 'waiting')
                     self.save()
-            except Exception, e:
+            except Exception as e:
                 error = str(e)
                 self.notify_task(name, 'error', error)
                 self.notify_exception(e)

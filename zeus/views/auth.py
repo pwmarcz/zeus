@@ -130,7 +130,7 @@ def oauth2_login(request):
                 messages.error(request, 'oauth2 user does not match voter')
                 return HttpResponseRedirect(reverse('error',
                                                     kwargs={'code': 400}))
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             poll.logger.exception(e)
             messages.error(request, 'oauth2 error')
             return HttpResponseRedirect(reverse('error',

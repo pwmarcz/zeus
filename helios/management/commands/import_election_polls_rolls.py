@@ -37,7 +37,7 @@ def validate_voter(mobile, email, throw=True):
                 return False
     try:
         django_validate_email(email)
-    except ValidationError, e:
+    except ValidationError as e:
         if throw:
             raise e
         else:

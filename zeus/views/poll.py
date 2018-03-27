@@ -196,7 +196,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
             poll.save()
             try:
                 poll.zeus._validate_candidates()
-            except Exception, e:
+            except Exception as e:
                 raise Exception((poll.name, unicode(e)))
         else:
             for f in form:
@@ -219,7 +219,7 @@ def _add_batch(request, election):
     try:
         _handle_batch(election, data.get('polls'),
                       data.get('vars', {}), data.get('auto_link', False))
-    except Exception, e:
+    except Exception as e:
         election.logger.exception(e)
         messages.error(request, str(e))
 
@@ -472,12 +472,12 @@ def voters_upload(request, election, poll):
                     voters = [v for v in voter_file_obj.itervoters(
                                             email_validator=_email_validate,
                     preferred_encoding=preferred_encoding)]
-                except ValidationError, e:
+                except ValidationError as e:
                     if hasattr(e, 'messages') and e.messages:
                         error = "".join(e.messages)
                     else:
                         error = "error."
-                except Exception, e:
+                except Exception as e:
                     voter_file_obj.delete()
                     error = str(e)
                     if 'voter_file_id' in request.session:
@@ -793,7 +793,7 @@ def voter_exclude(request, election, poll, voter_uuid):
             try:
                 p.zeus.exclude_voter(linked_voter.uuid, reason)
                 p.logger.info("Poll voter '%s' excluded", linked_voter.voter_login_id)
-            except Exception, e:
+            except Exception as e:
                 pass
     return HttpResponseRedirect(poll_reverse(poll, 'voters'))
 

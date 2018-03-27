@@ -84,7 +84,7 @@ def render_template(request, template_name, vars = {}, include_user=True):
         try:
             tpl = tpls.pop()
             loader.get_template(tpl)
-        except (TemplateDoesNotExist, TemplateSyntaxError), e:
+        except (TemplateDoesNotExist, TemplateSyntaxError) as e:
             tpl = None
             last_exc = e
         except IndexError:
@@ -118,7 +118,7 @@ def json(func):
         return_val = func(self, *args, **kwargs)
         try:
             return render_json(utils.to_json(return_val))
-        except Exception, e:
+        except Exception as e:
             import logging
             logging.error("problem with serialization: " + str(return_val) + " / " + str(e))
             raise e
