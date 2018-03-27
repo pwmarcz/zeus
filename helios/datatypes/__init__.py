@@ -51,7 +51,7 @@ def get_class(datatype):
     parsed_datatype = datatype.split("/")
 
     # get the module
-    dynamic_module = __import__(".".join(parsed_datatype[:-1]), globals(), locals(), [], level=-1)
+    dynamic_module = __import__(".".join(parsed_datatype[:-1]), globals(), locals(), [], level=1)
 
     if not dynamic_module:
         raise Exception("no module for %s" % datatype)
