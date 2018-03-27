@@ -429,7 +429,7 @@ def main(cmd=None):
         ballots.append(Ballot(ballot))
 
     if args.seats == 0:
-        args.seats = len(ballots) / 2
+        args.seats = len(ballots) // 2
 
     constituencies = {}
     if args.constituencies_file:

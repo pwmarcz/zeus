@@ -34,7 +34,7 @@ class Cryptosystem(object):
 
         # q is the order of the group
         # FIXME: not always p-1/2
-        EG.q = (EG.p-1)/2
+        EG.q = (EG.p-1)//2
 
         # find g that generates the q-order subgroup
         while True:

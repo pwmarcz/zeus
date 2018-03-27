@@ -45,7 +45,7 @@ class Utils:
 
         while True:
             p = cls.random_prime(n_bits)
-            q = (p-1)/2
+            q = (p-1)//2
             if cls.is_prime(q):
                 return p
 
@@ -70,7 +70,7 @@ class ElGamal:
 
         # q is the order of the group
         # FIXME: not always p-1/2
-        EG.q = (EG.p-1)/2
+        EG.q = (EG.p-1)//2
 
         # find g that generates the q-order subgroup
         while True:
