@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cab993e6d46d6b69d19dce1431ba1a9dace6161a96776d8c04abc3add6b24dc0"
+            "sha256": "e341d3c89579961d0ca15e0976633a831ccfb5a24214b2303cba1236f950ecb2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -188,7 +188,8 @@
             "version": "==5.0.0"
         },
         "plonevotecryptolib": {
-            "git": "https://github.com/HRodriguez/svelib.git",
+            "git": "https://github.com/pwmarcz/zeus-svelib.git",
+            "ref": "02dd0f5a3d7fda8a944701d4bfe1271fa2d2ae97",
             "subdirectory": "PloneVoteCryptoLib"
         },
         "prompt-toolkit": {

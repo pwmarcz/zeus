@@ -14,7 +14,8 @@ reportlab = "*"
 pyyaml = "*"
 uwsgi = "*"
 ipython = ">=5,<6"
-PloneVoteCryptoLib = {git = "https://github.com/HRodriguez/svelib.git", subdirectory = "PloneVoteCryptoLib"}
+PloneVoteCryptoLib = {git = "https://github.com/pwmarcz/zeus-svelib.git", subdirectory = "PloneVoteCryptoLib", ref = '02dd0f5a3d7fda8a944701d4bfe1271fa2d2ae97'}
+
 
 [dev-packages]
 # selenium = "==2.25.0"
