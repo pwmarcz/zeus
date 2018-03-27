@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
@@ -14,10 +15,10 @@ class Command(BaseCommand):
     help = 'List elections'
 
     def handle(self, *args, **options):
-        print ','.join(('uuid ψηφοφορίας', 'όνομα ψηφοφορίας',
+        print(','.join(('uuid ψηφοφορίας', 'όνομα ψηφοφορίας',
                         'uuid κάλπης', 'όνομα κάλπης',
                         'διαχειριστής', 'ίδρυμα', 'εκλέκτορες',
-                        'ψηφίσαντες', 'έναρξη', 'λήξη'))
+                        'ψηφίσαντες', 'έναρξη', 'λήξη')))
         for e in Election.objects.all():
             uuid = strforce(e.uuid)
             name = strforce(e.name)
@@ -34,6 +35,6 @@ class Command(BaseCommand):
                 start = start.strftime("%Y-%m-%d %H:%M:%S") if start else '-'
                 end = e.voting_ended_at
                 end = end.strftime("%Y-%m-%d %H:%M:%S") if end else '-'
-                print ','.join((uuid, name, poll_uuid, poll_name,
+                print(','.join((uuid, name, poll_uuid, poll_name,
                                 admin, institution, voter_count, voted_count,
-                                start, end))
+                                start, end)))

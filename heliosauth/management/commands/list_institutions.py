@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from zeus.models import Institution
@@ -16,7 +17,7 @@ class Command(BaseCommand):
         if len(args) > 0 and args[0] == "1":
             info = True
 
-        print institution_row_header % ('ID', 'NAME', 'USERS')
+        print(institution_row_header % ('ID', 'NAME', 'USERS'))
         for inst in Institution.objects.all():
             users_count = inst.user_set.count()
-            print institution_row % (inst.pk, inst.name, users_count)
+            print(institution_row % (inst.pk, inst.name, users_count))

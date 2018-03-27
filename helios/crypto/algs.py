@@ -7,6 +7,7 @@ Ben Adida
 ben@adida.net
 """
 
+from __future__ import print_function
 import math
 import hashlib
 import logging
@@ -509,7 +510,7 @@ class EGCiphertext:
         for i in range(len(plaintexts)):
             # if a proof fails, stop right there
             if not self.verify_encryption_proof(plaintexts[i], proof.proofs[i]):
-                print "bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i])
+                print("bad proof %s, %s, %s" % (i, plaintexts[i], proof.proofs[i]))
                 return False
 
         # logging.info("made it past the two encryption proofs")

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 import os
 
@@ -115,7 +116,7 @@ class Command(BaseCommand):
             raise CommandError("Template file does not exist.")
 
         if dry and not status:
-            print "Running in dry mode. No messages will be send."
+            print("Running in dry mode. No messages will be send.")
 
         if mobiles_map_file and not os.path.exists(mobiles_map_file):
             raise CommandError("Voters mobiles file does not exist.")
@@ -141,7 +142,7 @@ class Command(BaseCommand):
             voters = voters.filter(voter_login_id=voter_id)
 
         if not status:
-            print "Will send %d messages" % voters.count()
+            print("Will send %d messages" % voters.count())
 
         mobiles_map = None
         if mobiles_map_file:
@@ -180,7 +181,7 @@ class Command(BaseCommand):
                 email = voter.voter_email
                 csv_email = mobiles_map[voter_id]['email']
                 if email != csv_email:
-                    print repr(email), repr(csv_email)
+                    print(repr(email), repr(csv_email))
                     raise CommandError("Voter email does not match the one"
                                        " in database: %s, %s, %s" % (
                                            voter_id,
@@ -188,13 +189,13 @@ class Command(BaseCommand):
                                            csv_email))
 
         if election:
-            print "Using SMS API credentials for user '%s'" % \
-                mobile_api.CREDENTIALS_DICT[election.uuid]['username']
+            print("Using SMS API credentials for user '%s'" % \
+                mobile_api.CREDENTIALS_DICT[election.uuid]['username'])
 
         for voter in voters:
             send_to = send_to_arg
             if list:
-                print voter.voter_email, voter.zeus_string.encode('utf8')
+                print(voter.voter_email, voter.zeus_string.encode('utf8'))
                 continue
 
             task = tasks.send_voter_sms
@@ -206,44 +207,44 @@ class Command(BaseCommand):
 
             if status:
                 if not voter.last_sms_code:
-                    print "No SMS notification for %s" % (voter.zeus_string)
+                    print("No SMS notification for %s" % (voter.zeus_string))
                     continue
 
                 res = task(voter.pk, voter.last_sms_code, election.uuid)
-                print "%s: %s" % (voter.zeus_string, res)
+                print("%s: %s" % (voter.zeus_string, res))
                 continue
 
             self.stdout.write("Sending sms to %s " % (voter.zeus_string))
 
             if not resend and voter.last_sms_send_at:
                 d = voter.last_sms_send_at.strftime("%d/%m/%Y %H:%M:%S")
-                print "Skipping. Already send at %r" % d
+                print("Skipping. Already send at %r" % d)
                 continue
 
             if dry:
-                print
+                print()
 
             if mobiles_map:
                 mapped = mobiles_map.get(voter.voter_login_id)
                 send_to = send_to or (mapped and mapped.get('mobile'))
 
             if not voter.voter_mobile and not send_to:
-                print "Skipping. No voter mobile set"
+                print("Skipping. No voter mobile set")
                 continue
 
             if send_to:
-                print ("Overriding mobile number. Voter mobile: %s. "
+                print(("Overriding mobile number. Voter mobile: %s. "
                       "Will use : %s") % (voter.voter_mobile or "<not-set>",
-                                             send_to)
+                                             send_to))
             res, error = task(voter.pk, tpl, override_mobile=send_to,
                               resend=resend, dry=dry)
             if res:
                 if not dry:
                     self.stdout.write(": ")
-                print "[SUCCESS] Message sent successfully (%s)" % error
+                print("[SUCCESS] Message sent successfully (%s)" % error)
             else:
                 if not dry:
                     self.stdout.write(": ")
-                print "[ERROR] Message failed to send (%s)" % error
+                print("[ERROR] Message failed to send (%s)" % error)
             if dry:
-                print
+                print()

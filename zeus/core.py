@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import sys
 from datetime import datetime
 from random import randint, choice as rand_choice
@@ -1106,7 +1107,7 @@ def verify_gamma_encoding(n, completeness=1):
                  "length-%d choices are %d instead of %d"
                  % (i, c, t))
             raise AssertionError(m)
-        print "%d length-%d choices OK" % (c, i)
+        print("%d length-%d choices OK" % (c, i))
 
 def factorial_encode(choices, nr_candidates=None, max_choices=None):
     nr_choices = len(choices)
@@ -3514,12 +3515,12 @@ class ZeusCoreElection(object):
                                          ciphers, factors,
                                          teller=teller,
                                          nr_parallel=nr_parallel):
-            print "MODULUS", modulus
-            print "GENERATOR", generator
-            print "ORDER", order
-            print "CIPHERS", ciphers
-            print "FACTORS", factors
-            print "PK", trustee_public
+            print("MODULUS", modulus)
+            print("GENERATOR", generator)
+            print("ORDER", order)
+            print("CIPHERS", ciphers)
+            print("FACTORS", factors)
+            print("PK", trustee_public)
             m = "Invalid trustee factor proof!"
             raise ZeusError(m)
 
@@ -4131,26 +4132,26 @@ def main(cmd=None):
     def do_counted_votes(election):
         vfm, counted_list = election.extract_votes_for_mixing()
         for i, fingerprint in enumerate(counted_list):
-            print 'COUNTED VOTE %d: %s' % (i, fingerprint)
-        print ""
+            print('COUNTED VOTE %d: %s' % (i, fingerprint))
+        print("")
         return vfm, counted_list
 
     def do_report(election):
         exported, stage = election.export()
         if 'election_report' in exported:
-            print exported['election_report']
+            print(exported['election_report'])
         return exported, stage
 
     def do_results(election):
         results = election.do_get_results()
-        print 'RESULTS: %s\n' % (' '.join(str(n) for n in results),)
+        print('RESULTS: %s\n' % (' '.join(str(n) for n in results),))
 
     def do_count_parties(election):
         results = election.do_get_results()
         candidates = election.do_get_candidates()
         results = gamma_count_parties(results, candidates)
         import json
-        print json.dumps(results, ensure_ascii=False, indent=2)
+        print(json.dumps(results, ensure_ascii=False, indent=2))
 
     def main_generate(args, teller=_teller, nr_parallel=0):
         filename = args.generate
@@ -4192,7 +4193,7 @@ def main(cmd=None):
             do_count_parties(election)
 
         if args.report:
-            print report
+            print(report)
 
     def main_verify_election(args, teller=_teller, nr_parallel=0):
         no_verify = args.no_verify

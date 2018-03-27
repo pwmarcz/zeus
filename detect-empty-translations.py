@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import sys
 
 po_files = sys.argv[1:]
 if not po_files:
-    print "Usage: %s <path/to/some.po> ..." % sys.argv[0]
+    print("Usage: %s <path/to/some.po> ..." % sys.argv[0])
     raise SystemExit
 
 for po_file in po_files:
@@ -23,7 +24,7 @@ for po_file in po_files:
             if line != 'msgid ""\n':
                 msgid = line
                 if fuzzy:
-                    print "%s:%d: %s" % (po_file, msgid_line, msgid),
+                    print("%s:%d: %s" % (po_file, msgid_line, msgid), end=' ')
                     msgid = None
                     state = 0
                 else:
@@ -40,7 +41,7 @@ for po_file in po_files:
         elif state == 2:
             fuzzy = False
             if line == '\n':
-                print "%s:%d: %s" % (po_file, msgid_line, msgid),
+                print("%s:%d: %s" % (po_file, msgid_line, msgid), end=' ')
             state = 0
             msgid = None
             fuzzy = False
@@ -48,4 +49,4 @@ for po_file in po_files:
     if None not in (line, msgid) and (state == 0 and fuzzy) \
        or (state == 2 and msgid is not None):
         # last-in-file empty translation
-        print "%s:%d: %s" % (po_file, msgid_line, msgid),
+        print("%s:%d: %s" % (po_file, msgid_line, msgid), end=' ')

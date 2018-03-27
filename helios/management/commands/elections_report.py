@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
@@ -14,9 +15,9 @@ class Command(BaseCommand):
     help = 'Elections report'
 
     def handle(self, *args, **options):
-        print '|'.join(('ΙΔΡΥΜΑ', 'ΕΚΛΕΚΤΟΡΕΣ',
+        print('|'.join(('ΙΔΡΥΜΑ', 'ΕΚΛΕΚΤΟΡΕΣ',
                         'ΨΗΦΙΣΑΝΤΕΣ', 'ΕΝΑΡΞΗ', 'ΛΗΞΗ',
-                        'uuid', 'ΌΝΟΜΑ', 'admin'))
+                        'uuid', 'ΌΝΟΜΑ', 'admin')))
 
         for e in Election.objects.filter(trial=False).exclude(institution__name__in=('HELPDESK', 'ZEUS-DEV')).order_by('voting_starts_at'):
             uuid = strforce(e.uuid)
@@ -47,5 +48,5 @@ class Command(BaseCommand):
                 if not poll.result:
                     continue
 
-                print '|'.join((institution, voter_count, voted_count, start,
-                                end, poll_uuid, poll_name, admin))
+                print('|'.join((institution, voter_count, voted_count, start,
+                                end, poll_uuid, poll_name, admin)))

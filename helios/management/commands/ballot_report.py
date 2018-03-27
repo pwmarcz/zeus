@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Poll
@@ -27,4 +28,4 @@ class Command(BaseCommand):
                          for x in to_absolute_answers(
                                 gamma_decode(ballot, nr_cand, nr_cand), nr_cand))
                 for ballot in ballots)
-        print results
+        print(results)

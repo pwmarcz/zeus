@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import sys
 
@@ -16,11 +17,11 @@ for election in elections_json.items():
     voters_count.append(voters)
     voters_cast_count.append(cast)
 
-print "Total voters", sum(voters_count)
-print "Total voted", sum(voters_cast_count)
+print("Total voters", sum(voters_count))
+print("Total voted", sum(voters_cast_count))
 
 num_stacks = len(voters_count)
-print num_stacks
+print(num_stacks)
 ind = np.arange(num_stacks)
 margin = 1.5
 width = 0.35

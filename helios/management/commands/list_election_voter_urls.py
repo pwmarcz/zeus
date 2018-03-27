@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Voter
@@ -15,6 +16,6 @@ class Command(BaseCommand):
 
         for v in voters:
             if not v.excluded_at:
-                print v.get_quick_login_url()
+                print(v.get_quick_login_url())
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify

@@ -30,6 +30,7 @@
 # as representing official policies, either expressed or implied, of
 # GRNET S.A.
 
+from __future__ import print_function
 from random import random, seed
 import logging
 import sys
@@ -111,7 +112,7 @@ def randomly_select_first(sequence, key, action, random_generator=None,
             selected = collected[index]
         else:
             if not random_generator:
-                print "Missing value for random selection among ", collected
+                print("Missing value for random selection among ", collected)
                 sys.exit(1)
             selected = random_generator.pop(0)
         description = "{0} from {1} to {2}".format(selected, collected, action)
@@ -327,7 +328,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
                                                    random_generator=rnd_gen,
                                                    logger=logger)
             if best_candidate not in hopefuls:
-                print "Not a valid candidate: ",best_candidate
+                print("Not a valid candidate: ",best_candidate)
                 sys.exit(1)
             hopefuls.remove(best_candidate)
             was_elected = elect_reject(best_candidate, vote_count,
@@ -454,6 +455,6 @@ def main(cmd=None):
 
 if __name__ == '__main__':
     elected = main()
-    print "Results:"
+    print("Results:")
     for result in elected:
-        print result
+        print(result)

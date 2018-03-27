@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Poll
@@ -17,10 +18,10 @@ class Command(BaseCommand):
         poll_uuid = args[0]
 
         poll = Poll.objects.get(uuid=poll_uuid)
-        print poll.election.institution.name
-        print poll.name
-        print "start:", poll.election.voting_starts_at
-        print "ended:", poll.election.voting_ended_at
+        print(poll.election.institution.name)
+        print(poll.name)
+        print("start:", poll.election.voting_starts_at)
+        print("ended:", poll.election.voting_ended_at)
 
         # counted_fingerprints = poll.extract_votes_for_mixing()[1]
         # counted_votes = poll.cast_votes.filter(fingerprint__in=counted_fingerprint)
@@ -46,4 +47,4 @@ class Command(BaseCommand):
         output = [(t,) + x + (-c,) for (c,t), x in output]
 
         for t in output:
-            print '|'.join(str(x) for x in t)
+            print('|'.join(str(x) for x in t))

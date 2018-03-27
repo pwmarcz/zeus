@@ -1,5 +1,6 @@
 """
 """
+from __future__ import print_function
 import datetime
 
 from django.core.management.base import BaseCommand
@@ -44,20 +45,20 @@ class Command(BaseCommand):
                 else:
                     last_visit_text = 'none'
 
-                print "election name:        ", poll.election.name
-                print "poll name:            ", poll.name
-                print "election uuid:        ", poll.election.uuid
-                print "poll uuid:            ", poll.uuid
-                print "admin:                ", poll.election.admins.all()[0].pretty_name
-                print "institution:          ", poll.election.institution.name
-                print "frozen_at:            ", frozen_at and frozen_at.strftime("%Y-%m-%d %H:%M:%S")
-                print "voting_starts_at:     ", starts_at and starts_at.strftime("%Y-%m-%d %H:%M:%S")
-                print "voting_ends_at:       ", ends_at and ends_at.strftime("%Y-%m-%d %H:%M:%S")
-                print "voting_extended_until:", extended_until and extended_until.strftime("%Y-%m-%d %H:%M:%S")
-                print "voting_ended_at:      ", ended_at and ended_at.strftime("%Y-%m-%d %H:%M:%S")
-                print "canceled_at:          ", canceled_at and canceled_at.strftime("%Y-%m-%d %H:%M:%S")
-                print "voters:               ", poll.voters.count()
-                print "counted votes:         %d/%d" % (poll.voters_cast_count(), poll.cast_votes.count())
-                print "voters visits:        ", poll.voters_visited_count()
-                print "last voter visit:     ", last_visit_text
-                print ""
+                print("election name:        ", poll.election.name)
+                print("poll name:            ", poll.name)
+                print("election uuid:        ", poll.election.uuid)
+                print("poll uuid:            ", poll.uuid)
+                print("admin:                ", poll.election.admins.all()[0].pretty_name)
+                print("institution:          ", poll.election.institution.name)
+                print("frozen_at:            ", frozen_at and frozen_at.strftime("%Y-%m-%d %H:%M:%S"))
+                print("voting_starts_at:     ", starts_at and starts_at.strftime("%Y-%m-%d %H:%M:%S"))
+                print("voting_ends_at:       ", ends_at and ends_at.strftime("%Y-%m-%d %H:%M:%S"))
+                print("voting_extended_until:", extended_until and extended_until.strftime("%Y-%m-%d %H:%M:%S"))
+                print("voting_ended_at:      ", ended_at and ended_at.strftime("%Y-%m-%d %H:%M:%S"))
+                print("canceled_at:          ", canceled_at and canceled_at.strftime("%Y-%m-%d %H:%M:%S"))
+                print("voters:               ", poll.voters.count())
+                print("counted votes:         %d/%d" % (poll.voters_cast_count(), poll.cast_votes.count()))
+                print("voters visits:        ", poll.voters_visited_count())
+                print("last voter visit:     ", last_visit_text)
+                print("")

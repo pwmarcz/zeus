@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function
 import sys
 
 sys.path.append("/srv/zeus-server/")
@@ -31,4 +32,4 @@ def handler(obj):
         return obj.isoformat()
     raise TypeError
 
-print json.dumps(DATA, default=handler, ensure_ascii=True)
+print(json.dumps(DATA, default=handler, ensure_ascii=True))

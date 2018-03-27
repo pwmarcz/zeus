@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import sys
 import os
 import ssl
@@ -82,7 +83,7 @@ def main_verify(sigfile, randomness=None, plaintext=None):
     public = eb['public']
     modulus, generator, order = crypto
     beta = eb['beta']
-    print 'VERIFIED: Authentic Signature'
+    print('VERIFIED: Authentic Signature')
     if randomness is None:
         return
 
@@ -91,27 +92,27 @@ def main_verify(sigfile, randomness=None, plaintext=None):
                                       public, beta, randomness)
     if plaintext is not None:
         if plaintext != encoded:
-            print 'FAILED: Plaintext Mismatch'
+            print('FAILED: Plaintext Mismatch')
 
         ct = encrypt(plaintext, modulus, generator, order, randomness)
         _alpha, _beta, _randomness = ct
         alpha = eb['alpha']
         if (alpha, beta) != (_alpha, _beta):
-            print 'FAILED: Invalid Encryption'
+            print('FAILED: Invalid Encryption')
 
     max_encoded = gamma_encoding_max(nr_candidates) + 1
-    print "plaintext:       %d" % encoded
-    print "max plaintext:   %d" % max_encoded
+    print("plaintext:       %d" % encoded)
+    print("max plaintext:   %d" % max_encoded)
     if encoded > max_encoded:
-        print "FAILED: Invalid Vote. Cannot decode."
+        print("FAILED: Invalid Vote. Cannot decode.")
         return
 
     selection = gamma_decode(encoded, nr_candidates)
     choices = to_absolute_answers(selection, nr_candidates)
-    print ""
+    print("")
     for i, o in enumerate(choices):
-        print "%d: [%d] %s" % (i, o, candidates[o])
-    print ""
+        print("%d: [%d] %s" % (i, o, candidates[o]))
+    print("")
 
 def get_poll_info(url):
     conn = get_http_connection(url)
@@ -134,7 +135,7 @@ def get_poll_info(url):
     try:
         parsed = urlparse(html.split('<a id="booth-link"')[1].split('href="')[1].split('"')[0])
     except:
-        print html
+        print(html)
         raise
     poll_url = dict(parse_qsl(parsed.query))['continue_url']
     parsed = urlparse(poll_url)
@@ -153,7 +154,7 @@ def do_cast_vote(conn, cast_path, token, headers, vote):
     response = conn.getresponse()
     body = response.read()
     if response.status != 200:
-        print response.status
+        print(response.status)
     conn.close()
 
 def cast_vote(voter_url, choices=None):
@@ -223,7 +224,7 @@ def main_random_cast_thread(inqueue, outqueue):
         except Empty as e:
             break
         i, total, voter_url = o
-        print "%d/%d" % (i+1, total)
+        print("%d/%d" % (i+1, total))
         encoded, rand = cast_vote(voter_url)
         outqueue.put(encoded)
 
@@ -270,8 +271,8 @@ def main_show(url):
 def main_vote(url, choice_str):
     choices = [int(x) for x in choice_str.split(',')]
     encoded, rand = cast_vote(url, choices)
-    print "encoded selection:", encoded
-    print "encryption randomness:", rand
+    print("encoded selection:", encoded)
+    print("encryption randomness:", rand)
 
 def do_download_mix(url, savefile):
     if exists(savefile):
@@ -353,7 +354,7 @@ def do_upload_mix(outfile, url):
     conn = get_http_connection(url)
     conn.request('POST', conn.path, body=out_data)
     response = conn.getresponse()
-    print response.status, response.read()
+    print(response.status, response.read())
 
 
 def do_upload_factors(outfile, url):
@@ -371,7 +372,7 @@ def do_upload_factors(outfile, url):
         body = urlencode({'factors_and_proofs': out_data})
         conn.request('POST', path, body=body, headers=headers)
         response = conn.getresponse().read()
-        print response
+        print(response)
 
         poll_index += 1
         curr_file = outfile + ".%d" % poll_index

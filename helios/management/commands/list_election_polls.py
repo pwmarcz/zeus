@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Poll
@@ -13,4 +14,4 @@ class Command(BaseCommand):
             polls = polls.filter(election__uuid=args[0])
 
         for p in polls:
-            print p.uuid, p.short_name
+            print(p.uuid, p.short_name)

@@ -6,6 +6,7 @@ ben@adida.net
 2010-05-22
 """
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, Trustee
@@ -22,6 +23,6 @@ class Command(BaseCommand):
             trustees = Trustee.objects.all()
 
         for t in trustees:
-            print t.election.uuid, t.get_login_url()
+            print(t.election.uuid, t.get_login_url())
         # once broken out of the while loop, quit and wait for next invocation
         # this happens when there are no votes left to verify

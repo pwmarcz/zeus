@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import sys
 
@@ -46,14 +47,14 @@ for key, election in elections_json.iteritems():
     voters_count.append(voters)
     voters_cast_count.append(cast)
 
-print "Total voters", sum(voters_count)
-print "Total voted", sum(voters_cast_count)
+print("Total voters", sum(voters_count))
+print("Total voted", sum(voters_cast_count))
 
 voters_count_arr = np.array(voters_count)
 voters_cast_count_arr = np.array(voters_cast_count)
 
 voters_turnout_arr = 100 * voters_cast_count_arr / (1.0 * voters_count_arr)
 
-print st.describe(voters_count_arr)
-print st.describe(voters_cast_count_arr)
-print st.describe(voters_turnout_arr)
+print(st.describe(voters_count_arr))
+print(st.describe(voters_cast_count_arr))
+print(st.describe(voters_turnout_arr))

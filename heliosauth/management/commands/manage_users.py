@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 
 from django.core.management.base import BaseCommand
@@ -85,7 +86,7 @@ class Command(BaseCommand):
 
         if options.get('create_institution'):
             if not options['param']:
-                print "Provide the institution name"
+                print("Provide the institution name")
                 exit()
 
             name = options['param'].strip()
@@ -93,21 +94,21 @@ class Command(BaseCommand):
 
         if options.get('remove_user'):
             if not options['param']:
-                print "Provide a user id"
+                print("Provide a user id")
                 exit()
 
             user = User.objects.get(pk=int(options['param'].strip()))
-            print "User has %d elections objects which will be removed" % user.elections.count()
+            print("User has %d elections objects which will be removed" % user.elections.count())
             confirm = raw_input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
             if confirm == "yes of course":
                 user.delete()
             else:
                 exit()
-            print "User removed"
+            print("User removed")
 
         if options.get("reset_password"):
             if not options['param']:
-                print "Provide a user id and a password"
+                print("Provide a user id and a password")
                 exit()
             user = self.get_user(options['param'])
             password = getpass.getpass("Password:")
@@ -117,7 +118,7 @@ class Command(BaseCommand):
 
         if options.get("enable_sms"):
             if not options['param']:
-                print "Provide a user id and sms backend sender id"
+                print("Provide a user id and sms backend sender id")
                 exit()
 
             sender = options.get('enable_sms', 'ZEUS')
@@ -130,7 +131,7 @@ class Command(BaseCommand):
             else:
                 backend = SMSBackendData()
                 backend.limit = options.get("sms_limit", 10)
-                print "SMS deliveries limit is set to 10"
+                print("SMS deliveries limit is set to 10")
 
             backend.credentials = "%s:%s" % (username, password)
             backend.sender = sender
@@ -155,12 +156,12 @@ class Command(BaseCommand):
                 existing = False
 
             if existing:
-                print "User %s, already exists" % username
+                print("User %s, already exists" % username)
                 exit()
 
             inst_pk = options.get('institution')
             if not inst_pk:
-                print "Please provide an institution id using --institution"
+                print("Please provide an institution id using --institution")
                 exit()
             inst = Institution.objects.get(pk=int(inst_pk))
 
@@ -168,7 +169,7 @@ class Command(BaseCommand):
             password_confirm = getpass.getpass("Confirm password:")
 
             if password != password_confirm:
-                print "Passwords don't match"
+                print("Passwords don't match")
                 exit()
 
             newuser = User()

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import pytest
 import os
 import datetime
@@ -39,7 +40,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
 
     def verbose(self, message):
         if self.local_verbose:
-            print message
+            print(message)
 
     def get_voter_from_url(self, url):
         chunks = url.split('/')
@@ -845,7 +846,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.view_returns_result_files(self.doc_exts)
         self.zip_contains_files(self.doc_exts)
         if self.local_verbose:
-            print self.celebration
+            print(self.celebration)
 
     def broken_mix_election_process(self):
         self.admin_can_submit_election_form()
@@ -879,7 +880,7 @@ class TestSimpleElection(TestElectionBase):
         super(TestSimpleElection, self).setUp()
         self.election_type = 'simple'
         if self.local_verbose:
-            print '* Starting simple election *'
+            print('* Starting simple election *')
 
     def create_questions(self):
         max_nr_questions = self.simple_election_max_questions_number
@@ -1002,7 +1003,7 @@ class TestPartyElection(TestElectionBase):
             'el': ['pdf', 'csv', 'zip']
             }
         if self.local_verbose:
-            print '* Starting party election *'
+            print('* Starting party election *')
 
     def create_questions(self):
         nr_questions = self.party_election_max_questions_number
@@ -1114,7 +1115,7 @@ class TestScoreElection(TestElectionBase):
             }
         self.election_type = 'score'
         if self.local_verbose:
-            print '* Starting score election *'
+            print('* Starting score election *')
 
     min_answers = None
     max_answers = None
@@ -1187,7 +1188,7 @@ class TestSTVElection(TestElectionBase):
             departments += 'test department %s\n' % i
         self.departments = departments
         if self.local_verbose:
-            print '* Starting stv election *'
+            print('* Starting stv election *')
 
     def create_questions(self):
 
@@ -1330,7 +1331,7 @@ class TestUniGovGrElection(TestSimpleElection):
         super(TestSimpleElection, self).setUp()
         self.election_type = 'unigovgr'
         if self.local_verbose:
-            print '* Starting unigovgr election *'
+            print('* Starting unigovgr election *')
 
     def create_questions(self):
         max_nr_questions = 1

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, CastVote
@@ -14,8 +15,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         election = Election.objects.get(uuid=args[0])
         for poll in election.polls.all():
-            print poll.name
+            print(poll.name)
             for vote in CastVote.objects.filter(voter__excluded_at__isnull=True,
                                            poll=poll).order_by('voter__voter_surname',
                                                                        'cast_at'):
-                print u"%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at)
+                print(u"%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at))

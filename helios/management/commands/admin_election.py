@@ -6,18 +6,19 @@ ben@adida.net
 2010-05-22
 """
 
+from __future__ import print_function
 from django.core.management.base import BaseCommand
 
 from helios.models import Election
 
 def p(key, val):
-    print "%s\t:\t %s" % (key, val)
+    print("%s\t:\t %s" % (key, val))
 
 def pt(title, lvl=0):
     lvl_str = ["=", "-", "*"][lvl]
     head_rpt = 5
-    print "\n" * (1-lvl)
-    print lvl_str*head_rpt + (" %s " % title) + lvl_str*head_rpt
+    print("\n" * (1-lvl))
+    print(lvl_str*head_rpt + (" %s " % title) + lvl_str*head_rpt)
 
 class Command(BaseCommand):
     args = ''
@@ -58,5 +59,5 @@ class Command(BaseCommand):
                 else:
                     p("Email", v.voter_email)
 
-                print v.get_quick_login_url()
-                print
+                print(v.get_quick_login_url())
+                print()

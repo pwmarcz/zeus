@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import sys
 
@@ -85,9 +86,9 @@ elections_to_discard = dict((k, v) for k, v in elections_json.iteritems()
 
 elections_lost = set(k for k in to_keep if k not in elections_json)
 
-print "Lost:", elections_lost
-print "To keep: ", len(elections_to_keep)
-print "To discard: ", len(elections_to_discard)
+print("Lost:", elections_lost)
+print("To keep: ", len(elections_to_keep))
+print("To discard: ", len(elections_to_discard))
 
 for election in sorted(elections_to_keep.items(), key=order_elections_key):
     voters = election[1]['election']['voters_count']
@@ -95,8 +96,8 @@ for election in sorted(elections_to_keep.items(), key=order_elections_key):
     voters_count.append(voters)
     voters_cast_count.append(cast)
 
-print "Total voters", sum(voters_count)
-print "Total voted", sum(voters_cast_count)
+print("Total voters", sum(voters_count))
+print("Total voted", sum(voters_cast_count))
 
 ind = np.arange(len(voters_count))
 xvals = range(len(voters_count))

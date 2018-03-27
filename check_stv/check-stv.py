@@ -1,3 +1,4 @@
+from __future__ import print_function
 import argparse
 import json
 import itertools
@@ -68,27 +69,27 @@ if __name__ == "__main__":
 
     if ecounting_results != local_results:
         if len(ecounting_results) != len(local_results):
-            print "Different number of elected candidates!"
+            print("Different number of elected candidates!")
         else:
             comp = ''.join([str(int(a == b)) for a, b in
                             zip(local_results, ecounting_results)])
-            print "Round comparison: ", comp
+            print("Round comparison: ", comp)
             for c, a, b in zip(comp, local_results, ecounting_results):
                 if c == '1':
                     continue
                 if a[0] != b[0]:
-                    print "Different Candidates Elected!"
-                    print a
-                    print b
+                    print("Different Candidates Elected!")
+                    print(a)
+                    print(b)
                 elif a[1] != b[1]:
-                    print "Different Round of Election!"
-                    print a
-                    print b
+                    print("Different Round of Election!")
+                    print(a)
+                    print(b)
                 else:
                     for i, aa, bb in zip(itertools.count(), a[2], b[2]):
                         if aa == bb:
                             continue
-                        print i, aa, bb
+                        print(i, aa, bb)
     else:
         pass  # print 'Results are exactly the same'
 
@@ -105,16 +106,16 @@ if __name__ == "__main__":
                 same_votes_on_round = False
 
     if not same_candidates_elected:
-        print '- Candidates elected are different'
+        print('- Candidates elected are different')
     else:
         pass  # print '* Same candidated were elected'
 
     if not same_rounds_of_election:
-        print '- Rounds of election are different'
+        print('- Rounds of election are different')
     else:
         pass  # print '* Candidate rounds of election are the same'
 
     if not same_votes_on_round:
-        print '- Candidates took different number of votes each round'
+        print('- Candidates took different number of votes each round')
     else:
         pass  # print '* Each round same number of votes were counted'

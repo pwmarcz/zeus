@@ -1,5 +1,6 @@
 """
 """
+from __future__ import print_function
 import yaml
 import uuid
 
@@ -86,7 +87,7 @@ class Command(BaseCommand):
                     voter.generate_password()
                     voter.save()
                     add += 1
-                    print u"New voter added {}".format(voter.voter_email)
+                    print(u"New voter added {}".format(voter.voter_email))
                 else:
                     if UPDATE:
                         validate_voter(voter.voter_mobile, voter.voter_email)
@@ -94,12 +95,12 @@ class Command(BaseCommand):
                         voter.save()
                     else:
                         skip += 1
-                        print u"Skip import of existing voter {}".format(voter.voter_email)
+                        print(u"Skip import of existing voter {}".format(voter.voter_email))
 
             existing = poll.voters.all()
             stray = 0
             for voter in existing.exclude(voter_login_id__in=ids):
                 stray += 1
-                print u"Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email)
+                print(u"Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email))
 
-        print "Found: {}  New: {}  Existing: {}  Updated: {}  Stray: {}".format(voters_count, add, skip, updated, stray)
+        print("Found: {}  New: {}  Existing: {}  Updated: {}  Stray: {}".format(voters_count, add, skip, updated, stray))
