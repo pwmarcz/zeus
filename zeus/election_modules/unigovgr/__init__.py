@@ -159,7 +159,7 @@ class UniGovGr(SimpleElection):
 
     def generate_election_csv_file(self, results, lang):
         csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
-        csvfile = file(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
+        csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
         csv_from_unigovgr_results(self.election, results, lang[0], csvfile)
 
     def compute_election_results(self):

@@ -90,7 +90,7 @@ def stv_count(request):
         if not os.path.exists(filename):
             return HttpResponseRedirect(reverse('stv_count') + "?reset=1")
 
-        wrapper = FileWrapper(file(filename))
+        wrapper = FileWrapper(open(filename))
         response = HttpResponse(wrapper, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
         response['Content-Length'] = os.path.getsize(filename)
@@ -101,7 +101,7 @@ def stv_count(request):
         _uuid = str(uuid.uuid4())
         files = stv_count_and_report(_uuid, el_data)
         json_file = os.path.join('/tmp', 'json-stv-results-%s' % _uuid)
-        with file(json_file, 'w') as f:
+        with open(json_file, 'w') as f:
             f.write(json.dumps(el_data, ensure_ascii=False).encode('utf8'))
         files.append(('json', json_file))
         session['results'] = dict(files)
@@ -134,7 +134,7 @@ def terms(request):
     if terms_file is None:
         return HttpResponseRedirect(reverse('home'))
 
-    terms_fd = file(terms_file % {'lang': get_language()}, 'r')
+    terms_fd = open(terms_file % {'lang': get_language()}, 'r')
     terms_contents = terms_fd.read()
     terms_fd.close()
 

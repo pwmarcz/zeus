@@ -53,7 +53,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         election = Election.objects.get(uuid=args[0])
-        data = yaml.load(file(args[1]))
+        data = yaml.load(open(args[1]))
         skip = 0
         add = 0
         voters_count = 0

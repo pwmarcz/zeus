@@ -124,7 +124,7 @@ class Command(BaseCommand):
 
         voters = Voter.objects.filter()
         all_voters = Voter.objects.filter()
-        tplfd = file(template)
+        tplfd = open(template)
         tpl = tplfd.read()
         tplfd.close()
 

@@ -1343,7 +1343,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         results_json = self.zeus.get_results()
 
         # json file
-        jsonfile = file(self.get_result_file_path('json', 'json'), 'w')
+        jsonfile = open(self.get_result_file_path('json', 'json'), 'w')
         json.dump(results_json, jsonfile)
         jsonfile.close()
 
@@ -1360,7 +1360,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                       self.get_result_file_path('pdf', 'pdf'), score=True)
 
             from zeus.reports import csv_from_score_polls
-            csvfile = file(self.get_result_file_path('csv', 'csv'), "w")
+            csvfile = open(self.get_result_file_path('csv', 'csv'), "w")
             csv_from_score_polls(self.election, [self], csvfile)
             csvfile.close()
         else:
@@ -1378,7 +1378,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
             # CSV
             from zeus.reports import csv_from_polls
-            csvfile = file(self.get_result_file_path('csv', 'csv'), "w")
+            csvfile = open(self.get_result_file_path('csv', 'csv'), "w")
             csv_from_polls(self.election, [self], csvfile)
             csvfile.close()
 

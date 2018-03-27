@@ -147,12 +147,12 @@ class ElectionModuleBase(ElectionHooks):
 
     def generate_json_file(self):
         results_json = self.poll.zeus.get_results()
-        jsonfile = file(self.get_poll_result_file_path('json', 'json'), 'w')
+        jsonfile = open(self.get_poll_result_file_path('json', 'json'), 'w')
         json.dump(results_json, jsonfile)
         jsonfile.close()
 
     def generate_csv_file(self, lang):
-        csvfile = file(self.get_poll_result_file_path('csv', 'csv', lang[0]), "w")
+        csvfile = open(self.get_poll_result_file_path('csv', 'csv', lang[0]), "w")
         if self.module_id == "score":
             csv_from_score_polls(self.election, [self.poll], lang[0], csvfile)
         elif self.module_id == "stv":
@@ -163,7 +163,7 @@ class ElectionModuleBase(ElectionHooks):
 
     def generate_election_csv_file(self, lang):
         csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
-        csvfile = file(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
+        csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
         if self.module_id == "score":
             csv_from_score_polls(self.election, self.election.polls.all(),\
                 lang[0], csvfile)

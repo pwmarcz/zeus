@@ -329,7 +329,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for p_uuid in self.p_uuids:
             fname = '/tmp/faulty_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = file(fname, 'w')
+            fp = open(fname, 'w')
             for i in range(0, 2):
                 voter = "1,voter%s@mail.com,test_name%s,test_surname%s\n" \
                     % (i, i, i)
@@ -342,7 +342,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                                      % (self.e_uuid, p_uuid)
             self.c.post(
                 upload_voters_location,
-                {'voters_file': file(voter_files[p_uuid])}
+                {'voters_file': open(voter_files[p_uuid])}
                 )
             self.c.post(upload_voters_location, {'confirm_p': 1})
             e = Election.objects.get(uuid=self.e_uuid)
@@ -356,7 +356,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for p_uuid in self.p_uuids:
             fname = '/tmp/wrong_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = file(fname, 'w')
+            fp = open(fname, 'w')
             for i in range(1, self.voters_num+1):
                 voter = ("%s,voter%s@mail.com,test_name%s,test_surname%s,"
                          "fname,4444444444,lol\n"
@@ -370,7 +370,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 % (self.e_uuid, p_uuid)
             r = self.c.post(
                 upload_voters_location,
-                {'voters_file': file(voter_files[p_uuid])}
+                {'voters_file': open(voter_files[p_uuid])}
                 )
             r = self.c.post(upload_voters_location, {'confirm_p': 1})
             assert r.status_code == 302
@@ -385,7 +385,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for p_uuid in self.p_uuids:
             fname = '/tmp/random_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = file(fname, 'w')
+            fp = open(fname, 'w')
             for i in range(1, self.voters_num+1):
                 voter = "%s,voter%s@mail.com,test_name%s,test_surname%s\n" \
                     % (i, i, i, i)
@@ -402,7 +402,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 % (self.e_uuid, p_uuid)
             self.c.post(
                 upload_voters_location,
-                {'voters_file': file(voter_files[p_uuid]),
+                {'voters_file': open(voter_files[p_uuid]),
                  'encoding': 'iso-8859-7'}
                 )
             self.c.post(upload_voters_location, {'confirm_p': 1, 'encoding': 'iso-8859-7'})
@@ -1250,7 +1250,7 @@ class TestWeightElection(TestSimpleElection):
         for p_uuid in self.p_uuids:
             fname = '/tmp/random_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = file(fname, 'w')
+            fp = open(fname, 'w')
             for i in range(1, self.voters_num+1):
                 weight = 1 + (i % 5)
                 voter = "%s,voter%s@mail.com,test_name%s,test_surname%s,,,%s\n" \

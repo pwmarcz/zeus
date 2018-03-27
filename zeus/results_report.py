@@ -659,7 +659,7 @@ def main():
     extended_until = 'Παράταση: 21/1/2013 18:00'
 
     build_doc(title, name, institution_name, voting_start, voting_end,
-              extended_until, file(sys.argv[1]).read())
+              extended_until, open(sys.argv[1]).read())
 
 
 if __name__ == "__main__":
