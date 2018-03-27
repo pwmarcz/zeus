@@ -85,3 +85,9 @@ if os.path.exists("/usr/share/fonts/truetype/ubuntu-font-family/"):
 
 USE_X_SENDFILE = False
 SERVER_PREFIX = ''
+
+# Speed up the tests, see:
+# https://docs.djangoproject.com/en/1.11/topics/testing/overview/#speeding-up-the-tests
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+]
