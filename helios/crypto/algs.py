@@ -12,15 +12,12 @@ import hashlib
 import logging
 import randpool
 import number
+from Crypto import Random
 
 
 # some utilities
 class Utils:
-    RAND = randpool.RandomPool()
-
-    @classmethod
-    def random_seed(cls, data):
-        cls.RAND.add_event(data)
+    RAND = Random.new()
 
     @classmethod
     def random_mpz(cls, n_bits):
@@ -30,17 +27,17 @@ class Utils:
         # increment and find a prime
         # return randrange(low, high)
 
-        return number.getRandomNumber(n_bits, cls.RAND.get_bytes)
+        return number.getRandomNumber(n_bits, cls.RAND.read)
 
     @classmethod
     def random_mpz_lt(cls, max):
         # return randrange(0, max)
         n_bits = int(math.floor(math.log(max, 2)))
-        return (number.getRandomNumber(n_bits, cls.RAND.get_bytes) % max)
+        return (number.getRandomNumber(n_bits, cls.RAND.read) % max)
 
     @classmethod
     def random_prime(cls, n_bits):
-        return number.getPrime(n_bits, cls.RAND.get_bytes)
+        return number.getPrime(n_bits, cls.RAND.read)
 
     @classmethod
     def is_prime(cls, mpz):
