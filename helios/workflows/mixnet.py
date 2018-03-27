@@ -1,9 +1,9 @@
+from hashlib import sha256
+
 from helios.workflows.homomorphic import Tally as HomomorphicTally
 
 # we are extending homomorphic workflow
 from helios.workflows.homomorphic import WorkflowObject, DLogTable, EncryptedVote, EncryptedAnswer
-
-from phoebus import phoebus
 
 
 TYPE = 'mixnet'
@@ -150,6 +150,37 @@ class EncryptedAnswer(EncryptedAnswer):
         return self.choices[0]
 
     def verify(self, pk):
-        verified = phoebus.verify_encryption(pk.p, pk.g, self.choice.alpha,
-                self.choice.beta, self.encryption_proof)
+        verified = verify_encryption(pk.p, pk.g, self.choice.alpha,
+                                     self.choice.beta, self.encryption_proof)
         return verified
+
+
+def strbin_to_int(string):
+    # lsb
+    s = 0
+    base = 1
+    for c in string:
+        s += ord(c) * base
+        base *= 256
+
+    return s
+
+
+def hash_to_commitment_and_challenge(alpha, beta):
+    h = sha256()
+    h.update(hex(alpha))
+    ha = strbin_to_int(h.digest())
+    h = sha256()
+    h.update(hex(beta))
+    hb = strbin_to_int(h.digest())
+    commitment = (ha >> 128) | ((hb << 128) & (2**256-1))
+    challenge = (hb >> 128) | ((ha << 128) & (2**256-1))
+
+    return commitment, challenge
+
+
+def verify_encryption(modulus, base, alpha, beta, proof):
+    commitment, challenge = hash_to_commitment_and_challenge(alpha, beta)
+    return (pow(base, proof, modulus) ==
+            (pow(base, commitment, modulus) *
+             pow(alpha, challenge, modulus) % modulus))
