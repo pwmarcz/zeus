@@ -173,7 +173,8 @@ class UniGovGr(SimpleElection):
         _super = super(UniGovGr, self).questions_update_view
         update_view = partial(_super, request, election)
         siblings = election.polls.filter().exclude(pk=poll.pk)
-        map(update_view, siblings)
+        for sibling in siblings:
+            update_view(sibling)
         return update_view(poll)
 
     def get_voters_list_headers(self, request=None):

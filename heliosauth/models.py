@@ -84,7 +84,7 @@ class User(models.Model):
     def eligible_election_types(self):
         valid = set()
         for group in self.user_groups.all():
-            map(valid.add, group.election_types)
+            valid.update(group.election_types)
         return valid
 
     # administrator
