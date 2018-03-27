@@ -12,6 +12,7 @@ import hashlib
 import logging
 import randpool
 import number
+import json
 
 # some utilities
 class Utils:
@@ -213,8 +214,7 @@ class EGPublicKey:
 
     # quick hack FIXME
     def toJSON(self):
-        import utils
-        return utils.to_json(self.toJSONDict())
+        return json.dumps(self.toJSONDict(), sort_keys=True)
 
     def __mul__(self,other):
         if other == 0 or other == 1:
