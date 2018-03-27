@@ -161,23 +161,6 @@ class EncryptedAnswer(HeliosObject):
             ea.answer = d['answer']
         return ea
 
-    # TODO dead code?
-    @classmethod
-    def fromElectionAndAnswer(cls, election, question_num, answer):
-        import phoebus
-        pk = election.public_key
-        question = election.questions[question_num]
-        ballot = phoebus.Ballot.from_dict({
-            'answers': answer,
-            'nr_candidates': len(question['answers']),
-            'max_choices': len(question['answers']),
-            'public_key': pk})
-
-        randomness = algs.Utils.random_mpz_lt(pk.q)
-        encrypted, random = ballot.encrypt()
-        ciph = algs.EGCiphertext(alpha=encrypted['a'], beta=encrypted['b'])
-        proof = encrypted['proof']
-        return cls(choices=[ciph], encryption_proof=proof)
 
 class EncryptedVote(HeliosObject):
     """
@@ -232,18 +215,6 @@ class EncryptedVote(HeliosObject):
         ev.election_uuid = d['election_uuid']
 
         return ev
-
-    @classmethod
-    def fromElectionAndAnswers(cls, election, answers):
-        encrypted_answers = [EncryptedAnswer.fromElectionAndAnswer(election,
-            answer_num, answers[answer_num]) for answer_num in range(len(answers))]
-
-        return_val = cls()
-        return_val.encrypted_answers = encrypted_answers
-        return_val.election_hash = election.hash
-        return_val.election_uuid = election.uuid
-
-        return return_val
 
 
 def one_question_winner(question, result, num_cast_votes):

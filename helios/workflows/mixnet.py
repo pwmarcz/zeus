@@ -1,6 +1,4 @@
 from helios.workflows.homomorphic import Tally as HomomorphicTally
-from helios.crypto.elgamal import Ciphertext
-from helios.crypto import algs
 
 # we are extending homomorphic workflow
 from helios.workflows.homomorphic import WorkflowObject, DLogTable, EncryptedVote, EncryptedAnswer
@@ -9,36 +7,6 @@ from phoebus import phoebus
 
 
 TYPE = 'mixnet'
-
-class ShuffleProof(WorkflowObject):
-    @property
-    def datatype(self):
-        return "legacy/ShuffleProof"
-
-class Mixnet(WorkflowObject):
-
-    def __init__(self, election, *args, **kwargs):
-        self.election = election
-        super(Mixnet, self).__init__(*args, **kwargs)
-
-    def mix(self, election, votes, verify=True, question_num=0):
-        encrypted_ballots = []
-        for index, vote in enumerate(votes):
-            encrypted_ballots.append(vote.to_phoebus_ballot(election, question_num))
-
-        ph_election = phoebus.Election.from_helios_election_model(self.election,
-              encrypted_ballots=encrypted_ballots)
-
-        new_ballots, mix_proof = ph_election.mix_ballots()
-        new_votes = []
-
-        new_answers = MixedAnswers([], question_num=0)
-        for index, ballot in enumerate(new_ballots):
-            cipher = Ciphertext(alpha=ballot.encrypted_ballot['a'],
-                beta=ballot.encrypted_ballot['b'])
-            new_answers.answers.append(MixedAnswer(choice=cipher, index=index))
-
-        return new_answers, mix_proof
 
 
 class MixedAnswers(WorkflowObject):
@@ -65,19 +33,6 @@ class MixedAnswer(WorkflowObject):
     def fromEncryptedAnswer(cls, answer, index):
         return cls(answer=answer.choice, index=index)
 
-    def to_phoebus_ballot(self, election, question_num):
-        phoebus_enc = {'a': self.choice.alpha, 'b': self.choice.beta}
-        question = election.questions[question_num]
-        nr_candidates = len(question['answers'])
-        max_choices = nr_candidates
-
-        ballot = phoebus.Ballot.from_dict(
-              {'encrypted_ballot': phoebus_enc,
-                'nr_candidates': nr_candidates,
-                'max_choices': max_choices,
-                'public_key': election.public_key
-              })
-        return ballot
 
 class Tally(HomomorphicTally):
 
@@ -147,53 +102,9 @@ class EncryptedVote(EncryptedVote):
     def datatype(self):
         return "phoebus/EncryptedVote"
 
-    @classmethod
-    def fromElectionAndCipher(cls, election, cipher):
-        pk = election.public_key
-
-        # each answer is an index into the answer array
-        encrypted_answers = [EncryptedAnswer(choices=[cipher])]
-
-        return_val = cls()
-        return_val.encrypted_answers = encrypted_answers
-        return_val.election_hash = election.hash
-        return_val.election_uuid = election.uuid
-
-        return return_val
-
-    @classmethod
-    def fromElectionAndAnswers(cls, election, answers):
-        encrypted_answers = [EncryptedAnswer.fromElectionAndAnswer(election,
-            answer_num, answers[answer_num]) for answer_num in range(len(answers))]
-
-        return_val = cls()
-        return_val.encrypted_answers = encrypted_answers
-        return_val.election_hash = election.hash
-        return_val.election_uuid = election.uuid
-
-        return return_val
-
     @property
     def encrypted_answer(self):
         return self.encrypted_answers[0]
-
-    def to_phoebus_ballot(self):
-        # hardcoded 0 answers
-        from helios.models import Election
-        cipher = self.get_cipher()
-        phoebus_enc = {'a': cipher.alpha, 'b': cipher.beta, 'proof':
-            self.encrypted_answers[0].encryption_proof}
-        election = Election.objects.get(uuid=self.election_uuid)
-        question = election.questions[0]
-        nr_candidates = len(question['answers'])
-        max_choices = nr_candidates
-
-        ballot = phoebus.Ballot.from_dict(
-            {'encrypted_ballot': phoebus_enc,
-             'nr_candidates': nr_candidates,
-             'max_choices': max_choices,
-             'public_key': election.public_key})
-        return ballot
 
     def get_cipher(self):
         """
@@ -234,24 +145,6 @@ class EncryptedAnswer(EncryptedAnswer):
         self.answer = answer
         self.encryption_proof = encryption_proof
 
-    @classmethod
-    def fromElectionAndAnswer(cls, election, question_num, answer):
-        pk = election.public_key
-        question = election.questions[question_num]
-
-        # transform it to phoebus Ballot object
-        ballot = phoebus.Ballot.from_dict({
-            'answers': answer,
-            'nr_candidates': len(question['answers']),
-            'max_choices': len(question['answers']),
-            'public_key': pk})
-
-        randomness = algs.Utils.random_mpz_lt(pk.q)
-        encrypted, random = ballot.encrypt()
-        ciph = Ciphertext(alpha=encrypted['a'], beta=encrypted['b'])
-        proof = encrypted['proof']
-        return cls(choices=[ciph], encryption_proof=proof)
-
     @property
     def choice(self):
         return self.choices[0]
@@ -260,35 +153,3 @@ class EncryptedAnswer(EncryptedAnswer):
         verified = phoebus.verify_encryption(pk.p, pk.g, self.choice.alpha,
                 self.choice.beta, self.encryption_proof)
         return verified
-
-
-"""
-Mixnet API
-"""
-def tallied(election):
-    return election.mixing_finished
-
-def compute_tally(election):
-    raise NotImplemented
-
-def tally_hash(election):
-    pass
-
-
-def ready_for_decription(election):
-    pass
-
-def decrypt_tally(election, decryption_factors):
-    tally = election.encrypted_tally
-    tally.init_election(election)
-    decrypted = tally.decrypt_from_factors(decryption_factors,
-                                           election.public_key)
-    return decrypted
-
-def get_decryption_factors_and_proof(election, key):
-    tally = election.encrypted_tally
-    tally.init_election(election)
-    return tally.decryption_factors_and_proofs(key)
-
-#def verify_encryption_proof(election, trustee):
-    #pass

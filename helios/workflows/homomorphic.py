@@ -83,78 +83,6 @@ class EncryptedAnswer(WorkflowObject):
             # approval voting, no need for overall proof verification
             return True
 
-    @classmethod
-    def fromElectionAndAnswer(cls, election, question_num, answer_indexes):
-        """
-        Given an election, a question number, and a list of answers to that question
-        in the form of an array of 0-based indexes into the answer array,
-        produce an EncryptedAnswer that works.
-        """
-        question = election.questions[question_num]
-        answers = question['answers']
-        pk = election.public_key
-
-        # initialize choices, individual proofs, randomness and overall proof
-        choices = [None for a in range(len(answers))]
-        individual_proofs = [None for a in range(len(answers))]
-        overall_proof = None
-        randomness = [None for a in range(len(answers))]
-
-        # possible plaintexts [0, 1]
-        plaintexts = cls.generate_plaintexts(pk)
-
-        # keep track of number of options selected.
-        num_selected_answers = 0;
-
-        # homomorphic sum of all
-        homomorphic_sum = 0
-        randomness_sum = 0
-
-        # min and max for number of answers, useful later
-        min_answers = 0
-        if question.has_key('min'):
-            min_answers = question['min']
-        max_answers = question['max']
-
-        # go through each possible answer and encrypt either a g^0 or a g^1.
-        for answer_num in range(len(answers)):
-            plaintext_index = 0
-
-            # assuming a list of answers
-            if answer_num in answer_indexes:
-                plaintext_index = 1
-                num_selected_answers += 1
-
-            # randomness and encryption
-            randomness[answer_num] = algs.Utils.random_mpz_lt(pk.q)
-            choices[answer_num] = pk.encrypt_with_r(plaintexts[plaintext_index], randomness[answer_num])
-
-            # generate proof
-            individual_proofs[answer_num] = choices[answer_num].generate_disjunctive_encryption_proof(plaintexts, plaintext_index,
-                                                      randomness[answer_num], algs.EG_disjunctive_challenge_generator)
-
-            # sum things up homomorphically if needed
-            if max_answers != None:
-                homomorphic_sum = choices[answer_num] * homomorphic_sum
-                randomness_sum = (randomness_sum + randomness[answer_num]) % pk.q
-
-        # prove that the sum is 0 or 1 (can be "blank vote" for this answer)
-        # num_selected_answers is 0 or 1, which is the index into the plaintext that is actually encoded
-
-        if num_selected_answers < min_answers:
-            raise Exception("Need to select at least %s answer(s)" % min_answers)
-
-        if max_answers != None:
-            sum_plaintexts = cls.generate_plaintexts(pk, min=min_answers, max=max_answers)
-
-            # need to subtract the min from the offset
-            overall_proof = homomorphic_sum.generate_disjunctive_encryption_proof(sum_plaintexts, num_selected_answers - min_answers, randomness_sum, algs.EG_disjunctive_challenge_generator);
-        else:
-            # approval voting
-            overall_proof = None
-
-        return cls(choices, individual_proofs, overall_proof, randomness, answer_indexes)
-
 # WORK HERE
 
 class EncryptedVote(WorkflowObject):
@@ -205,19 +133,6 @@ class EncryptedVote(WorkflowObject):
                 return False
 
         return True
-
-    @classmethod
-    def fromElectionAndAnswers(cls, election, answers):
-        pk = election.public_key
-
-        # each answer is an index into the answer array
-        encrypted_answers = [EncryptedAnswer.fromElectionAndAnswer(election, answer_num, answers[answer_num]) for answer_num in range(len(answers))]
-        return_val = cls()
-        return_val.encrypted_answers = encrypted_answers
-        return_val.election_hash = election.hash
-        return_val.election_uuid = election.uuid
-
-        return return_val
 
 
 class DLogTable(object):
