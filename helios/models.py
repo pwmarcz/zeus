@@ -1287,7 +1287,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         data_info.comment = "Election %s (%s-%s) zeus proofs" % (self.zeus_fingerprint,
                                                               self.election.uuid, self.uuid)
         data_info.date_time = datetime.datetime.now().timetuple()
-        data_info.external_attr = 0777 << 16L
+        data_info.external_attr = 0o777 << 16
 
         tmpf = tempfile.TemporaryFile(mode="w", suffix='.zeus',
                                       prefix='tmp', dir='/tmp')
