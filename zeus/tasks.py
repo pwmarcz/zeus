@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import copy
 import datetime
 import logging
@@ -205,8 +205,8 @@ def election_validate_create(election_id):
         if not poll.feature_can_validate_create:
             poll_validate_create.delay(poll.id)
 
-    subject = u"Election is frozen"
-    msg = u"Election is frozen"
+    subject = "Election is frozen"
+    msg = "Election is frozen"
     msg = utils.append_ballot_to_msg(election, msg)
     election.notify_admins(msg=msg, subject=subject)
 

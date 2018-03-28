@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from zeus.core import (
         ZeusError, pow, sha256, ALPHA, BETA,
         get_random_int, bit_iterator, get_random_permutation,
@@ -18,7 +18,9 @@ def reencrypt(modulus, generator, order, public, alpha, beta, secret=None):
 
 def compute_mix_challenge(cipher_mix):
     hasher = sha256()
-    update = hasher.update
+
+    def update(s):
+        hasher.update(s.encode())
 
     update("%x" % cipher_mix['modulus'])
     update("%x" % cipher_mix['generator'])
@@ -52,7 +54,7 @@ def shuffle_ciphers(modulus, generator, order, public, ciphers,
     mixed_randoms = list([None]) * nr_ciphers
     count = 0
 
-    for i in xrange(nr_ciphers):
+    for i in range(nr_ciphers):
         alpha, beta = ciphers[i]
         alpha, beta, secret = reencrypt(modulus, generator, order, public,
                                         alpha, beta)
@@ -101,7 +103,7 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
             pool = Pool(nr_parallel, Random.atfork)
             data = [
                 (p, g, q, y, original_ciphers)
-                for _ in xrange(nr_rounds)
+                for _ in range(nr_rounds)
             ]
             collections = []
             for r in pool.imap(_shuffle_ciphers, data):
@@ -112,7 +114,7 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
         else:
             collections = [shuffle_ciphers(p, g, q, y,
                                            original_ciphers, teller=teller)
-                           for _ in xrange(nr_rounds)]
+                           for _ in range(nr_rounds)]
 
         unzipped = [list(x) for x in zip(*collections)]
         cipher_collections, offset_collections, random_collections = unzipped
@@ -127,7 +129,7 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
     bits = bit_iterator(int(challenge, 16))
 
     with teller.task('Answering according to challenge', total=nr_rounds):
-        for i, bit in zip(xrange(nr_rounds), bits):
+        for i, bit in zip(range(nr_rounds), bits):
             ciphers = cipher_collections[i]
             offsets = offset_collections[i]
             randoms = random_collections[i]
@@ -146,7 +148,7 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
                 new_offsets = list([None]) * nr_ciphers
                 new_randoms = list([None]) * nr_ciphers
 
-                for j in xrange(nr_ciphers):
+                for j in range(nr_ciphers):
                     cipher_random = randoms[j]
                     cipher_offset = offsets[j]
                     mixed_random = mixed_randoms[j]
@@ -176,7 +178,7 @@ def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
     count = 0
     total = 0
     if bit == 0:
-        for j in xrange(nr_ciphers):
+        for j in range(nr_ciphers):
             original_cipher = original_ciphers[j]
             a = original_cipher[ALPHA]
             b = original_cipher[BETA]
@@ -195,7 +197,7 @@ def verify_mix_round(p, g, q, y, i, bit, original_ciphers, mixed_ciphers,
                     teller.advance(count)
                 count = 0
     elif bit == 1:
-        for j in xrange(nr_ciphers):
+        for j in range(nr_ciphers):
             cipher = ciphers[j]
             a = cipher[ALPHA]
             b = cipher[BETA]
@@ -265,7 +267,7 @@ def verify_cipher_mix(cipher_mix, teller=_teller, nr_parallel=0):
     total = nr_rounds * nr_ciphers
     with teller.task('Verifying ciphers', total=total):
         data = []
-        for i, bit in zip(xrange(nr_rounds), bit_iterator(int(challenge, 16))):
+        for i, bit in zip(range(nr_rounds), bit_iterator(int(challenge, 16))):
             ciphers = cipher_collections[i]
             randoms = random_collections[i]
             offsets = offset_collections[i]

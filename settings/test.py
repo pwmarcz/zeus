@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 try:
     from .local import *  # noqa
 except ImportError:

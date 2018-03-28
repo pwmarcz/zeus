@@ -1,6 +1,6 @@
 """
 """
-from __future__ import absolute_import
+
 import yaml
 
 from django.db import transaction
@@ -8,10 +8,6 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election, Poll
 
-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class Command(BaseCommand):
     args = ''

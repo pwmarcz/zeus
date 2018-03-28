@@ -5,12 +5,12 @@ Ben Adida - ben@adida.net
 2005-04-11
 """
 
-from __future__ import absolute_import
+
 import random
 
 
 def force_utf8(s):
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         return s.encode('utf8')
     else:
         return s

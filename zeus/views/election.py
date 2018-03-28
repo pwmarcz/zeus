@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import six.moves.urllib.request
 import six.moves.urllib.parse
 import six.moves.urllib.error
@@ -359,11 +359,11 @@ def results_file(request, election, ext='pdf', shortname='',
         response['X-Sendfile'] = fpath
         return response
     else:
-        data = open(fpath, 'r')
+        data = open(fpath, 'rb')
         response = HttpResponse(data.read(), content_type='application/%s' % ext)
         data.close()
         basename = os.path.basename(fpath)
-        response['Content-Dispotition'] = 'attachment; filename=%s' % basename
+        response['Content-Disposition'] = 'attachment; filename=%s' % basename
         return response
 
 
@@ -420,5 +420,5 @@ def remote_mix(request, election, mix_key):
     if not election.check_mix_key(mix_key):
         raise PermissionDenied
 
-    urls = map(lambda p: p.remote_mix_url, election.polls.all())
+    urls = [p.remote_mix_url for p in election.polls.all()]
     return HttpResponse(json.dumps(urls), content_type="application/json")

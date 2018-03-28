@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-import sys
-
 from django.core.management.base import BaseCommand
 
 from heliosauth.models import User, UserGroup, SMSBackendData
@@ -82,9 +78,6 @@ class Command(BaseCommand):
         return User.objects.get(user_id=userid)
 
     def handle(self, **options):
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
-
         if options.get('create_institution'):
             if not options['param']:
                 print("Provide the institution name")
@@ -100,7 +93,7 @@ class Command(BaseCommand):
 
             user = User.objects.get(pk=int(options['param'].strip()))
             print("User has %d elections objects which will be removed" % user.elections.count())
-            confirm = raw_input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
+            confirm = input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
             if confirm == "yes of course":
                 user.delete()
             else:

@@ -30,8 +30,7 @@
 # as representing official policies, either expressed or implied, of
 # GRNET S.A.
 
-from __future__ import print_function
-from __future__ import absolute_import
+
 from random import random, seed
 import logging
 import sys
@@ -166,7 +165,7 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
                 transferred.append(ballot)
             else:
                 i += 1
-    for move, ballots in moves.iteritems():
+    for move, ballots in moves.items():
         times = len(ballots)
         description =  "from {0} to {1} {2}*{3}={4}".format(move[0],
                                                             move[1],
@@ -223,8 +222,7 @@ def count_description(vote_count, candidates):
     is a candidate and each {1} is the corresponding vote count.
     """
 
-    return  ';'.join(map(lambda x: "{0} = {1}".format(x, vote_count[x]),
-                         candidates))
+    return  ';'.join(["{0} = {1}".format(x, vote_count[x]) for x in candidates])
 
 
 def update_candidate_counts(full_data, current_round, vote_count, hopefuls):
@@ -264,7 +262,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
     # The number of candidates elected per constituency
     constituencies_elected = {}
 
-    for (candidate, constituency) in constituencies.iteritems():
+    for (candidate, constituency) in constituencies.items():
         constituencies_elected[constituency] = 0
         if candidate not in allocated:
             allocated[candidate] = []

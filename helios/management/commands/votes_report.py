@@ -1,12 +1,9 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, CastVote
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class Command(BaseCommand):
     args = ''
@@ -20,4 +17,4 @@ class Command(BaseCommand):
             for vote in CastVote.objects.filter(voter__excluded_at__isnull=True,
                                            poll=poll).order_by('voter__voter_surname',
                                                                        'cast_at'):
-                print(u"%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at))
+                print("%s%s%s" % (vote.voter.full_name, self.delimiter, vote.cast_at))

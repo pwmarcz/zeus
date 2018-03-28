@@ -1,7 +1,7 @@
-from __future__ import absolute_import
+
 import os
 from stv.stv import count_stv, Ballot
-import StringIO
+import io
 import logging
 
 from zeus.results_report import build_stv_doc
@@ -18,9 +18,9 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     institution = el_data.get("institution", "")
     voting_starts = el_data.get("votingStarts", datetime.now())
     voting_ends = el_data.get("votingEnds", datetime.now())
-    if isinstance(voting_starts, basestring):
+    if isinstance(voting_starts, str):
         voting_starts = datetime.strptime(voting_starts, "%d/%m/%Y %H:%M")
-    if isinstance(voting_ends, basestring):
+    if isinstance(voting_ends, str):
         voting_ends = datetime.strptime(voting_ends, "%d/%m/%Y %H:%M")
 
     constituencies = {}
@@ -31,7 +31,7 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     for item in schools:
         school_name = item['Name']
         for candidate in item['candidates']:
-            candId = u"{} {} {}:{}".format(candidate['firstName'],
+            candId = "{} {} {}:{}".format(candidate['firstName'],
                                             candidate['lastName'],
                                             candidate['fatherName'],
                                             school_name)
@@ -50,7 +50,7 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
                     orderedCandidateList.append(index)
         input_ballots.append(Ballot(orderedCandidateList))
 
-    stv_stream = StringIO.StringIO()
+    stv_stream = io.StringIO()
     stv_logger = logging.Logger("stv-poll")
     handler = logging.StreamHandler(stv_stream)
     stv_logger.addHandler(handler)
@@ -63,12 +63,12 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
                                 rnd_gen=None, logger=stv_logger)
 
     results = list(count_results[0:2])
-    voters = range(len(ballots))
+    voters = list(range(len(ballots)))
 
-    questions = [{u'tally_type': u'stv', u'choice_type': u'stv',
-                    u'question': u'Questions choices', u'answers':
-                    answers_list, u'answer_urls': [None, None],
-                    u'result_type': u'absolute'}]
+    questions = [{'tally_type': 'stv', 'choice_type': 'stv',
+                    'question': 'Questions choices', 'answers':
+                    answers_list, 'answer_urls': [None, None],
+                    'result_type': 'absolute'}]
 
     handler.close()
     stv_stream.seek(0)

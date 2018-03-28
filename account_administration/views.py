@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse

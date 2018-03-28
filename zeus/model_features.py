@@ -2,7 +2,7 @@
 A collection of helper model mixins to decouple election/poll state identifiers
 """
 
-from __future__ import absolute_import
+
 import datetime
 
 from collections import defaultdict
@@ -56,7 +56,7 @@ class FeaturesMixin(object):
         return [(f, self.check_feature(f)) for f in features]
 
     def list_features(self):
-        return FEATURES_REGISTRY.get(self.features_ns).keys()
+        return list(FEATURES_REGISTRY.get(self.features_ns).keys())
 
 
 def election_feature(*args):

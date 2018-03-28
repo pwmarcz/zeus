@@ -1,13 +1,11 @@
 """
 """
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
 
 class Command(BaseCommand):
     args = ''

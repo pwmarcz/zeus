@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 import csv
 from functools import partial
 
-from cStringIO import StringIO
+from io import StringIO
 from zeus.core import gamma_decode
 from zeus.utils import CSVReader
 from django.db.models import Count
@@ -98,7 +98,7 @@ def election_voters_report(elections):
 
 
 def _single_votes(results, clen):
-    return filter(lambda sel: len(gamma_decode(sel, clen)) == 1, results)
+    return [sel for sel in results if len(gamma_decode(sel, clen)) == 1]
 
 
 def _get_choices_sums(results, choices_len):
@@ -133,7 +133,7 @@ def election_results_report(elections):
 
 
 def strforce(thing, encoding='utf8'):
-    if isinstance(thing, unicode):
+    if isinstance(thing, str):
         return thing.encode(encoding)
     return str(thing)
 
@@ -290,9 +290,9 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                 writerow([strforce(round_name)])
                 writerow([strforce(_('Candidate')), strforce(_('Votes')),\
                     strforce(_('Draw')), strforce(_('Action'))])
-                for name, cand in round['candidates'].iteritems():
-                    actions = map(lambda x: x[0], cand['actions'])
-                    actions = map(lambda x: x[0], cand['actions'])
+                for name, cand in round['candidates'].items():
+                    actions = [x[0] for x in cand['actions']]
+                    actions = [x[0] for x in cand['actions']]
                     draw = _("NO")
                     if 'random' in actions:
                         draw = _("YES")
@@ -345,7 +345,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
             pointlist = list(sorted(score_results['points']))
             pointlist.reverse()
             writerow([strforce(_('CANDIDATE')), strforce(_('SCORES:'))] + pointlist)
-            for candidate, points in sorted(score_results['detailed'].iteritems()):
+            for candidate, points in sorted(score_results['detailed'].items()):
                 writerow([strforce(candidate), ''] +
                         [strforce(points[p]) for p in pointlist])
 
@@ -363,7 +363,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
                 if not ballot['valid']:
                     writerow([counter, empty, empty, invalid])
                     continue
-                points = sorted(ballot['candidates'].iteritems())
+                points = sorted(ballot['candidates'].items())
                 for candidate, score in points:
                     candidate = candidate.replace("{newline}", " ")
                     writerow([strforce(counter), strforce(candidate),
@@ -460,16 +460,14 @@ class ElectionsReportCSV(ElectionsReport):
 
         fd = filename
         close = False
-        if isinstance(filename, basestring):
+        if isinstance(filename, str):
             fd = open("{}.csv".format(filename), 'wb')
             close = True
 
         writer = csv.writer(fd, delimiter=',')
-        head_row = map(lambda c: c.encode('utf-8'), self.header)
-        writer.writerow(head_row)
+        writer.writerow(self.header)
         for row in data:
-            writer.writerow([row[k].encode('utf-8') if type(row[k]) != int
-                            else row[k] for k in keys])
+            writer.writerow(row[k] for k in keys)
         if close:
             fd.close()
 
@@ -514,13 +512,13 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
 
         writerow([])
         writerow([strforce(_('RESULTS'))])
-        for question, answers in T('counts').items():
+        for question, answers in list(T('counts').items()):
             writerow([])
             writerow([strforce(question)])
             writerow(['',strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
             for answer in answers:
-                key = u'counts.%s.%s' % (question, answer)
-                key_round = u'counts_rounded.%s.%s' % (question, answer)
+                key = 'counts.%s.%s' % (question, answer)
+                key_round = 'counts_rounded.%s.%s' % (question, answer)
                 writerow([
                     strforce(answer),
                     strforce(T(key_round)),

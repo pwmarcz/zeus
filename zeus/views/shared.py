@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import os
 import base64
 
@@ -11,8 +11,8 @@ from django.views.decorators.http import require_http_methods
 def get_randomness(request, *args, **kwargs):
     token = request.GET.get('token', False)
     data = {
-        'randomness': base64.b64encode(os.urandom(32))
+        'randomness': base64.b64encode(os.urandom(32)).decode()
     }
     if token:
-        data['token'] = unicode(csrf(request)['csrf_token'])
+        data['token'] = str(csrf(request)['csrf_token'])
     return JsonResponse(data)

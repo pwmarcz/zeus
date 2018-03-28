@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import pytest
 from zeus.utils import decalize, undecalize
 
@@ -17,8 +17,8 @@ def random_strings(n):
     random.seed(42)
     alphabet = 'abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPQRSTUVWXYZ23456789'
     return [
-        ''.join(random.choice(alphabet) for j in xrange(12))
-        for i in xrange(n)
+        ''.join(random.choice(alphabet) for j in range(12))
+        for i in range(n)
     ]
 
 

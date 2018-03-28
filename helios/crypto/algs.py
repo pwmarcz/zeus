@@ -7,8 +7,7 @@ Ben Adida
 ben@adida.net
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
+
 import math
 import hashlib
 import logging
@@ -321,7 +320,7 @@ class EGSecretKey:
 
         sk = cls()
         sk.x = int(d['x'])
-        if d.has_key('public_key'):
+        if 'public_key' in d:
             sk.pk = EGPublicKey.from_dict(d['public_key'])
         else:
             sk.pk = None

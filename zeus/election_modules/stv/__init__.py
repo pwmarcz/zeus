@@ -1,7 +1,7 @@
-from __future__ import absolute_import
+
 import json
 import logging
-import StringIO
+import io
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
@@ -71,7 +71,7 @@ class StvElection(ElectionModuleBase):
                     answer_index = lambda a: int(a[0].replace('answer_', ''))
                     isanswer = lambda a: a[0].startswith('answer_')
 
-                    answer_values = filter(isanswer, question.iteritems())
+                    answer_values = list(filter(isanswer, iter(question.items())))
                     sorted_answers = sorted(answer_values, key=answer_index)
 
                     answers = [json.loads(x[1])[0] for x in sorted_answers]
@@ -81,7 +81,7 @@ class StvElection(ElectionModuleBase):
                     for a,d in zip(answers, departments):
                         final_answers.append(a+':'+d)
                     question['answers'] = final_answers
-                    for k in question.keys():
+                    for k in list(question.keys()):
                         if k in ['DELETE', 'ORDER']:
                             del question[k]
 
@@ -143,7 +143,7 @@ class StvElection(ElectionModuleBase):
             ]
         from zeus.results_report import build_stv_doc
         results_json = self.poll.zeus.get_results()
-        build_stv_doc(_(u'Results'), self.election.name,
+        build_stv_doc(_('Results'), self.election.name,
                     self.election.institution.name,
                     self.election.voting_starts_at, self.election.voting_ends_at,
                     self.election.voting_extended_until,
@@ -159,7 +159,7 @@ class StvElection(ElectionModuleBase):
         for poll in self.election.polls.filter():
             polls_data.append((poll.name, poll.zeus.get_results(), poll.questions, poll.voters.all()))
 
-        build_stv_doc(_(u'Results'), self.election.name,
+        build_stv_doc(_('Results'), self.election.name,
             self.election.institution.name,
             self.election.voting_starts_at, self.election.voting_ends_at,
             self.election.voting_extended_until,
@@ -201,7 +201,7 @@ class StvElection(ElectionModuleBase):
             ballot = [str(i) for i in ballot]
             ballots.append(Ballot(ballot))
 
-        stv_stream = StringIO.StringIO()
+        stv_stream = io.StringIO()
         stv_logger = logging.Logger(self.poll.uuid)
         handler = logging.StreamHandler(stv_stream)
         stv_logger.addHandler(handler)

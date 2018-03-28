@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import re
 
 from base64 import b64decode
@@ -312,7 +312,7 @@ def get_users_from_request(request):
     user, admin, trustee, voter = None, None, None, None
 
     # identify user and admin
-    if session.has_key(USER_SESSION_KEY):
+    if USER_SESSION_KEY in session:
         user = request.session[USER_SESSION_KEY]
         try:
             user = User.objects.get(pk=user)
@@ -322,7 +322,7 @@ def get_users_from_request(request):
             pass
 
     # idenitfy voter
-    if session.has_key(VOTER_SESSION_KEY):
+    if VOTER_SESSION_KEY in session:
         voter = request.session[VOTER_SESSION_KEY]
 
         try:
@@ -371,7 +371,7 @@ def get_users_from_request(request):
         admin = None
 
     # cleanup duplicate logins
-    if len(filter(lambda x:bool(x), [voter, trustee, admin])) > 1:
+    if len([x for x in [voter, trustee, admin] if bool(x)]) > 1:
         if voter:
             if trustee:
                 del session[TRUSTEE_SESSION_KEY]
@@ -385,7 +385,7 @@ def get_users_from_request(request):
 
 def allow_manager_access(func):
     func._allow_manager = True
-    func.func_globals['foo'] = 'bar'
+    func.__globals__['foo'] = 'bar'
     return func
 
 def make_shibboleth_login_url(endpoint):

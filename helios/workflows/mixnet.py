@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from hashlib import sha256
 
 from helios.workflows.homomorphic import Tally as HomomorphicTally
@@ -42,7 +42,7 @@ class Tally(HomomorphicTally):
         return "phoebus/Tally"
 
     def get_encrypted_votes(self):
-        return filter(bool, [v.vote for v in self.election.voter_set.all()])
+        return list(filter(bool, [v.vote for v in self.election.voter_set.all()]))
 
     def decryption_factors_and_proofs(self, sk):
         """

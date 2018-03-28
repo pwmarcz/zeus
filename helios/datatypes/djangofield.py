@@ -6,7 +6,7 @@ http://www.djangosnippets.org/snippets/377/
 and adapted to LDObject
 """
 
-from __future__ import absolute_import
+
 import json
 from django.db import models
 
@@ -31,7 +31,7 @@ class LDObjectField(models.TextField):
         """Convert our string value to LDObject after we load it from the DB"""
 
         # did we already convert this?
-        if not isinstance(value, basestring):
+        if not isinstance(value, str):
             return value
 
         if  value == None:
@@ -39,7 +39,7 @@ class LDObjectField(models.TextField):
 
         # in some cases, we're loading an existing array or dict,
         # we skip this part but instantiate the LD object
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             try:
                 parsed_value = json.loads(value)
             except:
@@ -56,7 +56,7 @@ class LDObjectField(models.TextField):
 
     def get_prep_value(self, value, *args, **kwargs):
         """Convert our JSON object to a string before we save"""
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return value
 
         if value == None:

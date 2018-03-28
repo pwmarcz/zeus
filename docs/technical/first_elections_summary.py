@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import json
 import sys
 
@@ -40,7 +40,7 @@ with open(sys.argv[1], 'r') as elections_file:
 voters_count = []
 voters_cast_count = []
 
-for key, election in elections_json.iteritems():
+for key, election in elections_json.items():
     if key not in to_keep:
         continue
     voters = election['election']['voters_count']

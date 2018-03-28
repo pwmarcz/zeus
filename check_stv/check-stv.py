@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import argparse
 import json
 import itertools
@@ -97,12 +97,12 @@ if __name__ == "__main__":
     same_candidates_elected = True
     same_rounds_of_election = True
     same_votes_on_round = True
-    for item,item1 in itertools.izip(ecounting_results, local_results):
+    for item,item1 in zip(ecounting_results, local_results):
         if item[0] != item1[0]:
             same_candidates_elected = False
         if item[1] != item1[1]:
             same_rounds_of_election = False
-        for rounds, rounds1 in itertools.izip(ecounting_results,local_results):
+        for rounds, rounds1 in zip(ecounting_results,local_results):
             if rounds[0] != rounds1[0] and rounds[1] != rounds1[1]:
                 same_votes_on_round = False
 

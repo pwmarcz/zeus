@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import re
 
 class STVParser(object):
@@ -30,7 +30,7 @@ class STVParser(object):
 
     def _norm_random(self, data):
         data = list(data[0])
-        data[1] = map(int, re.findall(r'(?:\'([0-9]+)\')+', data[1]))
+        data[1] = list(map(int, re.findall(r'(?:\'([0-9]+)\')+', data[1])))
         return int(data[0]), data[1], data[2]
 
     def _norm_eliminate(self, data):

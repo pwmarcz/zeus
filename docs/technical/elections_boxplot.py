@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import json
 import sys
 
@@ -12,7 +12,7 @@ with open(sys.argv[1], 'r') as elections_file:
 voters_count = []
 voters_cast_count = []
 
-for election in elections_json.items():
+for election in list(elections_json.items()):
     voters = election[1]['election']['voters_count']
     cast = election[1]['election']['voters_cast_count']
     voters_count.append(voters)

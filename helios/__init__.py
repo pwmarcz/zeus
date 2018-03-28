@@ -1,5 +1,5 @@
 
-from __future__ import absolute_import
+
 from django.conf import settings
 
 TEMPLATE_BASE = settings.HELIOS_TEMPLATE_BASE or "helios/templates/base.html"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
 from django.utils import translation
@@ -149,13 +149,13 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             '/account_administration/user_management/'
             )
         messages = get_messages_from_response(r)
-        error_message = messages[0].decode('utf-8')
+        error_message = messages[0]
         active_lang = translation.get_language()
         if active_lang == 'el':
             asrt_message = "Δεν επιλέχθηκε χρήστης"
         elif active_lang == 'en':
             asrt_message = "You didn't choose a user"
-        asrt_message = asrt_message.decode('utf-8')
+        asrt_message = asrt_message
         assert error_message == \
             asrt_message
         r = self.c.get(
@@ -163,7 +163,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             '?uid=765'
             )
         messages = get_messages_from_response(r)
-        error_message = messages[0].decode('utf-8')
+        error_message = messages[0]
         assert error_message == \
             asrt_message
 
@@ -191,7 +191,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message = "Παρακαλούμε επιβεβαιώστε την επανέκδοση"
         elif active_lang == 'en':
             asrt_message = "Please confirm the password reset"
-        asrt_message = asrt_message.decode('utf-8')
         self.assertContains(
             r,
             asrt_message
@@ -208,7 +207,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message = "Δεν επιλέχθηκε χρήστης"
         elif active_lang == 'en':
             asrt_message = "You didn't choose a user"
-        asrt_message = asrt_message.decode('utf-8')
         self.assertContains(
             r,
             asrt_message
@@ -247,13 +245,12 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             new_pass = u.info['password']
             assert old_pass == new_pass
             messages = get_messages_from_response(r)
-            error_message = messages[0].decode('utf-8')
+            error_message = messages[0]
             active_lang = translation.get_language()
             if active_lang == 'el':
                 asrt_message = "Δεν επιτρέπεται αυτή η ενέργεια"
             elif active_lang == 'en':
                 asrt_message = "You are not authorized to do this"
-            asrt_message = asrt_message.decode('utf-8')
             assert error_message == \
                 asrt_message
 
@@ -266,13 +263,12 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             follow=True,
             )
         messages = get_messages_from_response(r)
-        error_message = messages[0].decode('utf-8')
+        error_message = messages[0]
         active_lang = translation.get_language()
         if active_lang == 'el':
             asrt_message = "Δεν επιλέχθηκε χρήστης"
         elif active_lang == 'en':
             asrt_message = "You didn't choose a user"
-        asrt_message = asrt_message.decode('utf-8')
         assert error_message == \
             asrt_message
 
@@ -394,7 +390,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message = 'Αυτό το πεδίο είναι απαραίτητο.'
         elif active_lang == 'en':
             asrt_message = 'This field is required.'
-        asrt_message = asrt_message.decode('utf-8')
         assert User.objects.all().count() == 3
         self.assertFormError(
             r,
@@ -437,7 +432,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message = ('Το Ίδρυμα δεν υπάρχει')
         elif active_lang == 'en':
             asrt_message = 'Institution does not exist'
-        asrt_message = asrt_message.decode('utf-8')
         self.assertFormError(
             r,
             'form',
@@ -590,7 +584,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             asrt_message = 'Αυτό το πεδίο είναι απαραίτητο.'
         elif active_lang == 'en':
             asrt_message = 'This field is required.'
-        asrt_message = asrt_message.decode('utf-8')
         assert Institution.objects.all().count() == 1
         self.assertFormError(
             r,

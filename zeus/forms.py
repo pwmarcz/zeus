@@ -2,7 +2,7 @@
 """
 Forms for Zeus
 """
-from __future__ import absolute_import
+
 import copy
 import json
 
@@ -20,6 +20,7 @@ from django.forms.models import BaseModelFormSet
 from django.forms.widgets import Select, MultiWidget, TextInput,\
     HiddenInput
 from django.forms.formsets import BaseFormSet
+from django.http import QueryDict
 
 from helios.models import Election, Poll, Voter
 from heliosauth.models import User
@@ -135,8 +136,7 @@ class ElectionForm(forms.ModelForm):
         eligible_types = owner.eligible_election_types
         if not self.creating and self.instance:
             eligible_types.add(self.instance.election_module)
-        eligible_types_choices = filter(lambda x: x[0] in eligible_types,
-                                        ELECTION_MODULES_CHOICES)
+        eligible_types_choices = [x for x in ELECTION_MODULES_CHOICES if x[0] in eligible_types]
 
         self.fields['election_module'].choices = eligible_types_choices
         if 'election_module' in self.data:
@@ -148,7 +148,7 @@ class ElectionForm(forms.ModelForm):
             self.fields.get('remote_mixes').initial = \
                 bool(self.instance.mix_key)
 
-        for field, features in self.FIELD_REQUIRED_FEATURES.iteritems():
+        for field, features in self.FIELD_REQUIRED_FEATURES.items():
             editable = all([self.instance.check_feature(f) for \
                             f in features])
 
@@ -166,7 +166,7 @@ class ElectionForm(forms.ModelForm):
         self.clean_voting_dates(data.get('voting_starts_at'),
                                 data.get('voting_ends_at'),
                                 data.get('voting_extended_until'))
-        for field, features in self.FIELD_REQUIRED_FEATURES.iteritems():
+        for field, features in self.FIELD_REQUIRED_FEATURES.items():
             if not self.instance.pk:
                 continue
             editable = all([self.instance.check_feature(f) for \
@@ -245,7 +245,7 @@ class AnswerWidget(forms.TextInput):
 
     def render(self, *args, **kwargs):
         html = super(AnswerWidget, self).render(*args, **kwargs)
-        html = u"""
+        html = """
         <div class="row">
         <div class="columns eleven">
         %s
@@ -280,11 +280,10 @@ class QuestionBaseForm(forms.Form):
             self.fields['choice_type'].widget = forms.HiddenInput()
             self.fields['choice_type'].initial = 'choice'
 
-        answers = len(filter(lambda k: k.startswith("%s-answer_" %
-                                                self.prefix), self.data))
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)])
         if not answers:
-            answers = len(filter(lambda k: k.startswith("answer_") and not "indexes" in k,
-                                 self.initial.keys()))
+            answers = len([k for k in list(self.initial.keys()) if k.startswith("answer_") and not "indexes" in k])
 
         if answers == 0:
             answers = DEFAULT_ANSWERS_COUNT
@@ -315,11 +314,11 @@ class QuestionForm(QuestionBaseForm):
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
-        max_choices = map(lambda x: (x,x), range(1, self.max_limit or answers+1))
-        min_choices = map(lambda x: (x,x), range(0, answers+1 if self.min_limit is None else self.min_limit))
+        max_choices = [(x,x) for x in range(1, self.max_limit or answers+1)]
+        min_choices = [(x,x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
 
         self.fields['max_answers'].choices = max_choices
-        self.fields['max_answers'].initial = min(map(lambda x:x[1], max_choices))
+        self.fields['max_answers'].initial = min([x[1] for x in max_choices])
         self.fields['min_answers'].choices = max_choices
         self.fields['min_answers'].initial = 0
 
@@ -359,8 +358,8 @@ class ScoresForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
         super(ScoresForm, self).__init__(*args, **kwargs)
-        if type(self.data) != dict:
-            myDict = dict(self.data.iterlists())
+        if isinstance(self.data, QueryDict):
+            myDict = dict(self.data.lists())
         else:
             myDict = self.data
 
@@ -370,7 +369,7 @@ class ScoresForm(QuestionBaseForm):
             self._scores_len = len(self.initial['scores'])
         else:
             self._scores_len = SCORES_DEFAULT_LEN
-        max_choices = map(lambda x: (x,x), range(1, self._scores_len + 1))
+        max_choices = [(x,x) for x in range(1, self._scores_len + 1)]
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = self._scores_len
         self.fields['min_answers'].choices = max_choices
@@ -455,11 +454,10 @@ class StvForm(QuestionBaseForm):
         super(StvForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
-        answers = len(filter(lambda k: k.startswith("%s-answer_" %
-                                                self.prefix), self.data)) / 2
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)]) // 2
         if not answers:
-            answers = len(filter(lambda k: k.startswith("answer_"),
-                                 self.initial))
+            answers = len([k for k in self.initial if k.startswith("answer_")])
         if answers == 0:
             answers = DEFAULT_ANSWERS_COUNT
 
@@ -505,8 +503,8 @@ class StvForm(QuestionBaseForm):
     def clean(self):
         from django.forms.utils import ErrorList
         message = _("This field is required.")
-        answers = len(filter(lambda k: k.startswith("%s-answer_" %
-                                                self.prefix), self.data)) / 2
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)]) // 2
         #list used for checking duplicate candidates
         candidates_list = []
 
@@ -647,7 +645,7 @@ class PollForm(forms.ModelForm):
         self.fieldset_fields = []
 
         auth_fields = ['jwt', 'google', 'facebook', 'shibboleth', 'oauth2']
-        for name, field in self.fields.items():
+        for name, field in list(self.fields.items()):
             if name.split("_")[0] in auth_fields:
                 self.fieldsets['auth'][2].append(name)
                 self.fieldset_fields.append(field)
@@ -818,7 +816,7 @@ class EmailVotersForm(forms.Form):
         else:
             choices = copy.copy(CONTACT_CHOICES)
             choices[1] = list(choices[1])
-            choices[1][1] = "%s (%s)" % (unicode(choices[1][1]), _("%d deliveries available") % election.sms_data.left)
+            choices[1][1] = "%s (%s)" % (str(choices[1][1]), _("%d deliveries available") % election.sms_data.left)
             self.fields['contact_method'].choices = choices
 
     def clean(self):
@@ -936,8 +934,8 @@ FirstName, LastName, FatherName, SchoolA<br />
 FirstName, LastName, FatherName, SchoolB<br />
 """)
 
-limit_choices = map(lambda x: (x, str(x)), range(2))
-eligibles_choices = map(lambda x: (x, str(x)), range(1, 20))
+limit_choices = [(x, str(x)) for x in range(2)]
+eligibles_choices = [(x, str(x)) for x in range(1, 20)]
 class STVElectionForm(forms.Form):
     name = forms.CharField(label=_("Election name"), required=True)
     voting_starts = forms.CharField(label=_("Voting start date"), required=True, help_text=_("e.g. 25/01/2015 07:00"))
@@ -972,7 +970,7 @@ class STVElectionForm(forms.Form):
 
     def clean_candidates(self):
         candidates = self.cleaned_data.get('candidates').strip()
-        candidates = map(lambda x: x.strip(), candidates.split("\n"))
+        candidates = [x.strip() for x in candidates.split("\n")]
         for c in candidates:
             if len(c.split(",")) != 4:
                 raise ValidationError(_("Candidate %s is invalid") % c)
@@ -985,8 +983,8 @@ class STVElectionForm(forms.Form):
 
         cs = self.cleaned_data.get('candidates')[:]
         for i, c in enumerate(cs):
-            cs[i] = map(lambda x: x.strip().replace(" ", "-"), c.split(","))
-            cs[i] = u"{} {} {}:{}".format(*cs[i])
+            cs[i] = [x.strip().replace(" ", "-") for x in c.split(",")]
+            cs[i] = "{} {} {}:{}".format(*cs[i])
         return cs
 
     def get_data(self):
@@ -1008,7 +1006,7 @@ class STVElectionForm(forms.Form):
             schools[school].append(entry)
 
         _schools = []
-        for school, cands in schools.iteritems():
+        for school, cands in schools.items():
             _schools.append({'candidates': cands, 'Name': school})
 
         ret['schools'] = _schools

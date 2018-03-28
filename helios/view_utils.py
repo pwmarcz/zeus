@@ -4,7 +4,7 @@ Utilities for all views
 Ben Adida (12-30-2008)
 """
 
-from __future__ import absolute_import
+
 from django.template import loader, TemplateSyntaxError, \
     TemplateDoesNotExist
 from django.http import HttpResponse
@@ -38,7 +38,7 @@ def prepare_vars(request, vars):
 
     session = getattr(request, 'session', {})
     # csrf protection
-    if session.has_key('csrf_token'):
+    if 'csrf_token' in session:
         vars_with_user['csrf_token'] = session['csrf_token']
 
     vars_with_user['utils'] = utils
@@ -50,7 +50,7 @@ def prepare_vars(request, vars):
     #vars_with_user['voter'] = request.session.get('CURRENT_VOTER')
 
     trustee = None
-    if session.has_key('helios_trustee_uuid') and not 'trustee' in vars:
+    if 'helios_trustee_uuid' in session and not 'trustee' in vars:
         try:
             from helios.models import Trustee
             trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))

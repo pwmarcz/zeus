@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
+
 from django.core.management.base import BaseCommand
 
 from helios.models import Poll
@@ -9,7 +8,7 @@ from helios.models import Poll
 from zeus.core import gamma_decode, to_absolute_answers
 
 def strforce(thing):
-    if isinstance(thing, unicode):
+    if isinstance(thing, str):
         return thing.encode('utf-8')
     return str(thing)
 

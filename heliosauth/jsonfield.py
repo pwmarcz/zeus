@@ -4,7 +4,7 @@ taken from
 http://www.djangosnippets.org/snippets/377/
 """
 
-from __future__ import absolute_import
+
 import json
 
 from django.db import models
@@ -54,7 +54,7 @@ class JSONField(models.TextField):
 
     def get_prep_value(self, value, *args, **kwargs):
         """Convert our JSON object to a string before we save"""
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return value
 
         if value == None:

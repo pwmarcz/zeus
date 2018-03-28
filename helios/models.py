@@ -6,13 +6,13 @@ Ben Adida
 (ben@adida.net)
 """
 
-from __future__ import absolute_import
+
 import traceback
 import datetime
 import logging
 import uuid
 import random
-import StringIO
+import io
 import base64
 import zipfile
 import os
@@ -571,7 +571,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
             trustee.save()
 
         if self.trustees.count() != len(trustees):
-            emails = map(lambda t:t[1], trustees)
+            emails = [t[1] for t in trustees]
             for trustee in self.trustees.filter().no_secret():
                 if not trustee.email in emails:
                     self.zeus.invalidate_election_public()
@@ -656,7 +656,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
 
     def save(self, *args, **kwargs):
         if not self.uuid:
-            self.uuid = unicode(uuid.uuid4())
+            self.uuid = str(uuid.uuid4())
         if not self.short_name:
             self.short_name = slughifi(self.name)
             es = Election.objects.filter()
@@ -881,7 +881,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     def get_booth_url(self, request, preview=False):
         url_params = {
-            'token': unicode(csrf(request)['csrf_token']),
+            'token': str(csrf(request)['csrf_token']),
             'poll_url': "%s%s" % (settings.SECURE_URL_HOST,
                                     self.get_absolute_url()),
             'poll_json_url': "%s%s" % (settings.SECURE_URL_HOST,
@@ -1088,7 +1088,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
         new_voter_file = VoterFile(poll=self,
                                    voter_file_content=\
-                                   base64.encodestring(uploaded_file.read()))
+                                   base64.encodestring(uploaded_file.read()).decode())
         new_voter_file.save()
         return new_voter_file
 
@@ -1112,7 +1112,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     def voters_to_csv(self, q_param=None, to=None, include_vote_field=True):
         if not to:
-            to = StringIO.StringIO()
+            to = io.StringIO()
 
         writer = csv.writer(to)
 
@@ -1121,10 +1121,10 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
             voters = self.get_module().filter_voters(voters, q_param)
 
         for voter in voters:
-            vote_field = unicode(_("YES")) if voter.cast_votes.count() else \
-                             unicode(_("NO"))
+            vote_field = str(_("YES")) if voter.cast_votes.count() else \
+                             str(_("NO"))
             if voter.excluded_at:
-                vote_field += unicode(_("(EXCLUDED)"))
+                vote_field += str(_("(EXCLUDED)"))
 
             fields = [voter.voter_login_id,
                                              voter.voter_email,
@@ -1136,7 +1136,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                                              ]
             if include_vote_field:
                 fields.append(vote_field)
-            writer.writerow(map(force_utf8, fields))
+            writer.writerow(list(map(force_utf8, fields)))
         return to
 
     def last_voter_visit(self):
@@ -1285,8 +1285,10 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         zf = zipfile.ZipFile(zip_path, mode='w')
         data_info = zipfile.ZipInfo('%s_proofs.txt' % self.short_name)
         data_info.compress_type = zipfile.ZIP_DEFLATED
-        data_info.comment = "Election %s (%s-%s) zeus proofs" % (self.zeus_fingerprint,
-                                                              self.election.uuid, self.uuid)
+        data_info.comment = (
+            "Election %s (%s-%s) zeus proofs" % (self.zeus_fingerprint,
+                                                 self.election.uuid, self.uuid)
+        ).encode()
         data_info.date_time = datetime.datetime.now().timetuple()
         data_info.external_attr = 0o777 << 16
 
@@ -1350,7 +1352,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         # pdf report
         if self.get_module().module_id =='score':
             from zeus.results_report import build_doc
-            build_doc(_(u'Results'), self.election.name,
+            build_doc(_('Results'), self.election.name,
                       self.election.institution.name,
                       self.election.voting_starts_at, self.election.voting_ends_at,
                       self.election.voting_extended_until,
@@ -1367,7 +1369,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
             from zeus.results_report import build_doc
             results_name = self.election.name
             parties = self.get_module().module_id == 'parties'
-            build_doc(_(u'Results'), self.election.name,
+            build_doc(_('Results'), self.election.name,
                       self.election.institution.name,
                       self.election.voting_starts_at, self.election.voting_ends_at,
                       self.election.voting_extended_until,
@@ -1520,9 +1522,9 @@ class VoterFile(models.Model):
 
     def itervoters(self, email_validator=validate_email, preferred_encoding=None):
         if self.voter_file_content:
-            voter_data = base64.decodestring(self.voter_file_content)
+            voter_data = base64.b64decode(self.voter_file_content.encode())
         else:
-            voter_data = open(self.voter_file.path, "r").read()
+            voter_data = open(self.voter_file.path, "rb").read()
 
         return iter_voter_data(voter_data, email_validator=email_validator,
                                preferred_encoding=preferred_encoding)
@@ -1556,9 +1558,9 @@ class VoterFile(models.Model):
 
         # now we're looking straight at the content
         if self.voter_file_content:
-            voter_data = base64.decodestring(self.voter_file_content)
+            voter_data = base64.decodestring(self.voter_file_content.encode())
         else:
-            voter_data = open(self.voter_file.path, "r").read()
+            voter_data = open(self.voter_file.path, "rb").read()
 
         reader = iter_voter_data(voter_data, preferred_encoding=preferred_encoding)
 
@@ -1623,7 +1625,7 @@ class VoterFile(models.Model):
                     voter.voter_weight = weight
                     voter.save()
 
-                voter_alias_integers = range(last_alias_num+1, last_alias_num+1+num_voters)
+                voter_alias_integers = list(range(last_alias_num+1, last_alias_num+1+num_voters))
                 random.shuffle(voter_alias_integers)
                 for i, voter in enumerate(new_voters):
                     voter.alias = 'V%s' % voter_alias_integers[i]
@@ -1726,7 +1728,7 @@ class Voter(HeliosModel, VoterFeatures):
             ('voter_mobile', 'sms')
         )
         method_enabled = lambda x: x[1] if getattr(self, x[0], None) else None
-        return filter(bool, map(method_enabled, methods_attr_map))
+        return list(filter(bool, list(map(method_enabled, methods_attr_map))))
 
     def voter_email_display(self):
         return self.voter_email or _("No email set")
@@ -1748,7 +1750,7 @@ class Voter(HeliosModel, VoterFeatures):
         # stub the user so code is not full of IF statements
         if not self.user:
             self.user = User(user_type='password', user_id=self.voter_email,
-                             name=u"%s %s" % (self.voter_name, self.voter_surname))
+                             name="%s %s" % (self.voter_name, self.voter_surname))
 
     @property
     def login_code(self):
@@ -1760,13 +1762,13 @@ class Voter(HeliosModel, VoterFeatures):
 
     @property
     def zeus_string(self):
-        return u"%s %s %s %s <%s>" % (self.voter_name, self.voter_surname,
+        return "%s %s %s %s <%s>" % (self.voter_name, self.voter_surname,
                                       self.voter_fathername or '',
                                       self.voter_mobile or '', self.voter_login_id)
 
     @property
     def full_name(self):
-        return u"%s %s %s (%s)" % (self.voter_name, self.voter_surname,
+        return "%s %s %s (%s)" % (self.voter_name, self.voter_surname,
                                    self.voter_fathername or '', self.voter_email)
 
     def init_audit_passwords(self):
@@ -1781,7 +1783,7 @@ class Voter(HeliosModel, VoterFeatures):
         if not self.audit_passwords or not self.audit_passwords.strip():
             return []
 
-        return filter(bool, self.audit_passwords.split("|"))
+        return list(filter(bool, self.audit_passwords.split("|")))
 
     def get_quick_login_url(self):
         url = reverse('election_poll_voter_booth_login', kwargs={
@@ -2096,7 +2098,7 @@ class AuditedBallot(models.Model):
         else:
             selection = gamma_decode(encoded, nr_answers)
             choices = to_absolute_answers(selection, nr_answers)
-        return map(lambda x:answers[x], choices)
+        return [answers[x] for x in choices]
 
     @classmethod
     def get(cls, election, vote_hash):
@@ -2226,7 +2228,7 @@ class Trustee(HeliosModel, TrusteeFeatures):
         return url
 
     def pending_partial_decryptions(self):
-        return filter(lambda p: p[1] is None, self.get_partial_decryptions)
+        return [p for p in self.get_partial_decryptions if p[1] is None]
 
     def get_step(self):
         """
@@ -2240,9 +2242,9 @@ class Trustee(HeliosModel, TrusteeFeatures):
             return 3
         return 1
 
-    STEP_TEXTS = [_(u'Create trustee key'),
-                  _(u'Verify trustee key'),
-                  _(u'Partially decrypt votes')]
+    STEP_TEXTS = [_('Create trustee key'),
+                  _('Verify trustee key'),
+                  _('Partially decrypt votes')]
 
     def send_url_via_mail(self, msg=''):
         """

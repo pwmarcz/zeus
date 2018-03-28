@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import copy
 import json
 import os
@@ -63,9 +63,9 @@ class ElectionModuleBase(ElectionHooks):
 
     default_messages = {
         'description': _('Simple election with one or more questions'),
-        'questions_title': _(u'Ballot'),
-        'question_title': _(u'Question'),
-        'answer_title': _(u'Answer'),
+        'questions_title': _('Ballot'),
+        'question_title': _('Question'),
+        'answer_title': _('Answer'),
         'questions_view': 'helios.views.one_election_questions',
         'questions_empty_issue': _("Add questions to the election"),
         'max_limit_error': _("Too many choices"),
@@ -221,7 +221,7 @@ class ElectionModuleBase(ElectionHooks):
         score = self.election.election_module == "score"
         parties = self.election.election_module == "parties"
         poll = self.poll
-        build_doc(_(u'Results'), self.election.name,
+        build_doc(_('Results'), self.election.name,
                       self.election.institution.name,
                       self.election.voting_starts_at, self.election.voting_ends_at,
                       self.election.voting_extended_until,
@@ -248,7 +248,7 @@ class ElectionModuleBase(ElectionHooks):
                                poll.questions[0]['answers'],
                                poll.voters.all()))
 
-        build_doc(_(u'Results'), self.election.name, self.election.institution.name,
+        build_doc(_('Results'), self.election.name, self.election.institution.name,
                 self.election.voting_starts_at, self.election.voting_ends_at,
                 self.election.voting_extended_until,
                 polls_data,

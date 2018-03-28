@@ -1,7 +1,7 @@
 """
 """
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import yaml
 import uuid
 
@@ -12,12 +12,8 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter, iter_voter_data
 
-from StringIO import StringIO
+from io import StringIO
 import os
-
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 UPDATE = os.environ.get('UPDATE_EXISTING', 0)
@@ -60,7 +56,7 @@ class Command(BaseCommand):
         updated = 0
         for poll_data in data:
             poll = election.polls.get(uuid=poll_data.get('uuid'))
-            voter_data = u'\n'.join(poll_data.get('voters'))
+            voter_data = '\n'.join(poll_data.get('voters'))
             voters = iter_voter_data(StringIO(voter_data))
             ids = []
             for voter_data in voters:
@@ -88,7 +84,7 @@ class Command(BaseCommand):
                     voter.generate_password()
                     voter.save()
                     add += 1
-                    print(u"New voter added {}".format(voter.voter_email))
+                    print("New voter added {}".format(voter.voter_email))
                 else:
                     if UPDATE:
                         validate_voter(voter.voter_mobile, voter.voter_email)
@@ -96,12 +92,12 @@ class Command(BaseCommand):
                         voter.save()
                     else:
                         skip += 1
-                        print(u"Skip import of existing voter {}".format(voter.voter_email))
+                        print("Skip import of existing voter {}".format(voter.voter_email))
 
             existing = poll.voters.all()
             stray = 0
             for voter in existing.exclude(voter_login_id__in=ids):
                 stray += 1
-                print(u"Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email))
+                print("Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email))
 
         print("Found: {}  New: {}  Existing: {}  Updated: {}  Stray: {}".format(voters_count, add, skip, updated, stray))

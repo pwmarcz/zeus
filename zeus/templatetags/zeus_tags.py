@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import json
 import six.moves.urllib.request
 import six.moves.urllib.parse
@@ -29,7 +29,7 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
     if inline:
         form_cls += " inline"
 
-    confirm_msg = unicode(confirm_msg)
+    confirm_msg = str(confirm_msg)
     confirm_msg = Template(confirm_msg).render(context)
     confirm_msg = confirm_msg.replace('\n', ' ');
 
@@ -46,9 +46,9 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
 
     csrf_token = ""
     if 'csrf_token' in context:
-        csrf_token = u"""<input type="hidden" """ + \
-                     u"""value="%s" """ % unicode(context['csrf_token']) + \
-                     u"""name="csrfmiddlewaretoken" />"""
+        csrf_token = """<input type="hidden" """ + \
+                     """value="%s" """ % str(context['csrf_token']) + \
+                     """name="csrfmiddlewaretoken" />"""
     if "nocsrf" in cls:
         csrf_token = ""
 
@@ -162,7 +162,7 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
     if icon == "remove" and cls == "":
         cls += " alert"
 
-    confirm_msg = unicode(confirm_msg)
+    confirm_msg = str(confirm_msg)
     confirm_msg = Template(confirm_msg).render(context)
     confirm_msg = confirm_msg.replace('\n', ' ')
 
@@ -176,9 +176,9 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
 
     csrf_token = ""
     if 'csrf_token' in context:
-        csrf_token = u"""<input type="hidden" """ + \
-                     u"""value="%s" """ % unicode(context['csrf_token']) + \
-                     u"""name="csrfmiddlewaretoken" />"""
+        csrf_token = """<input type="hidden" """ + \
+                     """value="%s" """ % str(context['csrf_token']) + \
+                     """name="csrfmiddlewaretoken" />"""
     if "nocsrf" in cls:
         csrf_token = ""
 
@@ -287,7 +287,7 @@ def complete_get_parameters(context, GET, new_order,
     filter_param = ''
     q = GET.get('q', None)
     if q:
-        if isinstance(q, unicode):
+        if isinstance(q, str):
             q = q.encode('utf8')
         filter_param = '&q=%s' % six.moves.urllib.parse.quote_plus(q)
     params = '%s%s%s' % (page_param, order_param, filter_param)

@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import json
 import sys
 
@@ -79,10 +79,10 @@ with open(sys.argv[1], 'r') as elections_file:
 voters_count = []
 voters_cast_count = []
 
-elections_to_keep = dict((k, v) for k, v in elections_json.iteritems()
+elections_to_keep = dict((k, v) for k, v in elections_json.items()
                          if k in to_keep)
 
-elections_to_discard = dict((k, v) for k, v in elections_json.iteritems()
+elections_to_discard = dict((k, v) for k, v in elections_json.items()
                             if k not in to_keep)
 
 elections_lost = set(k for k in to_keep if k not in elections_json)
@@ -91,7 +91,7 @@ print("Lost:", elections_lost)
 print("To keep: ", len(elections_to_keep))
 print("To discard: ", len(elections_to_discard))
 
-for election in sorted(elections_to_keep.items(), key=order_elections_key):
+for election in sorted(list(elections_to_keep.items()), key=order_elections_key):
     voters = election[1]['election']['voters_count']
     cast = election[1]['election']['voters_cast_count']
     voters_count.append(voters)
@@ -101,7 +101,7 @@ print("Total voters", sum(voters_count))
 print("Total voted", sum(voters_cast_count))
 
 ind = np.arange(len(voters_count))
-xvals = range(len(voters_count))
+xvals = list(range(len(voters_count)))
 margin = 0
 width = 0.35
 

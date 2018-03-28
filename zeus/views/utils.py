@@ -7,4 +7,4 @@ def set_menu(menu, ctx):
 def common_json_handler(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
-    return unicode(obj)
+    return str(obj)

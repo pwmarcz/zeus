@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import absolute_import
+
 from zeus.core import gamma_decode, to_absolute_answers
 
 def extract_publishables(zeus_finished):

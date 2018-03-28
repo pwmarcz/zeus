@@ -7,7 +7,7 @@ Ben Adida
 (ben@adida.net)
 """
 
-from __future__ import absolute_import
+
 from django.db import models
 from .jsonfield import JSONField
 from helios.fields import SeparatedValuesField
@@ -22,11 +22,11 @@ class AuthenticationExpired(Exception):
 
 def default_election_types_modules():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
-    return map(lambda s: s[0], ELECTION_MODULES_CHOICES)
+    return [s[0] for s in ELECTION_MODULES_CHOICES]
 
 def election_types_choices():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
-    return map(lambda s: (s[0], s[0]), ELECTION_MODULES_CHOICES)
+    return [(s[0], s[0]) for s in ELECTION_MODULES_CHOICES]
 
 
 class UserGroup(models.Model):
@@ -41,7 +41,7 @@ class UserGroup(models.Model):
     def users_count_display(self):
         return self.user_set.count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -63,7 +63,7 @@ class SMSBackendData(models.Model):
 
     @property
     def display(self):
-        return u"%s [%d/%d/%d]" % \
+        return "%s [%d/%d/%d]" % \
             (self.credentials, self.sent, self.limit, self.left)
 
 class User(models.Model):
@@ -101,7 +101,7 @@ class User(models.Model):
 
     @property
     def groups_display(self):
-        return ",".join(map(lambda g: g.name, self.user_groups.filter()))
+        return ",".join([g.name for g in self.user_groups.filter()])
 
     @property
     def election(self):
@@ -131,7 +131,7 @@ class User(models.Model):
 
         if not created_p:
             # special case the password: don't replace it if it exists
-            if obj.info.has_key('password'):
+            if 'password' in obj.info:
                 info['password'] = obj.info['password']
 
             obj.info = info
@@ -145,7 +145,7 @@ class User(models.Model):
         return self._is_authenticated == True
 
     def can_update_status(self):
-        if not AUTH_SYSTEMS.has_key(self.user_type):
+        if self.user_type not in AUTH_SYSTEMS:
             return False
 
         return AUTH_SYSTEMS[self.user_type].STATUS_UPDATES
@@ -157,18 +157,18 @@ class User(models.Model):
         return AUTH_SYSTEMS[self.user_type].STATUS_UPDATE_WORDING_TEMPLATE
 
     def update_status(self, status):
-        if AUTH_SYSTEMS.has_key(self.user_type):
+        if self.user_type in AUTH_SYSTEMS:
             AUTH_SYSTEMS[self.user_type].update_status(self.user_id, self.info, self.token, status)
 
     def send_message(self, subject, body, attachments=[]):
-        if AUTH_SYSTEMS.has_key(self.user_type):
+        if self.user_type in AUTH_SYSTEMS:
             subject = subject.split("\n")[0]
             AUTH_SYSTEMS[self.user_type].send_message(self.user_id, self.name,
                                                       self.info, subject, body,
                                                       attachments=attachments)
 
     def send_notification(self, message):
-        if AUTH_SYSTEMS.has_key(self.user_type):
+        if self.user_type in AUTH_SYSTEMS:
             if hasattr(AUTH_SYSTEMS[self.user_type], 'send_notification'):
                 AUTH_SYSTEMS[self.user_type].send_notification(self.user_id, self.info, message)
 
@@ -183,7 +183,7 @@ class User(models.Model):
             return False
 
         # no constraint? Then eligible!
-        if not eligibility_case.has_key('constraint'):
+        if 'constraint' not in eligibility_case:
             return True
 
         # from here on we know we match the auth system, but do we match one of the constraints?
@@ -213,14 +213,14 @@ class User(models.Model):
         if self.name:
             return self.name
 
-        if self.info.has_key('name'):
+        if 'name' in self.info:
             return self.info['name']
 
         return self.user_id
 
     @property
     def public_url(self):
-        if AUTH_SYSTEMS.has_key(self.user_type):
+        if self.user_type in AUTH_SYSTEMS:
             if hasattr(AUTH_SYSTEMS[self.user_type], 'public_url'):
                 return AUTH_SYSTEMS[self.user_type].public_url(self.user_id)
 

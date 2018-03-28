@@ -1,5 +1,5 @@
 
-from __future__ import absolute_import
+
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
@@ -34,12 +34,12 @@ class SimpleElection(ElectionModuleBase):
             # be placed before answer_2
             answer_index = lambda a: int(a[0].replace('answer_', ''))
             isanswer = lambda a: a[0].startswith('answer_')
-            answer_values = filter(isanswer, question.iteritems())
+            answer_values = list(filter(isanswer, iter(question.items())))
             sorted_answers = sorted(answer_values, key=answer_index)
 
             answers = [x[1] for x in sorted_answers]
             question['answers'] = answers
-            for k in question.keys():
+            for k in list(question.keys()):
                 if k in ['DELETE', 'ORDER']:
                     del question[k]
 

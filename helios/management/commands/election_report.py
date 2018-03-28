@@ -1,6 +1,6 @@
 """
 """
-from __future__ import absolute_import
+
 import json
 
 from django.core.management.base import BaseCommand
@@ -11,9 +11,6 @@ from zeus import reports
 
 import sys
 from collections import OrderedDict
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 def json_handler(obj):

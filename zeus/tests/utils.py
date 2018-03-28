@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import datetime
 
 from django.conf import settings
@@ -113,5 +113,5 @@ def get_election(**kwargs):
 def get_messages_from_response(response):
     messages = []
     for item in response.context['messages']:
-        messages.append(unicode(item))
+        messages.append(str(item))
     return messages

@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from random import SystemRandom
 from heliosauth.models import User
 from zeus.models.zeus_models import Institution
@@ -9,7 +9,7 @@ alphabet = 'abcdefghkmnpqrstuvwxyzABCDEFGHKLMNPQRSTUVWXYZ23456789'
 
 def random_password(size=12, alphabet=alphabet, random=system_random):
     s = ''
-    for i in xrange(size):
+    for i in range(size):
         s += random.choice(alphabet)
     return s
 
