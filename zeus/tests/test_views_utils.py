@@ -18,7 +18,7 @@ def test_common_json_handler():
     assert utils.common_json_handler('somestring') == 'somestring'
 
     class DummyObject(object):
-        def __unicode__(self):
+        def __str__(self):
             return 'a unicode representation'
 
     assert utils.common_json_handler(DummyObject()) == 'a unicode representation'

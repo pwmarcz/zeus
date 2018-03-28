@@ -16,10 +16,10 @@ class TestSTVCountView(TestCase):
 
     def test_subviews(self):
         resp = self.client.get(self.url)
-        assert "Choose a file and press submit" in resp.content
+        assert "Choose a file and press submit" in resp.content.decode()
 
         resp = self.client.get(self.form_url)
-        assert "STV ballot box import form" in resp.content
+        assert "STV ballot box import form" in resp.content.decode()
 
     def test_submit_form(self):
         data = {
@@ -80,9 +80,9 @@ class TestSTVCountView(TestCase):
 
         data['form-0-choice_2'] = '2'
         resp = self.client.post(self.form_url, data, follow=True)
-        assert "Ballot counting is completed" in resp.content
-        assert "download=pdf" in resp.content
-        assert "download=json" in resp.content
+        assert "Ballot counting is completed" in resp.content.decode()
+        assert "download=pdf" in resp.content.decode()
+        assert "download=json" in resp.content.decode()
 
         json_data = self.client.get(self.url + "?download=json").content
         data = json.loads(json_data, encoding='utf8')

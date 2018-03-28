@@ -89,7 +89,6 @@ class UniGovGrResults():
             zeus_results = poll.zeus.get_results()
             counts = zeus_results['candidate_counts']
             for count, choice in counts:
-                choice = choice.decode('utf8')
                 question, answer = choice.split(': ', 1)
                 group['counts'][question][answer] = count
             group['voted'] = zeus_results['ballot_count']
