@@ -1796,7 +1796,7 @@ class Voter(HeliosModel, VoterFeatures):
             'poll_uuid': self.poll.uuid,
             'voter_uuid': self.uuid,
             'voter_secret': self.voter_password
-        });
+        })
         return settings.URL_HOST + url
 
     def check_audit_password(self, password):

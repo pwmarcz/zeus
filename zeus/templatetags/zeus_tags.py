@@ -31,7 +31,7 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
 
     confirm_msg = str(confirm_msg)
     confirm_msg = Template(confirm_msg).render(context)
-    confirm_msg = confirm_msg.replace('\n', ' ');
+    confirm_msg = confirm_msg.replace('\n', ' ')
 
     confirm_code = """onsubmit="return confirm('%s');" """ % confirm_msg
     if "noconfirm" in cls:

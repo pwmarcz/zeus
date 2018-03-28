@@ -285,12 +285,12 @@ class Ciphertext:
         proof.commitment['B'] = pow(self.pk.y, w, self.pk.p)
 
         # generate challenge
-        proof.challenge = challenge_generator(proof.commitment);
+        proof.challenge = challenge_generator(proof.commitment)
 
         # Compute response = w + randomness * challenge
-        proof.response = (w + (randomness * proof.challenge)) % self.pk.q;
+        proof.response = (w + (randomness * proof.challenge)) % self.pk.q
 
-        return proof;
+        return proof
 
     def simulate_encryption_proof(self, plaintext, challenge=None):
         # generate a random challenge if not provided
@@ -304,7 +304,7 @@ class Ciphertext:
         beta_over_plaintext = (self.beta * Utils.inverse(plaintext.m, self.pk.p)) % self.pk.p
 
         # random response, does not even need to depend on the challenge
-        proof.response = Utils.random_mpz_lt(self.pk.q);
+        proof.response = Utils.random_mpz_lt(self.pk.q)
 
         # now we compute A and B
         proof.commitment['A'] = (Utils.inverse(pow(self.alpha, proof.challenge, self.pk.p), self.pk.p) * pow(self.pk.g, proof.response, self.pk.p)) % self.pk.p
@@ -330,7 +330,7 @@ class Ciphertext:
 
             # get the commitments in a list and generate the whole disjunctive challenge
             commitments = [p.commitment for p in proofs]
-            disjunctive_challenge = challenge_generator(commitments);
+            disjunctive_challenge = challenge_generator(commitments)
 
             # now we must subtract all of the other challenges from this challenge.
             real_challenge = disjunctive_challenge
