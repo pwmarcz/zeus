@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "563846852d4d7baf2e3cbd438a1591ee8f58a9ce74495611b68ae9ca6bac6e33"
+            "sha256": "9401047613984f2d4e216f3e10357dc0dc929b2b4e91c370ac65f3b35a3bd01e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -80,12 +80,11 @@
         },
         "ipython": {
             "hashes": [
-                "sha256:185ef2093dbac6d7250fe9ed4d4dd0f18f10d0a6ac6169f3eeb2ff0663d96b92",
-                "sha256:578e2f3d779ed130a3cfefc09b2eb965a81457f6a31a25cd38e0bab622d4777d",
-                "sha256:66469e894d1f09d14a1f23b971a410af131daa9ad2a19922082e02e0ddfd150f"
+                "sha256:51c158a6c8b899898d1c91c6b51a34110196815cc905f9be0fa5878e19355608",
+                "sha256:fcc6d46f08c3c4de7b15ae1c426e15be1b7932bcda9d83ce1a4304e8c1129df3"
             ],
             "index": "pypi",
-            "version": "==5.5.0"
+            "version": "==6.2.1"
         },
         "ipython-genutils": {
             "hashes": [
@@ -94,12 +93,26 @@
             ],
             "version": "==0.2.0"
         },
+        "jedi": {
+            "hashes": [
+                "sha256:d6e799d04d1ade9459ed0f20de47c32f2285438956a677d083d3c98def59fa97",
+                "sha256:d795f2c2e659f5ea39a839e5230d70a0b045d0daee7ca2403568d8f348d0ad89"
+            ],
+            "version": "==0.11.1"
+        },
         "kombu": {
             "hashes": [
                 "sha256:01f0da9fe222a2183345004243d1518c0fbe5875955f1b24842f2d9c65709ade",
                 "sha256:4249d9dd9dbf1fcec471d1c2def20653c9310dd1a217272d77e4844f9d5273cb"
             ],
             "version": "==4.1.0"
+        },
+        "parso": {
+            "hashes": [
+                "sha256:5815f3fe254e5665f3c5d6f54f086c2502035cb631a91341591b5a564203cffb",
+                "sha256:a7bb86fe0844304869d1c08e8bd0e52be931228483025c422917411ab82d628a"
+            ],
+            "version": "==0.1.1"
         },
         "pexpect": {
             "hashes": [

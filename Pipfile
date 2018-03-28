@@ -13,10 +13,9 @@ pycryptodome = "*"
 reportlab = "*"
 pyyaml = "*"
 uwsgi = "*"
-ipython = ">=5,<6"
+ipython = "*"
 
 [dev-packages]
-# selenium = "==2.25.0"
 codecov = "*"
 pytest = "*"
 pytest-cov = "*"
