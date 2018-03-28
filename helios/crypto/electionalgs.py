@@ -39,7 +39,7 @@ class HeliosObject(object):
     def set_from_other_object(self, o):
         for f in self.FIELDS:
             if hasattr(o, f):
-                setattr(self, f, self.process_value_in(f, getattr(o,f)))
+                setattr(self, f, self.process_value_in(f, getattr(o, f)))
             else:
                 setattr(self, f, None)
 
@@ -73,7 +73,7 @@ class HeliosObject(object):
             if hasattr(o, f):
                 # BIG HAMMER
                 try:
-                    setattr(o, f, self.process_value_out(f, getattr(self,f)))
+                    setattr(o, f, self.process_value_out(f, getattr(self, f)))
                 except:
                     pass
 
@@ -116,9 +116,10 @@ class HeliosObject(object):
 
     def __eq__(self, other):
         if not hasattr(self, 'uuid'):
-            return super(HeliosObject,self) == other
+            return super(HeliosObject, self) == other
 
         return other != None and self.uuid == other.uuid
+
 
 class EncryptedAnswer(HeliosObject):
     """
@@ -232,13 +233,14 @@ def one_question_winner(question, result, num_cast_votes):
 
     # if max = 1, then depends on absolute or relative
     if question['result_type'] == 'absolute':
-        if counts[0][1] >=  (num_cast_votes//2 + 1):
+        if counts[0][1] >= (num_cast_votes//2 + 1):
             return [counts[0][0]]
         else:
             return []
 
     if question['result_type'] == 'relative':
         return [counts[0][0]]
+
 
 class Election(HeliosObject):
 
@@ -330,7 +332,7 @@ class Voter(HeliosObject):
         if self.alias != None:
             return super(Voter, self).toJSONDict(self.ALIASED_VOTER_JSON_FIELDS)
         else:
-            return super(Voter,self).toJSONDict()
+            return super(Voter, self).toJSONDict()
 
     @property
     def voter_id_hash(self):
@@ -340,6 +342,7 @@ class Voter(HeliosObject):
             return utils.hash_b64(self.voter_login_id)
         else:
             return utils.hash_b64(self.voter_id)
+
 
 class Trustee(HeliosObject):
     """
@@ -357,6 +360,7 @@ class Trustee(HeliosObject):
     def _process_value_out(self, field_name, field_value):
         if field_name == 'public_key' or field_name == 'pok':
             return field_value.toJSONDict()
+
 
 class CastVote(HeliosObject):
     """
@@ -376,7 +380,7 @@ class CastVote(HeliosObject):
         return o
 
     def toJSONDict(self, include_vote=True):
-        result = super(CastVote,self).toJSONDict()
+        result = super(CastVote, self).toJSONDict()
         if not include_vote:
             del result['vote']
         return result
@@ -415,6 +419,7 @@ class CastVote(HeliosObject):
             issues.append("the vote's election UUID does not match the election for which this vote is being cast")
 
         return issues
+
 
 class DLogTable(object):
     """
@@ -461,7 +466,7 @@ class Tally(HeliosObject):
     def __init__(self, *args, **kwargs):
         super(Tally, self).__init__(*args, **kwargs)
 
-        self.election = kwargs.get('election',None)
+        self.election = kwargs.get('election', None)
 
         if self.election:
             self.init_election(self.election)
@@ -602,7 +607,7 @@ class Tally(HeliosObject):
         """
 
         # pre-compute a dlog table
-        dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
+        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
         dlog_table.precompute(self.num_tallied)
 
         result = []

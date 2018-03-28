@@ -6,6 +6,7 @@ from zeus.models import Institution
 
 import getpass
 
+
 class Command(BaseCommand):
     args = '<username>'
     help = 'Create a non ecounting elections admin user'

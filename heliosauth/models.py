@@ -16,6 +16,8 @@ from helios.fields import SeparatedValuesField
 from .auth_systems import AUTH_SYSTEMS
 
 # an exception to catch when a user is no longer authenticated
+
+
 class AuthenticationExpired(Exception):
     pass
 
@@ -23,6 +25,7 @@ class AuthenticationExpired(Exception):
 def default_election_types_modules():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
     return [s[0] for s in ELECTION_MODULES_CHOICES]
+
 
 def election_types_choices():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
@@ -66,6 +69,7 @@ class SMSBackendData(models.Model):
         return "%s [%d/%d/%d]" % \
             (self.credentials, self.sent, self.limit, self.left)
 
+
 class User(models.Model):
     user_type = models.CharField(max_length=50)
     user_id = models.CharField(max_length=100, unique=True)
@@ -78,7 +82,7 @@ class User(models.Model):
     sms_data = models.ForeignKey(SMSBackendData, on_delete=models.CASCADE, null=True, default=None)
 
     # access token information
-    token = JSONField(null = True)
+    token = JSONField(null=True)
 
     @property
     def eligible_election_types(self):
@@ -123,11 +127,11 @@ class User(models.Model):
 
     @classmethod
     def get_by_type_and_id(cls, user_type, user_id):
-        return cls.objects.get(user_type = user_type, user_id = user_id)
+        return cls.objects.get(user_type=user_type, user_id=user_id)
 
     @classmethod
     def update_or_create(cls, user_type, user_id, name=None, info=None, token=None):
-        obj, created_p = cls.objects.get_or_create(user_type = user_type, user_id = user_id, defaults = {'name': name, 'info':info, 'token':token})
+        obj, created_p = cls.objects.get_or_create(user_type=user_type, user_id=user_id, defaults={'name': name, 'info': info, 'token': token})
 
         if not created_p:
             # special case the password: don't replace it if it exists
@@ -142,7 +146,7 @@ class User(models.Model):
         return obj
 
     def is_authenticated(self):
-        return self._is_authenticated == True
+        return bool(self._is_authenticated)
 
     def can_update_status(self):
         if self.user_type not in AUTH_SYSTEMS:
@@ -196,7 +200,7 @@ class User(models.Model):
 
         for constraint in eligibility_case['constraint']:
             # do we match on this constraint?
-            if auth_system.check_constraint(constraint=constraint, user = self):
+            if auth_system.check_constraint(constraint=constraint, user=self):
                 return True
 
         # no luck

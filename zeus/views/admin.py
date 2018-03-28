@@ -165,7 +165,7 @@ def elections_report(request):
         voters_count += election['nr_voters']
         voters_voted_count += election['nr_voters_voted']
 
-    if not voters_count is 0:
+    if voters_count != 0:
         percentage_voted = (voters_voted_count / float(voters_count)) * 100
 
     params = ''

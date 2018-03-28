@@ -70,8 +70,10 @@ to_keep = set([
     "29c50f16-cf47-11e2-8cc9-aa000039f982",
 ])
 
+
 def order_elections_key(e):
     return e[1]['election']['voting_ended_at']
+
 
 with open(sys.argv[1], 'r') as elections_file:
     elections_json = json.load(elections_file)
@@ -108,15 +110,15 @@ width = 0.35
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-registered = ax.bar(margin+ind, voters_count, width, color='c', bottom = 0)
+registered = ax.bar(margin+ind, voters_count, width, color='c', bottom=0)
 voted = ax.bar(margin+ind+width, voters_cast_count, width, color='m',
-               bottom = 0)
+               bottom=0)
 
 ax.set_ylabel('Voters')
 ax.set_title('Elections')
 ax.set_xlim(-0.5, len(voters_count) + 0.5)
 ax.set_xticks([])
-ax.legend((registered[0], voted[0]), ('Registered', 'Turnout') )
+ax.legend((registered[0], voted[0]), ('Registered', 'Turnout'))
 
 # ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter('%d'))
 

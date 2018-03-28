@@ -10,9 +10,11 @@ from django.urls import reverse
 
 OAUTH2_REGISTRY = {}
 
+
 def oauth2_module(cls):
     OAUTH2_REGISTRY[cls.type_id] = cls
     return cls
+
 
 def get_oauth2_module(poll):
     return OAUTH2_REGISTRY.get(poll.oauth2_type)(poll)

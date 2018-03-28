@@ -18,6 +18,7 @@ def force_utf8(s):
 
 random.seed()
 
+
 def random_string(length=20):
     random.seed()
     ALPHABET = 'abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -41,6 +42,7 @@ def one_val_raw_sql(raw_sql, values=[]):
 
     cursor.execute(raw_sql, values)
     return cursor.fetchone()[0]
+
 
 def lock_row(model, pk):
     """

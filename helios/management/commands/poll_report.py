@@ -5,10 +5,12 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Poll
 
+
 def strforce(thing):
     if isinstance(thing, str):
         return thing.encode('utf-8')
     return thing
+
 
 class Command(BaseCommand):
     args = ''
@@ -44,7 +46,7 @@ class Command(BaseCommand):
             output.append(t)
 
         output.sort()
-        output = [(t,) + x + (-c,) for (c,t), x in output]
+        output = [(t,) + x + (-c,) for (c, t), x in output]
 
         for t in output:
             print('|'.join(str(x) for x in t))

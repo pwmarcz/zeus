@@ -49,7 +49,7 @@ class ElectionHooks(object):
 
 class ElectionModuleBase(ElectionHooks):
 
-    module_id =  None
+    module_id = None
     pdf_result = True
     csv_result = True
     json_result = True
@@ -123,26 +123,26 @@ class ElectionModuleBase(ElectionHooks):
         return data
 
     def get_poll_result_file_path(self, name, ext, lang=None):
-        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
+        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',
             os.path.join(settings.MEDIA_ROOT, 'results'))
         election = self.election.short_name
         poll = self.poll.short_name
         if lang:
-            return os.path.join(RESULTS_PATH, '%s-%s-%s-results-%s.%s' % \
+            return os.path.join(RESULTS_PATH, '%s-%s-%s-results-%s.%s' %
                                 (election, poll, name, lang, ext))
         else:
-            return os.path.join(RESULTS_PATH, '%s-%s-%s-results.%s' % \
+            return os.path.join(RESULTS_PATH, '%s-%s-%s-results.%s' %
                                 (election, poll, name, ext))
 
     def get_election_result_file_path(self, name, ext, lang=None):
-        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',\
+        RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH',
             os.path.join(settings.MEDIA_ROOT, 'results'))
         election = self.election.short_name
         if lang:
-            return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' % \
+            return os.path.join(RESULTS_PATH, '%s-%s-results-%s.%s' %
                                 (election, name, lang, ext))
         else:
-            return os.path.join(RESULTS_PATH, '%s-%s-results.%s' % \
+            return os.path.join(RESULTS_PATH, '%s-%s-results.%s' %
                                 (election, name, ext))
 
     def generate_json_file(self):
@@ -165,13 +165,13 @@ class ElectionModuleBase(ElectionHooks):
         csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
         csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
         if self.module_id == "score":
-            csv_from_score_polls(self.election, self.election.polls.all(),\
+            csv_from_score_polls(self.election, self.election.polls.all(),
                 lang[0], csvfile)
         elif self.module_id == "stv":
-            csv_from_stv_polls(self.election, self.election.polls.all(),\
+            csv_from_stv_polls(self.election, self.election.polls.all(),
                                lang[0], csvfile)
         else:
-            csv_from_polls(self.election, self.election.polls.all(),\
+            csv_from_polls(self.election, self.election.polls.all(),
                            lang[0], csvfile)
         csvfile.close()
 
@@ -287,7 +287,7 @@ class ElectionModuleBase(ElectionHooks):
         search = self.get_voters_search_fields(request)
         bool_keys = self.get_voters_bool_keys_map(request)
         extra = self.get_voters_extra_headers(request)
-        filters = get_filters( q_param, headers, search, bool_keys, extra)
+        filters = get_filters(q_param, headers, search, bool_keys, extra)
         return voters.filter(filters)
 
     def can_delete_poll_voters(self):

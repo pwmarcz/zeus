@@ -19,6 +19,7 @@ SAMPLE = '''\
 >TRANSFER from 6 to 7 2*3.5=7.0
 '''
 
+
 def test_parse():
     parser = STVParser(SAMPLE)
     rounds = list(parser.rounds())

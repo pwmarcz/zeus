@@ -105,11 +105,12 @@ def change_password(request):
                            {'form': form,
                             'password_changed': password_changed})
 
+
 @auth.unauthenticated_user_required
 def oauth2_login(request):
     poll_uuid = request.GET.get('state')
     try:
-        poll = Poll.objects.get(uuid = poll_uuid)
+        poll = Poll.objects.get(uuid=poll_uuid)
     except Poll.DoesNotExist:
         return HttpResponseBadRequest(400)
     oauth2 = poll.get_oauth2_module
@@ -277,6 +278,6 @@ def jwt_login(request):
         data.append(voter_link)
         polls_data.append(data)
 
-    context = {'issuer': iss, 'voter_data': voter,  'polls_data': polls_data}
+    context = {'issuer': iss, 'voter_data': voter, 'polls_data': polls_data}
     tpl = 'jwt_polls_list'
     return render_template(request, tpl, context)

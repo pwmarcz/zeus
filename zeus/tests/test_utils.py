@@ -2,6 +2,7 @@
 import pytest
 from zeus.utils import decalize, undecalize
 
+
 @pytest.mark.parametrize(('s', 'dec'), [
     ('', ''),
     (' ', '00'),

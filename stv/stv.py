@@ -44,6 +44,7 @@ logger = logging.getLogger(SVT_LOGGER)
 LOGGER_FORMAT = '%(message)s'
 LOG_MESSAGE = "{action} {desc}"
 
+
 class Action:
     COUNT_ROUND = "@ROUND"
     TRANSFER = ">TRANSFER"
@@ -54,6 +55,7 @@ class Action:
     ZOMBIES = "~ZOMBIES"
     RANDOM = "*RANDOM"
     THRESHOLD = "^THRESHOLD"
+
 
 class Ballot:
     """A ballot class for Single Transferable Voting.
@@ -80,6 +82,7 @@ class Ballot:
 
     def get_value(self):
         return self._value
+
 
 def randomly_select_first(sequence, key, action, random_generator=None,
                           logger=logger):
@@ -167,7 +170,7 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
                 i += 1
     for move, ballots in moves.items():
         times = len(ballots)
-        description =  "from {0} to {1} {2}*{3}={4}".format(move[0],
+        description = "from {0} to {1} {2}*{3}={4}".format(move[0],
                                                             move[1],
                                                             times,
                                                             move[2],
@@ -176,7 +179,8 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
                                         desc=description))
 
     allocated[selected][:] = [x for x in allocated[selected]
-                              if x not in transferred ]
+                              if x not in transferred]
+
 
 def elect_reject(candidate, vote_count, constituencies, quota_limit,
                  current_round, elected, rejected, constituencies_elected,
@@ -215,6 +219,7 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
         logger.info(msg)
         return True
 
+
 def count_description(vote_count, candidates):
     """Returns a string with count results.
 
@@ -222,7 +227,7 @@ def count_description(vote_count, candidates):
     is a candidate and each {1} is the corresponding vote count.
     """
 
-    return  ';'.join(["{0} = {1}".format(x, vote_count[x]) for x in candidates])
+    return ';'.join(["{0} = {1}".format(x, vote_count[x]) for x in candidates])
 
 
 def update_candidate_counts(full_data, current_round, vote_count, hopefuls):
@@ -236,8 +241,8 @@ def update_candidate_counts(full_data, current_round, vote_count, hopefuls):
         candidate_rounds.append([current_round, vote_rounded])
 
 
-def count_stv(ballots, seats, droop = True, constituencies = None,
-              quota_limit = 0, rnd_gen=None, logger=logger):
+def count_stv(ballots, seats, droop=True, constituencies=None,
+              quota_limit=0, rnd_gen=None, logger=logger):
     """Performs a STV vote for the given ballots and number of seats.
 
     If droop is true the election threshold is calculated according to the
@@ -306,14 +311,14 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
         logger.info(LOG_MESSAGE.format(action=Action.COUNT_ROUND,
                                        desc=current_round))
         # Log count
-        description  = count_description(vote_count, hopefuls)
+        description = count_description(vote_count, hopefuls)
 
         # using this for testing
         update_candidate_counts(full_data, current_round, vote_count, hopefuls)
 
         logger.info(LOG_MESSAGE.format(action=Action.COUNT,
                                        desc=description))
-        hopefuls_sorted = sorted(hopefuls, key=vote_count.get, reverse=True )
+        hopefuls_sorted = sorted(hopefuls, key=vote_count.get, reverse=True)
         # If there is a surplus record it so that we can try to
         # redistribute the best candidate's votes according to their
         # next preferences
@@ -327,7 +332,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
                                                    random_generator=rnd_gen,
                                                    logger=logger)
             if best_candidate not in hopefuls:
-                print("Not a valid candidate: ",best_candidate)
+                print("Not a valid candidate: ", best_candidate)
                 sys.exit(1)
             hopefuls.remove(best_candidate)
             was_elected = elect_reject(best_candidate, vote_count,
@@ -374,7 +379,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
     while (seats - num_elected) > 0 and len(eliminated) > 0:
         logger.info(LOG_MESSAGE.format(action=Action.COUNT_ROUND,
                                        desc=current_round))
-        description  = count_description(vote_count, eliminated)
+        description = count_description(vote_count, eliminated)
 
         logger.info(LOG_MESSAGE.format(action=Action.ZOMBIES,
                                        desc=description))
@@ -391,6 +396,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
         num_elected = len(elected)
 
     return elected, vote_count, full_data
+
 
 def main(cmd=None):
     parser = argparse.ArgumentParser(description='Perform STV')
@@ -451,6 +457,7 @@ def main(cmd=None):
                                       logger=logger)
 
     return elected
+
 
 if __name__ == '__main__':
     elected = main()

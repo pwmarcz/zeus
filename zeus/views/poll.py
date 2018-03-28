@@ -55,6 +55,7 @@ def polls_list(request, election):
     set_menu('polls', context)
     return render_template(request, "election_polls_list", context)
 
+
 @transaction.atomic
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
@@ -230,6 +231,7 @@ def _add_batch(request, election):
     url = election_reverse(election, 'polls_list')
     return HttpResponseRedirect(url)
 
+
 @auth.election_admin_required
 @require_http_methods(["POST", "GET"])
 def add_edit(request, election, poll=None):
@@ -260,12 +262,13 @@ def add_edit(request, election, poll=None):
             return redirect(url)
     if request.method == "GET":
         form = PollForm(instance=poll, election=election)
-    context = {'election': election, 'poll': poll,  'form': form}
+    context = {'election': election, 'poll': poll, 'form': form}
     set_menu('polls', context)
     if poll:
         set_menu('edit_poll', context)
     tpl = "election_poll_add_or_edit"
     return render_template(request, tpl, context)
+
 
 @auth.election_admin_required
 @require_http_methods(["POST"])
@@ -313,13 +316,14 @@ voter_bool_keys_map = {
         'excluded': ('excluded_at', 'nullcheck'),
      }
 
+
 @auth.election_admin_required
 @require_http_methods(["GET"])
 def voters_list(request, election, poll):
     # for django pagination support
     page = int(request.GET.get('page', 1))
     limit = int(request.GET.get('limit', 10))
-    q_param = request.GET.get('q','')
+    q_param = request.GET.get('q', '')
 
     default_voters_per_page = getattr(settings, 'ELECTION_VOTERS_PER_PAGE', 100)
     voters_per_page = request.GET.get('limit', default_voters_per_page)
@@ -343,7 +347,7 @@ def voters_list(request, election, poll):
     hash_invalid = None
     hash_valid = None
 
-    if (order_type == 'asc') or (order_type == None) :
+    if (order_type == 'asc') or (order_type == None):
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
     else:
         order_by = '-%s' % order_by
@@ -370,6 +374,7 @@ def voters_list(request, election, poll):
     }
     set_menu('voters', context)
     return render_template(request, 'election_poll_voters_list', context)
+
 
 @auth.election_admin_required
 @auth.requires_poll_features('can_clear_voters')
@@ -400,6 +405,7 @@ ENCODINGS = [('utf-8', _('Unicode')),
              ('iso-8859-7', _('Greek (iso-8859-7)')),
              ('iso-8859-1', _('Latin (iso-8859-1)'))]
 
+
 @auth.election_admin_required
 @auth.requires_poll_features('can_add_voter')
 @require_http_methods(["POST", "GET"])
@@ -423,7 +429,7 @@ def voters_upload(request, election, poll):
         if bool(request.POST.get('confirm_p', 0)):
             # launch the background task to parse that file
             voter_file_id = request.session.get('voter_file_id', None)
-            process_linked  = request.session.get('no_link', False) is False
+            process_linked = request.session.get('no_link', False) is False
             if not voter_file_id:
                 messages.error(request, _("Invalid voter file id"))
                 url = poll_reverse(poll, 'voters')
@@ -433,7 +439,7 @@ def voters_upload(request, election, poll):
                 try:
                     voter_file.process(process_linked,
                                        preferred_encoding=preferred_encoding)
-                except (exceptions.VoterLimitReached, \
+                except (exceptions.VoterLimitReached,
                     exceptions.DuplicateVoterID, ValidationError) as e:
                     messages.error(request, e.message)
                     voter_file.delete()
@@ -516,7 +522,7 @@ def voters_upload(request, election, poll):
     else:
         if 'voter_file_id' in request.session:
             del request.session['voter_file_id']
-        no_link = request.GET.get("no-link", False) != False
+        no_link = bool(request.GET.get("no-link", False))
         request.session['no_link'] = no_link
         return render_template(request,
                                'election_poll_voters_upload',
@@ -528,7 +534,7 @@ def voters_upload(request, election, poll):
 def voters_upload_cancel(request, election, poll):
     voter_file_id = request.session.get('voter_file_id', None)
     if voter_file_id:
-        vf = VoterFile.objects.get(id = voter_file_id)
+        vf = VoterFile.objects.get(id=voter_file_id)
         vf.delete()
     if 'voter_file_id' in request.session:
         del request.session['voter_file_id']
@@ -598,14 +604,14 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         })
 
     tpl_context = {
-            'election' : election,
-            'election_url' : election_url,
-            'custom_subject' : default_subject,
+            'election': election,
+            'election_url': election_url,
+            'custom_subject': default_subject,
             'custom_message': '&lt;BODY&gt;',
             'custom_message_sms': '&lt;SMS_BODY&gt;',
             'SECURE_URL_HOST': settings.SECURE_URL_HOST,
             'voter': {
-                'vote_hash' : '<SMART_TRACKER>',
+                'vote_hash': '<SMART_TRACKER>',
                 'name': '<VOTER_NAME>',
                 'voter_name': '<VOTER_NAME>',
                 'voter_surname': '<VOTER_SURNAME>',
@@ -616,7 +622,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                 'get_audit_passwords': ['pass1', 'pass2', '...'],
                 'get_quick_login_url': '<VOTER_LOGIN_URL>',
                 'poll': poll,
-                'election' : election}
+                'election': election}
             }
 
     default_body = render_to_string(
@@ -663,7 +669,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
             # exclude those who have not voted
             if email_form.cleaned_data['send_to'] == 'voted':
-                voter_constraints_exclude = {'vote_hash' : None}
+                voter_constraints_exclude = {'vote_hash': None}
 
             # include only those who have not voted
             if email_form.cleaned_data['send_to'] == 'not-voted':
@@ -684,10 +690,10 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
                 extra_vars = {
                     'SECURE_URL_HOST': settings.SECURE_URL_HOST,
-                    'custom_subject' : email_form.cleaned_data['email_subject'],
-                    'custom_message' : email_form.cleaned_data['email_body'],
-                    'custom_message_sms' : email_form.cleaned_data['sms_body'],
-                    'election_url' : election_url,
+                    'custom_subject': email_form.cleaned_data['email_subject'],
+                    'custom_message': email_form.cleaned_data['email_body'],
+                    'custom_message_sms': email_form.cleaned_data['sms_body'],
+                    'election_url': election_url,
                 }
                 task_kwargs = {
                     'contact_id': template,
@@ -841,6 +847,7 @@ def voter_booth_linked_login(request, election, poll, voter_uuid):
     url = linked_poll.get_booth_url(request)
     return HttpResponseRedirect(url)
 
+
 @auth.election_view(check_access=False)
 @require_http_methods(["GET"])
 def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
@@ -865,7 +872,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         }))
 
     if request.zeususer.is_authenticated() and (
-            not request.zeususer.is_voter or \
+            not request.zeususer.is_voter or
                 request.zeususer._user.pk != voter.pk):
         messages.error(request,
                         _("You need to logout from your current account "
@@ -879,7 +886,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         oauth2 = poll.get_oauth2_module
         if oauth2.type_id == 'google':
             oauth2.set_login_hint(voter.voter_email)
-        poll.logger.info("[thirdparty] setting thirdparty voter " + \
+        poll.logger.info("[thirdparty] setting thirdparty voter " +
                          "session data (%s, %s)",
                          voter.voter_email, voter.uuid)
         request.session['oauth2_voter_email'] = voter.voter_email
@@ -943,7 +950,7 @@ def post_audited_ballot(request, election, poll):
     poll.logger.info("Poll audit ballot cast")
     vote_pk = AuditedBallot.objects.filter(voter=voter).order_by('-pk')[0].pk
 
-    return HttpResponse(json.dumps({'audit_id': vote_pk }),
+    return HttpResponse(json.dumps({'audit_id': vote_pk}),
                         content_type="application/json")
 
 
@@ -1138,12 +1145,12 @@ def results_file(request, election, poll, language, ext):
     name = ext
     el_module = poll.get_module()
 
-    if not os.path.exists(el_module.get_poll_result_file_path('pdf', 'pdf',\
+    if not os.path.exists(el_module.get_poll_result_file_path('pdf', 'pdf',
         lang)):
         if el_module.pdf_result:
-            el_module.generate_result_docs((lang,lang))
+            el_module.generate_result_docs((lang, lang))
 
-    if not os.path.exists(el_module.get_poll_result_file_path('csv', 'csv',\
+    if not os.path.exists(el_module.get_poll_result_file_path('csv', 'csv',
         lang)):
         if el_module.csv_result:
             el_module.generate_csv_file((lang, lang))

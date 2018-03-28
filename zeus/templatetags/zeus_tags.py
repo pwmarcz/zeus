@@ -31,7 +31,7 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
 
     confirm_msg = str(confirm_msg)
     confirm_msg = Template(confirm_msg).render(context)
-    confirm_msg = confirm_msg.replace('\n', ' ');
+    confirm_msg = confirm_msg.replace('\n', ' ')
 
     confirm_code = """onsubmit="return confirm('%s');" """ % confirm_msg
     if "noconfirm" in cls:
@@ -259,6 +259,7 @@ def set_election_issues(context, election):
     context['polls_issues_list'] = \
         election.polls_issues_before_freeze
     return ''
+
 
 @register.simple_tag(takes_context=True)
 def complete_get_parameters(context, GET, new_order,

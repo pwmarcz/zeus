@@ -43,6 +43,7 @@ pdfmetrics.registerFont(linlibertineb)
 ZEUS_LOGO = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                          'logo-positive.jpg')
 
+
 def load_results(data, repr_data, qdata):
     qdata = copy.deepcopy(qdata)
     parties_results = []
@@ -144,21 +145,22 @@ def load_score_results(data, repr_data, qdata):
 def make_first_page_hf(canvas, doc):
     canvas.saveState()
     canvas.drawImage(ZEUS_LOGO,
-                     x = PAGE_WIDTH - 5 * cm,
-                     y = PAGE_HEIGHT - 2 * cm,
-                     width = PAGE_WIDTH / 8,
-                     height = 1.1 * cm)
+                     x=PAGE_WIDTH - 5 * cm,
+                     y=PAGE_HEIGHT - 2 * cm,
+                     width=PAGE_WIDTH / 8,
+                     height=1.1 * cm)
     canvas.restoreState()
+
 
 def make_later_pages_hf(pageinfo):
     def inner(canvas, doc):
         canvas.saveState()
-        canvas.setFont('Helvetica',9)
+        canvas.setFont('Helvetica', 9)
         canvas.drawImage(ZEUS_LOGO,
-                        x = 2 * cm,
-                        y = PAGE_HEIGHT - 2 * cm,
-                        width = PAGE_WIDTH / 8,
-                        height = 1.1 * cm)
+                        x=2 * cm,
+                        y=PAGE_HEIGHT - 2 * cm,
+                        width=PAGE_WIDTH / 8,
+                        height=1.1 * cm)
         canvas.drawRightString(PAGE_WIDTH - 2 * cm, PAGE_HEIGHT - 1.5 * cm,
                         "%s" % (pageinfo, ))
         canvas.restoreState()
@@ -171,23 +173,27 @@ def make_heading(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["ZeusHeading"]))
 
+
 def make_subheading(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["ZeusSubHeading"]))
     elements.append(Spacer(1, 12))
+
 
 def make_intro(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["Zeus"]))
     elements.append(Spacer(1, 12))
 
+
 def make_poll_voters(elements, styles, poll_voters):
     elements.append(Paragraph(escape(_("Voters") + ": "
-        + str(poll_voters.count())),styles['Zeus']))
+        + str(poll_voters.count())), styles['Zeus']))
     if poll_voters.excluded().count() > 0:
         nr_excluded = poll_voters.excluded().count()
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
-            + str(nr_excluded)),styles['Zeus']))
+            + str(nr_excluded)), styles['Zeus']))
+
 
 def make_election_voters(elements, styles, polls_data, stv=False):
     total_voters = 0
@@ -207,10 +213,12 @@ def make_election_voters(elements, styles, polls_data, stv=False):
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
             + str(excluded_voters)), styles['Zeus']))
 
+
 def make_totals(elements, styles, total_votes, blank_votes):
     elements.append(Paragraph(escape(_('Total votes: %d') % total_votes), styles['Zeus']))
     elements.append(Paragraph(escape(_('Blank: %d') % blank_votes), styles['Zeus']))
     elements.append(Spacer(1, 12))
+
 
 def make_party_list_heading(elements, styles, party, count):
     heading = '%(title)s: %(count)d' % {'title': party,
@@ -218,11 +226,13 @@ def make_party_list_heading(elements, styles, party, count):
     elements.append(Paragraph(escape(heading), styles['Zeus']))
     elements.append(Spacer(1, 12))
 
+
 def make_party_list_table(elements, styles, party_results):
 
     table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
-    t = Table(party_results, style = table_style)
+    t = Table(party_results, style=table_style)
     elements.append(t)
+
 
 def make_results(elements, styles, total_votes, blank_votes,
                  parties_results, candidates_results):
@@ -238,6 +248,7 @@ def make_results(elements, styles, total_votes, blank_votes,
             party = party.decode('utf-8')
         if party in candidates_results:
             make_party_list_table(elements, styles, candidates_results[party])
+
 
 def build_stv_doc(title, name, institution_name, voting_start, voting_end,
               extended_until, data, language, filename="election_results.pdf", new_page=True):
@@ -333,10 +344,10 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             for item in json_data:
                 elected.append([indexed_cands[item[0]]])
             t = Table(elected)
-            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1),'Helvetica'),
-                                         ('ALIGN',(1,1),(-2,-2),'LEFT'),
-                                         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                                         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+                                         ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
+                                         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
                                          ])
             t.setStyle(my_table_style)
             elements.append(t)
@@ -354,7 +365,7 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             for num, round in rounds:
                 round_name = _('Round ')
                 round_name += str(num)
-                elements.append(Paragraph(round_name,styles['Zeus']))
+                elements.append(Paragraph(round_name, styles['Zeus']))
                 round_table = []
                 temp_table = []
                 temp_table.append(table_header)
@@ -376,8 +387,8 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
                 elements.append(round_table)
                 elements.append(Spacer(1, 12))
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
 
 
 def build_doc(title, name, institution_name, voting_start, voting_end,
@@ -475,8 +486,8 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
             make_results(elements, styles, total_votes, blank_votes,
                          parties_results, candidates_results)
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
 
 
 def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
@@ -622,19 +633,21 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             t = Table(candidates_table, colWidths=[4*inch] + [1.2*inch] * 3)
             table_style = TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'Helvetica'),
-                ('ALIGN',(1,1),(-2,-2),'RIGHT'),
+                ('ALIGN', (1, 1), (-2, -2), 'RIGHT'),
             ])
-            table_style = TableStyle([('FONT', (0, 0), (-1, -1),'Helvetica'),
-                                         ('ALIGN',(1,1),(-2,-2),'LEFT'),
-                                         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                                         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+            table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+                                         ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
+                                         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
                                          ])
             t.setStyle(table_style)
             elements.append(t)
             elements.append(PageBreak())
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
+
+
 def main():
     import sys
     title = 'Αποτελέσματα'

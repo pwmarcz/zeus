@@ -20,6 +20,7 @@ class MixedAnswers(WorkflowObject):
         self.answers = answers
         self.question_num = question_num
 
+
 class MixedAnswer(WorkflowObject):
 
     @property
@@ -69,7 +70,7 @@ class Tally(HomomorphicTally):
         """
 
         # pre-compute a dlog table
-        dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
+        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
 
         if not self.num_tallied:
             self.num_tallied = len(self.tally[0])
@@ -83,7 +84,7 @@ class Tally(HomomorphicTally):
             q_result = []
 
             for a_num, a in enumerate(q):
-            # coalesce the decryption factors into one list
+                # coalesce the decryption factors into one list
                 dec_factor_list = [df[q_num][a_num] for df in decryption_factors]
                 raw_value = self.tally[q_num][a_num].decrypt(dec_factor_list, public_key)
 
@@ -96,6 +97,7 @@ class Tally(HomomorphicTally):
             result.append(q_result)
 
         return result
+
 
 class EncryptedVote(EncryptedVote):
 

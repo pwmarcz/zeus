@@ -18,6 +18,7 @@ def json_handler(obj):
         return obj.isoformat()
     raise TypeError
 
+
 class Command(BaseCommand):
     args = ''
     help = 'Election report'

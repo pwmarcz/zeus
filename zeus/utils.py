@@ -26,6 +26,7 @@ def election_trustees_to_text(election):
         content += "%s, %s\n" % (trustee.name, trustee.email)
     return content
 
+
 def append_ballot_to_msg(election, msg):
     if msg[-1] != '\n':
         msg += '\n'
@@ -67,6 +68,7 @@ def append_ballot_to_msg(election, msg):
         msg += "- do_get_candidates:\n{}\n\n".format(candidates)
     return msg
 
+
 def election_reverse(election, view, **extra):
     kwargs = {'election_uuid': election.uuid}
     kwargs.update(extra)
@@ -90,7 +92,7 @@ def extract_trustees(content):
     return trustees
 
 
-def render_template(request, template_name, vars = {}):
+def render_template(request, template_name, vars={}):
     t = loader.get_template(template_name + '.html')
 
     vars_with_user = vars.copy()
@@ -218,11 +220,11 @@ VOTER_BOOL_KEYS_MAP = {
         'excluded': ('excluded_at', 'nullcheck'),
      }
 
-ELECTION_SEARCH_FIELDS = ['name', 'description', 'institution__name', 'admins__user_id',]
+ELECTION_SEARCH_FIELDS = ['name', 'description', 'institution__name', 'admins__user_id', ]
 ELECTION_EXTRA_HEADERS = []
 ELECTION_BOOL_KEYS_MAP = {'trial': 'trial'}
 
-REPORT_SEARCH_FIELDS = ['name', 'institution__name', 'admins__user_id',]
+REPORT_SEARCH_FIELDS = ['name', 'institution__name', 'admins__user_id', ]
 REPORT_EXTRA_HEADERS = []
 REPORT_BOOL_KEYS_MAP = {}
 
@@ -235,6 +237,7 @@ def parse_q_param(q):
             q = q.replace(special_arg, "")
             args.append(special_arg)
     return q, args
+
 
 def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_headers=[], exclude_fields=[]):
 
@@ -261,6 +264,7 @@ def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_head
                 q = q & Q(**{'%s%s' % (key, flt): arg_type})
     return q
 
+
 def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
                                         constraints_exclude=None):
     q = Q()
@@ -270,7 +274,7 @@ def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
     if constraints_include:
         q = q & Q(**constraints_include)
     if constraints_exclude:
-        q =  q & ~Q(**constraints_exclude)
+        q = q & ~Q(**constraints_exclude)
     return q
 
 

@@ -26,6 +26,7 @@ def zeus_report(elections):
 
 SENSITIVE_DATA = ['admin_user', 'trustees', 'last_view_at']
 
+
 def election_report(elections, votes_report=True, filter_sensitive=True):
     for e in elections:
         entry = OrderedDict([
@@ -65,7 +66,7 @@ def election_report(elections, votes_report=True, filter_sensitive=True):
 def election_votes_report(elections, include_alias=False, filter_sensitive=True):
     from helios.models import CastVote, Voter
     for vote in CastVote.objects.filter(poll__election__in=elections,
-                                    voter__excluded_at__isnull=True).values('voter__alias','voter',
+                                    voter__excluded_at__isnull=True).values('voter__alias', 'voter',
                                                                            'cast_at').order_by('-cast_at'):
         entry = OrderedDict([
         ])
@@ -160,6 +161,7 @@ def make_csv_intro(writerow, election, lang):
             writerow([strforce(_("Excluded voters")), strforce(ex_voters)])
         writerow([])
 
+
 def csv_from_polls(election, polls, lang, outfile=None):
     with translation.override(lang):
         if outfile is None:
@@ -207,7 +209,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
 
             writerow([])
             writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('PARTY')),\
+            writerow([strforce(_('ID')), strforce(_('PARTY')),
                 strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
             counter = 0
             valid = strforce(_('VALID'))
@@ -244,6 +246,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
             return outfile.read()
         except:
             return None
+
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
     with translation.override(lang):
@@ -288,7 +291,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                 round_name +=str(num)
                 writerow([])
                 writerow([strforce(round_name)])
-                writerow([strforce(_('Candidate')), strforce(_('Votes')),\
+                writerow([strforce(_('Candidate')), strforce(_('Votes')),
                     strforce(_('Draw')), strforce(_('Action'))])
                 for name, cand in round['candidates'].items():
                     actions = [x[0] for x in cand['actions']]
@@ -302,7 +305,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     votes = cand['votes']
                     cand_name = indexed_cands[str(name)]
                     cand_name = cand_name.split(':')[0]
-                    writerow([strforce(cand_name),strforce(votes),\
+                    writerow([strforce(cand_name), strforce(votes),
                     strforce(draw), strforce(action)])
 
 
@@ -317,7 +320,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
         for poll in polls:
             score_results = poll.zeus.get_results()
             invalid_count = len([b for b in score_results['ballots']
-                                if b['valid'] == False])
+                                if not b['valid']])
             blank_count = len([b for b in score_results['ballots']
                             if not b.get('candidates')])
             ballot_count = len(score_results['ballots'])
@@ -351,7 +354,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
 
             writerow([])
             writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('CANDIDATE')),\
+            writerow([strforce(_('ID')), strforce(_('CANDIDATE')),
                 strforce(_('SCORES')), strforce(_('VALID/INVALID/BLANK'))])
             counter = 0
             valid = strforce(_('VALID'))
@@ -388,7 +391,7 @@ class ElectionsReport(object):
                        _("Name"),
                        _("Polls"),
                        _("Administrator"),
-                       _("Official"),]
+                       _("Official"), ]
 
     def get_elections(self):
         return self.elections
@@ -499,7 +502,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         writerow([])
         writerow([])
         writerow([])
-        writerow(['',strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+        writerow(['', strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
         writerow(ROW(_("Voters"), 'voters'))
         if T('excluded') > 0:
             writerow(ROW(_("Excluded voters"), 'excluded'))
@@ -515,7 +518,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         for question, answers in list(T('counts').items()):
             writerow([])
             writerow([strforce(question)])
-            writerow(['',strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+            writerow(['', strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
             for answer in answers:
                 key = 'counts.%s.%s' % (question, answer)
                 key_round = 'counts_rounded.%s.%s' % (question, answer)
@@ -529,7 +532,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
 
         writerow([])
         writerow([strforce(_('BALLOTS'))])
-        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),\
+        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),
             strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
         counter = 0
         valid = strforce(_('VALID'))

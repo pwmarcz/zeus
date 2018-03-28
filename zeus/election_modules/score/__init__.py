@@ -101,8 +101,8 @@ class ScoreBallotElection(ElectionModuleBase):
 
         for index, q in enumerate(questions_data):
             question = q['question'].replace(":", "{semi}") \
-                                    .replace("\r\n","{newline}") \
-                                    .replace("\n","{newline}")
+                                    .replace("\r\n", "{newline}") \
+                                    .replace("\n", "{newline}")
             q_answers = []
 
             for answer in q['answers']:
@@ -132,8 +132,8 @@ class ScoreBallotElection(ElectionModuleBase):
         # save index references
         for index, q in enumerate(self.poll.questions_data):
             question = q['question'].replace(":", "{semi}") \
-                                    .replace("\r\n","{newline}") \
-                                    .replace("\n","{newline}")
+                                    .replace("\r\n", "{newline}") \
+                                    .replace("\n", "{newline}")
             q['answer_indexes'] = {}
             q['score_indexes'] = {}
             for answer in q['answers']:

@@ -12,16 +12,17 @@ class LegacyObject(LDObject):
     WRAPPED_OBJ_CLASS = dict
     USE_JSON_LD = False
 
+
 class ShortCastVote(LegacyObject):
     FIELDS = ['cast_at', 'voter_uuid', 'voter_hash', 'vote_hash']
-    STRUCTURED_FIELDS = {'cast_at' : 'core/Timestamp'}
+    STRUCTURED_FIELDS = {'cast_at': 'core/Timestamp'}
 
 
 class CastVote(LegacyObject):
     FIELDS = ['vote', 'cast_at', 'voter_uuid', 'voter_hash', 'vote_hash']
     STRUCTURED_FIELDS = {
-        'cast_at' : 'core/Timestamp',
-        'vote' : 'phoebus/EncryptedVote'}
+        'cast_at': 'core/Timestamp',
+        'vote': 'phoebus/EncryptedVote'}
 
     @property
     def short(self):
@@ -48,6 +49,7 @@ class Tally(LegacyObject):
     FIELDS = ['tally', 'num_tallied']
     STRUCTURED_FIELDS = {
         'tally': arrayOf(arrayOf('legacy/EGCiphertext'))}
+
 
 class EncryptedVote(LegacyObject):
     """
@@ -106,6 +108,7 @@ class MixedAnswers(LegacyObject):
     STRUCTURED_FIELDS = {
         'answers': arrayOf('phoebus/MixedAnswer')
     }
+
 
 class Result(LegacyObject):
     WRAPPED_OBJ = list

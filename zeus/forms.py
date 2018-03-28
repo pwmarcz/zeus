@@ -46,6 +46,7 @@ LOG_CHANGED_FIELDS = [
 
 INVALID_CHAR_MSG = _("%s is not a valid character.") % "%"
 
+
 def election_form_formfield_cb(f, **kwargs):
     if f.name in ['voting_starts_at', 'voting_ends_at',
                   'voting_extended_until']:
@@ -109,11 +110,10 @@ class ElectionForm(forms.ModelForm):
         choices = [('en', _('English')),
                    ('el', _('Greek'))]
         help_text = _("Set the language that will be used for email messages")
-        self.fields['communication_language'] = forms.ChoiceField(label=
-                                                    _("Communication language"),
+        self.fields['communication_language'] = forms.ChoiceField(label=_("Communication language"),
                                                     choices=choices,
                                                     initial=lang,
-                                                    help_text = help_text)
+                                                    help_text=help_text)
         self.fields['linked_polls'].widget = forms.HiddenInput()
         if owner.sms_data:
             help_text = _("Notify voters using SMS (%d deliveries available for your account)") % owner.sms_data.left
@@ -149,7 +149,7 @@ class ElectionForm(forms.ModelForm):
                 bool(self.instance.mix_key)
 
         for field, features in self.FIELD_REQUIRED_FEATURES.items():
-            editable = all([self.instance.check_feature(f) for \
+            editable = all([self.instance.check_feature(f) for
                             f in features])
 
             widget = self.fields.get(field).widget
@@ -169,7 +169,7 @@ class ElectionForm(forms.ModelForm):
         for field, features in self.FIELD_REQUIRED_FEATURES.items():
             if not self.instance.pk:
                 continue
-            editable = all([self.instance.check_feature(f) for \
+            editable = all([self.instance.check_feature(f) for
                             f in features])
             if not editable and field in self.cleaned_data:
                 if field == 'trustees':
@@ -314,8 +314,8 @@ class QuestionForm(QuestionBaseForm):
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
-        max_choices = [(x,x) for x in range(1, self.max_limit or answers+1)]
-        min_choices = [(x,x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
+        max_choices = [(x, x) for x in range(1, self.max_limit or answers+1)]
+        min_choices = [(x, x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
 
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = min([x[1] for x in max_choices])
@@ -343,8 +343,11 @@ class PartyForm(QuestionForm):
     question = forms.CharField(label=_("Party name"), max_length=255,
                                required=True)
 
+
 SCORES_DEFAULT_LEN = 2
-SCORES_CHOICES = [(x,x) for x in range(1, 10)]
+SCORES_CHOICES = [(x, x) for x in range(1, 10)]
+
+
 class ScoresForm(QuestionBaseForm):
     scores = forms.MultipleChoiceField(required=True,
                                        widget=forms.CheckboxSelectMultiple,
@@ -369,7 +372,7 @@ class ScoresForm(QuestionBaseForm):
             self._scores_len = len(self.initial['scores'])
         else:
             self._scores_len = SCORES_DEFAULT_LEN
-        max_choices = [(x,x) for x in range(1, self._scores_len + 1)]
+        max_choices = [(x, x) for x in range(1, self._scores_len + 1)]
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = self._scores_len
         self.fields['min_answers'].choices = max_choices
@@ -404,6 +407,7 @@ class RequiredFormset(BaseFormSet):
             self.forms[0].empty_permitted = False
         except IndexError:
             pass
+
 
 class CandidateWidget(MultiWidget):
 
@@ -449,7 +453,7 @@ class StvForm(QuestionBaseForm):
         deps = kwargs['initial']['departments_data'].split('\n')
         DEPARTMENT_CHOICES = []
         for dep in deps:
-            DEPARTMENT_CHOICES.append((dep.strip(),dep.strip()))
+            DEPARTMENT_CHOICES.append((dep.strip(), dep.strip()))
 
         super(StvForm, self).__init__(*args, **kwargs)
 
@@ -480,14 +484,14 @@ class StvForm(QuestionBaseForm):
                                  widget=widget,
                                  required=False))
 
-        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
+        widget=forms.CheckboxInput(attrs={'onclick': 'enable_limit()'})
         limit_help_text = _("enable limiting the elections from the same constituency")
         limit_label = _("Limit elected per constituency")
         ordered_dict_prepend(self.fields, 'has_department_limit',
                              forms.BooleanField(
                                  widget=widget,
                                  help_text=limit_help_text,
-                                 label = limit_label,
+                                 label=limit_label,
                                  required=False))
 
         elig_help_text = _("set the eligibles count of the election")
@@ -553,6 +557,7 @@ class StvForm(QuestionBaseForm):
                 raise forms.ValidationError(message)
         except ValueError:
             raise forms.ValidationError(message)
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_('Username'),
@@ -685,7 +690,7 @@ class PollForm(forms.ModelForm):
         election_polls = self.election.polls.all()
         for poll in election_polls:
             if (data.get('name') == poll.name and
-                    ((not self.instance.pk ) or
+                    ((not self.instance.pk) or
                     (self.instance.pk and self.instance.name!=data.get('name')))):
                 message = _("Duplicate poll names are not allowed")
                 raise forms.ValidationError(message)
@@ -787,6 +792,7 @@ CONTACT_CHOICES = [
     ('sms', _('SMS only')),
     ('email:sms', _('Email and SMS')),
 ]
+
 
 class EmailVotersForm(forms.Form):
     email_subject = forms.CharField(label=_('Email subject'), max_length=80,
@@ -936,6 +942,8 @@ FirstName, LastName, FatherName, SchoolB<br />
 
 limit_choices = [(x, str(x)) for x in range(2)]
 eligibles_choices = [(x, str(x)) for x in range(1, 20)]
+
+
 class STVElectionForm(forms.Form):
     name = forms.CharField(label=_("Election name"), required=True)
     voting_starts = forms.CharField(label=_("Voting start date"), required=True, help_text=_("e.g. 25/01/2015 07:00"))

@@ -1,6 +1,7 @@
 
 import re
 
+
 class STVParser(object):
 
     actions_map = {

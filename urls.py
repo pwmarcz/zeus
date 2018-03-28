@@ -53,13 +53,13 @@ urlpatterns = [
 if getattr(settings, 'DEBUG', False) or getattr(settings, 'ZEUS_SERVE_STATIC', False):
     static_urls = [
         url(r'booth/(?P<path>.*)$', django.views.static.serve, {
-            'document_root' : settings.BOOTH_STATIC_PATH
+            'document_root': settings.BOOTH_STATIC_PATH
         }),
         url(r'static/zeus/(?P<path>.*)$', django.views.static.serve, {
-            'document_root' : settings.ROOT_PATH + '/zeus/static/zeus'
+            'document_root': settings.ROOT_PATH + '/zeus/static/zeus'
         }),
         url(r'static/(?P<path>.*)$', django.views.static.serve, {
-            'document_root' : settings.ROOT_PATH + '/server_ui/media'
+            'document_root': settings.ROOT_PATH + '/server_ui/media'
         }),
     ]
 

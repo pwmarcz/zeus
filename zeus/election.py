@@ -518,9 +518,9 @@ class ZeusDjangoElection(ZeusCoreElection):
         helios_proofs = [[]]
 
         for factor in factors:
-            proof_obj = get_datatype('EGZKProof',{
+            proof_obj = get_datatype('EGZKProof', {
                 'commitment': {
-                    'A':factor[1][0],
+                    'A': factor[1][0],
                     'B': factor[1][1]},
                 'challenge': factor[1][2],
                 'response': factor[1][3]
@@ -633,7 +633,7 @@ class ZeusDjangoElection(ZeusCoreElection):
             candidate_keys = [x for x in list(party_candidates.keys()) if isinstance(x, int)]
             candidate_keys.sort()
             candidates = [party_candidates[c] for c in candidate_keys]
-            candidate_counts = OrderedDict([(c, 0) for c in \
+            candidate_counts = OrderedDict([(c, 0) for c in
                                            candidates])
             candidate_sums = 0
 

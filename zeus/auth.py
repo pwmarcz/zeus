@@ -20,17 +20,20 @@ logger = logging.getLogger(__name__)
 
 AUTH_RE = re.compile('Basic (\w+[=]*)')
 
+
 def get_ip(request):
     ip = request.META.get('HTTP_X_FORWARDER_FOR', None)
     if not ip:
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+
 def class_method(func):
     def wrapper(self, request, *args, **kwargs):
         return func(request, *args, **kwargs)
 
     return wrapper
+
 
 def trustee_view(func):
     @wraps(func)
@@ -99,6 +102,7 @@ def user_required(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+
 def superadmin_required(func):
     @user_required
     @wraps(func)
@@ -107,6 +111,7 @@ def superadmin_required(func):
             raise PermissionDenied("Superadmin user required")
         return func(request, *args, **kwargs)
     return wrapper
+
 
 def manager_or_superadmin_required(func):
     @user_required
@@ -118,6 +123,7 @@ def manager_or_superadmin_required(func):
         return func(request, *args, **kwargs)
     return wrapper
 
+
 def election_poll_required(func):
     @election_view(check_access=True)
     @wraps(func)
@@ -126,6 +132,7 @@ def election_poll_required(func):
             raise PermissionDenied("Authenticated user required")
         return func(request, *args, **kwargs)
     return wrapper
+
 
 def election_user_required(func):
     @wraps(func)
@@ -151,6 +158,7 @@ def election_admin_required(func):
 
 def unauthenticated_user_required(func):
     from zeus.views.site import error as error_view
+
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         if request.zeususer.is_authenticated():
@@ -383,13 +391,15 @@ def get_users_from_request(request):
 
     return voter, trustee, admin
 
+
 def allow_manager_access(func):
     func._allow_manager = True
     func.__globals__['foo'] = 'bar'
     return func
 
+
 def make_shibboleth_login_url(endpoint):
     shibboleth_login = reverse('shibboleth_login', kwargs={'endpoint': endpoint})
-    url = '/'.join(s.strip('/') for s in filter(bool,[
+    url = '/'.join(s.strip('/') for s in filter(bool, [
         shibboleth_login]))
     return '/%s' % url

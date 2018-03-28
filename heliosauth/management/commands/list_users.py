@@ -8,6 +8,7 @@ from heliosauth.models import User
 user_row = "%-3d %-15s %-20s %-60s %-10s %-2d"
 user_row_header = user_row.replace("d", "s")
 
+
 class Command(BaseCommand):
     args = ''
     help = 'List users'

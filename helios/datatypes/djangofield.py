@@ -12,6 +12,7 @@ from django.db import models
 
 from . import LDObject
 
+
 class LDObjectField(models.TextField):
     """
     LDObject is a generic textfield that neatly serializes/unserializes
@@ -34,7 +35,7 @@ class LDObjectField(models.TextField):
         if not isinstance(value, str):
             return value
 
-        if  value == None:
+        if value == None:
             return None
 
         # in some cases, we're loading an existing array or dict,
@@ -49,7 +50,7 @@ class LDObjectField(models.TextField):
 
         if parsed_value != None:
             "we give the wrapped object back because we're not dealing with serialization types"
-            return_val = LDObject.fromDict(parsed_value, type_hint = self.type_hint).wrapped_obj
+            return_val = LDObject.fromDict(parsed_value, type_hint=self.type_hint).wrapped_obj
             return return_val
         else:
             return None

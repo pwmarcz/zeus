@@ -11,6 +11,8 @@ from helios.models import Election
 from .utils import SetUpAdminAndClientMixin
 
 # subclass order is significant
+
+
 class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):
 
     def setUp(self):
@@ -66,8 +68,8 @@ class TestAdminsPermissions(SetUpAdminAndClientMixin, TestCase):
         self.admin2.user_groups.add(group)
         self.login_data2 = {'username': 'test_admin2', 'password': 'test_admin2'}
         trustees_num = 2
-        trustees = "\n".join(",".join(['testName%x testSurname%x' %(x,x),
-                                       'test%x@mail.com' %x]) for x in range(0,trustees_num))
+        trustees = "\n".join(",".join(['testName%x testSurname%x' %(x, x),
+                                       'test%x@mail.com' %x]) for x in range(0, trustees_num))
         date1 = datetime.datetime.now() + timedelta(hours=48)
         date2 = datetime.datetime.now() + timedelta(hours=56)
         self.election_form = {

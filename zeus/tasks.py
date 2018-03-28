@@ -66,7 +66,7 @@ def single_voter_email(voter_uuid,
 
     with translation.override(lang):
         template_vars= copy.copy(template_vars)
-        template_vars.update({'voter' : voter, 'poll': voter.poll,
+        template_vars.update({'voter': voter, 'poll': voter.poll,
                               'election': voter.poll.election})
 
         subject_tpls = {
@@ -209,6 +209,7 @@ def election_validate_create(election_id):
     msg = "Election is frozen"
     msg = utils.append_ballot_to_msg(election, msg)
     election.notify_admins(msg=msg, subject=subject)
+
 
 @task(ignore_result=True)
 def election_validate_voting(election_id):

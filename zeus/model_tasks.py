@@ -67,7 +67,7 @@ def task_fields(task):
         return bool(getattr(self, error_field))
 
     def reset(self, force=False):
-        self.logger.info("Resetting '%s' task state from '%s'." % \
+        self.logger.info("Resetting '%s' task state from '%s'." %
                          (task_name, getattr(self, status_field)))
         status = getattr(self, status_field)
         if not force and status != 'error':
@@ -155,12 +155,12 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
                 status = getattr(_obj, status_field)
                 task_name = name
                 if status == 'running':
-                    self.logger.info("Skip already running '%s (%s)' task." % \
+                    self.logger.info("Skip already running '%s (%s)' task." %
                             (task_name, status))
                     return
 
                 if status == 'finished':
-                    self.logger.info("Skip already finished '%s (%s)' task." % \
+                    self.logger.info("Skip already finished '%s (%s)' task." %
                             (task_name, status))
                     return
 
@@ -243,6 +243,7 @@ class ElectionTasks(TaskModel):
     def compute_results(self):
         self.get_module().compute_election_results()
 
+
 class PollTasks(TaskModel):
 
     @poll_task('validate_create', ('frozen',))
@@ -269,7 +270,7 @@ class PollTasks(TaskModel):
     def validate_mixing(self):
         ciphers = self.zeus.get_mixed_ballots()
         tally_dict = {'num_tallied': len(ciphers), 'tally': [
-          [{'alpha':c[0], 'beta':c[1]} for c in ciphers]]}
+          [{'alpha': c[0], 'beta':c[1]} for c in ciphers]]}
         tally = datatypes.LDObject.fromDict(tally_dict,
                                             type_hint='phoebus/Tally')
         self.encrypted_tally = tally

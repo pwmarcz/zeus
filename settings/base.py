@@ -3,11 +3,14 @@
 import os
 
 # go through environment variables and override them
+
+
 def get_from_env(var, default):
     if var in os.environ:
         return os.environ[var]
     else:
         return default
+
 
 ROOT_PATH = os.path.join(os.path.dirname(__file__), '..')
 

@@ -8,6 +8,7 @@ from zeus.models import Institution
 institution_row = "%-3d %-70s %-2d"
 institution_row_header = "%-3s %-70s %-2s"
 
+
 class Command(BaseCommand):
     args = ''
     help = 'List institutions'

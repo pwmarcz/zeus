@@ -102,6 +102,7 @@ class ElGamal:
         eg.g = int(d['g'])
         return eg
 
+
 class EGKeyPair:
     def __init__(self):
         self.pk = EGPublicKey()
@@ -120,6 +121,7 @@ class EGKeyPair:
 
         self.sk.pk = self.pk
 
+
 class EGPublicKey:
     def __init__(self):
         self.y = None
@@ -127,7 +129,7 @@ class EGPublicKey:
         self.g = None
         self.q = None
 
-    def encrypt_with_r(self, plaintext, r, encode_message= False):
+    def encrypt_with_r(self, plaintext, r, encode_message=False):
         """
         expecting plaintext.m to be a big integer
         """
@@ -168,7 +170,7 @@ class EGPublicKey:
         """
         Serialize to dictionary.
         """
-        return {'y' : str(self.y), 'p' : str(self.p), 'g' : str(self.g) , 'q' : str(self.q)}
+        return {'y': str(self.y), 'p': str(self.p), 'g': str(self.g), 'q': str(self.q)}
 
     toJSONDict = to_dict
 
@@ -177,7 +179,7 @@ class EGPublicKey:
         from . import utils
         return utils.to_json(self.toJSONDict())
 
-    def __mul__(self,other):
+    def __mul__(self, other):
         if other == 0 or other == 1:
             return self
 
@@ -192,7 +194,7 @@ class EGPublicKey:
         result.y = (self.y * other.y) % result.p
         return result
 
-    def verify_sk_proof(self, dlog_proof, challenge_generator = None):
+    def verify_sk_proof(self, dlog_proof, challenge_generator=None):
         """
         verify the proof of knowledge of the secret key
         g^response = commitment * y^challenge
@@ -217,6 +219,7 @@ class EGPublicKey:
         return pk
 
     fromJSONDict = from_dict
+
 
 class EGSecretKey:
     def __init__(self):
@@ -243,7 +246,7 @@ class EGSecretKey:
 
         return dec_factor, proof
 
-    def decrypt(self, ciphertext, dec_factor = None, decode_m=False):
+    def decrypt(self, ciphertext, dec_factor=None, decode_m=False):
         """
         Decrypt a ciphertext. Optional parameter decides whether to encode the message into the proper subgroup.
         """
@@ -284,18 +287,18 @@ class EGSecretKey:
         a = pow(self.pk.g, w, self.pk.p)
         b = pow(ciphertext.alpha, w, self.pk.p)
 
-        c = int(hashlib.sha1(str(a) + "," + str(b)).hexdigest(),16)
+        c = int(hashlib.sha1(str(a) + "," + str(b)).hexdigest(), 16)
 
         t = (w + self.x * c) % self.pk.q
 
         return m, {
-            'commitment' : {'A' : str(a), 'B': str(b)},
-            'challenge' : str(c),
-            'response' : str(t)
+            'commitment': {'A': str(a), 'B': str(b)},
+            'challenge': str(c),
+            'response': str(t)
           }
 
     def to_dict(self):
-        return {'x' : str(self.x), 'public_key' : self.pk.to_dict()}
+        return {'x': str(self.x), 'public_key': self.pk.to_dict()}
 
     toJSONDict = to_dict
 
@@ -328,13 +331,14 @@ class EGSecretKey:
 
     fromJSONDict = from_dict
 
+
 class EGPlaintext:
-    def __init__(self, m = None, pk = None):
+    def __init__(self, m=None, pk=None):
         self.m = m
         self.pk = pk
 
     def to_dict(self):
-        return {'m' : self.m}
+        return {'m': self.m}
 
     @classmethod
     def from_dict(cls, d):
@@ -349,7 +353,7 @@ class EGCiphertext:
         self.alpha = alpha
         self.beta = beta
 
-    def __mul__(self,other):
+    def __mul__(self, other):
         """
         Homomorphic Multiplication of ciphertexts.
         """
@@ -419,12 +423,12 @@ class EGCiphertext:
         proof.commitment['B'] = pow(self.pk.y, w, self.pk.p)
 
         # generate challenge
-        proof.challenge = challenge_generator(proof.commitment);
+        proof.challenge = challenge_generator(proof.commitment)
 
         # Compute response = w + randomness * challenge
-        proof.response = (w + (randomness * proof.challenge)) % self.pk.q;
+        proof.response = (w + (randomness * proof.challenge)) % self.pk.q
 
-        return proof;
+        return proof
 
     def simulate_encryption_proof(self, plaintext, challenge=None):
         # generate a random challenge if not provided
@@ -435,10 +439,10 @@ class EGCiphertext:
         proof.challenge = challenge
 
         # compute beta/plaintext, the completion of the DH tuple
-        beta_over_plaintext =  (self.beta * Utils.inverse(plaintext.m, self.pk.p)) % self.pk.p
+        beta_over_plaintext = (self.beta * Utils.inverse(plaintext.m, self.pk.p)) % self.pk.p
 
         # random response, does not even need to depend on the challenge
-        proof.response = Utils.random_mpz_lt(self.pk.q);
+        proof.response = Utils.random_mpz_lt(self.pk.q)
 
         # now we compute A and B
         proof.commitment['A'] = (Utils.inverse(pow(self.alpha, proof.challenge, self.pk.p), self.pk.p) * pow(self.pk.g, proof.response, self.pk.p)) % self.pk.p
@@ -464,7 +468,7 @@ class EGCiphertext:
 
             # get the commitments in a list and generate the whole disjunctive challenge
             commitments = [p.commitment for p in proofs]
-            disjunctive_challenge = challenge_generator(commitments);
+            disjunctive_challenge = challenge_generator(commitments)
 
             # now we must subtract all of the other challenges from this challenge.
             real_challenge = disjunctive_challenge
@@ -550,7 +554,7 @@ class EGCiphertext:
         return "%s,%s" % (self.alpha, self.beta)
 
     @classmethod
-    def from_dict(cls, d, pk = None):
+    def from_dict(cls, d, pk=None):
         result = cls()
         result.alpha = int(d['alpha'])
         result.beta = int(d['beta'])
@@ -565,11 +569,12 @@ class EGCiphertext:
         expects alpha,beta
         """
         split = str.split(",")
-        return cls.from_dict({'alpha' : split[0], 'beta' : split[1]})
+        return cls.from_dict({'alpha': split[0], 'beta': split[1]})
+
 
 class EGZKProof(object):
     def __init__(self):
-        self.commitment = {'A':None, 'B':None}
+        self.commitment = {'A': None, 'B': None}
         self.challenge = None
         self.response = None
 
@@ -611,7 +616,7 @@ class EGZKProof(object):
 
     def to_dict(self):
         return {
-          'commitment' : {'A' : str(self.commitment['A']), 'B' : str(self.commitment['B'])},
+          'commitment': {'A': str(self.commitment['A']), 'B': str(self.commitment['B'])},
           'challenge': str(self.challenge),
           'response': str(self.response)
         }
@@ -636,8 +641,9 @@ class EGZKProof(object):
 
     toJSONDict = to_dict
 
+
 class EGZKDisjunctiveProof:
-    def __init__(self, proofs = None):
+    def __init__(self, proofs=None):
         self.proofs = proofs
 
     @classmethod
@@ -651,6 +657,7 @@ class EGZKDisjunctiveProof:
 
     toJSONDict = to_dict
 
+
 class DLogProof(object):
     def __init__(self, commitment, challenge, response):
         self.commitment = commitment
@@ -658,7 +665,7 @@ class DLogProof(object):
         self.response = response
 
     def to_dict(self):
-        return {'challenge': str(self.challenge), 'commitment': str(self.commitment), 'response' : str(self.response)}
+        return {'challenge': str(self.challenge), 'commitment': str(self.commitment), 'response': str(self.response)}
 
     toJSONDict = to_dict
 
@@ -669,6 +676,7 @@ class DLogProof(object):
 
     fromJSONDict = from_dict
 
+
 def EG_disjunctive_challenge_generator(commitments):
     array_to_hash = []
     for commitment in commitments:
@@ -676,12 +684,15 @@ def EG_disjunctive_challenge_generator(commitments):
         array_to_hash.append(str(commitment['B']))
 
     string_to_hash = ",".join(array_to_hash)
-    return int(hashlib.sha1(string_to_hash).hexdigest(),16)
+    return int(hashlib.sha1(string_to_hash).hexdigest(), 16)
 
 # a challenge generator for Fiat-Shamir with A,B commitment
+
+
 def EG_fiatshamir_challenge_generator(commitment):
     return EG_disjunctive_challenge_generator([commitment])
 
+
 def DLog_challenge_generator(commitment):
     string_to_hash = str(commitment)
-    return int(hashlib.sha1(string_to_hash).hexdigest(),16)
+    return int(hashlib.sha1(string_to_hash).hexdigest(), 16)

@@ -38,14 +38,14 @@ class Command(BaseCommand):
                            action='store_false',
                            dest='dry',
                            default=True,
-                           help='By default messages are printed to the ' + \
-                                'screen. Set this flag to actually send ' + \
+                           help='By default messages are printed to the ' +
+                                'screen. Set this flag to actually send ' +
                                 'messages using the sms API')
-        #parser.add_argument('--async',
-                           #action='store_true',
-                           #dest='async',
-                           #default=False,
-                           #help='Send messages asynchronously')
+#parser.add_argument('--async',
+#action='store_true',
+#dest='async',
+#default=False,
+#help='Send messages asynchronously')
         parser.add_argument('--list',
                            action='store_true',
                            dest='list_voters',
@@ -59,7 +59,7 @@ class Command(BaseCommand):
                            action='store_true',
                            dest='resend',
                            default=False,
-                           help='Resend messages even if last_sms_send_at ' + \
+                           help='Resend messages even if last_sms_send_at ' +
                                 'flag is set to the voter instance')
         parser.add_argument('--status',
                            action='store_true',
@@ -80,7 +80,7 @@ class Command(BaseCommand):
                            action='store',
                            dest='send_to',
                            default=None,
-                           help='Do not use voter mobile. Send message to the ' + \
+                           help='Do not use voter mobile. Send message to the ' +
                                 'number provided instead (for testing).')
 
     def handle(self, *args, **options):
@@ -185,7 +185,7 @@ class Command(BaseCommand):
                                            csv_email))
 
         if election:
-            print("Using SMS API credentials for user '%s'" % \
+            print("Using SMS API credentials for user '%s'" %
                 mobile_api.CREDENTIALS_DICT[election.uuid]['username'])
 
         for voter in voters:

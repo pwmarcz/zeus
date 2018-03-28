@@ -33,6 +33,8 @@ from helios.crypto import utils as cryptoutils
 ##
 ## utility function
 ##
+
+
 def recursiveToDict(obj):
     if obj == None:
         return None
@@ -41,6 +43,7 @@ def recursiveToDict(obj):
         return [recursiveToDict(el) for el in obj]
     else:
         return obj.toDict()
+
 
 def get_class(datatype):
     # already done?
@@ -63,7 +66,7 @@ def get_class(datatype):
             dynamic_ptr = getattr(dynamic_ptr, attr)
         dynamic_cls = dynamic_ptr
     except AttributeError:
-        raise Exception ("no module for %s" % datatype)
+        raise Exception("no module for %s" % datatype)
 
     dynamic_cls.datatype = datatype
 
@@ -91,6 +94,7 @@ class LDObjectContainer(object):
     @property
     def hash(self):
         return self.ld_object.hash
+
 
 class LDObject(object):
     """
@@ -153,7 +157,7 @@ class LDObject(object):
         "load data using from the wrapped object"
         # go through the subfields and instantiate them too
         for subfield_name, subfield_type in self.STRUCTURED_FIELDS.items():
-            self.structured_fields[subfield_name] = self.instantiate(self._getattr_wrapped(subfield_name), datatype = subfield_type)
+            self.structured_fields[subfield_name] = self.instantiate(self._getattr_wrapped(subfield_name), datatype=subfield_type)
 
     def loadDataFromDict(self, d):
         """
@@ -168,7 +172,7 @@ class LDObject(object):
         for f in self.FIELDS:
             if f in structured_fields:
                 # a structured ld field, recur
-                sub_ld_object = self.fromDict(d[f], type_hint = self.STRUCTURED_FIELDS[f])
+                sub_ld_object = self.fromDict(d[f], type_hint=self.STRUCTURED_FIELDS[f])
                 self.structured_fields[f] = sub_ld_object
 
                 # set the field on the wrapped object too
@@ -182,7 +186,7 @@ class LDObject(object):
                 self._setattr_wrapped(f, new_val)
 
     def serialize(self):
-        d = self.toDict(complete = True)
+        d = self.toDict(complete=True)
         return to_json(d)
 
     def toDict(self, alternate_fields=None, complete=False):
@@ -272,7 +276,7 @@ class LDObject(object):
 
     def __eq__(self, other):
         if not hasattr(self, 'uuid'):
-            return super(LDObject,self) == other
+            return super(LDObject, self) == other
 
         return other != None and self.uuid == other.uuid
 
@@ -292,12 +296,12 @@ class BaseArrayOfObjects(LDObject):
 
     def loadData(self):
         "go through each item and LD instantiate it, as if it were a structured field"
-        self.items = [self.instantiate(element, datatype= self.ELEMENT_TYPE) for element in self.wrapped_obj]
+        self.items = [self.instantiate(element, datatype=self.ELEMENT_TYPE) for element in self.wrapped_obj]
 
     def loadDataFromDict(self, d):
         "assumes that d is a list"
         # TODO: should we be using ELEMENT_TYPE_CLASS here instead of LDObject?
-        self.items = [LDObject.fromDict(element, type_hint = self.ELEMENT_TYPE) for element in d]
+        self.items = [LDObject.fromDict(element, type_hint=self.ELEMENT_TYPE) for element in d]
         self.wrapped_obj = [item.wrapped_obj for item in self.items]
 
 
@@ -311,6 +315,7 @@ def arrayOf(element_type):
 
     return ArrayOfTypedObjects
 
+
 class DictObject(object):
     "when the wrapped object is actually dictionary"
 
@@ -319,6 +324,7 @@ class DictObject(object):
 
     def _setattr_wrapped(self, attr, val):
         self.wrapped_obj[attr] = val
+
 
 class ListObject(object):
     def loadDataFromDict(self, d):

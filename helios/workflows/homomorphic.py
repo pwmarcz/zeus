@@ -12,6 +12,7 @@ from . import WorkflowObject
 
 TYPE = 'homomorphic'
 
+
 class EncryptedAnswer(WorkflowObject):
     """
     An encrypted answer to a single election question
@@ -85,6 +86,7 @@ class EncryptedAnswer(WorkflowObject):
             return True
 
 # WORK HERE
+
 
 class EncryptedVote(WorkflowObject):
     """
@@ -182,7 +184,7 @@ class Tally(WorkflowObject):
     def __init__(self, *args, **kwargs):
         super(Tally, self).__init__()
 
-        election = kwargs.get('election',None)
+        election = kwargs.get('election', None)
         self.tally = None
         self.num_tallied = 0
 
@@ -319,7 +321,7 @@ class Tally(WorkflowObject):
         """
 
         # pre-compute a dlog table
-        dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
+        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
         dlog_table.precompute(self.num_tallied)
 
         result = []
@@ -347,12 +349,15 @@ class Tally(WorkflowObject):
         if field_name == 'tally':
             return [[a.toJSONDict() for a in q] for q in field_value]
 
+
 """
 Workflow api methods
 """
 
+
 def tallied(election):
     return bool(election.encrypted_tally)
+
 
 def compute_tally(election):
     tally = election.init_tally()
@@ -363,23 +368,28 @@ def compute_tally(election):
     election.encrypted_tally = tally
     election.save()
 
+
 def tally_hash(election):
     if not election.encrypted_tally:
         return None
 
     return utils.hash_b64(election.encrypted_tally.toJSON())
 
+
 def ready_for_decription(election):
     return election.encrypted_tally != None
+
 
 def decrypt_tally(election, decryption_factors):
     return election.encrypted_tally.decrypt_from_factors(decryption_factors,
             election.public_key)
 
+
 def get_decryption_factors_and_proof(election, key):
     tally = election.encrypted_tally
     tally.init_election(election)
     return tally.decryption_factors_and_proofs(key)
+
 
 def verify_encryption_proof(election, trustee):
     return election.encrypted_tally.verify_decryption_proofs(

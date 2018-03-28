@@ -7,10 +7,12 @@ from helios.models import Poll
 
 from zeus.core import gamma_decode, to_absolute_answers
 
+
 def strforce(thing):
     if isinstance(thing, str):
         return thing.encode('utf-8')
     return str(thing)
+
 
 class Command(BaseCommand):
     args = ''
