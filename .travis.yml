@@ -2,7 +2,7 @@ matrix:
   include:
     - language: python
       cache: pip
-      python: "2.7"
+      python: "3.6"
       env: NAME=tests
       install:
         # postgresql should be installed by default
@@ -10,7 +10,7 @@ matrix:
         - sudo -u postgres createuser -s `whoami` || true
         - createdb zeus_test
         - pip install pipenv
-        - pipenv --python python2
+        - pipenv --python python3
         - pipenv sync --dev
 
       script:
@@ -21,7 +21,7 @@ matrix:
 
     - language: python
       env: NAME=flake8
-      python: "2.7"
+      python: "3.6"
       install:
         pip install flake8
 
