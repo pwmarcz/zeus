@@ -41,7 +41,7 @@ class UserGroup(models.Model):
     def users_count_display(self):
         return self.user_set.count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
