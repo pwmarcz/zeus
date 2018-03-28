@@ -3858,7 +3858,7 @@ def main(cmd=None):
         help="Read an election and a signature from a JSON file "
              "and verify the signature")
 
-    parser.add_argument('--parallel', dest='nr_procs', default=2,
+    parser.add_argument('--parallel', dest='nr_procs', type=int, default=2,
         help="Use multiple processes for parallel mixing")
 
     parser.add_argument('--no-verify', action='store_true', default=False,
@@ -4125,7 +4125,7 @@ def main(cmd=None):
 
     nr_parallel = 0
     if args.nr_procs > 0:
-        nr_parallel = int(args.nr_procs)
+        nr_parallel = args.nr_procs
 
     if args.generate is not None:
         return main_generate(args, teller=teller, nr_parallel=nr_parallel)
