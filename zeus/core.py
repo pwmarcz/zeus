@@ -1543,8 +1543,8 @@ def strbin_to_int_mul(string):
 
     return s
 
-def strbin_to_int_native(string):
-    return int.from_bytes(string)
+def strbin_to_int_native(string: bytes) -> int:
+    return int.from_bytes(string, 'little')
 
 PYTHON_MAJOR = sys.version_info[0]
 if PYTHON_MAJOR == 3:
@@ -1625,18 +1625,18 @@ def decrypt(modulus, generator, order, secret, alpha, beta):
     return decrypt_with_decryptor(modulus, generator, order, beta, decryptor)
 
 
-def numbers_hash(numbers):
+def numbers_hash(numbers) -> str:
     h = sha256()
     update = h.update
     for num in numbers:
-        update("%x:" % num)
+        update(("%x:" % num).encode())
     return h.hexdigest()
 
-def texts_hash(texts):
+def texts_hash(texts) -> bytes:
     h = sha256()
-    texts_gen = ((t.encode('utf8') if not isinstance(t, str) else t)
+    texts_gen = ((t.encode('utf8') if not isinstance(t, bytes) else t)
                  for t in texts)
-    h.update('\x00'.join(texts_gen))
+    h.update(b'\x00'.join(texts_gen))
     return h.digest()
 
 def number_from_texts_hash(modulus, *texts):
@@ -1645,8 +1645,8 @@ def number_from_texts_hash(modulus, *texts):
     return number
 
 def number_from_numbers_hash(modulus, *numbers):
-    digest = numbers_hash(numbers)
-    number = strbin_to_int(digest) % modulus
+    hexdigest = numbers_hash(numbers)
+    number = strbin_to_int(hexdigest.encode()) % modulus
     return number
 
 def element_from_texts_hash(modulus, generator, order, *texts):
@@ -1657,8 +1657,8 @@ def element_from_texts_hash(modulus, generator, order, *texts):
     return element
 
 def element_from_elements_hash(modulus, generator, order, *elements):
-    digest = numbers_hash((modulus, generator, order) + elements)
-    number = strbin_to_int(digest) % order
+    hexdigest = numbers_hash((modulus, generator, order) + elements)
+    number = strbin_to_int(hexdigest.encode()) % order
     element = pow(generator, number, modulus)
     return element
 
@@ -3485,7 +3485,7 @@ class ZeusCoreElection(object):
 
         finished = self.export_decrypting()
         finished['results'] = self.do_get_results()
-        fingerprint = sha256(to_canonical(finished)).hexdigest()
+        fingerprint = sha256(to_canonical(finished).encode()).hexdigest()
         finished['election_fingerprint'] = fingerprint
 
         report = ''
@@ -3518,7 +3518,7 @@ class ZeusCoreElection(object):
         self.do_store_results(finished['results'])
         finished.pop('election_report', None)
         fingerprint = finished.pop('election_fingerprint', None)
-        _fingerprint = sha256(to_canonical(finished)).hexdigest()
+        _fingerprint = sha256(to_canonical(finished).encode()).hexdigest()
         if fingerprint is not None:
             if fingerprint != _fingerprint:
                 m = "Election fingerprint mismatch!"

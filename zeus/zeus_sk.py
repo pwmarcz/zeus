@@ -18,7 +18,9 @@ def reencrypt(modulus, generator, order, public, alpha, beta, secret=None):
 
 def compute_mix_challenge(cipher_mix):
     hasher = sha256()
-    update = hasher.update
+
+    def update(s):
+        hasher.update(s.encode())
 
     update("%x" % cipher_mix['modulus'])
     update("%x" % cipher_mix['generator'])
