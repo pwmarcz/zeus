@@ -20,6 +20,7 @@ from django.forms.models import BaseModelFormSet
 from django.forms.widgets import Select, MultiWidget, TextInput,\
     HiddenInput
 from django.forms.formsets import BaseFormSet
+from django.http import QueryDict
 
 from helios.models import Election, Poll, Voter
 from heliosauth.models import User
@@ -357,8 +358,8 @@ class ScoresForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
         super(ScoresForm, self).__init__(*args, **kwargs)
-        if type(self.data) != dict:
-            myDict = dict(self.data.iterlists())
+        if isinstance(self.data, QueryDict):
+            myDict = dict(self.data.lists())
         else:
             myDict = self.data
 
