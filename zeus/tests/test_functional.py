@@ -446,8 +446,8 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.voter_login(self.get_voter_from_url(voter_login_url),
                          voter_login_url)
         r = self.c.get(voter_login_url, follow=True)
-        assert ('Η ψηφοφορία έχει λήξει' in r.content) \
-                        or ('Voting closed' in r.content)
+        assert ('Η ψηφοφορία έχει λήξει' in r.content.decode()) \
+                        or ('Voting closed' in r.content.decode())
         self.verbose('- Voter trying to vote was informed that'
                      ' voting is closed')
         r = self.c.post('/elections/%s/polls/%s/cast'
