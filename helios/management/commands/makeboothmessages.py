@@ -285,7 +285,7 @@ def make_messages(locale=None, domain='django', verbosity=1, all=False,
     if settings.configured:
         settings.USE_I18N = True
     else:
-        settings.configure(USE_I18N = True)
+        settings.configure(USE_I18N=True)
 
     if ignore_patterns is None:
         ignore_patterns = []

@@ -241,8 +241,8 @@ def update_candidate_counts(full_data, current_round, vote_count, hopefuls):
         candidate_rounds.append([current_round, vote_rounded])
 
 
-def count_stv(ballots, seats, droop = True, constituencies = None,
-              quota_limit = 0, rnd_gen=None, logger=logger):
+def count_stv(ballots, seats, droop=True, constituencies=None,
+              quota_limit=0, rnd_gen=None, logger=logger):
     """Performs a STV vote for the given ballots and number of seats.
 
     If droop is true the election threshold is calculated according to the

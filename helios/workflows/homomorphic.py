@@ -321,7 +321,7 @@ class Tally(WorkflowObject):
         """
 
         # pre-compute a dlog table
-        dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
+        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
         dlog_table.precompute(self.num_tallied)
 
         result = []

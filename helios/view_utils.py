@@ -68,7 +68,7 @@ def prepare_vars(request, vars):
     return vars_with_user
 
 
-def render_template(request, template_name, vars = {}, include_user=True):
+def render_template(request, template_name, vars={}, include_user=True):
     vars_with_user = prepare_vars(request, vars)
 
     language = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)

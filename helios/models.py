@@ -280,8 +280,8 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
     trial = models.BooleanField(_("Trial election"), default=False,
                                 help_text=help.trial)
 
-    public_key = LDObjectField(type_hint = 'legacy/EGPublicKey', null=True)
-    private_key = LDObjectField(type_hint = 'legacy/EGSecretKey', null=True)
+    public_key = LDObjectField(type_hint='legacy/EGPublicKey', null=True)
+    private_key = LDObjectField(type_hint='legacy/EGSecretKey', null=True)
 
     admins = models.ManyToManyField(User, related_name="elections")
     institution = models.ForeignKey('zeus.Institution', on_delete=models.CASCADE, null=True)
@@ -705,7 +705,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now_add=True)
 
-    questions = LDObjectField(type_hint = 'legacy/Questions',
+    questions = LDObjectField(type_hint='legacy/Questions',
                               null=True)
     questions_data = JSONField(null=True)
 
@@ -714,7 +714,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                                     null=True)
 
     # results of the election
-    result = LDObjectField(type_hint = 'phoebus/Result',
+    result = LDObjectField(type_hint='phoebus/Result',
                            null=True)
     stv_results = JSONField(null=True)
 
@@ -1092,8 +1092,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         # new_voter_file.voter_file.save(random_filename, uploaded_file)
 
         new_voter_file = VoterFile(poll=self,
-                                   voter_file_content=\
-                                   base64.encodestring(uploaded_file.read()).decode())
+                                   voter_file_content=base64.encodestring(uploaded_file.read()).decode())
         new_voter_file.save()
         return new_voter_file
 
@@ -1680,25 +1679,25 @@ class VoterManager(models.Manager):
 
 class Voter(HeliosModel, VoterFeatures):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="voters")
-    uuid = models.CharField(max_length = 50)
+    uuid = models.CharField(max_length=50)
 
     # if user is null, then you need a voter login ID and password
-    voter_login_id = models.CharField(max_length = 100, null=True)
-    voter_password = models.CharField(max_length = 100, null=True)
-    voter_name = models.CharField(max_length = 200, null=True)
-    voter_surname = models.CharField(max_length = 200, null=True)
-    voter_email = models.CharField(max_length = 250, null=True)
-    voter_fathername = models.CharField(max_length = 250, null=True)
-    voter_mobile = models.CharField(max_length = 48, null=True)
+    voter_login_id = models.CharField(max_length=100, null=True)
+    voter_password = models.CharField(max_length=100, null=True)
+    voter_name = models.CharField(max_length=200, null=True)
+    voter_surname = models.CharField(max_length=200, null=True)
+    voter_email = models.CharField(max_length=250, null=True)
+    voter_fathername = models.CharField(max_length=250, null=True)
+    voter_mobile = models.CharField(max_length=48, null=True)
     voter_weight = models.PositiveIntegerField(default=1)
 
     # if election uses aliases
-    alias = models.CharField(max_length = 100, null=True)
+    alias = models.CharField(max_length=100, null=True)
 
     # we keep a copy here for easy tallying
-    vote = LDObjectField(type_hint = 'phoebus/EncryptedVote',
+    vote = LDObjectField(type_hint='phoebus/EncryptedVote',
                          null=True)
-    vote_hash = models.CharField(max_length = 100, null=True)
+    vote_hash = models.CharField(max_length=100, null=True)
     vote_fingerprint = models.CharField(max_length=255)
     vote_signature = models.TextField()
     vote_index = models.PositiveIntegerField(null=True)
@@ -1810,7 +1809,7 @@ class Voter(HeliosModel, VoterFeatures):
     @transaction.atomic
     def register_user_in_election(cls, user, election):
         voter_uuid = str(uuid.uuid4())
-        voter = Voter(uuid= voter_uuid, user = user, election = election)
+        voter = Voter(uuid=voter_uuid, user=user, election=election)
 
         # do we need to generate an alias?
         heliosutils.lock_row(Election, election.id)
@@ -1825,14 +1824,14 @@ class Voter(HeliosModel, VoterFeatures):
         """
         FIXME: review this for non-GAE?
         """
-        query = cls.objects.filter(election = election)
+        query = cls.objects.filter(election=election)
 
         # the boolean check is not stupid, this is ternary logic
         # none means don't care if it's cast or not
         if cast == True:
-            query = query.exclude(cast_at = None)
+            query = query.exclude(cast_at=None)
         elif cast == False:
-            query = query.filter(cast_at = None)
+            query = query.filter(cast_at=None)
 
         # little trick to get around GAE limitation
         # order by uuid only when no inequality has been added
@@ -1860,20 +1859,20 @@ class Voter(HeliosModel, VoterFeatures):
     @classmethod
     def get_by_election_and_voter_id(cls, election, voter_id):
         try:
-            return cls.objects.get(poll= election, voter_email = voter_id)
+            return cls.objects.get(poll=election, voter_email=voter_id)
         except cls.DoesNotExist:
             return None
 
     @classmethod
     def get_by_election_and_user(cls, election, user):
         try:
-            return cls.objects.get(election = election, user = user)
+            return cls.objects.get(election=election, user=user)
         except cls.DoesNotExist:
             return None
 
     @classmethod
     def get_by_election_and_uuid(cls, election, uuid):
-        query = cls.objects.filter(election = election, uuid = uuid)
+        query = cls.objects.filter(election=election, uuid=uuid)
 
         try:
             return query[0]
@@ -1882,7 +1881,7 @@ class Voter(HeliosModel, VoterFeatures):
 
     @classmethod
     def get_by_user(cls, user):
-        return cls.objects.select_related().filter(user = user).order_by('-cast_at')
+        return cls.objects.select_related().filter(user=user).order_by('-cast_at')
 
     @property
     def datatype(self):
@@ -1896,7 +1895,7 @@ class Voter(HeliosModel, VoterFeatures):
         if not self.vote_hash:
             return None
 
-        return CastVote.objects.get(vote_hash = self.vote_hash).vote_tinyhash
+        return CastVote.objects.get(vote_hash=self.vote_hash).vote_tinyhash
 
     @property
     def election_uuid(self):
@@ -1957,7 +1956,7 @@ class Voter(HeliosModel, VoterFeatures):
         self.save()
 
     def last_cast_vote(self):
-        return CastVote(vote = self.vote, vote_hash = self.vote_hash, cast_at = self.cast_at, voter=self)
+        return CastVote(vote=self.vote, vote_hash=self.vote_hash, cast_at=self.cast_at, voter=self)
 
 
 class CastVoteQuerySet(QuerySet):
@@ -2045,7 +2044,7 @@ class CastVote(HeliosModel):
         length = 8
         while True:
             vote_tinyhash = safe_hash[:length]
-            if CastVote.objects.filter(vote_tinyhash = vote_tinyhash).count() == 0:
+            if CastVote.objects.filter(vote_tinyhash=vote_tinyhash).count() == 0:
                 break
             length += 1
 
@@ -2108,17 +2107,16 @@ class AuditedBallot(models.Model):
 
     @classmethod
     def get(cls, election, vote_hash):
-        return cls.objects.get(election = election, vote_hash = vote_hash,
+        return cls.objects.get(election=election, vote_hash=vote_hash,
                                is_request=False)
 
     @classmethod
     def get_by_election(cls, election, after=None, limit=None, extra={}):
-        query = cls.objects.filter(election =
-                                   election).order_by('-pk').filter(**extra)
+        query = cls.objects.filter(election=election).order_by('-pk').filter(**extra)
 
         # if we want the list after a certain UUID, add the inequality here
         if after:
-            query = query.filter(vote_hash__gt = after)
+            query = query.filter(vote_hash__gt=after)
 
         query = query.filter(is_request=False)
         if limit:
@@ -2189,10 +2187,10 @@ class Trustee(HeliosModel, TrusteeFeatures):
     name = models.CharField(max_length=200)
     email = models.EmailField()
     secret = models.CharField(max_length=100)
-    public_key = LDObjectField(type_hint = 'legacy/EGPublicKey', null=True)
+    public_key = LDObjectField(type_hint='legacy/EGPublicKey', null=True)
     public_key_hash = models.CharField(max_length=100)
-    secret_key = LDObjectField(type_hint = 'legacy/EGSecretKey', null=True)
-    pok = LDObjectField(type_hint = 'legacy/DLogProof', null=True)
+    secret_key = LDObjectField(type_hint='legacy/EGSecretKey', null=True)
+    pok = LDObjectField(type_hint='legacy/DLogProof', null=True)
     last_verified_key_at = models.DateTimeField(null=True)
     last_notified_at = models.DateTimeField(null=True, default=None)
 

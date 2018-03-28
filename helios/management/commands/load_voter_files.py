@@ -40,7 +40,7 @@ def process_csv_file(election, f):
             name = voter[2]
 
         # create the user
-        user = User.update_or_create(user_type='password', user_id=voter_id, info = {'password': helios_utils.random_string(10), 'email': email, 'name': name})
+        user = User.update_or_create(user_type='password', user_id=voter_id, info={'password': helios_utils.random_string(10), 'email': email, 'name': name})
         user.save()
 
         # does voter for this user already exist
@@ -49,7 +49,7 @@ def process_csv_file(election, f):
         # create the voter
         if not voter:
             voter_uuid = str(uuid.uuid1())
-            voter = Voter(uuid= voter_uuid, voter_type = 'password', voter_id = voter_id, name = name, election = election)
+            voter = Voter(uuid=voter_uuid, voter_type='password', voter_id=voter_id, name=name, election=election)
             voter.save()
 
     return num_voters

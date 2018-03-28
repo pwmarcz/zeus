@@ -83,7 +83,7 @@ class PublicKey:
         self.g = None
         self.q = None
 
-    def encrypt_with_r(self, plaintext, r, encode_message= False):
+    def encrypt_with_r(self, plaintext, r, encode_message=False):
         """
         expecting plaintext.m to be a big integer
         """
@@ -135,7 +135,7 @@ class PublicKey:
         result.y = (self.y * other.y) % result.p
         return result
 
-    def verify_sk_proof(self, dlog_proof, challenge_generator = None):
+    def verify_sk_proof(self, dlog_proof, challenge_generator=None):
         """
         verify the proof of knowledge of the secret key
         g^response = commitment * y^challenge
@@ -178,7 +178,7 @@ class SecretKey:
 
         return factor, proof
 
-    def decrypt(self, ciphertext, dec_factor = None, decode_m=False):
+    def decrypt(self, ciphertext, dec_factor=None, decode_m=False):
         """
         Decrypt a ciphertext. Optional parameter decides whether to encode the message into the proper subgroup.
         """
@@ -204,7 +204,7 @@ class SecretKey:
 
 
 class Plaintext:
-    def __init__(self, m = None, pk = None):
+    def __init__(self, m=None, pk=None):
         self.m = m
         self.pk = pk
 
@@ -416,7 +416,7 @@ class ZKProof(object):
 
 
 class ZKDisjunctiveProof:
-    def __init__(self, proofs = None):
+    def __init__(self, proofs=None):
         self.proofs = proofs
 
 

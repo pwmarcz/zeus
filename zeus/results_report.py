@@ -145,10 +145,10 @@ def load_score_results(data, repr_data, qdata):
 def make_first_page_hf(canvas, doc):
     canvas.saveState()
     canvas.drawImage(ZEUS_LOGO,
-                     x = PAGE_WIDTH - 5 * cm,
-                     y = PAGE_HEIGHT - 2 * cm,
-                     width = PAGE_WIDTH / 8,
-                     height = 1.1 * cm)
+                     x=PAGE_WIDTH - 5 * cm,
+                     y=PAGE_HEIGHT - 2 * cm,
+                     width=PAGE_WIDTH / 8,
+                     height=1.1 * cm)
     canvas.restoreState()
 
 
@@ -157,10 +157,10 @@ def make_later_pages_hf(pageinfo):
         canvas.saveState()
         canvas.setFont('Helvetica',9)
         canvas.drawImage(ZEUS_LOGO,
-                        x = 2 * cm,
-                        y = PAGE_HEIGHT - 2 * cm,
-                        width = PAGE_WIDTH / 8,
-                        height = 1.1 * cm)
+                        x=2 * cm,
+                        y=PAGE_HEIGHT - 2 * cm,
+                        width=PAGE_WIDTH / 8,
+                        height=1.1 * cm)
         canvas.drawRightString(PAGE_WIDTH - 2 * cm, PAGE_HEIGHT - 1.5 * cm,
                         "%s" % (pageinfo, ))
         canvas.restoreState()
@@ -230,7 +230,7 @@ def make_party_list_heading(elements, styles, party, count):
 def make_party_list_table(elements, styles, party_results):
 
     table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
-    t = Table(party_results, style = table_style)
+    t = Table(party_results, style=table_style)
     elements.append(t)
 
 
@@ -387,8 +387,8 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
                 elements.append(round_table)
                 elements.append(Spacer(1, 12))
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
 
 
 def build_doc(title, name, institution_name, voting_start, voting_end,
@@ -486,8 +486,8 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
             make_results(elements, styles, total_votes, blank_votes,
                          parties_results, candidates_results)
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
 
 
 def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
@@ -644,8 +644,8 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             elements.append(t)
             elements.append(PageBreak())
 
-        doc.build(elements, onFirstPage = make_first_page_hf,
-                  onLaterPages = make_later_pages_hf(pageinfo))
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
 
 
 def main():

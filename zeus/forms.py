@@ -110,11 +110,10 @@ class ElectionForm(forms.ModelForm):
         choices = [('en', _('English')),
                    ('el', _('Greek'))]
         help_text = _("Set the language that will be used for email messages")
-        self.fields['communication_language'] = forms.ChoiceField(label=
-                                                    _("Communication language"),
+        self.fields['communication_language'] = forms.ChoiceField(label=_("Communication language"),
                                                     choices=choices,
                                                     initial=lang,
-                                                    help_text = help_text)
+                                                    help_text=help_text)
         self.fields['linked_polls'].widget = forms.HiddenInput()
         if owner.sms_data:
             help_text = _("Notify voters using SMS (%d deliveries available for your account)") % owner.sms_data.left
@@ -492,7 +491,7 @@ class StvForm(QuestionBaseForm):
                              forms.BooleanField(
                                  widget=widget,
                                  help_text=limit_help_text,
-                                 label = limit_label,
+                                 label=limit_label,
                                  required=False))
 
         elig_help_text = _("set the eligibles count of the election")

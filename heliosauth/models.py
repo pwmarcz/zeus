@@ -82,7 +82,7 @@ class User(models.Model):
     sms_data = models.ForeignKey(SMSBackendData, on_delete=models.CASCADE, null=True, default=None)
 
     # access token information
-    token = JSONField(null = True)
+    token = JSONField(null=True)
 
     @property
     def eligible_election_types(self):
@@ -127,11 +127,11 @@ class User(models.Model):
 
     @classmethod
     def get_by_type_and_id(cls, user_type, user_id):
-        return cls.objects.get(user_type = user_type, user_id = user_id)
+        return cls.objects.get(user_type=user_type, user_id=user_id)
 
     @classmethod
     def update_or_create(cls, user_type, user_id, name=None, info=None, token=None):
-        obj, created_p = cls.objects.get_or_create(user_type = user_type, user_id = user_id, defaults = {'name': name, 'info':info, 'token':token})
+        obj, created_p = cls.objects.get_or_create(user_type=user_type, user_id=user_id, defaults={'name': name, 'info':info, 'token':token})
 
         if not created_p:
             # special case the password: don't replace it if it exists
@@ -200,7 +200,7 @@ class User(models.Model):
 
         for constraint in eligibility_case['constraint']:
             # do we match on this constraint?
-            if auth_system.check_constraint(constraint=constraint, user = self):
+            if auth_system.check_constraint(constraint=constraint, user=self):
                 return True
 
         # no luck

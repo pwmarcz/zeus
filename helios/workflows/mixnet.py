@@ -70,7 +70,7 @@ class Tally(HomomorphicTally):
         """
 
         # pre-compute a dlog table
-        dlog_table = DLogTable(base = public_key.g, modulus = public_key.p)
+        dlog_table = DLogTable(base=public_key.g, modulus=public_key.p)
 
         if not self.num_tallied:
             self.num_tallied = len(self.tally[0])

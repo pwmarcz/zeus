@@ -534,7 +534,7 @@ def voters_upload(request, election, poll):
 def voters_upload_cancel(request, election, poll):
     voter_file_id = request.session.get('voter_file_id', None)
     if voter_file_id:
-        vf = VoterFile.objects.get(id = voter_file_id)
+        vf = VoterFile.objects.get(id=voter_file_id)
         vf.delete()
     if 'voter_file_id' in request.session:
         del request.session['voter_file_id']

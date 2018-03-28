@@ -50,7 +50,7 @@ class LDObjectField(models.TextField):
 
         if parsed_value != None:
             "we give the wrapped object back because we're not dealing with serialization types"
-            return_val = LDObject.fromDict(parsed_value, type_hint = self.type_hint).wrapped_obj
+            return_val = LDObject.fromDict(parsed_value, type_hint=self.type_hint).wrapped_obj
             return return_val
         else:
             return None

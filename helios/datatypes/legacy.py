@@ -88,9 +88,9 @@ class Voter(LegacyObject):
         depending on whether the voter is aliased, use different fields
         """
         if self.wrapped_obj.alias != None:
-            return super(Voter, self).toDict(self.ALIASED_VOTER_FIELDS, complete = complete)
+            return super(Voter, self).toDict(self.ALIASED_VOTER_FIELDS, complete=complete)
         else:
-            return super(Voter,self).toDict(complete = complete)
+            return super(Voter,self).toDict(complete=complete)
 
 
 class ShortCastVote(LegacyObject):
@@ -180,7 +180,7 @@ class EGZKDisjunctiveProof(LegacyObject):
         "hijack and make sure we add the proofs name back on"
         return super(EGZKDisjunctiveProof, self).loadDataFromDict({'proofs': d})
 
-    def toDict(self, complete = False):
+    def toDict(self, complete=False):
         "hijack toDict and make it return the proofs array only, since that's the spec for legacy"
         return super(EGZKDisjunctiveProof, self).toDict(complete=complete)['proofs']
 

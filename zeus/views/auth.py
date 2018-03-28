@@ -110,7 +110,7 @@ def change_password(request):
 def oauth2_login(request):
     poll_uuid = request.GET.get('state')
     try:
-        poll = Poll.objects.get(uuid = poll_uuid)
+        poll = Poll.objects.get(uuid=poll_uuid)
     except Poll.DoesNotExist:
         return HttpResponseBadRequest(400)
     oauth2 = poll.get_oauth2_module

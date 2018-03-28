@@ -3875,13 +3875,13 @@ class ZeusCoreElection(object):
                 raise AssertionError(m)
 
     @classmethod
-    def mk_random(cls, nr_candidates = 3,
-                       nr_trustees = 2,
-                       nr_voters = 10,
-                       nr_votes = 10,
-                       nr_mixes = 2,
-                       nr_rounds = 8,
-                       stage = 'FINISHED',
+    def mk_random(cls, nr_candidates=3,
+                       nr_trustees=2,
+                       nr_voters=10,
+                       nr_votes=10,
+                       nr_mixes=2,
+                       nr_rounds=8,
+                       stage='FINISHED',
                        teller=_teller, **kw):
 
         self = cls(teller=teller, **kw)
@@ -4076,12 +4076,12 @@ def main(cmd=None):
         no_verify = args.no_verify
 
         election = ZeusCoreElection.mk_random(
-                            nr_candidates = args.nr_candidates,
-                            nr_trustees = args.nr_trustees,
-                            nr_voters = args.nr_voters,
-                            nr_votes = args.nr_votes,
-                            nr_rounds = args.nr_rounds,
-                            stage = args.stage,
+                            nr_candidates=args.nr_candidates,
+                            nr_trustees=args.nr_trustees,
+                            nr_voters=args.nr_voters,
+                            nr_votes=args.nr_votes,
+                            nr_rounds=args.nr_rounds,
+                            stage=args.stage,
                             teller=teller, nr_parallel=nr_parallel,
                             no_verify=no_verify)
         exported, stage = election.export()

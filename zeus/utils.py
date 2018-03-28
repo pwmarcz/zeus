@@ -92,7 +92,7 @@ def extract_trustees(content):
     return trustees
 
 
-def render_template(request, template_name, vars = {}):
+def render_template(request, template_name, vars={}):
     t = loader.get_template(template_name + '.html')
 
     vars_with_user = vars.copy()

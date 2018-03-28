@@ -110,9 +110,9 @@ width = 0.35
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-registered = ax.bar(margin+ind, voters_count, width, color='c', bottom = 0)
+registered = ax.bar(margin+ind, voters_count, width, color='c', bottom=0)
 voted = ax.bar(margin+ind+width, voters_cast_count, width, color='m',
-               bottom = 0)
+               bottom=0)
 
 ax.set_ylabel('Voters')
 ax.set_title('Elections')
