@@ -10,8 +10,6 @@ from helios.models import Election
 
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class Command(BaseCommand):
     args = ''

@@ -1,6 +1,3 @@
-
-
-import sys
 import os
 
 from django.core.management.base import BaseCommand, CommandError
@@ -87,8 +84,6 @@ class Command(BaseCommand):
                                 'number provided instead (for testing).')
 
     def handle(self, *args, **options):
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
 
         euuid = options.get('election_uuid')
         puuid = options.get('poll_uuid')

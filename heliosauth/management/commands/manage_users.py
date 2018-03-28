@@ -1,7 +1,3 @@
-
-
-import sys
-
 from django.core.management.base import BaseCommand
 
 from heliosauth.models import User, UserGroup, SMSBackendData
@@ -82,9 +78,6 @@ class Command(BaseCommand):
         return User.objects.get(user_id=userid)
 
     def handle(self, **options):
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
-
         if options.get('create_institution'):
             if not options['param']:
                 print("Provide the institution name")

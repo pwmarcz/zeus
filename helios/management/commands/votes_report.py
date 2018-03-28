@@ -4,9 +4,6 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election, CastVote
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class Command(BaseCommand):
     args = ''

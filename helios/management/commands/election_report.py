@@ -12,9 +12,6 @@ from zeus import reports
 import sys
 from collections import OrderedDict
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 
 def json_handler(obj):
     if hasattr(obj, 'isoformat'):

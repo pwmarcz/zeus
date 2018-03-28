@@ -15,10 +15,6 @@ from helios.models import Election, Voter, iter_voter_data
 from io import StringIO
 import os
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 
 UPDATE = os.environ.get('UPDATE_EXISTING', 0)
 
