@@ -53,8 +53,10 @@ def stv_count(request):
             form = STVElectionForm(request.POST, disabled=False)
             if form.is_valid():
                 candidates = form.get_candidates()
+
                 class F(STVBallotForm):
                     pass
+
                 setattr(F, 'candidates', candidates)
                 formset_count = int(form.cleaned_data.get('ballots_count'))
                 if not request.POST.get('submit_ballots', False):

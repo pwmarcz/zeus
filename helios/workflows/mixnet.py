@@ -84,7 +84,7 @@ class Tally(HomomorphicTally):
             q_result = []
 
             for a_num, a in enumerate(q):
-            # coalesce the decryption factors into one list
+                # coalesce the decryption factors into one list
                 dec_factor_list = [df[q_num][a_num] for df in decryption_factors]
                 raw_value = self.tally[q_num][a_num].decrypt(dec_factor_list, public_key)
 

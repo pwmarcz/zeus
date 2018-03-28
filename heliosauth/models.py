@@ -146,7 +146,7 @@ class User(models.Model):
         return obj
 
     def is_authenticated(self):
-        return self._is_authenticated == True
+        return bool(self._is_authenticated)
 
     def can_update_status(self):
         if self.user_type not in AUTH_SYSTEMS:

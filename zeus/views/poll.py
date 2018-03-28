@@ -262,7 +262,7 @@ def add_edit(request, election, poll=None):
             return redirect(url)
     if request.method == "GET":
         form = PollForm(instance=poll, election=election)
-    context = {'election': election, 'poll': poll,  'form': form}
+    context = {'election': election, 'poll': poll, 'form': form}
     set_menu('polls', context)
     if poll:
         set_menu('edit_poll', context)
@@ -522,7 +522,7 @@ def voters_upload(request, election, poll):
     else:
         if 'voter_file_id' in request.session:
             del request.session['voter_file_id']
-        no_link = request.GET.get("no-link", False) != False
+        no_link = bool(request.GET.get("no-link", False))
         request.session['no_link'] = no_link
         return render_template(request,
                                'election_poll_voters_upload',

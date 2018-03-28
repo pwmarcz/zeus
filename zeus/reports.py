@@ -320,7 +320,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
         for poll in polls:
             score_results = poll.zeus.get_results()
             invalid_count = len([b for b in score_results['ballots']
-                                if b['valid'] == False])
+                                if not b['valid']])
             blank_count = len([b for b in score_results['ballots']
                             if not b.get('candidates')])
             ballot_count = len(score_results['ballots'])

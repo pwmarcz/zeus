@@ -103,8 +103,8 @@ class ElectionFeatures(FeaturesMixin):
 
     @election_feature()
     def _feature_voting_started(self):
-        return  self.feature_frozen and \
-                self.voting_starts_at <= datetime.datetime.now()
+        return self.feature_frozen and \
+               self.voting_starts_at <= datetime.datetime.now()
 
     @election_feature()
     def _feature_canceled(self):

@@ -1831,9 +1831,9 @@ def sign_element(element, modulus, generator, order, key):
         if s != 0:
             break
     return {'r': r, 's': s, 'e': element,
-            'crypto':  {'modulus': modulus,
-                        'generator': generator,
-                        'order': order}}
+            'crypto': {'modulus': modulus,
+                       'generator': generator,
+                       'order': order}}
 
 
 def verify_element_signature(signature, modulus, generator, order, public):

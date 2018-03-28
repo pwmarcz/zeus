@@ -227,7 +227,7 @@ def count_description(vote_count, candidates):
     is a candidate and each {1} is the corresponding vote count.
     """
 
-    return  ';'.join(["{0} = {1}".format(x, vote_count[x]) for x in candidates])
+    return ';'.join(["{0} = {1}".format(x, vote_count[x]) for x in candidates])
 
 
 def update_candidate_counts(full_data, current_round, vote_count, hopefuls):

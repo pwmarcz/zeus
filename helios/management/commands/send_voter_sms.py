@@ -41,11 +41,11 @@ class Command(BaseCommand):
                            help='By default messages are printed to the ' +
                                 'screen. Set this flag to actually send ' +
                                 'messages using the sms API')
-        #parser.add_argument('--async',
-                           #action='store_true',
-                           #dest='async',
-                           #default=False,
-                           #help='Send messages asynchronously')
+#parser.add_argument('--async',
+#action='store_true',
+#dest='async',
+#default=False,
+#help='Send messages asynchronously')
         parser.add_argument('--list',
                            action='store_true',
                            dest='list_voters',

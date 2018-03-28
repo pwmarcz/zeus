@@ -158,6 +158,7 @@ def election_admin_required(func):
 
 def unauthenticated_user_required(func):
     from zeus.views.site import error as error_view
+
     @wraps(func)
     def wrapper(request, *args, **kwargs):
         if request.zeususer.is_authenticated():

@@ -278,6 +278,6 @@ def jwt_login(request):
         data.append(voter_link)
         polls_data.append(data)
 
-    context = {'issuer': iss, 'voter_data': voter,  'polls_data': polls_data}
+    context = {'issuer': iss, 'voter_data': voter, 'polls_data': polls_data}
     tpl = 'jwt_polls_list'
     return render_template(request, tpl, context)

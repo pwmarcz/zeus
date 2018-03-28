@@ -66,7 +66,7 @@ def get_class(datatype):
             dynamic_ptr = getattr(dynamic_ptr, attr)
         dynamic_cls = dynamic_ptr
     except AttributeError:
-        raise Exception ("no module for %s" % datatype)
+        raise Exception("no module for %s" % datatype)
 
     dynamic_cls.datatype = datatype
 

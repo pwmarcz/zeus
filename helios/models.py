@@ -1828,9 +1828,9 @@ class Voter(HeliosModel, VoterFeatures):
 
         # the boolean check is not stupid, this is ternary logic
         # none means don't care if it's cast or not
-        if cast == True:
+        if cast is True:
             query = query.exclude(cast_at=None)
-        elif cast == False:
+        elif cast is False:
             query = query.filter(cast_at=None)
 
         # little trick to get around GAE limitation
@@ -1845,7 +1845,7 @@ class Voter(HeliosModel, VoterFeatures):
                 else:
                     field_name = "%s__gt" % order_by
                 conditions = {field_name: after}
-                query = query.filter (**conditions)
+                query = query.filter(**conditions)
 
         if limit:
             query = query[:limit]

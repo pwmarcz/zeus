@@ -35,7 +35,7 @@ class LDObjectField(models.TextField):
         if not isinstance(value, str):
             return value
 
-        if  value == None:
+        if value == None:
             return None
 
         # in some cases, we're loading an existing array or dict,
