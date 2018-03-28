@@ -810,7 +810,7 @@ def voters_csv(request, election, poll, fname):
     filename = smart_text("voters-%s.csv" % election.short_name)
     if fname:
         filename = fname
-    response['Content-Dispotition'] = \
+    response['Content-Disposition'] = \
            'attachment; filename="%s.csv"' % filename
 
     headers = poll.get_module().get_voters_list_headers(request)
@@ -1034,7 +1034,7 @@ def download_signature_short(request, fingerprint):
 def download_signature(request, election, poll, fingerprint):
     vote = CastVote.objects.get(voter__poll=poll, fingerprint=fingerprint)
     response = HttpResponse(content_type='application/binary')
-    response['Content-Dispotition'] = 'attachment; filename=signature.txt'
+    response['Content-Disposition'] = 'attachment; filename=signature.txt'
     response.write(vote.signature['signature'])
     return response
 
@@ -1165,7 +1165,7 @@ def results_file(request, election, poll, language, ext):
         response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
         zip_data.close()
         basename = os.path.basename(fname)
-        response['Content-Dispotition'] = 'attachment; filename=%s' % basename
+        response['Content-Disposition'] = 'attachment; filename=%s' % basename
         return response
 
 
@@ -1183,10 +1183,10 @@ def zeus_proofs(request, election, poll):
         response['X-Sendfile'] = poll.zeus_proofs_path()
         return response
     else:
-        zip_data = open(poll.zeus_proofs_path())
+        zip_data = open(poll.zeus_proofs_path(), 'rb')
         response = HttpResponse(zip_data.read(), content_type='application/zip')
         zip_data.close()
-        response['Content-Dispotition'] = 'attachment; filename=%s_proofs.zip' % election.uuid
+        response['Content-Disposition'] = 'attachment; filename=%s_proofs.zip' % election.uuid
         return response
 
 
