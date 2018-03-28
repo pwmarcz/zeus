@@ -7,7 +7,6 @@ ben@adida.net
 """
 
 
-
 from django.core.management.base import BaseCommand
 
 from helios.models import Election

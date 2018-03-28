@@ -6,7 +6,6 @@ Some basic utils
 """
 
 
-
 import json
 
 ## JSON

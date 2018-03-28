@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 from django.db import models, migrations
 import helios.fields
 import heliosauth.models

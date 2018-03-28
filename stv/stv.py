@@ -31,7 +31,6 @@
 # GRNET S.A.
 
 
-
 from random import random, seed
 import logging
 import sys

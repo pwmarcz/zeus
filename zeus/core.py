@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 import sys
 from datetime import datetime
 from random import randint, choice as rand_choice

@@ -8,7 +8,6 @@ ben@adida.net
 """
 
 
-
 import math
 import hashlib
 import logging

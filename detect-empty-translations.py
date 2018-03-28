@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-
 import sys
 
 po_files = sys.argv[1:]
