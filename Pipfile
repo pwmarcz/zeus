@@ -14,7 +14,7 @@ reportlab = "*"
 pyyaml = "*"
 uwsgi = "*"
 ipython = ">=5,<6"
-
+"backports.csv" = "*"
 
 [dev-packages]
 # selenium = "==2.25.0"

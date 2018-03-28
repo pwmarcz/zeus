@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d59f1fe9e37267e62a68dbc90920551777c989d6a6be79cf7823e7d8d7aef627"
+            "sha256": "9fe08671b3da8b925746f24dc500fb0e20830ec3ec4aa989884fc636f4c1ac41"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -22,6 +22,14 @@
                 "sha256:cba1ace9d4ff6049b190d8b7991f9c1006b443a5238021aca96dd6ad2ac9da22"
             ],
             "version": "==2.2.2"
+        },
+        "backports.csv": {
+            "hashes": [
+                "sha256:8c421385cbc6042ba90c68c871c5afc13672acaf91e1508546d6cda6725ebfc6",
+                "sha256:d3b0cefaaca92be3d2d4ceec140827cae1d871da7fff5db70697d72328357d65"
+            ],
+            "index": "pypi",
+            "version": "==1.0.5"
         },
         "backports.shutil-get-terminal-size": {
             "hashes": [
@@ -566,10 +574,10 @@
         },
         "pbr": {
             "hashes": [
-                "sha256:05f61c71aaefc02d8e37c0a3eeb9815ff526ea28b3b76324769e6158d7f95be1",
-                "sha256:60c25b7dfd054ef9bb0ae327af949dd4676aa09ac3a9471cdc871d8a9213f9ac"
+                "sha256:8b9a7c3704657cb0831b3ded0a6b61377947c8235b76649bb7de4bfe2e6cfa56",
+                "sha256:cf66675e22ae91a4f20e4b8354f117d3e3d1de651513051d109cc39645fb3672"
             ],
-            "version": "==3.1.1"
+            "version": "==4.0.0"
         },
         "pluggy": {
             "hashes": [

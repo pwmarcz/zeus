@@ -101,9 +101,9 @@ class CSVReaderTests(TestCase):
 
     def test012_check_delimiter_sniffing(self):
         delims = [',', ';', ':', ' ', '\t']
-        inp = ("testmail10testmail.com{0}testname0{0}testsurname0\n"
-               "testmail1@testmail.com{0}δοκιμαστικόόνομα{0}δοκεπίθετο\n"
-               "testmail2@testmail.com{0}όνομα3{0}επίθετο3\n")
+        inp = (u"testmail10testmail.com{0}testname0{0}testsurname0\n"
+               u"testmail1@testmail.com{0}δοκιμαστικόόνομα{0}δοκεπίθετο\n"
+               u"testmail2@testmail.com{0}όνομα3{0}επίθετο3\n")
         delims_sniffed = []
         for delim in delims:
             delimed_input = inp.format(delim)

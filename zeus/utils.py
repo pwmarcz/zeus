@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
-from cStringIO import StringIO
-from csv import (Sniffer, excel, Error as csvError,
-                 reader as imported_csv_reader)
+import six
 from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
@@ -14,6 +12,12 @@ from django.shortcuts import render
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import validate_email, ValidationError
+if six.PY2:
+    from backports.csv import (Sniffer, excel, Error as csvError,
+                               reader as imported_csv_reader)
+else:
+    from csv import (Sniffer, excel, Error as csvError,
+                     reader as imported_csv_reader)
 
 
 def election_trustees_to_text(election):
@@ -276,10 +280,12 @@ class CSVReader(object):
 
         if hasattr(csv_data, 'read') and hasattr(csv_data, 'seek'):
             f = csv_data
-        elif isinstance(csv_data, str):
-            f = StringIO(csv_data)
+        elif isinstance(csv_data, six.binary_type):
+            f = six.BytesIO(csv_data)
+        elif isinstance(csv_data, six.text_type):
+            f = six.StringIO(csv_data)
         else:
-            m = "Please provide str or file to name_of_class, not{type}"
+            m = "Please provide str or file to csv_data, not {type}"
             m = m.format(type=type(csv_data))
             raise ValueError(m)
         if min_fields == 0 or max_fields == 0:
@@ -296,11 +302,17 @@ class CSVReader(object):
 
         self.min_fields = min_fields
         self.max_fields = max_fields
-        sample_data = pick_sample(f.read(65536))
+
+        sample = pick_sample(f.read(65536))
         f.seek(0)
-        encoding = get_encoding(sample_data.strip(), encodings=encodings)
-        dialect = kwargs.get('dialect', get_dialect(sample_data))
-        self.reader = UnicodeReader(f, dialect, encoding)
+        if isinstance(sample, six.binary_type):
+            encoding = get_encoding(sample.strip(), encodings=encodings)
+            f = getreader(encoding)(f)
+            sample = pick_sample(f.read(65536))
+            f.seek(0)
+
+        dialect = kwargs.get('dialect', get_dialect(sample))
+        self.reader = imported_csv_reader(f, dialect)
 
     def next(self):
         row = self.reader.next()
@@ -308,39 +320,6 @@ class CSVReader(object):
             raise CSVCellError(len(row), self.min_fields, self.max_fields)
         row += [u''] * (self.max_fields - len(row))
         return row
-
-    def __iter__(self):
-        return self
-
-
-class UTF8Recoder(object):
-    """
-    Iterator that reads an encoded stream and reencodes the input to UTF-8
-    """
-
-    def __init__(self, f, encoding):
-        self.reader = getreader(encoding)(f)
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        return self.reader.next().encode("utf-8")
-
-
-class UnicodeReader(object):
-    """
-    A CSV reader which will iterate over lines in the CSV file "f",
-    which is encoded in the given encoding.
-    """
-
-    def __init__(self, f, dialect=excel, encoding="utf-8", **kwds):
-        f = UTF8Recoder(f, encoding)
-        self.reader = imported_csv_reader(f, dialect, **kwds)
-
-    def next(self):
-        row = self.reader.next()
-        return [unicode(s, "utf-8") for s in row]
 
     def __iter__(self):
         return self
@@ -393,7 +372,8 @@ def get_encoding(csv_data, encodings=DEFAULT_ENCODINGS):
 
 
 def pick_sample(part):
-    sample, sep, junk = part.rpartition('\x0a')
+    nl = b'\x0a' if isinstance(part, six.binary_type) else u'\x0a'
+    sample, sep, junk = part.rpartition(nl)
     if len(sample) & 1:
         sample += sep
     return sample
