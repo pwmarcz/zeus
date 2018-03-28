@@ -38,7 +38,7 @@ app_patterns += [
     url(r'^admin/', include(admin_urls)),
     url(r'^get-randomness/', shared.get_randomness,
         name="get_randomness"),
-    url(r'^i18n/js', django.views.i18n.javascript_catalog,
+    url(r'^i18n/js', django.views.i18n.JavaScriptCatalog.as_view(),
         name='js_messages', kwargs={'packages': None}),
     url(r'^i18n/setlang', site.setlang),
     url(r'^i18n/', include('django.conf.urls.i18n')),
