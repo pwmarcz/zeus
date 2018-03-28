@@ -55,7 +55,7 @@ poll_patterns += [
 ]
 
 urlpatterns = [
-    url(r'^$', poll.list, name='election_polls_list'),
+    url(r'^$', poll.polls_list, name='election_polls_list'),
     url(r'^add$', poll.add_edit, name='election_polls_add'),
     url(r'^(?P<poll_uuid>[^/]+)/', include(poll_patterns)),
     url(r'^(?P<poll_uuid>[^/]+).json', poll.to_json,

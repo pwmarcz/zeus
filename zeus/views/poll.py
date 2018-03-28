@@ -49,7 +49,7 @@ from zeus.core import to_canonical, from_canonical
 
 
 @auth.election_admin_required
-def list(request, election):
+def polls_list(request, election):
     polls = election.polls.filter()
     context = {'polls': polls, 'election': election}
     set_menu('polls', context)
@@ -70,7 +70,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
     for p in polls:
         ref = p.get('ref')
         assert ref
-        assert ref not in list(byref.keys())
+        assert ref not in byref.keys()
         byref[ref] = p
     existing_refs = []
     new_refs = []
@@ -223,6 +223,7 @@ def _add_batch(request, election):
         _handle_batch(election, data.get('polls'),
                       data.get('vars', {}), data.get('auto_link', False))
     except Exception as e:
+        logging.exception(e)
         election.logger.exception(e)
         messages.error(request, str(e))
 

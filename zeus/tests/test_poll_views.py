@@ -112,7 +112,12 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         assert response.status_code == 302
         self.assertRedirects(response, '/elections/{}/polls/'.format(self.election.uuid))
 
-        # todo: invalid contents
+        polls = list(Poll.objects.order_by('id'))
+        assert len(polls) == 4
+        assert len(polls[0].questions[0]['answers']) == 52
+        assert len(polls[1].questions[0]['answers']) == 13
+        assert len(polls[2].questions[0]['answers']) == 13
+        assert len(polls[3].questions[0]['answers']) == 17
 
     def test_poll_remove(self):
         self.e_uuid = self.election.uuid
