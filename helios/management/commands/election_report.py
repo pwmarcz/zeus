@@ -1,6 +1,6 @@
 """
 """
-from __future__ import absolute_import
+
 import json
 
 from django.core.management.base import BaseCommand

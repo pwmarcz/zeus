@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import os
 import base64
 
@@ -14,5 +14,5 @@ def get_randomness(request, *args, **kwargs):
         'randomness': base64.b64encode(os.urandom(32))
     }
     if token:
-        data['token'] = unicode(csrf(request)['csrf_token'])
+        data['token'] = str(csrf(request)['csrf_token'])
     return JsonResponse(data)

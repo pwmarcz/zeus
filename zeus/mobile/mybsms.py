@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 import uuid
 import six.moves.urllib.request
 import six.moves.urllib.parse
@@ -42,7 +42,7 @@ class Client(object):
 
     def send(self, mobile, msg, fields={}, uid=None):
         if not uid:
-            uid = unicode(uuid.uuid4())
+            uid = str(uuid.uuid4())
 
         mobile = mobile.replace("+", "")
         msg = self._construct(uid, mobile, msg)

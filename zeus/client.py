@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import sys
 import os
 import ssl
@@ -49,8 +49,8 @@ def get_http_connection(url):
     return conn
 
 def generate_voter_file(nr, domain='zeus.minedu.gov.gr'):
-    return '\n'.join((u'%d, voter-%d@%s, Ψηφοφόρος, %d' % (i, i, domain, i))
-                     for i in xrange(nr))
+    return '\n'.join(('%d, voter-%d@%s, Ψηφοφόρος, %d' % (i, i, domain, i))
+                     for i in range(nr))
 
 def generate_vote(p, g, q, y, choices):
     if isinstance(choices, int):
@@ -185,9 +185,9 @@ def cast_vote(voter_url, choices=None):
         if randint(0,19) == 0:
             choices = []
         else:
-            party_choice = choice(parties.keys())
+            party_choice = choice(list(parties.keys()))
             party = parties[party_choice]
-            party_candidates = [k for k in party.keys() if isinstance(k, int)]
+            party_candidates = [k for k in list(party.keys()) if isinstance(k, int)]
             min_choices = party['opt_min_choices']
             max_choices = party['opt_max_choices']
             shuffle(party_candidates)
@@ -244,13 +244,13 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
 
     #main_random_cast_thread(queue)
     threads = [Thread(target=main_random_cast_thread, args=(inqueue, outqueue))
-               for _ in xrange(nr_threads)]
+               for _ in range(nr_threads)]
 
     for t in threads:
         t.daemon = True
         t.start()
 
-    plaintexts = [outqueue.get() for _ in xrange(total)]
+    plaintexts = [outqueue.get() for _ in range(total)]
     f.write(repr(plaintexts))
     f.close()
 

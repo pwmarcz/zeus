@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import sys
 
 from django.core.management.base import BaseCommand
@@ -100,7 +100,7 @@ class Command(BaseCommand):
 
             user = User.objects.get(pk=int(options['param'].strip()))
             print("User has %d elections objects which will be removed" % user.elections.count())
-            confirm = raw_input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
+            confirm = input('Write "yes of course" if you are sure you want to remove \'%s\' ? ' % user.user_id)
             if confirm == "yes of course":
                 user.delete()
             else:

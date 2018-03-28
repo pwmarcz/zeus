@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 from zeus.utils import (CSVReader, get_encoding, CSVCellError,
                         pick_sample, get_dialect)
 from unittest import TestCase, main
@@ -32,7 +32,7 @@ class CSVReaderTests(TestCase):
 
     def test004_get_encoding(self):
         encodings = ['utf-8', 'iso8859-7', 'utf-16', 'utf-16le', 'utf-16be']
-        unicode_string = u'Ένα test string for encoding detection purposes\n'
+        unicode_string = 'Ένα test string for encoding detection purposes\n'
         encoded_strings = []
         for encoding in encodings:
             encoded_strings.append(unicode_string.encode(encoding))
@@ -47,7 +47,7 @@ class CSVReaderTests(TestCase):
                "testmail2@testmail.com:όνομα3:επίθετο3\n")
         reader = CSVReader(inp, 4)
         with pytest.raises(CSVCellError):
-            reader.next()
+            next(reader)
 
     def test006_cells_more_that_max_fields(self):
         inp = ("testmail10testmail.com:testname0:testsurname0\n"
@@ -55,7 +55,7 @@ class CSVReaderTests(TestCase):
                "testmail2@testmail.com:όνομα3:επίθετο3\n")
         reader = CSVReader(inp, 1, 2)
         with pytest.raises(CSVCellError):
-            reader.next()
+            next(reader)
 
     def test007_sample_picker_does_not_break_utf16be(self):
         # iso8859-7 doesn't have to be tested because every character is
@@ -64,22 +64,22 @@ class CSVReaderTests(TestCase):
         # string end up with odd number of bytes(broken)
         # We also test the pick_sample with a broken utf-8 and see if it can
         # fix it
-        inp = u'a\nb'
+        inp = 'a\nb'
         inp = inp.encode('utf-16be')
         sample = pick_sample(inp)
         encoding = get_encoding(sample)
         assert encoding == 'utf-16be'
 
     def test008_sample_picker_does_not_break_utf16le(self):
-        inp = u'test\u0a01input'
+        inp = 'test\u0a01input'
         inp = inp.encode('utf-16le')
         sample = pick_sample(inp)
         encoding = get_encoding(sample)
         assert encoding == 'utf-16le'
 
     def test009_sample_picker_fixes_utf_8(self):
-        inp = (u"The last char is multibyte in utf-8\n"
-               u"will be trancated ->\u0a01").encode('utf-8')
+        inp = ("The last char is multibyte in utf-8\n"
+               "will be trancated ->\u0a01").encode('utf-8')
         broken_inp = inp[:-1]
         #broken_inp is broken and can't be decoded
         isBroken = False
@@ -101,9 +101,9 @@ class CSVReaderTests(TestCase):
 
     def test012_check_delimiter_sniffing(self):
         delims = [',', ';', ':', ' ', '\t']
-        inp = (u"testmail10testmail.com{0}testname0{0}testsurname0\n"
-               u"testmail1@testmail.com{0}δοκιμαστικόόνομα{0}δοκεπίθετο\n"
-               u"testmail2@testmail.com{0}όνομα3{0}επίθετο3\n")
+        inp = ("testmail10testmail.com{0}testname0{0}testsurname0\n"
+               "testmail1@testmail.com{0}δοκιμαστικόόνομα{0}δοκεπίθετο\n"
+               "testmail2@testmail.com{0}όνομα3{0}επίθετο3\n")
         delims_sniffed = []
         for delim in delims:
             delimed_input = inp.format(delim)

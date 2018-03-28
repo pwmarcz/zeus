@@ -8,7 +8,7 @@ Ben Adida
 ben@adida.net
 """
 
-from __future__ import absolute_import
+
 import logging
 
 

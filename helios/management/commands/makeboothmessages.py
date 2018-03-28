@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import fnmatch
 import glob
 import os
@@ -52,8 +52,8 @@ def walk(root, topdown=True, onerror=None, followlinks=False,
     if ignore_patterns is None:
         ignore_patterns = []
     dir_suffix = '%s*' % os.sep
-    norm_patterns = map(lambda p: p.endswith(dir_suffix)
-                        and p[:-len(dir_suffix)] or p, ignore_patterns)
+    norm_patterns = [p.endswith(dir_suffix)
+                        and p[:-len(dir_suffix)] or p for p in ignore_patterns]
     for dirpath, dirnames, filenames in os.walk(root, topdown, onerror):
         remove_dirs = []
         for dirname in dirnames:
@@ -318,7 +318,7 @@ def make_messages(locale=None, domain='django', verbosity=1, all=False,
     if locale is not None:
         locales.append(locale)
     elif all:
-        locale_dirs = filter(os.path.isdir, glob.glob('%s/*' % localedir))
+        locale_dirs = list(filter(os.path.isdir, glob.glob('%s/*' % localedir)))
         locales = [os.path.basename(l) for l in locale_dirs]
 
     wrap = '--no-wrap' if no_wrap else ''

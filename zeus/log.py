@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import os
 import threading
 
@@ -15,7 +15,7 @@ ELECTION_STREAM_HANDLER = getattr(settings, 'ZEUS_ELECTION_STREAM_HANDLER', Fals
 def _get_user_id(user=None):
     thread_user = None
     if hasattr(_locals, 'user_id'):
-        thread_user = unicode(_locals.user_id)
+        thread_user = str(_locals.user_id)
     user_id = None
     if thread_user:
         user_id = thread_user
@@ -30,7 +30,7 @@ def _get_logger(uuid, obj, user, fmt, extra={}):
 
     thread_ip = "UNKNOWN"
     if hasattr(_locals, 'ip'):
-        thread_ip = unicode(_locals.ip)
+        thread_ip = str(_locals.ip)
 
     if user_id:
         key = key + '_%s' % user_id

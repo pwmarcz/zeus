@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import pytest
 import os
 import datetime
 import json
 import zipfile
-from itertools import izip, chain
+from itertools import chain
 from random import shuffle, sample, randint, choice
 from datetime import timedelta
 
@@ -525,7 +525,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.verbose('+ Election is closed')
 
     def decrypt_with_trustees(self, pks):
-        for trustee, kp in pks.iteritems():
+        for trustee, kp in pks.items():
             t = Trustee.objects.get(uuid=trustee)
             self.c.get(self.locations['logout'])
             self.c.get(t.get_login_url())
@@ -604,7 +604,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         address = '/elections/%s/polls/%s/proofs.zip' % \
             (e_uuid, p_uuid)
         r = client.get(address)
-        response_data = dict(r.items())
+        response_data = dict(list(r.items()))
         assert response_data['Content-Type'] == 'application/zip'
 
     def view_returns_poll_results(self, client, e_uuid, p_uuid):
@@ -631,14 +631,14 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                         address = '/elections/%s/polls/%s/results.%s' % \
                             (self.e_uuid, poll.uuid, ext)
                     r = self.c.get(address)
-                    response_data = dict(r.items())
+                    response_data = dict(list(r.items()))
                     assert response_data['Content-Type'] == 'application/%s' \
                         % ext
             for ext in e_exts:
                 address = '/elections/%s/results/%s-%s.%s' % \
                     (e.uuid, e.short_name, lang[0], ext)
                 r = self.c.get(address)
-                response_data = dict(r.items())
+                response_data = dict(list(r.items()))
                 assert response_data['Content-Type'] == 'application/%s' \
                     % ext
         self.verbose('+ Requested downloadable content is available')
@@ -701,11 +701,11 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
-                    message = u'New Zeus election'
+                    message = 'New Zeus election'
                     assert email.subject == prefix+message
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    assert u'step #1' in email.subject
+                    assert 'step #1' in email.subject
         mail.outbox = []
 
     def second_trustee_step_mail(self):
@@ -717,7 +717,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for email in mail.outbox:
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    assert u'step #2' in email.subject
+                    assert 'step #2' in email.subject
         mail.outbox = []
 
     def admin_notified_for_freeze(self):
@@ -728,7 +728,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
-                    message = u'Election is frozen'
+                    message = 'Election is frozen'
                     assert email.subject == prefix+message
         mail.outbox = []
 
@@ -740,7 +740,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             for admin in admins:
                 if admin[1] in email.to:
                     prefix = settings.EMAIL_SUBJECT_PREFIX
-                    message = u'Voting extension'
+                    message = 'Voting extension'
                     assert email.subject == prefix+message
         mail.outbox = []
 
@@ -750,7 +750,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         for email in mail.outbox:
             for voter in voters:
                 if voter.voter_email in email.to[0]:
-                    assert u'Thank you for voting' in email.subject
+                    assert 'Thank you for voting' in email.subject
         mail.outbox = []
 
     def emails_after_election_close(self):
@@ -777,7 +777,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                     assert email.subject in admin_messages
             for trustee in trustees:
                 if trustee.email in email.to[0]:
-                    assert u'step #3' in email.subject
+                    assert 'step #3' in email.subject
         mail.outbox = []
 
     def decryption_and_result_admin_mails(self):
@@ -912,7 +912,7 @@ class TestSimpleElection(TestElectionBase):
             duplicate_extra_data = extra_data.copy()
             for ans_num in range(0, nr_answers):
                 extra_data['form-%s-answer_%s' % (num, ans_num)] = \
-                    u'test γιούνικουάντ %s' % ans_num
+                    'test γιούνικουάντ %s' % ans_num
                 duplicate_extra_data['form-%s-answer_%s' % (num, ans_num)] = \
                     'test answer 0'
                 #make sure we have at least 2 answers so there can be duplicate
@@ -933,7 +933,7 @@ class TestSimpleElection(TestElectionBase):
             if vote_blank == 0:
                 break
             # valid answer indexes
-            valid_indexes = range(index, index + (len(data['answers'])))
+            valid_indexes = list(range(index, index + (len(data['answers']))))
             min, max = int(data['min_answers']), int(data['max_answers'])
             qchoice = []
             nr_choices = randint(min, max)
@@ -1060,7 +1060,7 @@ class TestPartyElection(TestElectionBase):
                 qchoice.append(header_index)
             else:
                 # valid answer indexes
-                valid_indexes = range(index, index + (len(data['answers'])))
+                valid_indexes = list(range(index, index + (len(data['answers']))))
                 min, max = int(data['min_answers']), int(data['max_answers'])
                 nr_choices = randint(min, max)
                 qchoice = sample(valid_indexes, nr_choices)
@@ -1084,8 +1084,8 @@ class TestPartyElection(TestElectionBase):
 # used for creating score elections ballot
 def make_random_range_ballot(candidates_to_index, scores_to_index):
 
-    candidate_indexes = candidates_to_index.values()
-    score_indexes = scores_to_index.values()
+    candidate_indexes = list(candidates_to_index.values())
+    score_indexes = list(scores_to_index.values())
     nr_scores = len(score_indexes)
     nr_candidates = len(candidate_indexes)
     max_nr_choices = min(nr_candidates, nr_scores)
@@ -1098,7 +1098,7 @@ def make_random_range_ballot(candidates_to_index, scores_to_index):
         len(selected_score_indexes)
         )
     shuffle(selected_candidate_indexes)
-    ballot_choices = izip(selected_candidate_indexes, selected_score_indexes)
+    ballot_choices = zip(selected_candidate_indexes, selected_score_indexes)
     ballot_choices = chain(*ballot_choices)
     ballot_choices = list(ballot_choices)
     max_ballot_choices = nr_scores + nr_candidates
@@ -1363,7 +1363,7 @@ class TestUniGovGrElection(TestSimpleElection):
             duplicate_extra_data = extra_data.copy()
             for ans_num in range(0, nr_answers):
                 extra_data['form-%s-answer_%s' % (num, ans_num)] = \
-                    u'test γιούνικουάντ %s' % ans_num
+                    'test γιούνικουάντ %s' % ans_num
                 duplicate_extra_data['form-%s-answer_%s' % (num, ans_num)] = \
                     'test answer 0'
                 #make sure we have at least 2 answers so there can be duplicate

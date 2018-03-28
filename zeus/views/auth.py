@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import logging
 import six.moves.urllib.request
 import six.moves.urllib.error
@@ -169,7 +169,7 @@ def shibboleth_login(request, endpoint):
     common_fields = ['HTTP_EPPN', 'HTTP_REMOTE_USER', 'HTTP_MAIL']
     meta = request.META
     shibboleth = {}
-    for key, value in meta.iteritems():
+    for key, value in meta.items():
         if key in common_fields:
             shibboleth[key.replace('HTTP_', '', 1)] = value
         if key.startswith('HTTP_SHIB_'):
@@ -211,7 +211,7 @@ def shibboleth_login(request, endpoint):
 
     idp_field_arr = []
     if idp_field and ":" in idp_field:
-        idp_field_arr = map(lambda x:x.strip(), idp_field.split(":"))
+        idp_field_arr = [x.strip() for x in idp_field.split(":")]
 
     if (not error and not idp_field == voter_field) and (not error and not voter_field in idp_field_arr):
         error = 403

@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import os
 import logging
 import uuid
@@ -114,7 +114,7 @@ def stv_count(request):
 
 def setlang(request):
     lang = request.POST.get('language')
-    if not lang in map(lambda x:x[0], settings.LANGUAGES):
+    if not lang in [x[0] for x in settings.LANGUAGES]:
         return HttpResponseRedirect(reverse('home'))
     return set_language(request)
 

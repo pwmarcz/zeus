@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 import os
 
 # go through environment variables and override them
 def get_from_env(var, default):
-    if os.environ.has_key(var):
+    if var in os.environ:
         return os.environ[var]
     else:
         return default

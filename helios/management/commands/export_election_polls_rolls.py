@@ -1,6 +1,6 @@
 """
 """
-from __future__ import absolute_import
+
 import yaml
 
 from django.db import transaction
@@ -25,7 +25,7 @@ class Command(BaseCommand):
             voters = []
             poll_data = {'uuid': str(poll.uuid), 'voters': voters, 'name': poll.name}
             for voter in poll.voters.filter(excluded_at__isnull=True):
-                voters.append(u'{},{},{},{},{},{},{}'.format(
+                voters.append('{},{},{},{},{},{},{}'.format(
                     voter.voter_login_id,
                     voter.voter_email,
                     voter.voter_name,

@@ -39,8 +39,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Zeus install guide'
-copyright = u'2013, Kostas Papadimitriou <kpap@grnet.gr>'
+project = 'Zeus install guide'
+copyright = '2013, Kostas Papadimitriou <kpap@grnet.gr>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -177,8 +177,8 @@ htmlhelp_basename = 'Zeusinstallguidedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Zeusinstallguide.tex', u'Zeus install guide Documentation',
-   u'Kostas Papadimitriou \\textless{}kpap@grnet.gr\\textgreater{}', 'manual'),
+  ('index', 'Zeusinstallguide.tex', 'Zeus install guide Documentation',
+   'Kostas Papadimitriou \\textless{}kpap@grnet.gr\\textgreater{}', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -210,6 +210,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'zeusinstallguide', u'Zeus install guide Documentation',
-     [u'Kostas Papadimitriou <kpap@grnet.gr>'], 1)
+    ('index', 'zeusinstallguide', 'Zeus install guide Documentation',
+     ['Kostas Papadimitriou <kpap@grnet.gr>'], 1)
 ]

@@ -2,7 +2,7 @@
 Legacy datatypes for Helios (v3.0)
 """
 
-from __future__ import absolute_import
+
 from helios.datatypes import LDObject, arrayOf, DictObject, ListObject
 from helios.crypto import elgamal as crypto_elgamal
 from helios.workflows import homomorphic, mixnet

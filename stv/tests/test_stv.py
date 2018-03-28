@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 from stv.stv import main
 import tempfile
 import os

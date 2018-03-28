@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import yaml
 import copy
 import os
@@ -70,7 +70,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
     for p in polls:
         ref = p.get('ref')
         assert ref
-        assert ref not in byref.keys()
+        assert ref not in list(byref.keys())
         byref[ref] = p
     existing_refs = []
     new_refs = []
@@ -99,7 +99,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
         i = i + 1
 
     # append new takes place in higher indexes
-    for ref, poll_data in byref.iteritems():
+    for ref, poll_data in byref.items():
         if ref in existing_refs:
             continue
         fields = {}
@@ -175,7 +175,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
             add_field('question', question.strip())
             add_field('ORDER', '')
 
-            if isinstance(qanswers, basestring):
+            if isinstance(qanswers, str):
                 _orig = qanswers
                 qanswers = vars.get(qanswers)
                 if qanswers is None:
@@ -200,7 +200,7 @@ def _handle_batch(election, polls, vars, auto_link=False):
             try:
                 poll.zeus._validate_candidates()
             except Exception as e:
-                raise Exception((poll.name, unicode(e)))
+                raise Exception((poll.name, str(e)))
         else:
             for f in form:
                 for field in f:
@@ -236,7 +236,7 @@ def add_edit(request, election, poll=None):
         raise PermissionDenied
     if poll and not poll.feature_can_edit:
         raise PermissionDenied
-    if election.linked_polls and request.FILES.has_key('batch_file'):
+    if election.linked_polls and 'batch_file' in request.FILES:
         return _add_batch(request, election)
     if poll:
         oldname = poll.name
@@ -364,7 +364,7 @@ def voters_list(request, election, poll):
         'voters_per_page': voters_per_page,
         'display_weight_col': display_weight_col,
         'voter_table_headers': table_headers,
-        'voter_table_headers_iter': table_headers.iteritems(),
+        'voter_table_headers_iter': iter(table_headers.items()),
         'nr_voters_excluded': nr_voters_excluded,
     }
     set_menu('voters', context)
@@ -465,7 +465,7 @@ def voters_upload(request, election, poll):
                     invalid_emails.append((eml, line))
                 return True
 
-            if request.FILES.has_key('voters_file'):
+            if 'voters_file' in request.FILES:
                 voters_file = request.FILES['voters_file']
                 voter_file_obj = poll.add_voters_file(voters_file)
 
@@ -871,7 +871,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
                             "to access this view."))
         return HttpResponseRedirect(reverse('error', kwargs={'code': 403}))
 
-    if voter.voter_password != unicode(voter_secret):
+    if voter.voter_password != str(voter_secret):
         raise PermissionDenied("Invalid secret")
 
     if poll.oauth2_thirdparty:
@@ -910,7 +910,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
 @require_http_methods(["GET"])
 def to_json(request, election, poll):
     data = poll.get_booth_dict()
-    data['token'] = unicode(csrf(request)['csrf_token'])
+    data['token'] = str(csrf(request)['csrf_token'])
     return HttpResponse(json.dumps(data, default=common_json_handler),
                         content_type="application/json")
 

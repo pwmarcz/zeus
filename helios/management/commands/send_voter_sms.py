@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import sys
 import os
 
@@ -156,7 +156,7 @@ class Command(BaseCommand):
                 email = fields[1].strip()
                 mobile = fields[2].strip()
 
-                if voter_id in mobiles_map.keys():
+                if voter_id in list(mobiles_map.keys()):
                     raise CommandError(("Duplicate voter id found in mobiles"
                                         " csv file: %d") % int(voter_id))
 
@@ -171,9 +171,9 @@ class Command(BaseCommand):
                         email, mobile
                     ))
 
-            voters = voters.filter(voter_login_id__in=mobiles_map.keys())
-            if voters.count() != len(mobiles_map.keys()):
-                for voter_id in mobiles_map.keys():
+            voters = voters.filter(voter_login_id__in=list(mobiles_map.keys()))
+            if voters.count() != len(list(mobiles_map.keys())):
+                for voter_id in list(mobiles_map.keys()):
                     if not all_voters.filter(voter_login_id=voter_id).count():
                         raise CommandError("Voter id not found in "
                                            "database: %s" % voter_id)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 import uuid
 import six.moves.urllib.request
 import six.moves.urllib.parse
@@ -46,13 +46,13 @@ class Loco(object):
         message = message.decode("utf8")
         message = escape(message, escape_dict)
         msg.append(Element("text", message))
-        msg.append(Element("totalfields", str(len(fields.keys()))))
+        msg.append(Element("totalfields", str(len(list(fields.keys())))))
 
         recipient = Element("recipient")
         recipient.append(Element("uid", uid))
         recipient.append(Element("msisdn", msisdn))
         recipient.append(Element("mobile", self.from_mobile))
-        for field, value in fields.iteritems():
+        for field, value in fields.items():
             recipient.append(Element(field, value))
         msg.append(recipient)
         return msg
@@ -73,7 +73,7 @@ class Loco(object):
 
     def send(self, mobile, msg, fields={}, uid=None):
         if not uid:
-            uid = unicode(uuid.uuid4())
+            uid = str(uuid.uuid4())
 
         msg = self._cosntruct(uid, mobile, msg, fields)
         _msg = etree.tostring(msg)

@@ -1,5 +1,5 @@
 # -- coding: utf-8 --
-from __future__ import absolute_import
+
 import copy
 import math
 from decimal import Decimal
@@ -24,18 +24,18 @@ class UniElectionHooks(ElectionHooks):
     def post_create(self, election):
         # create the two polls
         poll = election.polls.create(
-            name=unicode(_("Electors: Group A")),
-            oauth2_type=u'',
-            oauth2_code_url=u'',
-            oauth2_client_secret=u'',
-            oauth2_client_type=u'',
-            oauth2_confirmation_url=u'',
-            oauth2_exchange_url=u'',
-            oauth2_client_id=u'',
-            jwt_public_key=u''
+            name=str(_("Electors: Group A")),
+            oauth2_type='',
+            oauth2_code_url='',
+            oauth2_client_secret='',
+            oauth2_client_type='',
+            oauth2_confirmation_url='',
+            oauth2_exchange_url='',
+            oauth2_client_id='',
+            jwt_public_key=''
 
         )
-        election.polls.create(name=unicode(_("Electors: Group B")))
+        election.polls.create(name=str(_("Electors: Group B")))
         return election_reverse(election, 'polls_list')
 
 
@@ -71,7 +71,7 @@ class UniGovGrResults():
         for g in ['totals', 'group_a', 'group_b']:
             results[g]['counts'] = OrderedDict()
             results[g]['counts_rounded'] = OrderedDict()
-            for question, answers in self.questions.iteritems():
+            for question, answers in self.questions.items():
                 results[g]['counts'][question] = {}
                 results[g]['counts_rounded'][question] = {}
                 for answer in answers:
@@ -90,7 +90,7 @@ class UniGovGrResults():
             counts = zeus_results['candidate_counts']
             for count, choice in counts:
                 choice = choice.decode('utf8')
-                question, answer = choice.split(u': ', 1)
+                question, answer = choice.split(': ', 1)
                 group['counts'][question][answer] = count
             group['voted'] = zeus_results['ballot_count']
             group['invalid'] = zeus_results['invalid_count']
@@ -103,7 +103,7 @@ class UniGovGrResults():
         totals = results['totals']
         group_a = results['group_a']
         group_b = results['group_b']
-        for q, candidates in totals['counts'].items():
+        for q, candidates in list(totals['counts'].items()):
             for candidate in candidates:
                 # ο αριθμός των έγκυρων ψήφων που έλαβε ο κάθε υποψήφιος από τα μέλη της πρώτης ομάδας εκλεκτόρων
                 A = group_a['counts'][q][candidate]
@@ -183,7 +183,7 @@ class UniGovGr(SimpleElection):
         is_manager = request and request.zeususer.is_manager
 
         new_headers = OrderedDict()
-        for key, val in headers.iteritems():
+        for key, val in headers.items():
             if key in ['last_visit', 'cast_votes__id'] and not is_manager:
                 continue
             if key == 'actions' and not is_manager:
@@ -201,7 +201,7 @@ class UniGovGr(SimpleElection):
         from zeus.results_report import build_unigov_doc
         results = self._count_election_results()
         pdfpath = self.get_election_result_file_path('pdf', 'pdf', lang[0])
-        build_unigov_doc(_(u'Results'), self.election.name,
+        build_unigov_doc(_('Results'), self.election.name,
                   self.election.institution.name,
                   self.election.voting_starts_at, self.election.voting_ends_at,
                   self.election.voting_extended_until, results, lang,

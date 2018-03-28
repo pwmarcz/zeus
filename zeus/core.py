@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
-from __future__ import absolute_import
+
+
 import sys
 from datetime import datetime
 from random import randint, choice as rand_choice
 from hashlib import sha256
-from itertools import izip, izip_longest, cycle, chain, repeat
+from itertools import zip_longest, cycle, chain, repeat
 from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
@@ -256,9 +256,9 @@ class Teller(object):
         self.outstream = outstream
         self.start_time = time()
 
-        for k, v in kw.iteritems():
+        for k, v in kw.items():
             a = getattr(self, k, None)
-            if (a is None and not (isinstance(a, basestring)
+            if (a is None and not (isinstance(a, str)
                                     or isinstance(a, bool))):
                 continue
             setattr(self, k, v)
@@ -322,7 +322,7 @@ class Teller(object):
 
     def disable(self):
         self.disabled = True
-        for child in self.children.values():
+        for child in list(self.children.values()):
             child.disable()
 
     def tell(self, feed=False, eject=False):
@@ -387,7 +387,7 @@ class Teller(object):
                      "or set redirect=False")
                 raise ValueError(m)
 
-            self, = children.values()
+            self, = list(children.values())
 
         return self
 
@@ -678,7 +678,7 @@ def get_random_selection(nr_elements, full=1):
     selection = []
     variable = not bool(full)
     append = selection.append
-    for m in xrange(nr_elements, 1, -1):
+    for m in range(nr_elements, 1, -1):
         r = get_random_int(0, m+variable)
         if r == m:
             break
@@ -698,7 +698,7 @@ def get_random_party_selection(nr_elements, nr_parties=2):
     choices = []
     append = choices.append
     r = get_random_int(0, 2**(high - low))
-    for i in xrange(low, high):
+    for i in range(low, high):
         skip = r & 1
         r >>= 1
         if skip:
@@ -880,7 +880,7 @@ def gamma_encoding_max(nr_candidates, max_choices=None):
         max_choices = nr_candidates
     if nr_candidates <= 0:
         return 0
-    choices = range(nr_candidates - 1, nr_candidates - max_choices -1, -1)
+    choices = list(range(nr_candidates - 1, nr_candidates - max_choices -1, -1))
     return gamma_encode(choices, nr_candidates, max_choices)
 
 def gamma_decode(sumus, nr_candidates=None, max_choices=None):
@@ -910,12 +910,12 @@ def gamma_decode(sumus, nr_candidates=None, max_choices=None):
 def verify_gamma_encoding(n, completeness=1):
     choice_sets = {}
     encode_limit = get_offsets(n)[-1]
-    encoded_limit = gamma_encode(range(n-1, -1, -1), n) + 1
+    encoded_limit = gamma_encode(list(range(n-1, -1, -1)), n) + 1
     if encode_limit != encoded_limit:
         m = "Incorrect encode limit %d vs %d!" % (encode_limit, encoded_limit)
         raise AssertionError(m)
 
-    for encoded in xrange(encode_limit):
+    for encoded in range(encode_limit):
         choices = tuple(gamma_decode(encoded, n))
         new_encoded = gamma_encode(choices, n)
         if new_encoded != encoded:
@@ -937,7 +937,7 @@ def verify_gamma_encoding(n, completeness=1):
     if not completeness:
         return
 
-    for i in xrange(n + 1):
+    for i in range(n + 1):
         if i not in choice_sets:
             m = "Encoding is not bijective! missing choice set %d" % (i,)
             AssertionError(m)
@@ -1040,8 +1040,8 @@ def maxbase_decode(sumus, nr_candidates, max_choices=None):
 
 def cross_check_encodings(n):
     # verify_gamma_encoding(n)
-    encode_limit = gamma_encode(range(n-1, -1, -1), n) + 1
-    for e in xrange(encode_limit):
+    encode_limit = gamma_encode(list(range(n-1, -1, -1)), n) + 1
+    for e in range(encode_limit):
         choices = gamma_decode(e, n)
         maxbase_encoded = maxbase_encode(choices, n)
         maxbase_choices = maxbase_decode(maxbase_encoded, n)
@@ -1206,7 +1206,7 @@ def gamma_decode_to_range_ballot(encoded, candidates_and_points):
 def combine_candidates_and_points(candidates, points):
     candidates_and_points = []
     append = candidates_and_points.append
-    for c, p in izip_longest(candidates, points):
+    for c, p in zip_longest(candidates, points):
         if c is not None:
             append(c)
         if p is not None:
@@ -1220,7 +1220,7 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
     totals = {}
     ballots = []
 
-    min_choices, max_choices = map(int, params.strip().split("-"))
+    min_choices, max_choices = list(map(int, params.strip().split("-")))
     max_encoded = gamma_encoding_max(len(candidates_and_points))
 
     for c in candidates:
@@ -1231,7 +1231,7 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
         totals[c] = 0
 
     for e in encoded_list:
-        assert isinstance(e, (int, long))
+        assert isinstance(e, int)
         if e > max_encoded:
             ballot = {'valid': False}
         else:
@@ -1242,14 +1242,14 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
 
         # validate min/max choices
         if ballot['valid']:
-            nr_choices = len(ballot['candidates'].keys())
+            nr_choices = len(list(ballot['candidates'].keys()))
             if nr_choices != 0 and (nr_choices > max_choices or \
                                     nr_choices < min_choices):
                 ballot['valid'] = False
 
         ballot_scores = ballot['candidates']
 
-        for candidate, points in ballot_scores.iteritems():
+        for candidate, points in ballot_scores.items():
             assert candidate in candidates
             totals[candidate] += points
             detailed[candidate][points] += 1
@@ -1257,7 +1257,7 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
     results = {}
     results['candidates'] = candidates
     results['points'] = pointlist
-    totals = [(v, k) for k, v in totals.iteritems()]
+    totals = [(v, k) for k, v in totals.items()]
     totals.sort()
     totals.reverse()
     results['totals'] = totals
@@ -1270,7 +1270,7 @@ PARTY_SEPARATOR = ': '
 PARTY_OPTION_SEPARATOR = ', '
 
 def strforce(thing, encoding='utf8'):
-    if isinstance(thing, unicode):
+    if isinstance(thing, str):
         return thing.encode(encoding)
     return str(thing)
 
@@ -1426,7 +1426,7 @@ def gamma_decode_to_party_ballot(encoded, candidates, parties, nr_groups,
 
     if choices and valid:
         # validate number of choices for each party separately
-        for party, nr_choices in voted_parties_counts.iteritems():
+        for party, nr_choices in voted_parties_counts.items():
             party_list = parties[party]
             max_choices = party_list['opt_max_choices']
             min_choices = party_list['opt_min_choices']
@@ -1460,10 +1460,10 @@ def gamma_count_parties(encoded_list, candidates, separator=PARTY_SEPARATOR):
     append = ballots.append
     parties, nr_groups = parties_from_candidates(candidates,
                                                  separator=separator)
-    for party, party_candidates in parties.iteritems():
+    for party, party_candidates in parties.items():
         party_counters[party] = 0
-        for index, candidate in party_candidates.iteritems():
-            if not isinstance(index, (int, long)):
+        for index, candidate in party_candidates.items():
+            if not isinstance(index, int):
                 continue
             candidate_counters[(party, candidate)] = 0
 
@@ -1504,12 +1504,12 @@ def gamma_count_parties(encoded_list, candidates, separator=PARTY_SEPARATOR):
         if not ballot_parties and not ballot_candidates:
             blank_count += 1
 
-    party_counts = [(-v, k) for k, v in party_counters.iteritems()]
+    party_counts = [(-v, k) for k, v in party_counters.items()]
     party_counts.sort()
     fmt = "%s" + separator + "%s"
     party_counts = [(-v, k) for v, k in party_counts]
     candidate_counts = [(-v, fmt % k)
-                        for k, v in candidate_counters.iteritems()]
+                        for k, v in candidate_counters.items()]
     candidate_counts.sort()
     candidate_counts = [(-v, k) for v, k in candidate_counts]
 
@@ -2000,7 +2000,7 @@ def get_random_permutation_gamma(nr_elements):
     if nr_elements <= 0:
         return []
     low = list([0]) * nr_elements
-    high = range(nr_elements - 1, -1, -1)
+    high = list(range(nr_elements - 1, -1, -1))
     max_low = gamma_encode(low, nr_elements)
     max_high = gamma_encode(high, nr_elements)
     rand = get_random_int(max_low, max_high + 1)
@@ -2065,7 +2065,7 @@ def verify_decryption_factors1(modulus, generator, order, public,
         return 0
 
     with teller.task("Verifying decryption factors", total=nr_ciphers):
-        for cipher, factor in izip(ciphers, factors):
+        for cipher, factor in zip(ciphers, factors):
             alpha, beta = cipher
             factor, proof = factor
             if not verify_ddh_tuple(modulus, generator, order, alpha, public,
@@ -2120,7 +2120,7 @@ def combine_decryption_factors(modulus, factor_collection):
         return
     master_factors = []
     append = master_factors.append
-    for decryption_factors in izip(*factor_collection):
+    for decryption_factors in zip(*factor_collection):
         master_factor = 1
         for factor, proof in decryption_factors:
             master_factor = (master_factor * factor) % modulus
@@ -2481,7 +2481,7 @@ class ZeusCoreElection(object):
         self.do_store_candidates(names)
 
     def add_voters(self, *voters):
-        name_set = set(v[0] for v in self.do_get_voters().itervalues())
+        name_set = set(v[0] for v in self.do_get_voters().values())
         intersection = name_set.intersection(v[0] for v in voters)
         if intersection:
             m = "Voter '%s' already exists!" % (intersection.pop(),)
@@ -2493,7 +2493,7 @@ class ZeusCoreElection(object):
             voter_key = "%x" % get_random_int(2, VOTER_KEY_CEIL)
             new_voters[voter_key] = (name, weight)
             audit_codes = list(get_random_int(2, VOTER_SLOT_CEIL)
-                               for _ in xrange(3))
+                               for _ in range(3))
             voter_audit_codes[voter_key] = audit_codes
         self.do_store_voters(new_voters)
         self.do_store_voter_audit_codes(voter_audit_codes)
@@ -2519,14 +2519,14 @@ class ZeusCoreElection(object):
                 m = "No voters for election!"
                 raise ZeusError(m)
             with teller.task("Validating Voter Names"):
-                names = [v[0] for v in voters.itervalues()]
+                names = [v[0] for v in voters.values()]
                 nr_names = len(names)
                 if len(set(names)) != nr_names:
                     m = "Duplicate voter names!"
                     raise ZeusError(m)
                 del names
             with teller.task("Validating Voter Keys"):
-                keys = voters.keys()
+                keys = list(voters.keys())
                 nr_keys = len(keys)
                 if len(set(keys)) != nr_keys:
                     m = "Duplicate voter keys!"
@@ -2534,10 +2534,10 @@ class ZeusCoreElection(object):
 
             with teller.task("Validating voter audit_codes"):
                 audit_codes = self.do_get_all_voter_audit_codes()
-                if audit_codes.keys() != keys:
+                if list(audit_codes.keys()) != keys:
                     m = "Slots do not correspond to voters!"
                     raise ZeusError(m)
-                audit_code_set = set(tuple(v) for v in audit_codes.values())
+                audit_code_set = set(tuple(v) for v in list(audit_codes.values()))
                 if len(audit_code_set) < nr_keys // 2:
                     m = "Slots don't have enough variation!"
                     raise ZeusError(m)
@@ -2568,7 +2568,7 @@ class ZeusCoreElection(object):
         trustees = self.do_get_trustees()
         nr_trustees = len(trustees)
         with teller.task("Validating Trustees", total=nr_trustees):
-            for public, proof in trustees.iteritems():
+            for public, proof in trustees.items():
                 commitment, challenge, response = proof
                 if not validate_public_key(modulus, generator, order, public,
                                            commitment, challenge, response):
@@ -2628,11 +2628,11 @@ class ZeusCoreElection(object):
                                voting['zeus_public'],
                                *voting['zeus_key_proof'])
         self.do_store_election_public(voting['election_public'])
-        for t in voting['trustees'].iteritems():
+        for t in voting['trustees'].items():
             trustee_public_key, trustee_key_proof = t
             trustee_public_key = int(trustee_public_key)
             self.do_store_trustee(trustee_public_key, *trustee_key_proof)
-        for voter_key, reason in voting['excluded_voters'].iteritems():
+        for voter_key, reason in voting['excluded_voters'].items():
             self.do_store_excluded_voter(voter_key, reason)
         self.do_store_voters(voting['voters'])
         self.do_store_voter_audit_codes(voting['voter_audit_codes'])
@@ -2643,7 +2643,7 @@ class ZeusCoreElection(object):
         keys = set(('voter', 'encrypted_ballot', 'fingerprint',
                     'audit_code', 'voter_secret'))
         nr_keys = len(keys)
-        vote_keys = vote.keys()
+        vote_keys = list(vote.keys())
         if len(vote_keys) > len(keys):
             m = "Extra vote contents"
             raise ZeusError(m)
@@ -2956,7 +2956,7 @@ class ZeusCoreElection(object):
         all_votes = self.do_get_votes()
         nr_votes = len(all_votes)
         with teller.task("Validating cast votes", total=nr_votes):
-            for voter_key, cast_votes in all_cast_votes.iteritems():
+            for voter_key, cast_votes in all_cast_votes.items():
                 previous = ''
                 for cast_vote in cast_votes:
                     if cast_vote not in all_votes:
@@ -2998,7 +2998,7 @@ class ZeusCoreElection(object):
         nr_all_audit_requests = len(all_audit_requests)
         with teller.task("Validating audit requests",
                          total=nr_all_audit_requests):
-            for audit_request, voter_key in all_audit_requests.iteritems():
+            for audit_request, voter_key in all_audit_requests.items():
                 if audit_request not in all_votes:
                     m = ("Audit request %s/[%s] not found in vote archive!"
                         % (voter_key, audit_request))
@@ -3015,7 +3015,7 @@ class ZeusCoreElection(object):
         excluded = self.do_get_excluded_voters()
         nr_excluded = len(excluded)
         with teller.task("Validating excluded voters", total=nr_excluded):
-            for voter_key, reason in excluded.iteritems():
+            for voter_key, reason in excluded.items():
                 voter = self.do_get_voter(voter_key)
                 if voter is None:
                     m = "Nonexistent excluded voter '%s'!" % voter_key
@@ -3032,7 +3032,7 @@ class ZeusCoreElection(object):
             raise ZeusError(m)
 
         voting = self.export_creating()
-        voting['votes'] = self.do_get_votes().values()
+        voting['votes'] = list(self.do_get_votes().values())
         voting['cast_vote_index'] = self.do_get_vote_index()
         voting['cast_votes'] = self.do_get_all_cast_votes()
         voting['audit_requests'] = self.do_get_audit_requests()
@@ -3050,7 +3050,7 @@ class ZeusCoreElection(object):
         excluded_voters = self.do_get_excluded_voters()
         excluded_votes = set()
         update = excluded_votes.update
-        for voter_key, reason in excluded_voters.iteritems():
+        for voter_key, reason in excluded_voters.items():
             update(self.do_get_cast_votes(voter_key))
 
         for i, fingerprint in enumerate(vote_index):
@@ -3090,7 +3090,7 @@ class ZeusCoreElection(object):
         votes_for_mixing = []
         counted_list = []
         counted_votes = 0
-        for c, v in izip(counted, scratch):
+        for c, v in zip(counted, scratch):
             if (c, v) == (None, None):
                 continue
             elif None in (c, v):
@@ -3139,10 +3139,10 @@ class ZeusCoreElection(object):
         self.do_store_votes(mixing['votes'])
         for fingerprint in mixing['cast_vote_index']:
             self.do_index_vote(fingerprint)
-        for voter_key, fingerprints in mixing['cast_votes'].iteritems():
+        for voter_key, fingerprints in mixing['cast_votes'].items():
             for fingerprint in fingerprints:
                 self.do_append_vote(voter_key, fingerprint)
-        for fingerprint, voter_key in mixing['audit_requests'].iteritems():
+        for fingerprint, voter_key in mixing['audit_requests'].items():
             self.do_store_audit_request(fingerprint, voter_key)
         for fingerprint in mixing['audit_publications']:
             self.do_store_audit_publication(fingerprint)
@@ -3251,7 +3251,7 @@ class ZeusCoreElection(object):
                     del counted_list
 
                     excluded = self.do_get_excluded_voters()
-                    for voter_key, reason in excluded.iteritems():
+                    for voter_key, reason in excluded.items():
                         cast_votes = self.do_get_cast_votes(voter_key)
                         for fingerprint in cast_votes:
                             if fingerprint in counted_set:
@@ -3301,7 +3301,7 @@ class ZeusCoreElection(object):
         decrypting = self.export_mixing()
         all_factors = self.do_get_all_trustee_factors()
         trustee_factors = [{'trustee_public': k, 'decryption_factors': v}
-                           for k, v in all_factors.iteritems()]
+                           for k, v in all_factors.items()]
         decrypting['trustee_factors'] = trustee_factors
         zeus_factors = self.do_get_zeus_factors()
         decrypting['zeus_decryption_factors'] = zeus_factors
@@ -3437,14 +3437,14 @@ class ZeusCoreElection(object):
         mixed_ballots = self.get_mixed_ballots()
         modulus, generator, order = self.do_get_cryptosystem()
         zeus_factors = self.do_get_zeus_factors()
-        all_factors = self.do_get_all_trustee_factors().values()
+        all_factors = list(self.do_get_all_trustee_factors().values())
         all_factors.append(zeus_factors)
         decryption_factors = combine_decryption_factors(modulus, all_factors)
         plaintexts = []
         append = plaintexts.append
 
         with teller.task("Decrypting ballots", total=len(mixed_ballots)):
-            for ballot, factor in izip(mixed_ballots, decryption_factors):
+            for ballot, factor in zip(mixed_ballots, decryption_factors):
                 plaintext = decrypt_with_decryptor(modulus, generator, order,
                                                    ballot[BETA], factor)
                 append(plaintext)
@@ -3504,7 +3504,7 @@ class ZeusCoreElection(object):
 
         excluded = self.do_get_excluded_voters()
         if excluded:
-            for i, (voter, reason) in enumerate(excluded.iteritems()):
+            for i, (voter, reason) in enumerate(excluded.items()):
                 report += 'EXCLUDED VOTER %d: %s (%s)\n' % (i, voter, reason)
             report += '\n'
 
@@ -3583,7 +3583,7 @@ class ZeusCoreElection(object):
             raise ValueError(m)
 
         z = 0
-        for m in xrange(nr_candidates-1, -1, -1):
+        for m in range(nr_candidates-1, -1, -1):
             r = randint(0, m)
             if r == 0:
                 z = 1
@@ -3610,7 +3610,7 @@ class ZeusCoreElection(object):
         voters = None
         if voter is None:
             voters = self.do_get_voters()
-            voter = rand_choice(voters.keys())
+            voter = rand_choice(list(voters.keys()))
         encoded = encode_selection(selection, nr_candidates)
         valid = True
         if audit_code:
@@ -3641,20 +3641,20 @@ class ZeusCoreElection(object):
         append = candidates.append
         mid = nr_candidates // 2
         first = 1
-        for i in xrange(0, mid):
+        for i in range(0, mid):
             if first:
                 append("Party-A" + PARTY_SEPARATOR + "0-2, 0")
                 first = 0
             append("Party-A" + PARTY_SEPARATOR + "Candidate-%04d" % i)
 
         first = 1
-        for i in xrange(mid, nr_candidates):
+        for i in range(mid, nr_candidates):
             if first:
                 append("Party-B" + PARTY_SEPARATOR + "0-2, 1")
                 first = 0
             append("Party-B" + PARTY_SEPARATOR + "Candidate-%04d" % i)
 
-        voter_range = xrange(self._nr_voters)
+        voter_range = range(self._nr_voters)
         voters = [(("Voter-%08d" % x), 1) for x in voter_range]
 
         self.create_zeus_key()
@@ -3662,7 +3662,7 @@ class ZeusCoreElection(object):
         self.add_voters(*voters)
 
         trustees = [self.mk_random_trustee()
-                    for _ in xrange(self._nr_trustees)]
+                    for _ in range(self._nr_trustees)]
         for trustee in trustees:
             self.add_trustee(key_public(trustee), key_proof(trustee))
 
@@ -3678,7 +3678,7 @@ class ZeusCoreElection(object):
         plaintexts = {}
         votes = []
         voters = list(self.do_get_voters())
-        for i, voter in zip(xrange(self._nr_votes), cycle(voters)):
+        for i, voter in zip(range(self._nr_votes), cycle(voters)):
             kw = {'audit_code': -1} if (i & 1) else {}
             kw['voter'] = voter
             vote, selection, encoded, rnd = self.mk_random_vote(**kw)
@@ -3748,7 +3748,7 @@ class ZeusCoreElection(object):
                 raise AssertionError(m)
 
     def mk_stage_mixing(self, teller=_teller):
-        for _ in xrange(self._nr_mixes):
+        for _ in range(self._nr_mixes):
             cipher_collection = self.get_last_mix()
             nr_parallel = self.get_option('nr_parallel')
             mixed_collection = self.shuffle_module.mix_ciphers(

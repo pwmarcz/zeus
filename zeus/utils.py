@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+
 import six
 from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
@@ -29,42 +29,42 @@ def election_trustees_to_text(election):
 def append_ballot_to_msg(election, msg):
     if msg[-1] != '\n':
         msg += '\n'
-    el_type_str = u"\nElection type: {}\n\n".format(election.election_module)
+    el_type_str = "\nElection type: {}\n\n".format(election.election_module)
     msg += el_type_str
-    msg += u"Ballot info\n***********************\n"
+    msg += "Ballot info\n***********************\n"
     for poll in election.polls.all():
-        msg += u"- Poll name: {}\n".format(poll.name)
+        msg += "- Poll name: {}\n".format(poll.name)
         for ballot in poll.questions_data:
             question = ballot.get('question', None)
             if question:
-                msg += u"- Question: {}\n".format(question)
+                msg += "- Question: {}\n".format(question)
             answers = ballot.get('answers', None)
             if answers:
-                msg += u"- Answers\n"
+                msg += "- Answers\n"
                 for answer in answers:
-                    msg += u"  * {}\n".format(answer)
+                    msg += "  * {}\n".format(answer)
             scores = ballot.get('scores', None)
             if scores:
-                msg += u"- Scores: "
+                msg += "- Scores: "
                 for score in scores:
                     msg += '[{}] '.format(str(score))
                 msg += '\n'
             min_ans = ballot.get('min_answers', None)
             max_ans = ballot.get('max_answers', None)
             if min_ans and max_ans:
-                msg += u"- Min answers: {}\n- Max answers: {}\n".format(min_ans,
+                msg += "- Min answers: {}\n- Max answers: {}\n".format(min_ans,
                                                                    max_ans)
             eligibles = ballot.get('eligibles', None)
             if eligibles:
-                msg += u"- Eligibles: {}\n".format(eligibles)
+                msg += "- Eligibles: {}\n".format(eligibles)
             has_limit = ballot.get('has_department_limit', None)
             if has_limit:
                 department_limit = ballot.get('department_limit', None)
-                msg += u"- Poll has department limit of:{}\n".format(str(department_limit))
+                msg += "- Poll has department limit of:{}\n".format(str(department_limit))
         candidates = poll.zeus.do_get_candidates()
-        candidates = [unicode(x) for x in candidates]
+        candidates = [str(x) for x in candidates]
         candidates = str(candidates)
-        msg += u"- do_get_candidates:\n{}\n\n".format(candidates)
+        msg += "- do_get_candidates:\n{}\n\n".format(candidates)
     return msg
 
 def election_reverse(election, view, **extra):
@@ -81,11 +81,11 @@ def poll_reverse(poll, view, **extra):
 
 def extract_trustees(content):
     trustees = []
-    rows = map(lambda x:x.strip(), content.strip().split("\n"))
+    rows = [x.strip() for x in content.strip().split("\n")]
     for trustee in rows:
         if not trustee:
             continue
-        trustee = map(lambda x:x.strip(), trustee.split(","))
+        trustee = [x.strip() for x in trustee.split(",")]
         trustees.append(trustee)
     return trustees
 
@@ -99,7 +99,7 @@ def render_template(request, template_name, vars = {}):
     vars_with_user['CURRENT_URL'] = request.path
 
     # csrf protection
-    if request.session.has_key('csrf_token'):
+    if 'csrf_token' in request.session:
         vars_with_user['csrf_token'] = request.session['csrf_token']
 
     return render(request, 'server_ui/templates/%s.html' % template_name,
@@ -253,7 +253,7 @@ def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_head
             if type(key) == tuple:
                 nullcheck = key[1] == 'nullcheck'
                 key = key[0]
-            if key in (table_headers.keys() + extra_headers):
+            if key in (list(table_headers.keys()) + extra_headers):
                 flt = ''
                 if nullcheck:
                     flt = '__isnull'
@@ -314,11 +314,11 @@ class CSVReader(object):
         dialect = kwargs.get('dialect', get_dialect(sample))
         self.reader = imported_csv_reader(f, dialect)
 
-    def next(self):
-        row = self.reader.next()
+    def __next__(self):
+        row = next(self.reader)
         if len(row) < self.min_fields or len(row) > self.max_fields:
             raise CSVCellError(len(row), self.min_fields, self.max_fields)
-        row += [u''] * (self.max_fields - len(row))
+        row += [''] * (self.max_fields - len(row))
         return row
 
     def __iter__(self):
@@ -356,12 +356,12 @@ def get_encoding(csv_data, encodings=DEFAULT_ENCODINGS):
                 raise ValueError
             data = csv_data.decode(encoding)
             if (encoding in ('utf-16be', 'utf-16le')
-                    and data and data[0] == u'\ufffe'):
+                    and data and data[0] == '\ufffe'):
                 data = data[1:]
-            if data.count(u'\x00') > 0:
+            if data.count('\x00') > 0:
                 m = "Wrong encoding detected (heuristic)"
                 raise ValueError(m)
-            if data.count(u'\u0A00') > data.count(u'\u000A'):
+            if data.count('\u0A00') > data.count('\u000A'):
                 m = "Wrong endianess (heuristic)"
                 raise ValueError(m)
             break
@@ -372,7 +372,7 @@ def get_encoding(csv_data, encodings=DEFAULT_ENCODINGS):
 
 
 def pick_sample(part):
-    nl = b'\x0a' if isinstance(part, six.binary_type) else u'\x0a'
+    nl = b'\x0a' if isinstance(part, six.binary_type) else '\x0a'
     sample, sep, junk = part.rpartition(nl)
     if len(sample) & 1:
         sample += sep

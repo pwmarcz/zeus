@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+
 import copy
 import json
 import os
@@ -61,7 +61,7 @@ def load_results(data, repr_data, qdata):
             candidates_indexes[index] = a
             index = index + 1
 
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         jsondata = json.loads(data)
     else:
         jsondata = data
@@ -106,7 +106,7 @@ def load_parties_results(data, repr_data, qdata):
     blank_votes = 0
     parties_indexes = {}
     candidates_indexes = {}
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         jsondata = json.loads(data)
     else:
         jsondata = data
@@ -143,7 +143,7 @@ def load_parties_results(data, repr_data, qdata):
 def load_score_results(data, repr_data, qdata):
     parties_results = []
     candidates_results = {}
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         jsondata = json.loads(data)
     else:
         jsondata = data
@@ -244,11 +244,11 @@ def make_results(elements, styles, total_votes, blank_votes,
     make_totals(elements, styles, total_votes, blank_votes)
     for party_result in parties_results:
         (party, count) = party_result
-        party = party.replace(u"{semi}", ":")
-        party = party.replace(u"{newline}", "\n")
+        party = party.replace("{semi}", ":")
+        party = party.replace("{newline}", "\n")
         if (len(parties_results) >= 1):
             make_party_list_heading(elements, styles, party, count)
-        if party not in candidates_results and not isinstance(party, unicode):
+        if party not in candidates_results and not isinstance(party, str):
             party = party.decode('utf-8')
         if party in candidates_results:
             make_party_list_table(elements, styles, candidates_results[party])
@@ -372,8 +372,8 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
                 round_table = []
                 temp_table = []
                 temp_table.append(table_header)
-                for name, cand in round['candidates'].iteritems():
-                    actions = map(lambda x: x[0], cand['actions'])
+                for name, cand in round['candidates'].items():
+                    actions = [x[0] for x in cand['actions']]
                     draw = _("NO")
                     if 'random' in actions:
                         draw = _("YES")
@@ -583,19 +583,19 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             group_elements.append(Spacer(1, 12))
             groups_table.append(group_elements)
 
-        t = Table(zip(*groups_table))
+        t = Table(list(zip(*groups_table)))
         table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
         t.setStyle(table_style)
         elements.append(t)
 
         questions = OrderedDict()
-        for q in results['totals']['counts'].keys():
+        for q in list(results['totals']['counts'].keys()):
             total_counts = totals['counts'][q]
             total_counts_rounded = totals['counts_rounded'][q]
             group_a_counts = group_a['counts'][q]
             group_b_counts = group_b['counts'][q]
             questions[q] = {}
-            for candidate in totals['counts'][q].keys():
+            for candidate in list(totals['counts'][q].keys()):
                 questions[q][candidate] = {
                     'total': total_counts[candidate],
                     'total_rounded': int(total_counts_rounded[candidate]),
@@ -604,7 +604,7 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
                 }
 
         elements.append(PageBreak())
-        for question, candidates in questions.iteritems():
+        for question, candidates in questions.items():
             make_heading(elements, styles, [question])
             elements.append(Spacer(1, 12))
             elements.append(Spacer(1, 12))
@@ -622,7 +622,7 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
                 ]
             ]
             table_data = []
-            for candidate, counts in candidates.iteritems():
+            for candidate, counts in candidates.items():
                 table_data.append([
                     Paragraph(escape(candidate), styles['Zeus']),
                     counts['total_rounded'],

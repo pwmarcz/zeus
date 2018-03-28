@@ -1,8 +1,8 @@
-from __future__ import print_function
 
-from __future__ import absolute_import
+
+
 import datetime
-import cStringIO as StringIO
+import io as StringIO
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -52,7 +52,7 @@ class HomeView(View):
         context = {
             'is_superadmin': request.admin.superadmin_p,
             'elections_administered': elections,
-            'election_table_headers': ELECTION_TABLE_HEADERS.iteritems(),
+            'election_table_headers': iter(ELECTION_TABLE_HEADERS.items()),
             'q': q_param,
             'page': page,
             'elections_per_page': elections_per_page,
@@ -170,7 +170,7 @@ def elections_report(request):
         percentage_voted = (voters_voted_count / float(voters_count)) * 100
 
     params = ''
-    for key, value in request.GET.items():
+    for key, value in list(request.GET.items()):
         params = params + key + '=' + value + '&'
     params = params[:-1]
 
@@ -182,7 +182,7 @@ def elections_report(request):
         'percentage_voted': percentage_voted,
         'elections': report.objectData,
         'elections_per_page': 10,
-        'report_table_headers': REPORT_TABLE_HEADERS.items(),
+        'report_table_headers': list(REPORT_TABLE_HEADERS.items()),
         'params': params,
         'q': q_param
     }

@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from itertools import izip_longest
+
+from itertools import zip_longest
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
@@ -54,14 +54,14 @@ class ScoreBallotElection(ElectionModuleBase):
                     # be placed before answer_2
                     answer_index = lambda a: int(a[0].replace('answer_', ''))
                     isanswer = lambda a: a[0].startswith('answer_')
-                    answer_values = filter(isanswer, question.iteritems())
+                    answer_values = list(filter(isanswer, iter(question.items())))
                     sorted_answers = sorted(answer_values, key=answer_index)
 
                     question['answers'] = [x[1] for x in sorted_answers]
-                    question['scores'] = filter(lambda p: p is not None, question['scores'])
+                    question['scores'] = [p for p in question['scores'] if p is not None]
                     question['question_subtitle'] = ",".join(question['scores'])
 
-                    for k in question.keys():
+                    for k in list(question.keys()):
                         if k in ['DELETE', 'ORDER']:
                             del question[k]
 
@@ -107,7 +107,7 @@ class ScoreBallotElection(ElectionModuleBase):
 
             for answer in q['answers']:
                 q_answers.append("%s: %s" % (question, answer))
-            scores += map(lambda x: str(100 * index+int(x)), q['scores'])
+            scores += [str(100 * index+int(x)) for x in q['scores']]
             answers = answers + q_answers
 
         qdata = questions_data[0]
@@ -118,7 +118,7 @@ class ScoreBallotElection(ElectionModuleBase):
 
         poll_answers = []
         scores = reversed(scores)
-        for answer, score in izip_longest(answers[:-1], scores):
+        for answer, score in zip_longest(answers[:-1], scores):
             if answer is not None:
                 poll_answers.append(answer)
             if score is not None:

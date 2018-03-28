@@ -1,5 +1,5 @@
-from __future__ import absolute_import
-from itertools import izip
+
+
 import tempfile
 import shutil
 import os
@@ -42,7 +42,7 @@ def test_decryption():
 
     master_factors = combine_decryption_factors(p, all_factors)
     pts = []
-    for (alpha, beta), factor in izip(cts, master_factors):
+    for (alpha, beta), factor in zip(cts, master_factors):
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
     assert pts == texts
 
@@ -63,7 +63,7 @@ def test_decryption():
 
     master_factors = combine_decryption_factors(p, all_factors)
     pts = []
-    for (alpha, beta), factor in izip(cts, master_factors):
+    for (alpha, beta), factor in zip(cts, master_factors):
         pts.append(decrypt_with_decryptor(p, g, q, beta, factor))
     assert sorted(pts) == sorted(texts)
 

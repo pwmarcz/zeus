@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 import datetime
 
 from Crypto import Random
@@ -28,7 +28,7 @@ def _get_fields_for_task(task_name):
         models.CharField(max_length=50, default='pending'),
         models.TextField(null=True, default=None)
     ]
-    return dict(zip(keys, fields))
+    return dict(list(zip(keys, fields)))
 
 
 class Task(object):
@@ -101,7 +101,7 @@ class TaskModelBase(ModelBase):
     def __new__(cls, name, bases, attrs):
         supernew = super(TaskModelBase, cls).__new__
         extra_fields = {}
-        for key, value in attrs.iteritems():
+        for key, value in attrs.items():
             # find methods registered as task
             if hasattr(value, '_task'):
                 extra_fields.update(task_fields(value))
@@ -110,9 +110,7 @@ class TaskModelBase(ModelBase):
         return supernew(cls, name, bases, attrs)
 
 
-class TaskModel(models.Model):
-
-    __metaclass__ = TaskModelBase
+class TaskModel(models.Model, metaclass=TaskModelBase):
 
     def notify_exception(self, exc):
         self.logger.exception(exc)

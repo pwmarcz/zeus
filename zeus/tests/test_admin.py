@@ -1,6 +1,6 @@
-from __future__ import print_function
 
-from __future__ import absolute_import
+
+
 import csv
 import datetime
 from io import StringIO
@@ -224,7 +224,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         # at least one comma
         assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
         assert response.content.find(',') > -1
-        lines = [l for l in csv.reader(StringIO(unicode(response.content)))]
+        lines = [l for l in csv.reader(StringIO(str(response.content)))]
         assert len(lines) == 2
         assert lines[0] == ['Institution', 'Electors', 'Voters', 'Start', 'End', 'uuid', 'Name', 'Polls', 'Administrator', 'Official']
 

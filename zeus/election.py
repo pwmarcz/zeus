@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+
 import datetime
 import uuid
 import json
@@ -601,7 +601,7 @@ class ZeusDjangoElection(ZeusCoreElection):
         for i, q in enumerate(self.poll.questions_data):
             entry = copy.copy(q)
             entry['results'] = OrderedDict()
-            scores = filter(lambda a: a[1].startswith("%s:" % q['question']), results['totals'])
+            scores = [a for a in results['totals'] if a[1].startswith("%s:" % q['question'])]
             for score, answer in scores:
                 qanswer = answer.replace("%s:" % q['question'], "")
                 entry['results'][qanswer] = {
@@ -630,8 +630,7 @@ class ZeusDjangoElection(ZeusCoreElection):
                 continue
 
             party_candidates = results['parties'][party]
-            candidate_keys = filter(lambda x: isinstance(x, int),
-                                    party_candidates.keys())
+            candidate_keys = [x for x in list(party_candidates.keys()) if isinstance(x, int)]
             candidate_keys.sort()
             candidates = [party_candidates[c] for c in candidate_keys]
             candidate_counts = OrderedDict([(c, 0) for c in \
@@ -661,11 +660,11 @@ class ZeusDjangoElection(ZeusCoreElection):
                 data['candidates']['Χωρίς επιλογή'] = empty_party_count
             parties.append(data)
 
-        data = {'name': u'Λευκά',
+        data = {'name': 'Λευκά',
                 'total': results.get('blank_count', 0)}
 
         if results.get('invalid_count', 0):
-            data = {'name': u'Άκυρα',
+            data = {'name': 'Άκυρα',
                     'total': results.get('invalid_count')}
         parties.append(data)
         return parties

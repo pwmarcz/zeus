@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
+
 import json
 
 from django.test import TestCase
@@ -23,7 +23,7 @@ class TestSTVCountView(TestCase):
 
     def test_submit_form(self):
         data = {
-            "name": u"Όνομα ψηφοφορίας",
+            "name": "Όνομα ψηφοφορίας",
             "institution": "Institution name",
         }
         resp = self.client.post(self.form_url, data)
@@ -39,7 +39,7 @@ class TestSTVCountView(TestCase):
         assert 'voting_ends' in form.errors
         assert resp.context['ballots_form'] is None
 
-        CANDIDATES = u"""
+        CANDIDATES = """
         NAMEA, SURNAMEA, FATHERNAMEA, SCHOOLA
         ΟΝΟΜΑ2, ΕΠΩΝΥΜΟ2, ΠΑΤΡΩΝΥΜΟ2, ΣχολήΒ
         ΟΝΟΜΑ3, ΕΠΩΝΥΜΟ3, ΠΑΤΡΩΝΥΜΟ3, SCHOOLA
@@ -86,4 +86,4 @@ class TestSTVCountView(TestCase):
 
         json_data = self.client.get(self.url + "?download=json").content
         data = json.loads(json_data, encoding='utf8')
-        assert u"ΟΝΟΜΑ2" in json_data.decode('utf8')
+        assert "ΟΝΟΜΑ2" in json_data.decode('utf8')
