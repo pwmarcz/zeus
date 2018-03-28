@@ -99,8 +99,8 @@ class SimpleElection(ElectionModuleBase):
 
         for index, q in enumerate(questions_data):
             question = q['question'].replace(":", "{semi}") \
-                                    .replace("\r\n","{newline}") \
-                                    .replace("\n","{newline}")
+                                    .replace("\r\n", "{newline}") \
+                                    .replace("\n", "{newline}")
             q_answers = ["%s: %s" % (question, ans) for ans in \
                          q['answers']]
             group = 0

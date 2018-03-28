@@ -179,7 +179,7 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
                                         desc=description))
 
     allocated[selected][:] = [x for x in allocated[selected]
-                              if x not in transferred ]
+                              if x not in transferred]
 
 
 def elect_reject(candidate, vote_count, constituencies, quota_limit,
@@ -318,7 +318,7 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
 
         logger.info(LOG_MESSAGE.format(action=Action.COUNT,
                                        desc=description))
-        hopefuls_sorted = sorted(hopefuls, key=vote_count.get, reverse=True )
+        hopefuls_sorted = sorted(hopefuls, key=vote_count.get, reverse=True)
         # If there is a surplus record it so that we can try to
         # redistribute the best candidate's votes according to their
         # next preferences
@@ -332,7 +332,7 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
                                                    random_generator=rnd_gen,
                                                    logger=logger)
             if best_candidate not in hopefuls:
-                print("Not a valid candidate: ",best_candidate)
+                print("Not a valid candidate: ", best_candidate)
                 sys.exit(1)
             hopefuls.remove(best_candidate)
             was_elected = elect_reject(best_candidate, vote_count,

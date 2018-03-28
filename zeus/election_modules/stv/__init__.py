@@ -78,7 +78,7 @@ class StvElection(ElectionModuleBase):
                     departments = [json.loads(x[1])[1] for x in sorted_answers]
 
                     final_answers = []
-                    for a,d in zip(answers, departments):
+                    for a, d in zip(answers, departments):
                         final_answers.append(a+':'+d)
                     question['answers'] = final_answers
                     for k in list(question.keys()):
@@ -196,7 +196,7 @@ class StvElection(ElectionModuleBase):
         for ballot in ballots_data:
             if not ballot:
                 continue
-            ballot = to_absolute_answers(gamma_decode(ballot, cands_count,cands_count),
+            ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
                                          cands_count)
             ballot = [str(i) for i in ballot]
             ballots.append(Ballot(ballot))

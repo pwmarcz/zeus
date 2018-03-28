@@ -62,8 +62,8 @@ def autoretry_datastore_timeouts(attempts=5.0, interval=0.1, exponent=2.0):
     interval = float(interval)
     exponent = float(exponent)
     wrapped = apiproxy_stub_map.MakeSyncCall
-    errors = {datastore_pb.Error.TIMEOUT:'Timeout',
-        datastore_pb.Error.CONCURRENT_TRANSACTION:'TransactionFailedError'}
+    errors = {datastore_pb.Error.TIMEOUT: 'Timeout',
+        datastore_pb.Error.CONCURRENT_TRANSACTION: 'TransactionFailedError'}
 
     def wrapper(*args, **kwargs):
         count = 0.0

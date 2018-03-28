@@ -357,4 +357,4 @@ def handler400(request):
 
 def handler404(request):
     msg = _("The requested page was not found.")
-    return error(request, 404 , msg)
+    return error(request, 404, msg)

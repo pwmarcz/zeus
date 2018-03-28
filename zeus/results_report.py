@@ -155,7 +155,7 @@ def make_first_page_hf(canvas, doc):
 def make_later_pages_hf(pageinfo):
     def inner(canvas, doc):
         canvas.saveState()
-        canvas.setFont('Helvetica',9)
+        canvas.setFont('Helvetica', 9)
         canvas.drawImage(ZEUS_LOGO,
                         x=2 * cm,
                         y=PAGE_HEIGHT - 2 * cm,
@@ -188,11 +188,11 @@ def make_intro(elements, styles, contents):
 
 def make_poll_voters(elements, styles, poll_voters):
     elements.append(Paragraph(escape(_("Voters") + ": "
-        + str(poll_voters.count())),styles['Zeus']))
+        + str(poll_voters.count())), styles['Zeus']))
     if poll_voters.excluded().count() > 0:
         nr_excluded = poll_voters.excluded().count()
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
-            + str(nr_excluded)),styles['Zeus']))
+            + str(nr_excluded)), styles['Zeus']))
 
 
 def make_election_voters(elements, styles, polls_data, stv=False):
@@ -344,10 +344,10 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             for item in json_data:
                 elected.append([indexed_cands[item[0]]])
             t = Table(elected)
-            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1),'Helvetica'),
-                                         ('ALIGN',(1,1),(-2,-2),'LEFT'),
-                                         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                                         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+                                         ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
+                                         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
                                          ])
             t.setStyle(my_table_style)
             elements.append(t)
@@ -365,7 +365,7 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             for num, round in rounds:
                 round_name = _('Round ')
                 round_name += str(num)
-                elements.append(Paragraph(round_name,styles['Zeus']))
+                elements.append(Paragraph(round_name, styles['Zeus']))
                 round_table = []
                 temp_table = []
                 temp_table.append(table_header)
@@ -633,12 +633,12 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             t = Table(candidates_table, colWidths=[4*inch] + [1.2*inch] * 3)
             table_style = TableStyle([
                 ('FONT', (0, 0), (-1, -1), 'Helvetica'),
-                ('ALIGN',(1,1),(-2,-2),'RIGHT'),
+                ('ALIGN', (1, 1), (-2, -2), 'RIGHT'),
             ])
-            table_style = TableStyle([('FONT', (0, 0), (-1, -1),'Helvetica'),
-                                         ('ALIGN',(1,1),(-2,-2),'LEFT'),
-                                         ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                                         ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+            table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+                                         ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
+                                         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
                                          ])
             t.setStyle(table_style)
             elements.append(t)

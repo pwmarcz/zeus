@@ -276,7 +276,7 @@ class LDObject(object):
 
     def __eq__(self, other):
         if not hasattr(self, 'uuid'):
-            return super(LDObject,self) == other
+            return super(LDObject, self) == other
 
         return other != None and self.uuid == other.uuid
 

@@ -15,14 +15,14 @@ class LegacyObject(LDObject):
 
 class ShortCastVote(LegacyObject):
     FIELDS = ['cast_at', 'voter_uuid', 'voter_hash', 'vote_hash']
-    STRUCTURED_FIELDS = {'cast_at' : 'core/Timestamp'}
+    STRUCTURED_FIELDS = {'cast_at': 'core/Timestamp'}
 
 
 class CastVote(LegacyObject):
     FIELDS = ['vote', 'cast_at', 'voter_uuid', 'voter_hash', 'vote_hash']
     STRUCTURED_FIELDS = {
-        'cast_at' : 'core/Timestamp',
-        'vote' : 'phoebus/EncryptedVote'}
+        'cast_at': 'core/Timestamp',
+        'vote': 'phoebus/EncryptedVote'}
 
     @property
     def short(self):

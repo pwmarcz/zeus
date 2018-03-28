@@ -131,7 +131,7 @@ class User(models.Model):
 
     @classmethod
     def update_or_create(cls, user_type, user_id, name=None, info=None, token=None):
-        obj, created_p = cls.objects.get_or_create(user_type=user_type, user_id=user_id, defaults={'name': name, 'info':info, 'token':token})
+        obj, created_p = cls.objects.get_or_create(user_type=user_type, user_id=user_id, defaults={'name': name, 'info': info, 'token': token})
 
         if not created_p:
             # special case the password: don't replace it if it exists

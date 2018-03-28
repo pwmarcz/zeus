@@ -187,7 +187,7 @@ def cast_vote(voter_url, choices=None):
         pass
 
     if parties:
-        if randint(0,19) == 0:
+        if randint(0, 19) == 0:
             choices = []
         else:
             party_choice = choice(list(parties.keys()))

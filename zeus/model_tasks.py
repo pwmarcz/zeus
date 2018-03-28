@@ -270,7 +270,7 @@ class PollTasks(TaskModel):
     def validate_mixing(self):
         ciphers = self.zeus.get_mixed_ballots()
         tally_dict = {'num_tallied': len(ciphers), 'tally': [
-          [{'alpha':c[0], 'beta':c[1]} for c in ciphers]]}
+          [{'alpha': c[0], 'beta':c[1]} for c in ciphers]]}
         tally = datatypes.LDObject.fromDict(tally_dict,
                                             type_hint='phoebus/Tally')
         self.encrypted_tally = tally

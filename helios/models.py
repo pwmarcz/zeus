@@ -73,7 +73,7 @@ RESULTS_PATH = getattr(settings, 'ZEUS_RESULTS_PATH', os.path.join(settings.MEDI
 ELECTION_MODEL_VERSION = 1
 
 
-validate_email = lambda email,ln: django_validate_email(email)
+validate_email = lambda email, ln: django_validate_email(email)
 
 
 class HeliosModel(TaskModel, datatypes.LDObjectContainer):
@@ -842,8 +842,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
             })
         if self.voters.count() == 0:
             issues.append({
-                "type" : "voters",
-                "action" : _('Import voters list')
+                "type": "voters",
+                "action": _('Import voters list')
                 })
 
         return issues
@@ -1342,7 +1342,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     def get_result_file_path(self, name, ext):
         election = self.short_name
         return os.path.join(settings.MEDIA_ROOT, 'results', '%s-%s-results.%s' % \
-                            (election, name ,ext))
+                            (election, name, ext))
 
     def generate_result_docs(self):
         import json
@@ -1516,7 +1516,7 @@ class VoterFile(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
 
     # we move to storing the content in the DB
-    voter_file = models.FileField(upload_to=PATH, max_length=250,null=True)
+    voter_file = models.FileField(upload_to=PATH, max_length=250, null=True)
     voter_file_content = models.TextField(null=True)
 
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -1844,7 +1844,7 @@ class Voter(HeliosModel, VoterFeatures):
                     field_name = "%s__gt" % order_by[1:]
                 else:
                     field_name = "%s__gt" % order_by
-                conditions = {field_name : after}
+                conditions = {field_name: after}
                 query = query.filter (**conditions)
 
         if limit:
@@ -2039,7 +2039,7 @@ class CastVote(HeliosModel):
         """
         safe_hash = self.vote_hash
         for c in ['/', '+']:
-            safe_hash = safe_hash.replace(c,'')
+            safe_hash = safe_hash.replace(c, '')
 
         length = 8
         while True:

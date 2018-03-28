@@ -10,9 +10,9 @@ from helios.crypto import elgamal as crypto_elgamal
 class DiscreteLogProof(LDObject):
     FIELDS = ['challenge', 'commitment', 'response']
     STRUCTURED_FIELDS = {
-        'challenge' : 'core/BigInteger',
-        'commitment' : 'core/BigInteger',
-        'response' : 'core/BigInteger'}
+        'challenge': 'core/BigInteger',
+        'commitment': 'core/BigInteger',
+        'response': 'core/BigInteger'}
 
 
 class PublicKey(LDObject):
@@ -20,10 +20,10 @@ class PublicKey(LDObject):
 
     FIELDS = ['y', 'p', 'g', 'q']
     STRUCTURED_FIELDS = {
-        'y' : 'core/BigInteger',
-        'p' : 'core/BigInteger',
-        'g' : 'core/BigInteger',
-        'q' : 'core/BigInteger'}
+        'y': 'core/BigInteger',
+        'p': 'core/BigInteger',
+        'g': 'core/BigInteger',
+        'q': 'core/BigInteger'}
 
 
 class SecretKey(LDObject):
@@ -31,8 +31,8 @@ class SecretKey(LDObject):
 
     FIELDS = ['public_key', 'x']
     STRUCTURED_FIELDS = {
-        'public_key' : 'pkc/elgamal/PublicKey',
-        'x' : 'core/BigInteger'
+        'public_key': 'pkc/elgamal/PublicKey',
+        'x': 'core/BigInteger'
         }
 
 
@@ -41,6 +41,6 @@ class DLogProof(LDObject):
     FIELDS = ['commitment', 'challenge', 'response']
 
     STRUCTURED_FIELDS = {
-        'commitment' : 'core/BigInteger',
-        'challenge' : 'core/BigInteger',
-        'response' : 'core/BigInteger'}
+        'commitment': 'core/BigInteger',
+        'challenge': 'core/BigInteger',
+        'response': 'core/BigInteger'}

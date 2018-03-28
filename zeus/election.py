@@ -518,9 +518,9 @@ class ZeusDjangoElection(ZeusCoreElection):
         helios_proofs = [[]]
 
         for factor in factors:
-            proof_obj = get_datatype('EGZKProof',{
+            proof_obj = get_datatype('EGZKProof', {
                 'commitment': {
-                    'A':factor[1][0],
+                    'A': factor[1][0],
                     'B': factor[1][1]},
                 'challenge': factor[1][2],
                 'response': factor[1][3]

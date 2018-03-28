@@ -17,9 +17,9 @@ def extract_ecounting_ballots(zeus_results, nr_candidates):
     for i, encoded in enumerate(zeus_results):
         selection = gamma_decode(encoded, nr_candidates, nr_candidates)
         answers = to_absolute_answers(selection, nr_candidates)
-        votes = [{ 'rank': j + 1, 'candidateTmpId': c }
+        votes = [{'rank': j + 1, 'candidateTmpId': c}
                  for j, c in enumerate(answers)]
-        ballot = { 'ballotSerialNumber': i + 1, 'votes': votes }
+        ballot = {'ballotSerialNumber': i + 1, 'votes': votes}
         append(ballot)
 
     return ballots

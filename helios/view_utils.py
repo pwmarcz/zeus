@@ -130,4 +130,4 @@ def json(func):
             logging.error("problem with serialization: " + str(return_val) + " / " + str(e))
             raise e
 
-    return update_wrapper(convert_to_json,func)
+    return update_wrapper(convert_to_json, func)

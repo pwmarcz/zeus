@@ -120,7 +120,7 @@ class PublicKey:
         """
         return self.encrypt_return_r(plaintext)[0]
 
-    def __mul__(self,other):
+    def __mul__(self, other):
         if other == 0 or other == 1:
             return self
 
@@ -215,7 +215,7 @@ class Ciphertext:
         self.alpha = alpha
         self.beta = beta
 
-    def __mul__(self,other):
+    def __mul__(self, other):
         """
         Homomorphic Multiplication of ciphertexts.
         """
@@ -387,12 +387,12 @@ class Ciphertext:
         expects alpha,beta
         """
         split = str.split(",")
-        return cls.from_dict({'alpha' : split[0], 'beta' : split[1]})
+        return cls.from_dict({'alpha': split[0], 'beta': split[1]})
 
 
 class ZKProof(object):
     def __init__(self):
-        self.commitment = {'A':None, 'B':None}
+        self.commitment = {'A': None, 'B': None}
         self.challenge = None
         self.response = None
 

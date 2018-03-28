@@ -39,7 +39,7 @@ class HeliosObject(object):
     def set_from_other_object(self, o):
         for f in self.FIELDS:
             if hasattr(o, f):
-                setattr(self, f, self.process_value_in(f, getattr(o,f)))
+                setattr(self, f, self.process_value_in(f, getattr(o, f)))
             else:
                 setattr(self, f, None)
 
@@ -73,7 +73,7 @@ class HeliosObject(object):
             if hasattr(o, f):
                 # BIG HAMMER
                 try:
-                    setattr(o, f, self.process_value_out(f, getattr(self,f)))
+                    setattr(o, f, self.process_value_out(f, getattr(self, f)))
                 except:
                     pass
 
@@ -116,7 +116,7 @@ class HeliosObject(object):
 
     def __eq__(self, other):
         if not hasattr(self, 'uuid'):
-            return super(HeliosObject,self) == other
+            return super(HeliosObject, self) == other
 
         return other != None and self.uuid == other.uuid
 
@@ -332,7 +332,7 @@ class Voter(HeliosObject):
         if self.alias != None:
             return super(Voter, self).toJSONDict(self.ALIASED_VOTER_JSON_FIELDS)
         else:
-            return super(Voter,self).toJSONDict()
+            return super(Voter, self).toJSONDict()
 
     @property
     def voter_id_hash(self):
@@ -380,7 +380,7 @@ class CastVote(HeliosObject):
         return o
 
     def toJSONDict(self, include_vote=True):
-        result = super(CastVote,self).toJSONDict()
+        result = super(CastVote, self).toJSONDict()
         if not include_vote:
             del result['vote']
         return result
@@ -466,7 +466,7 @@ class Tally(HeliosObject):
     def __init__(self, *args, **kwargs):
         super(Tally, self).__init__(*args, **kwargs)
 
-        self.election = kwargs.get('election',None)
+        self.election = kwargs.get('election', None)
 
         if self.election:
             self.init_election(self.election)

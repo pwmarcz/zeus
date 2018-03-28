@@ -287,7 +287,7 @@ class ElectionModuleBase(ElectionHooks):
         search = self.get_voters_search_fields(request)
         bool_keys = self.get_voters_bool_keys_map(request)
         extra = self.get_voters_extra_headers(request)
-        filters = get_filters( q_param, headers, search, bool_keys, extra)
+        filters = get_filters(q_param, headers, search, bool_keys, extra)
         return voters.filter(filters)
 
     def can_delete_poll_voters(self):

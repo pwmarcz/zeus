@@ -184,7 +184,7 @@ class Tally(WorkflowObject):
     def __init__(self, *args, **kwargs):
         super(Tally, self).__init__()
 
-        election = kwargs.get('election',None)
+        election = kwargs.get('election', None)
         self.tally = None
         self.num_tallied = 0
 

@@ -66,7 +66,7 @@ def single_voter_email(voter_uuid,
 
     with translation.override(lang):
         template_vars= copy.copy(template_vars)
-        template_vars.update({'voter' : voter, 'poll': voter.poll,
+        template_vars.update({'voter': voter, 'poll': voter.poll,
                               'election': voter.poll.election})
 
         subject_tpls = {

@@ -177,12 +177,12 @@ def index(request, election, poll=None):
     trustees = election.trustees.filter()
 
     context = {
-        'election' : election,
+        'election': election,
         'poll': poll,
         'trustees': trustees,
         'user': user,
         'votes': votes,
-        'election_url' : election_url,
+        'election_url': election_url,
         'booth_url': booth_url,
         'linked_booth_urls': linked_booth_urls
     }
@@ -410,7 +410,7 @@ def test_cookie_2(request):
 def nocookies(request):
     retest_url = "%s?%s" % (reverse('test_cookie'),
                             six.moves.urllib.parse.urlencode({
-                            'continue_url' : request.GET['continue_url']}))
+                            'continue_url': request.GET['continue_url']}))
     return render_template(request, 'nocookies', {'retest_url': retest_url})
 
 

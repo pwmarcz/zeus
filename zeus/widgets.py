@@ -8,7 +8,7 @@ from django.forms import fields
 from django.forms.widgets import DateInput, MultiWidget, Select
 
 
-hour_selections = [('','')]
+hour_selections = [('', '')]
 for t in range(24):
     hour_selections.extend([("%02d:00" % t, "%02d:00" % t),
                             ("%02d:15" % t, "%02d:15" % t),

@@ -220,11 +220,11 @@ VOTER_BOOL_KEYS_MAP = {
         'excluded': ('excluded_at', 'nullcheck'),
      }
 
-ELECTION_SEARCH_FIELDS = ['name', 'description', 'institution__name', 'admins__user_id',]
+ELECTION_SEARCH_FIELDS = ['name', 'description', 'institution__name', 'admins__user_id', ]
 ELECTION_EXTRA_HEADERS = []
 ELECTION_BOOL_KEYS_MAP = {'trial': 'trial'}
 
-REPORT_SEARCH_FIELDS = ['name', 'institution__name', 'admins__user_id',]
+REPORT_SEARCH_FIELDS = ['name', 'institution__name', 'admins__user_id', ]
 REPORT_EXTRA_HEADERS = []
 REPORT_BOOL_KEYS_MAP = {}
 

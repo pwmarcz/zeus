@@ -66,7 +66,7 @@ def election_report(elections, votes_report=True, filter_sensitive=True):
 def election_votes_report(elections, include_alias=False, filter_sensitive=True):
     from helios.models import CastVote, Voter
     for vote in CastVote.objects.filter(poll__election__in=elections,
-                                    voter__excluded_at__isnull=True).values('voter__alias','voter',
+                                    voter__excluded_at__isnull=True).values('voter__alias', 'voter',
                                                                            'cast_at').order_by('-cast_at'):
         entry = OrderedDict([
         ])
@@ -305,7 +305,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     votes = cand['votes']
                     cand_name = indexed_cands[str(name)]
                     cand_name = cand_name.split(':')[0]
-                    writerow([strforce(cand_name),strforce(votes),\
+                    writerow([strforce(cand_name), strforce(votes),\
                     strforce(draw), strforce(action)])
 
 
@@ -391,7 +391,7 @@ class ElectionsReport(object):
                        _("Name"),
                        _("Polls"),
                        _("Administrator"),
-                       _("Official"),]
+                       _("Official"), ]
 
     def get_elections(self):
         return self.elections
@@ -502,7 +502,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         writerow([])
         writerow([])
         writerow([])
-        writerow(['',strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+        writerow(['', strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
         writerow(ROW(_("Voters"), 'voters'))
         if T('excluded') > 0:
             writerow(ROW(_("Excluded voters"), 'excluded'))
@@ -518,7 +518,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         for question, answers in list(T('counts').items()):
             writerow([])
             writerow([strforce(question)])
-            writerow(['',strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+            writerow(['', strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
             for answer in answers:
                 key = 'counts.%s.%s' % (question, answer)
                 key_round = 'counts_rounded.%s.%s' % (question, answer)

@@ -323,7 +323,7 @@ def voters_list(request, election, poll):
     # for django pagination support
     page = int(request.GET.get('page', 1))
     limit = int(request.GET.get('limit', 10))
-    q_param = request.GET.get('q','')
+    q_param = request.GET.get('q', '')
 
     default_voters_per_page = getattr(settings, 'ELECTION_VOTERS_PER_PAGE', 100)
     voters_per_page = request.GET.get('limit', default_voters_per_page)
@@ -347,7 +347,7 @@ def voters_list(request, election, poll):
     hash_invalid = None
     hash_valid = None
 
-    if (order_type == 'asc') or (order_type == None) :
+    if (order_type == 'asc') or (order_type == None):
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
     else:
         order_by = '-%s' % order_by
@@ -604,14 +604,14 @@ def voters_email(request, election, poll=None, voter_uuid=None):
         })
 
     tpl_context = {
-            'election' : election,
-            'election_url' : election_url,
-            'custom_subject' : default_subject,
+            'election': election,
+            'election_url': election_url,
+            'custom_subject': default_subject,
             'custom_message': '&lt;BODY&gt;',
             'custom_message_sms': '&lt;SMS_BODY&gt;',
             'SECURE_URL_HOST': settings.SECURE_URL_HOST,
             'voter': {
-                'vote_hash' : '<SMART_TRACKER>',
+                'vote_hash': '<SMART_TRACKER>',
                 'name': '<VOTER_NAME>',
                 'voter_name': '<VOTER_NAME>',
                 'voter_surname': '<VOTER_SURNAME>',
@@ -622,7 +622,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                 'get_audit_passwords': ['pass1', 'pass2', '...'],
                 'get_quick_login_url': '<VOTER_LOGIN_URL>',
                 'poll': poll,
-                'election' : election}
+                'election': election}
             }
 
     default_body = render_to_string(
@@ -669,7 +669,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
             # exclude those who have not voted
             if email_form.cleaned_data['send_to'] == 'voted':
-                voter_constraints_exclude = {'vote_hash' : None}
+                voter_constraints_exclude = {'vote_hash': None}
 
             # include only those who have not voted
             if email_form.cleaned_data['send_to'] == 'not-voted':
@@ -690,10 +690,10 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
                 extra_vars = {
                     'SECURE_URL_HOST': settings.SECURE_URL_HOST,
-                    'custom_subject' : email_form.cleaned_data['email_subject'],
-                    'custom_message' : email_form.cleaned_data['email_body'],
-                    'custom_message_sms' : email_form.cleaned_data['sms_body'],
-                    'election_url' : election_url,
+                    'custom_subject': email_form.cleaned_data['email_subject'],
+                    'custom_message': email_form.cleaned_data['email_body'],
+                    'custom_message_sms': email_form.cleaned_data['sms_body'],
+                    'election_url': election_url,
                 }
                 task_kwargs = {
                     'contact_id': template,
@@ -950,7 +950,7 @@ def post_audited_ballot(request, election, poll):
     poll.logger.info("Poll audit ballot cast")
     vote_pk = AuditedBallot.objects.filter(voter=voter).order_by('-pk')[0].pk
 
-    return HttpResponse(json.dumps({'audit_id': vote_pk }),
+    return HttpResponse(json.dumps({'audit_id': vote_pk}),
                         content_type="application/json")
 
 
@@ -1148,7 +1148,7 @@ def results_file(request, election, poll, language, ext):
     if not os.path.exists(el_module.get_poll_result_file_path('pdf', 'pdf',\
         lang)):
         if el_module.pdf_result:
-            el_module.generate_result_docs((lang,lang))
+            el_module.generate_result_docs((lang, lang))
 
     if not os.path.exists(el_module.get_poll_result_file_path('csv', 'csv',\
         lang)):

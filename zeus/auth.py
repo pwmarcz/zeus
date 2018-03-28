@@ -399,6 +399,6 @@ def allow_manager_access(func):
 
 def make_shibboleth_login_url(endpoint):
     shibboleth_login = reverse('shibboleth_login', kwargs={'endpoint': endpoint})
-    url = '/'.join(s.strip('/') for s in filter(bool,[
+    url = '/'.join(s.strip('/') for s in filter(bool, [
         shibboleth_login]))
     return '/%s' % url

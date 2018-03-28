@@ -314,8 +314,8 @@ class QuestionForm(QuestionBaseForm):
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
-        max_choices = [(x,x) for x in range(1, self.max_limit or answers+1)]
-        min_choices = [(x,x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
+        max_choices = [(x, x) for x in range(1, self.max_limit or answers+1)]
+        min_choices = [(x, x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
 
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = min([x[1] for x in max_choices])
@@ -345,7 +345,7 @@ class PartyForm(QuestionForm):
 
 
 SCORES_DEFAULT_LEN = 2
-SCORES_CHOICES = [(x,x) for x in range(1, 10)]
+SCORES_CHOICES = [(x, x) for x in range(1, 10)]
 
 
 class ScoresForm(QuestionBaseForm):
@@ -372,7 +372,7 @@ class ScoresForm(QuestionBaseForm):
             self._scores_len = len(self.initial['scores'])
         else:
             self._scores_len = SCORES_DEFAULT_LEN
-        max_choices = [(x,x) for x in range(1, self._scores_len + 1)]
+        max_choices = [(x, x) for x in range(1, self._scores_len + 1)]
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = self._scores_len
         self.fields['min_answers'].choices = max_choices
@@ -453,7 +453,7 @@ class StvForm(QuestionBaseForm):
         deps = kwargs['initial']['departments_data'].split('\n')
         DEPARTMENT_CHOICES = []
         for dep in deps:
-            DEPARTMENT_CHOICES.append((dep.strip(),dep.strip()))
+            DEPARTMENT_CHOICES.append((dep.strip(), dep.strip()))
 
         super(StvForm, self).__init__(*args, **kwargs)
 
@@ -484,7 +484,7 @@ class StvForm(QuestionBaseForm):
                                  widget=widget,
                                  required=False))
 
-        widget=forms.CheckboxInput(attrs={'onclick':'enable_limit()'})
+        widget=forms.CheckboxInput(attrs={'onclick': 'enable_limit()'})
         limit_help_text = _("enable limiting the elections from the same constituency")
         limit_label = _("Limit elected per constituency")
         ordered_dict_prepend(self.fields, 'has_department_limit',
@@ -690,7 +690,7 @@ class PollForm(forms.ModelForm):
         election_polls = self.election.polls.all()
         for poll in election_polls:
             if (data.get('name') == poll.name and
-                    ((not self.instance.pk ) or
+                    ((not self.instance.pk) or
                     (self.instance.pk and self.instance.name!=data.get('name')))):
                 message = _("Duplicate poll names are not allowed")
                 raise forms.ValidationError(message)
