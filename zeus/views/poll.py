@@ -6,6 +6,7 @@ import json
 import six.moves.urllib.request
 import six.moves.urllib.parse
 import six.moves.urllib.error
+import logging
 
 from django.urls import reverse
 from django.forms import ValidationError
@@ -480,6 +481,7 @@ def voters_upload(request, election, poll):
                     else:
                         error = "error."
                 except Exception as e:
+                    logging.exception('error reading voter file')
                     voter_file_obj.delete()
                     error = str(e)
                     if 'voter_file_id' in request.session:
