@@ -439,7 +439,7 @@ def voters_upload(request, election, poll):
                 try:
                     voter_file.process(process_linked,
                                        preferred_encoding=preferred_encoding)
-                except (exceptions.VoterLimitReached, \
+                except (exceptions.VoterLimitReached,
                     exceptions.DuplicateVoterID, ValidationError) as e:
                     messages.error(request, e.message)
                     voter_file.delete()
@@ -872,7 +872,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         }))
 
     if request.zeususer.is_authenticated() and (
-            not request.zeususer.is_voter or \
+            not request.zeususer.is_voter or
                 request.zeususer._user.pk != voter.pk):
         messages.error(request,
                         _("You need to logout from your current account "
@@ -886,7 +886,7 @@ def voter_booth_login(request, election, poll, voter_uuid, voter_secret):
         oauth2 = poll.get_oauth2_module
         if oauth2.type_id == 'google':
             oauth2.set_login_hint(voter.voter_email)
-        poll.logger.info("[thirdparty] setting thirdparty voter " + \
+        poll.logger.info("[thirdparty] setting thirdparty voter " +
                          "session data (%s, %s)",
                          voter.voter_email, voter.uuid)
         request.session['oauth2_voter_email'] = voter.voter_email
@@ -1145,12 +1145,12 @@ def results_file(request, election, poll, language, ext):
     name = ext
     el_module = poll.get_module()
 
-    if not os.path.exists(el_module.get_poll_result_file_path('pdf', 'pdf',\
+    if not os.path.exists(el_module.get_poll_result_file_path('pdf', 'pdf',
         lang)):
         if el_module.pdf_result:
             el_module.generate_result_docs((lang, lang))
 
-    if not os.path.exists(el_module.get_poll_result_file_path('csv', 'csv',\
+    if not os.path.exists(el_module.get_poll_result_file_path('csv', 'csv',
         lang)):
         if el_module.csv_result:
             el_module.generate_csv_file((lang, lang))

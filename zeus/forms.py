@@ -149,7 +149,7 @@ class ElectionForm(forms.ModelForm):
                 bool(self.instance.mix_key)
 
         for field, features in self.FIELD_REQUIRED_FEATURES.items():
-            editable = all([self.instance.check_feature(f) for \
+            editable = all([self.instance.check_feature(f) for
                             f in features])
 
             widget = self.fields.get(field).widget
@@ -169,7 +169,7 @@ class ElectionForm(forms.ModelForm):
         for field, features in self.FIELD_REQUIRED_FEATURES.items():
             if not self.instance.pk:
                 continue
-            editable = all([self.instance.check_feature(f) for \
+            editable = all([self.instance.check_feature(f) for
                             f in features])
             if not editable and field in self.cleaned_data:
                 if field == 'trustees':

@@ -209,7 +209,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
 
             writerow([])
             writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('PARTY')),\
+            writerow([strforce(_('ID')), strforce(_('PARTY')),
                 strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
             counter = 0
             valid = strforce(_('VALID'))
@@ -291,7 +291,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                 round_name +=str(num)
                 writerow([])
                 writerow([strforce(round_name)])
-                writerow([strforce(_('Candidate')), strforce(_('Votes')),\
+                writerow([strforce(_('Candidate')), strforce(_('Votes')),
                     strforce(_('Draw')), strforce(_('Action'))])
                 for name, cand in round['candidates'].items():
                     actions = [x[0] for x in cand['actions']]
@@ -305,7 +305,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     votes = cand['votes']
                     cand_name = indexed_cands[str(name)]
                     cand_name = cand_name.split(':')[0]
-                    writerow([strforce(cand_name), strforce(votes),\
+                    writerow([strforce(cand_name), strforce(votes),
                     strforce(draw), strforce(action)])
 
 
@@ -354,7 +354,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
 
             writerow([])
             writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('CANDIDATE')),\
+            writerow([strforce(_('ID')), strforce(_('CANDIDATE')),
                 strforce(_('SCORES')), strforce(_('VALID/INVALID/BLANK'))])
             counter = 0
             valid = strforce(_('VALID'))
@@ -532,7 +532,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
 
         writerow([])
         writerow([strforce(_('BALLOTS'))])
-        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),\
+        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),
             strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
         counter = 0
         valid = strforce(_('VALID'))

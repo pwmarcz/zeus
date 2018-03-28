@@ -101,7 +101,7 @@ class SimpleElection(ElectionModuleBase):
             question = q['question'].replace(":", "{semi}") \
                                     .replace("\r\n", "{newline}") \
                                     .replace("\n", "{newline}")
-            q_answers = ["%s: %s" % (question, ans) for ans in \
+            q_answers = ["%s: %s" % (question, ans) for ans in
                          q['answers']]
             group = 0
             if prepend_empty_answer:

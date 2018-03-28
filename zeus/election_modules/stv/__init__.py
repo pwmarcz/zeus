@@ -120,7 +120,7 @@ class StvElection(ElectionModuleBase):
         if self.auto_append_answer:
             prepend_empty_answer = True
         for index, q in enumerate(questions_data):
-            q_answers = ["%s" % (ans) for ans in \
+            q_answers = ["%s" % (ans) for ans in
                          q['answers']]
             group = index
             if prepend_empty_answer:

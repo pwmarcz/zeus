@@ -1055,7 +1055,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
     @property
     def trustees_string(self):
         helios_trustee = self.get_zeus_trustee()
-        trustees = [(t.name, t.email) for t in self.trustee_set.all() if \
+        trustees = [(t.name, t.email) for t in self.trustee_set.all() if
                     t != helios_trustee]
         return "\n".join(["%s,%s" % (t[0], t[1]) for t in trustees])
 
@@ -1341,7 +1341,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
     def get_result_file_path(self, name, ext):
         election = self.short_name
-        return os.path.join(settings.MEDIA_ROOT, 'results', '%s-%s-results.%s' % \
+        return os.path.join(settings.MEDIA_ROOT, 'results', '%s-%s-results.%s' %
                             (election, name, ext))
 
     def generate_result_docs(self):
@@ -1535,7 +1535,7 @@ class VoterFile(models.Model):
 
     def validate_voter_entry(self, voter):
         if not any([voter['email'], voter['mobile']]):
-            msg = _("Voter [%s]: Provide at least one of the email and mobile fields." \
+            msg = _("Voter [%s]: Provide at least one of the email and mobile fields."
                     % voter['voter_id'])
             raise ValidationError(msg)
 

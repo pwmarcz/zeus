@@ -67,7 +67,7 @@ def task_fields(task):
         return bool(getattr(self, error_field))
 
     def reset(self, force=False):
-        self.logger.info("Resetting '%s' task state from '%s'." % \
+        self.logger.info("Resetting '%s' task state from '%s'." %
                          (task_name, getattr(self, status_field)))
         status = getattr(self, status_field)
         if not force and status != 'error':
@@ -155,12 +155,12 @@ def task(name, required_features=(), is_recurrent=False, completed_cb=None,
                 status = getattr(_obj, status_field)
                 task_name = name
                 if status == 'running':
-                    self.logger.info("Skip already running '%s (%s)' task." % \
+                    self.logger.info("Skip already running '%s (%s)' task." %
                             (task_name, status))
                     return
 
                 if status == 'finished':
-                    self.logger.info("Skip already finished '%s (%s)' task." % \
+                    self.logger.info("Skip already finished '%s (%s)' task." %
                             (task_name, status))
                     return
 

@@ -1279,7 +1279,7 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
         # validate min/max choices
         if ballot['valid']:
             nr_choices = len(list(ballot['candidates'].keys()))
-            if nr_choices != 0 and (nr_choices > max_choices or \
+            if nr_choices != 0 and (nr_choices > max_choices or
                                     nr_choices < min_choices):
                 ballot['valid'] = False
 

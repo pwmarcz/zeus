@@ -633,7 +633,7 @@ class ZeusDjangoElection(ZeusCoreElection):
             candidate_keys = [x for x in list(party_candidates.keys()) if isinstance(x, int)]
             candidate_keys.sort()
             candidates = [party_candidates[c] for c in candidate_keys]
-            candidate_counts = OrderedDict([(c, 0) for c in \
+            candidate_counts = OrderedDict([(c, 0) for c in
                                            candidates])
             candidate_sums = 0
 

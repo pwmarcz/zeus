@@ -37,7 +37,7 @@ def login(request, election, trustee_email, trustee_secret):
     if trustee_secret == trustee.secret:
         user = auth.ZeusUser(trustee)
         if request.zeususer.is_authenticated() and (
-                not request.zeususer.is_trustee or \
+                not request.zeususer.is_trustee or
                     request.zeususer._user.pk != trustee.pk):
             messages.error(request,
                            _("You need to logout from your current account "

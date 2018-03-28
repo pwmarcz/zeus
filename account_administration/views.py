@@ -98,7 +98,7 @@ def create_user(request):
                             " password %(password)s.")\
                             % {'uid': user.user_id, 'password': password}
             messages.success(request, message)
-            url = "%s?uid=%s" % (reverse('user_management'), \
+            url = "%s?uid=%s" % (reverse('user_management'),
                 str(user.id))
             return redirect(url)
 
