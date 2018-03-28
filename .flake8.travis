@@ -1,29 +1,25 @@
 [flake8]
 exclude = docs
-select =
-    # trailing whitespace
-    E111,
-    # expected 1 blank line, found 0
-    E301,
-    # too many blank lines
-    E303,
-    # multiple imports on one line
-    E401,
-    # module level import not at top of file
-    E402,
-    # indentation contains tabs
-    W191,
-    # indentation not a multiple of four
-    W291,
-    # blank line contains whitespace
-    W293,
-    # blank line at end of file
-    W391,
-    # imported but unused
-    F401,
-    # 'import *' used
-    F403,
-    # undefined name
-    F821,
-    # redefinition of unused 'x'
-    F811,
+ignore =
+    # line too long
+    E501,
+    # local variable assigned to but never used (TODO fix)
+    F841,
+    # indentation issues
+    E121, E122, E123, E124, E125, E126, E127, E128, E129, E130, E131
+    # missing whitespace around operator
+    E225, E226, E227, E228,
+    # line break before binary operator
+    W503,
+    # issues with comments
+    E116, E261, E265, E266
+    # do not use bare 'except' (TODO fix)
+    E722,
+    # do not assign a lambda expression, use a def (TODO fix)
+    E731,
+    # test for membership should be 'not in' (TODO fix)
+    E713,
+    # comparison to None should be 'if cond is not None' (TODO fix)
+    E711
+    # 'x' may be undefined, or defined from star imports (happens in settings)
+    F405
