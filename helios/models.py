@@ -176,7 +176,7 @@ class PollMix(models.Model):
         size = len(mix)
         index = 0
         while index < size:
-            yield buffer(mix, index, settings.MIX_PART_SIZE)
+            yield memoryview(mix)[index:index+settings.MIX_PART_SIZE]
             index += settings.MIX_PART_SIZE
 
     def store_mix(self, mix):
