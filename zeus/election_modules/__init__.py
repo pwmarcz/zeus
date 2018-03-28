@@ -49,7 +49,7 @@ class ElectionHooks(object):
 
 class ElectionModuleBase(ElectionHooks):
 
-    module_id =  None
+    module_id = None
     pdf_result = True
     csv_result = True
     json_result = True

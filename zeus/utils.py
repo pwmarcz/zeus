@@ -274,7 +274,7 @@ def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
     if constraints_include:
         q = q & Q(**constraints_include)
     if constraints_exclude:
-        q =  q & ~Q(**constraints_exclude)
+        q = q & ~Q(**constraints_exclude)
     return q
 
 

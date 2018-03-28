@@ -439,7 +439,7 @@ class EGCiphertext:
         proof.challenge = challenge
 
         # compute beta/plaintext, the completion of the DH tuple
-        beta_over_plaintext =  (self.beta * Utils.inverse(plaintext.m, self.pk.p)) % self.pk.p
+        beta_over_plaintext = (self.beta * Utils.inverse(plaintext.m, self.pk.p)) % self.pk.p
 
         # random response, does not even need to depend on the challenge
         proof.response = Utils.random_mpz_lt(self.pk.q);

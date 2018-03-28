@@ -429,7 +429,7 @@ def voters_upload(request, election, poll):
         if bool(request.POST.get('confirm_p', 0)):
             # launch the background task to parse that file
             voter_file_id = request.session.get('voter_file_id', None)
-            process_linked  = request.session.get('no_link', False) is False
+            process_linked = request.session.get('no_link', False) is False
             if not voter_file_id:
                 messages.error(request, _("Invalid voter file id"))
                 url = poll_reverse(poll, 'voters')

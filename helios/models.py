@@ -154,7 +154,7 @@ class PollMix(models.Model):
         Expects mix dict object
         """
         fname = str(self.pk) + ".canonical"
-        fpath =  os.path.join(ZEUS_MIXES_PATH, fname)
+        fpath = os.path.join(ZEUS_MIXES_PATH, fname)
         with open(fpath, "w") as f:
             to_canonical(mix, out=f)
         self.mix_file = fname

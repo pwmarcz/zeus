@@ -170,7 +170,7 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
                 i += 1
     for move, ballots in moves.items():
         times = len(ballots)
-        description =  "from {0} to {1} {2}*{3}={4}".format(move[0],
+        description = "from {0} to {1} {2}*{3}={4}".format(move[0],
                                                             move[1],
                                                             times,
                                                             move[2],
@@ -311,7 +311,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
         logger.info(LOG_MESSAGE.format(action=Action.COUNT_ROUND,
                                        desc=current_round))
         # Log count
-        description  = count_description(vote_count, hopefuls)
+        description = count_description(vote_count, hopefuls)
 
         # using this for testing
         update_candidate_counts(full_data, current_round, vote_count, hopefuls)
@@ -379,7 +379,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
     while (seats - num_elected) > 0 and len(eliminated) > 0:
         logger.info(LOG_MESSAGE.format(action=Action.COUNT_ROUND,
                                        desc=current_round))
-        description  = count_description(vote_count, eliminated)
+        description = count_description(vote_count, eliminated)
 
         logger.info(LOG_MESSAGE.format(action=Action.ZOMBIES,
                                        desc=description))

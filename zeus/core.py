@@ -35,35 +35,35 @@ class ZeusError(Exception):
 
 
 ALPHA = 0
-BETA  = 1
+BETA = 1
 PROOF = 2
 
 VOTER_KEY_CEIL = 2**256
 VOTER_SLOT_CEIL = 2**48
 MIN_MIX_ROUNDS = 3
 
-V_CAST_VOTE     =   'CAST VOTE'
-V_PUBLIC_AUDIT  =   'PUBLIC AUDIT'
+V_CAST_VOTE = 'CAST VOTE'
+V_PUBLIC_AUDIT = 'PUBLIC AUDIT'
 V_PUBLIC_AUDIT_FAILED = 'PUBLIC AUDIT FAILED'
-V_AUDIT_REQUEST =   'AUDIT REQUEST'
+V_AUDIT_REQUEST = 'AUDIT REQUEST'
 
-V_FINGERPRINT   =   'FINGERPRINT: '
-V_INDEX         =   'INDEX: '
-V_PREVIOUS      =   'PREVIOUS VOTE: '
-V_VOTER         =   'VOTER: '
-V_ELECTION      =   'ELECTION PUBLIC: '
-V_ZEUS_PUBLIC   =   'ZEUS PUBLIC: '
-V_TRUSTEES      =   'TRUSTEE PUBLICS: '
-V_CANDIDATES    =   'CANDIDATES: '
-V_MODULUS       =   'MODULUS: '
-V_GENERATOR     =   'GENERATOR: '
-V_ORDER         =   'ORDER: '
-V_ALPHA         =   'ALPHA: '
-V_BETA          =   'BETA: '
-V_COMMITMENT    =   'COMMITMENT: '
-V_CHALLENGE     =   'CHALLENGE: '
-V_RESPONSE      =   'RESPONSE: '
-V_COMMENTS      =   'COMMENTS: '
+V_FINGERPRINT = 'FINGERPRINT: '
+V_INDEX = 'INDEX: '
+V_PREVIOUS = 'PREVIOUS VOTE: '
+V_VOTER = 'VOTER: '
+V_ELECTION = 'ELECTION PUBLIC: '
+V_ZEUS_PUBLIC = 'ZEUS PUBLIC: '
+V_TRUSTEES = 'TRUSTEE PUBLICS: '
+V_CANDIDATES = 'CANDIDATES: '
+V_MODULUS = 'MODULUS: '
+V_GENERATOR = 'GENERATOR: '
+V_ORDER = 'ORDER: '
+V_ALPHA = 'ALPHA: '
+V_BETA = 'BETA: '
+V_COMMITMENT = 'COMMITMENT: '
+V_CHALLENGE = 'CHALLENGE: '
+V_RESPONSE = 'RESPONSE: '
+V_COMMENTS = 'COMMENTS: '
 
 _random_generator_file = Random.new()
 
@@ -236,21 +236,21 @@ class Teller(object):
     suppress_exceptions = False
     default_status_fmt = '%d/%d'
 
-    eol             =   '\r'
-    feed            =   '\n'
-    prefix_filler   =   '|  '
-    status_sep      =   ' ... '
+    eol = '\r'
+    feed = '\n'
+    prefix_filler = '|  '
+    status_sep = ' ... '
 
-    start_mark      =   '-- '
-    pending_mark    =   '|  '
-    notice_mark     =   '|  :: '
-    fail_mark       =   '!! '
-    finish_mark     =   '++ '
+    start_mark = '-- '
+    pending_mark = '|  '
+    notice_mark = '|  :: '
+    fail_mark = '!! '
+    finish_mark = '++ '
 
-    start_status    =   '      '
-    pending_status  =   '      '
-    fail_status     =   '*FAIL*'
-    finish_status   =   ' -OK- '
+    start_status = '      '
+    pending_status = '      '
+    fail_status = '*FAIL*'
+    finish_status = ' -OK- '
 
     def __init__(self, name='', total=1, current=0, depth=0,
                        parent=None, resume=False, subtask=False,
@@ -1981,7 +1981,7 @@ def verify_vote_signature(vote_signature):
 
     status = m00
     fingerprint = m01[len(V_FINGERPRINT):]
-    index_str   = m02[len(V_INDEX):]
+    index_str = m02[len(V_INDEX):]
     if index_str == 'NONE':
         index = None
     elif index_str.isdigit():
@@ -1989,22 +1989,22 @@ def verify_vote_signature(vote_signature):
     else:
         m = "Invalid vote index '%s'" % (index_str,)
         raise ZeusError(m)
-    previous    = m03[len(V_PREVIOUS):]
-    public      = int(m04[len(V_ELECTION):], 16)
+    previous = m03[len(V_PREVIOUS):]
+    public = int(m04[len(V_ELECTION):], 16)
     zeus_public = int(m05[len(V_ZEUS_PUBLIC):], 16)
     _m06 = m06[len(V_TRUSTEES):]
-    trustees    = [int(x, 16) for x in _m06.split(' ')] if _m06 else []
+    trustees = [int(x, 16) for x in _m06.split(' ')] if _m06 else []
     _m07 = m07[len(V_CANDIDATES):]
-    candidates  = _m07.split(' % ')
-    modulus     = int(m08[len(V_MODULUS):], 16)
-    generator   = int(m09[len(V_GENERATOR):], 16)
-    order       = int(m10[len(V_ORDER):], 16)
-    alpha       = int(m11[len(V_ALPHA):], 16)
-    beta        = int(m12[len(V_BETA):], 16)
-    commitment  = int(m13[len(V_COMMITMENT):], 16)
-    challenge   = int(m14[len(V_CHALLENGE):], 16)
-    response    = int(m15[len(V_RESPONSE):], 16)
-    comments    = m16[len(V_COMMENTS):]
+    candidates = _m07.split(' % ')
+    modulus = int(m08[len(V_MODULUS):], 16)
+    generator = int(m09[len(V_GENERATOR):], 16)
+    order = int(m10[len(V_ORDER):], 16)
+    alpha = int(m11[len(V_ALPHA):], 16)
+    beta = int(m12[len(V_BETA):], 16)
+    commitment = int(m13[len(V_COMMITMENT):], 16)
+    challenge = int(m14[len(V_CHALLENGE):], 16)
+    response = int(m15[len(V_RESPONSE):], 16)
+    comments = m16[len(V_COMMENTS):]
 
     signature = {'m': message, 'r': r, 's': s, 'e': e}
     if not verify_text_signature(signature, modulus, generator, order,
@@ -3875,13 +3875,13 @@ class ZeusCoreElection(object):
                 raise AssertionError(m)
 
     @classmethod
-    def mk_random(cls, nr_candidates   =   3,
-                       nr_trustees     =   2,
-                       nr_voters       =   10,
-                       nr_votes        =   10,
-                       nr_mixes        =   2,
-                       nr_rounds       =   8,
-                       stage           =   'FINISHED',
+    def mk_random(cls, nr_candidates = 3,
+                       nr_trustees = 2,
+                       nr_voters = 10,
+                       nr_votes = 10,
+                       nr_mixes = 2,
+                       nr_rounds = 8,
+                       stage = 'FINISHED',
                        teller=_teller, **kw):
 
         self = cls(teller=teller, **kw)
@@ -4076,12 +4076,12 @@ def main(cmd=None):
         no_verify = args.no_verify
 
         election = ZeusCoreElection.mk_random(
-                            nr_candidates   =   args.nr_candidates,
-                            nr_trustees     =   args.nr_trustees,
-                            nr_voters       =   args.nr_voters,
-                            nr_votes        =   args.nr_votes,
-                            nr_rounds       =   args.nr_rounds,
-                            stage           =   args.stage,
+                            nr_candidates = args.nr_candidates,
+                            nr_trustees = args.nr_trustees,
+                            nr_voters = args.nr_voters,
+                            nr_votes = args.nr_votes,
+                            nr_rounds = args.nr_rounds,
+                            stage = args.stage,
                             teller=teller, nr_parallel=nr_parallel,
                             no_verify=no_verify)
         exported, stage = election.export()

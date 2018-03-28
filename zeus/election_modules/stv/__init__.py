@@ -175,7 +175,7 @@ class StvElection(ElectionModuleBase):
 
     def compute_results(self):
         cands_data = self.poll.questions_data[0]['answers']
-        cands_count =  len(cands_data)
+        cands_count = len(cands_data)
         constituencies = {}
         count_id = 0
 
