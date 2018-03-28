@@ -455,7 +455,7 @@ class StvForm(QuestionBaseForm):
 
         self.fields.pop('question')
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
-                                                self.prefix)]) / 2
+                                                self.prefix)]) // 2
         if not answers:
             answers = len([k for k in self.initial if k.startswith("answer_")])
         if answers == 0:
@@ -504,7 +504,7 @@ class StvForm(QuestionBaseForm):
         from django.forms.utils import ErrorList
         message = _("This field is required.")
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
-                                                self.prefix)]) / 2
+                                                self.prefix)]) // 2
         #list used for checking duplicate candidates
         candidates_list = []
 
