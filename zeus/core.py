@@ -155,7 +155,7 @@ def to_canonical(obj, out=None):
 
 
 def from_canonical(inp):
-    if isinstance(inp, str):
+    if isinstance(inp, (str, bytes)):
         return json.loads(inp)
     else:
         return json.load(inp)
@@ -1268,11 +1268,6 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
 PARTY_SEPARATOR = ': '
 PARTY_OPTION_SEPARATOR = ', '
 
-def strforce(thing, encoding='utf8'):
-    if isinstance(thing, str):
-        return thing.encode(encoding)
-    return str(thing)
-
 class FormatError(ValueError):
     pass
 
@@ -1318,7 +1313,7 @@ def parties_from_candidates(candidates, separator=PARTY_SEPARATOR):
     nr_groups = 1
 
     for i, candidate in enumerate(candidates):
-        candidate = strforce(candidate)
+        candidate = candidate
         party, sep, name = candidate.partition(separator)
         if party and not name:
             name = party
@@ -1375,7 +1370,7 @@ def gamma_decode_to_party_ballot(encoded, candidates, parties, nr_groups,
         last_index = i
         candidate = candidates[i]
 
-        candidate = strforce(candidate)
+        candidate = candidate
         party, sep, name = candidate.partition(separator)
         if party and not name:
             name = party
@@ -3949,7 +3944,7 @@ def main(cmd=None):
                 signature = vote['signature']
                 filename = prefix + fingerprint
                 with open(filename, "w") as f:
-                    f.write(strforce(signature))
+                    f.write(signature)
                 count += 1
                 teller.status("%d/%d '%s'", count, total, filename, tell=1)
 
@@ -3966,7 +3961,7 @@ def main(cmd=None):
                 signature = vote['signature']
                 filename = prefix + '_' + fingerprint
                 with open(filename, "w") as f:
-                    f.write(strforce(signature))
+                    f.write(signature)
                 count += 1
                 teller.status("%d/%d '%s'", count, total, filename, tell=1)
 

@@ -1161,7 +1161,7 @@ def results_file(request, election, poll, language, ext):
         response['X-Sendfile'] = fname
         return response
     else:
-        zip_data = open(fname, 'r')
+        zip_data = open(fname, 'rb')
         response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
         zip_data.close()
         basename = os.path.basename(fname)
