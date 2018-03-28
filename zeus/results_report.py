@@ -43,6 +43,7 @@ pdfmetrics.registerFont(linlibertineb)
 ZEUS_LOGO = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                          'logo-positive.jpg')
 
+
 def load_results(data, repr_data, qdata):
     qdata = copy.deepcopy(qdata)
     parties_results = []
@@ -150,6 +151,7 @@ def make_first_page_hf(canvas, doc):
                      height = 1.1 * cm)
     canvas.restoreState()
 
+
 def make_later_pages_hf(pageinfo):
     def inner(canvas, doc):
         canvas.saveState()
@@ -171,15 +173,18 @@ def make_heading(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["ZeusHeading"]))
 
+
 def make_subheading(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["ZeusSubHeading"]))
     elements.append(Spacer(1, 12))
 
+
 def make_intro(elements, styles, contents):
     for pcontent in contents:
         elements.append(Paragraph(escape(pcontent), styles["Zeus"]))
     elements.append(Spacer(1, 12))
+
 
 def make_poll_voters(elements, styles, poll_voters):
     elements.append(Paragraph(escape(_("Voters") + ": "
@@ -188,6 +193,7 @@ def make_poll_voters(elements, styles, poll_voters):
         nr_excluded = poll_voters.excluded().count()
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
             + str(nr_excluded)),styles['Zeus']))
+
 
 def make_election_voters(elements, styles, polls_data, stv=False):
     total_voters = 0
@@ -207,10 +213,12 @@ def make_election_voters(elements, styles, polls_data, stv=False):
         elements.append(Paragraph(escape(_("Excluded voters") + ": "
             + str(excluded_voters)), styles['Zeus']))
 
+
 def make_totals(elements, styles, total_votes, blank_votes):
     elements.append(Paragraph(escape(_('Total votes: %d') % total_votes), styles['Zeus']))
     elements.append(Paragraph(escape(_('Blank: %d') % blank_votes), styles['Zeus']))
     elements.append(Spacer(1, 12))
+
 
 def make_party_list_heading(elements, styles, party, count):
     heading = '%(title)s: %(count)d' % {'title': party,
@@ -218,11 +226,13 @@ def make_party_list_heading(elements, styles, party, count):
     elements.append(Paragraph(escape(heading), styles['Zeus']))
     elements.append(Spacer(1, 12))
 
+
 def make_party_list_table(elements, styles, party_results):
 
     table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
     t = Table(party_results, style = table_style)
     elements.append(t)
+
 
 def make_results(elements, styles, total_votes, blank_votes,
                  parties_results, candidates_results):
@@ -238,6 +248,7 @@ def make_results(elements, styles, total_votes, blank_votes,
             party = party.decode('utf-8')
         if party in candidates_results:
             make_party_list_table(elements, styles, candidates_results[party])
+
 
 def build_stv_doc(title, name, institution_name, voting_start, voting_end,
               extended_until, data, language, filename="election_results.pdf", new_page=True):
@@ -635,6 +646,8 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
 
         doc.build(elements, onFirstPage = make_first_page_hf,
                   onLaterPages = make_later_pages_hf(pageinfo))
+
+
 def main():
     import sys
     title = 'Αποτελέσματα'

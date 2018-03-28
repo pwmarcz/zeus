@@ -5,6 +5,7 @@ from helios.models import Election
 import json
 import sys
 
+
 class Command(BaseCommand):
     args = ''
     help = 'Get JSON data submitted to e-counting'

@@ -260,6 +260,7 @@ def set_election_issues(context, election):
         election.polls_issues_before_freeze
     return ''
 
+
 @register.simple_tag(takes_context=True)
 def complete_get_parameters(context, GET, new_order,
                             default_sort_key='voter_login_id'):

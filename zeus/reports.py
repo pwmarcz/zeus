@@ -26,6 +26,7 @@ def zeus_report(elections):
 
 SENSITIVE_DATA = ['admin_user', 'trustees', 'last_view_at']
 
+
 def election_report(elections, votes_report=True, filter_sensitive=True):
     for e in elections:
         entry = OrderedDict([
@@ -160,6 +161,7 @@ def make_csv_intro(writerow, election, lang):
             writerow([strforce(_("Excluded voters")), strforce(ex_voters)])
         writerow([])
 
+
 def csv_from_polls(election, polls, lang, outfile=None):
     with translation.override(lang):
         if outfile is None:
@@ -244,6 +246,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
             return outfile.read()
         except:
             return None
+
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
     with translation.override(lang):

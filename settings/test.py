@@ -52,6 +52,7 @@ ZEUS_ELECTION_STREAM_HANDLER = os.environ.get("ZEUS_TESTS_VERBOSE", False)
 
 EMAIL_SUBJECT_PREFIX = 'Zeus System Message: '
 
+
 def mkdir_p(path):
     try:
         os.makedirs(path)
@@ -59,6 +60,7 @@ def mkdir_p(path):
         if exc.errno == errno.EEXIST and os.path.isdir(path):
             pass
         else: raise
+
 
 TESTS_DIR = os.environ.get('ZEUS_TESTS_DIR', '/tmp/zeus-tests')
 PROJECT_ROOT = '%s/%s' % (TESTS_DIR, datetime.datetime.now())

@@ -33,6 +33,8 @@ from helios.crypto import utils as cryptoutils
 ##
 ## utility function
 ##
+
+
 def recursiveToDict(obj):
     if obj == None:
         return None
@@ -41,6 +43,7 @@ def recursiveToDict(obj):
         return [recursiveToDict(el) for el in obj]
     else:
         return obj.toDict()
+
 
 def get_class(datatype):
     # already done?
@@ -91,6 +94,7 @@ class LDObjectContainer(object):
     @property
     def hash(self):
         return self.ld_object.hash
+
 
 class LDObject(object):
     """
@@ -311,6 +315,7 @@ def arrayOf(element_type):
 
     return ArrayOfTypedObjects
 
+
 class DictObject(object):
     "when the wrapped object is actually dictionary"
 
@@ -319,6 +324,7 @@ class DictObject(object):
 
     def _setattr_wrapped(self, attr, val):
         self.wrapped_obj[attr] = val
+
 
 class ListObject(object):
     def loadDataFromDict(self, d):

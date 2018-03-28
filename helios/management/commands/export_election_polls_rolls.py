@@ -11,6 +11,7 @@ from helios.models import Election
 
 import sys
 
+
 class Command(BaseCommand):
     args = ''
     help = 'Import poll ballots from yaml'

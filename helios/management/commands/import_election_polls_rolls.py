@@ -18,6 +18,7 @@ import os
 
 UPDATE = os.environ.get('UPDATE_EXISTING', 0)
 
+
 def validate_voter(mobile, email, throw=True):
     if not mobile:
         django_validate_email(email)
@@ -41,6 +42,7 @@ def validate_voter(mobile, email, throw=True):
         else:
             return False
     return mobile, email
+
 
 class Command(BaseCommand):
     args = ''

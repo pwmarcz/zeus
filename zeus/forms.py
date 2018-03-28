@@ -46,6 +46,7 @@ LOG_CHANGED_FIELDS = [
 
 INVALID_CHAR_MSG = _("%s is not a valid character.") % "%"
 
+
 def election_form_formfield_cb(f, **kwargs):
     if f.name in ['voting_starts_at', 'voting_ends_at',
                   'voting_extended_until']:
@@ -343,8 +344,11 @@ class PartyForm(QuestionForm):
     question = forms.CharField(label=_("Party name"), max_length=255,
                                required=True)
 
+
 SCORES_DEFAULT_LEN = 2
 SCORES_CHOICES = [(x,x) for x in range(1, 10)]
+
+
 class ScoresForm(QuestionBaseForm):
     scores = forms.MultipleChoiceField(required=True,
                                        widget=forms.CheckboxSelectMultiple,
@@ -404,6 +408,7 @@ class RequiredFormset(BaseFormSet):
             self.forms[0].empty_permitted = False
         except IndexError:
             pass
+
 
 class CandidateWidget(MultiWidget):
 
@@ -553,6 +558,7 @@ class StvForm(QuestionBaseForm):
                 raise forms.ValidationError(message)
         except ValueError:
             raise forms.ValidationError(message)
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_('Username'),
@@ -788,6 +794,7 @@ CONTACT_CHOICES = [
     ('email:sms', _('Email and SMS')),
 ]
 
+
 class EmailVotersForm(forms.Form):
     email_subject = forms.CharField(label=_('Email subject'), max_length=80,
                               required=False)
@@ -936,6 +943,8 @@ FirstName, LastName, FatherName, SchoolB<br />
 
 limit_choices = [(x, str(x)) for x in range(2)]
 eligibles_choices = [(x, str(x)) for x in range(1, 20)]
+
+
 class STVElectionForm(forms.Form):
     name = forms.CharField(label=_("Election name"), required=True)
     voting_starts = forms.CharField(label=_("Voting start date"), required=True, help_text=_("e.g. 25/01/2015 07:00"))

@@ -75,6 +75,7 @@ ELECTION_MODEL_VERSION = 1
 
 validate_email = lambda email,ln: django_validate_email(email)
 
+
 class HeliosModel(TaskModel, datatypes.LDObjectContainer):
 
     class Meta:
@@ -101,12 +102,15 @@ class PollMixManager(models.Manager):
     def get_queryset(self):
         return PollMixQuerySet(self.model)
 
+
 default_mixes_path = settings.MEDIA_ROOT + "/zeus_mixes/"
 ZEUS_MIXES_PATH = getattr(settings, 'ZEUS_MIXES_PATH', default_mixes_path)
 zeus_mixes_storage = storage.FileSystemStorage(location=ZEUS_MIXES_PATH)
 
+
 def dummy_upload_to(x):
     return ''
+
 
 class PollMix(models.Model):
 
@@ -238,6 +242,7 @@ class ElectionManager(models.Manager):
 
 def _default_voting_starts_at(*args):
     return datetime.datetime.now()
+
 
 def _default_voting_ends_at(*args):
     return datetime.datetime.now() + timedelta(hours=12)
@@ -1665,6 +1670,7 @@ class VoterQuerySet(QuerySet):
 
     def mobile_set(self):
         return self.filter(voter_mobile__isnull=False).exclude(voter_mobile="")
+
 
 class VoterManager(models.Manager):
 

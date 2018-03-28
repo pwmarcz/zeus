@@ -20,6 +20,7 @@ def default_groups(apps, schema_editor):
         else:
             user.user_groups.add(default)
 
+
 class Migration(migrations.Migration):
 
     dependencies = [

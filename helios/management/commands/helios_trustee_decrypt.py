@@ -14,6 +14,7 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Trustee
 
+
 class Command(BaseCommand):
     args = ''
     help = 'decrypt elections where helios is the trustee'

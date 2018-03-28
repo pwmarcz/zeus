@@ -9,8 +9,11 @@ Some basic utils
 import json
 
 ## JSON
+
+
 def to_json(d):
     return json.dumps(d, sort_keys=True)
+
 
 def from_json(json_str):
     if not json_str: return None

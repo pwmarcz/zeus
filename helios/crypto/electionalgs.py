@@ -120,6 +120,7 @@ class HeliosObject(object):
 
         return other != None and self.uuid == other.uuid
 
+
 class EncryptedAnswer(HeliosObject):
     """
     An encrypted answer to a single election question
@@ -240,6 +241,7 @@ def one_question_winner(question, result, num_cast_votes):
     if question['result_type'] == 'relative':
         return [counts[0][0]]
 
+
 class Election(HeliosObject):
 
     FIELDS = ['uuid', 'questions', 'name', 'short_name', 'description', 'voters_hash', 'openreg',
@@ -341,6 +343,7 @@ class Voter(HeliosObject):
         else:
             return utils.hash_b64(self.voter_id)
 
+
 class Trustee(HeliosObject):
     """
     a trustee
@@ -357,6 +360,7 @@ class Trustee(HeliosObject):
     def _process_value_out(self, field_name, field_value):
         if field_name == 'public_key' or field_name == 'pok':
             return field_value.toJSONDict()
+
 
 class CastVote(HeliosObject):
     """
@@ -415,6 +419,7 @@ class CastVote(HeliosObject):
             issues.append("the vote's election UUID does not match the election for which this vote is being cast")
 
         return issues
+
 
 class DLogTable(object):
     """

@@ -44,6 +44,7 @@ logger = logging.getLogger(SVT_LOGGER)
 LOGGER_FORMAT = '%(message)s'
 LOG_MESSAGE = "{action} {desc}"
 
+
 class Action:
     COUNT_ROUND = "@ROUND"
     TRANSFER = ">TRANSFER"
@@ -54,6 +55,7 @@ class Action:
     ZOMBIES = "~ZOMBIES"
     RANDOM = "*RANDOM"
     THRESHOLD = "^THRESHOLD"
+
 
 class Ballot:
     """A ballot class for Single Transferable Voting.
@@ -80,6 +82,7 @@ class Ballot:
 
     def get_value(self):
         return self._value
+
 
 def randomly_select_first(sequence, key, action, random_generator=None,
                           logger=logger):
@@ -178,6 +181,7 @@ def redistribute_ballots(selected, weight, hopefuls, allocated, vote_count,
     allocated[selected][:] = [x for x in allocated[selected]
                               if x not in transferred ]
 
+
 def elect_reject(candidate, vote_count, constituencies, quota_limit,
                  current_round, elected, rejected, constituencies_elected,
                  logger=logger):
@@ -214,6 +218,7 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
         msg = LOG_MESSAGE.format(action=Action.ELECT, desc=d)
         logger.info(msg)
         return True
+
 
 def count_description(vote_count, candidates):
     """Returns a string with count results.
@@ -392,6 +397,7 @@ def count_stv(ballots, seats, droop = True, constituencies = None,
 
     return elected, vote_count, full_data
 
+
 def main(cmd=None):
     parser = argparse.ArgumentParser(description='Perform STV')
     parser.add_argument('-b', '--ballots', default='sys.stdin',
@@ -451,6 +457,7 @@ def main(cmd=None):
                                       logger=logger)
 
     return elected
+
 
 if __name__ == '__main__':
     elected = main()

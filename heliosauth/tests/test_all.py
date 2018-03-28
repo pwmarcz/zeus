@@ -15,6 +15,7 @@ from ..auth_systems import AUTH_SYSTEMS
 
 import pytest
 
+
 class UserModelTests(TestCase):
 
     def setUp(self):
@@ -80,6 +81,7 @@ class UserModelTests(TestCase):
 
 # FIXME: login CSRF should make these tests more complicated
 # and should be tested for
+
 
 class UserBlackboxTests(TestCase):
 

@@ -9,6 +9,7 @@ import json
 
 from hashlib import sha256
 
+
 def hash_b64(s: str) -> str:
     """
     hash the string using sha1 and produce a base64 output
@@ -18,8 +19,10 @@ def hash_b64(s: str) -> str:
     result = base64.b64encode(hasher.digest())[:-1]
     return result.decode()
 
+
 def to_json(d):
     return json.dumps(d, sort_keys=True)
+
 
 def from_json(json_str):
     if not json_str: return None

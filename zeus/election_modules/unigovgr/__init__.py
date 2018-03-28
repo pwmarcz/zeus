@@ -46,11 +46,13 @@ class UniPollHooks(PollHooks):
 def UNIGOV_ROUND(result):
     return math.floor(result) if ((result - math.floor(result)) < 0.5) else math.ceil(result)
 
+
 def UNIGOV_COUNT(A, B, G, S, weight=0.2):
     result = A + (
         Decimal((S * B * weight) / G)
     )
     return result, UNIGOV_ROUND(float(result))
+
 
 class UniGovGrResults():
 

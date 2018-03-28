@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Poll
 
+
 class Command(BaseCommand):
     args = ''
     help = 'List election polls'

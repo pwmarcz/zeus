@@ -4,6 +4,7 @@ from zeus.auth import ZeusUser
 
 from zeus import messages
 
+
 def user(request):
     data = {}
     user = getattr(request, 'zeususer', ZeusUser.from_request(request))
@@ -46,6 +47,7 @@ def prefix(request):
     return {
         'SERVER_PREFIX': prefix
     }
+
 
 def lang(request):
     return {

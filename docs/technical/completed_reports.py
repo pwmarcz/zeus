@@ -12,6 +12,7 @@ setup_environ(settings)
 from helios.models import *
 from zeus import reports
 
+
 def election_reports(election):
     data = {}
     data['election'] = list(reports.election_report([election], True, True))[0]
@@ -19,6 +20,7 @@ def election_reports(election):
     data['voters'] = list(reports.election_voters_report([election]))[0]
     data['results'] = list(reports.election_results_report([election]))[0]
     return data
+
 
 import json
 
@@ -28,9 +30,11 @@ DATA = {}
 for election in elections:
     DATA[election.uuid] = election_reports(election)
 
+
 def handler(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     raise TypeError
+
 
 print(json.dumps(DATA, default=handler, ensure_ascii=True))

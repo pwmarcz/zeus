@@ -5,6 +5,7 @@ data types for 2011/01 Helios
 
 from helios.datatypes import LDObject, ListObject, arrayOf
 
+
 class Trustee(LDObject):
     """
     a trustee
@@ -17,6 +18,7 @@ class Trustee(LDObject):
       }
 
     # removed some public key processing for now
+
 
 class Election(LDObject):
     FIELDS = ['uuid', 'questions', 'name', 'short_name', 'description', 'voters_hash', 'openreg',
@@ -31,8 +33,10 @@ class Election(LDObject):
       'questions': '2011/01/Questions',
       }
 
+
 class Voter(LDObject):
     FIELDS = ['election_uuid', 'uuid', 'voter_type', 'voter_id_hash', 'name']
+
 
 class EncryptedAnswer(LDObject):
     FIELDS = ['choices', 'individual_proofs', 'overall_proof', 'randomness', 'answer']

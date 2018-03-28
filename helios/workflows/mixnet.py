@@ -20,6 +20,7 @@ class MixedAnswers(WorkflowObject):
         self.answers = answers
         self.question_num = question_num
 
+
 class MixedAnswer(WorkflowObject):
 
     @property
@@ -96,6 +97,7 @@ class Tally(HomomorphicTally):
             result.append(q_result)
 
         return result
+
 
 class EncryptedVote(EncryptedVote):
 

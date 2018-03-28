@@ -11,6 +11,7 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
 
+
 class Command(BaseCommand):
     args = ''
     help = 'List the voter login urls'

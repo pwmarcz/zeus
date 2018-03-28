@@ -11,14 +11,17 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election
 
+
 def p(key, val):
     print("%s\t:\t %s" % (key, val))
+
 
 def pt(title, lvl=0):
     lvl_str = ["=", "-", "*"][lvl]
     head_rpt = 5
     print("\n" * (1-lvl))
     print(lvl_str*head_rpt + (" %s " % title) + lvl_str*head_rpt)
+
 
 class Command(BaseCommand):
     args = ''

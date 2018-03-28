@@ -18,6 +18,7 @@ from helios import utils as helios_utils
 
 from helios.models import User, Voter, VoterFile
 
+
 def process_csv_file(election, f):
     reader = csv.reader(f.read())
 

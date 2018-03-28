@@ -102,6 +102,7 @@ class ElGamal:
         eg.g = int(d['g'])
         return eg
 
+
 class EGKeyPair:
     def __init__(self):
         self.pk = EGPublicKey()
@@ -119,6 +120,7 @@ class EGKeyPair:
         self.pk.y = pow(g, self.sk.x, p)
 
         self.sk.pk = self.pk
+
 
 class EGPublicKey:
     def __init__(self):
@@ -217,6 +219,7 @@ class EGPublicKey:
         return pk
 
     fromJSONDict = from_dict
+
 
 class EGSecretKey:
     def __init__(self):
@@ -327,6 +330,7 @@ class EGSecretKey:
         return sk
 
     fromJSONDict = from_dict
+
 
 class EGPlaintext:
     def __init__(self, m = None, pk = None):
@@ -567,6 +571,7 @@ class EGCiphertext:
         split = str.split(",")
         return cls.from_dict({'alpha' : split[0], 'beta' : split[1]})
 
+
 class EGZKProof(object):
     def __init__(self):
         self.commitment = {'A':None, 'B':None}
@@ -636,6 +641,7 @@ class EGZKProof(object):
 
     toJSONDict = to_dict
 
+
 class EGZKDisjunctiveProof:
     def __init__(self, proofs = None):
         self.proofs = proofs
@@ -650,6 +656,7 @@ class EGZKDisjunctiveProof:
         return [p.to_dict() for p in self.proofs]
 
     toJSONDict = to_dict
+
 
 class DLogProof(object):
     def __init__(self, commitment, challenge, response):
@@ -669,6 +676,7 @@ class DLogProof(object):
 
     fromJSONDict = from_dict
 
+
 def EG_disjunctive_challenge_generator(commitments):
     array_to_hash = []
     for commitment in commitments:
@@ -679,8 +687,11 @@ def EG_disjunctive_challenge_generator(commitments):
     return int(hashlib.sha1(string_to_hash).hexdigest(),16)
 
 # a challenge generator for Fiat-Shamir with A,B commitment
+
+
 def EG_fiatshamir_challenge_generator(commitment):
     return EG_disjunctive_challenge_generator([commitment])
+
 
 def DLog_challenge_generator(commitment):
     string_to_hash = str(commitment)

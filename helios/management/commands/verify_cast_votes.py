@@ -12,6 +12,7 @@ from django.core.management.base import BaseCommand
 
 from helios.models import CastVote
 
+
 def get_cast_vote_to_verify():
     # fixme: add "select for update" functionality here
     votes = CastVote.objects.filter(verified_at=None, invalidated_at=None).order_by('-cast_at')
@@ -19,6 +20,7 @@ def get_cast_vote_to_verify():
         return votes[0]
     else:
         return None
+
 
 class Command(BaseCommand):
     args = ''

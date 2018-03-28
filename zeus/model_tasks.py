@@ -243,6 +243,7 @@ class ElectionTasks(TaskModel):
     def compute_results(self):
         self.get_module().compute_election_results()
 
+
 class PollTasks(TaskModel):
 
     @poll_task('validate_create', ('frozen',))

@@ -116,5 +116,6 @@ class CSVReaderTests(TestCase):
         dialect = get_dialect(inp)
         assert dialect.delimiter == ','
 
+
 if __name__ == '__main__':
     main()

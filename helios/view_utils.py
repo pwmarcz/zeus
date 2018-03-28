@@ -32,6 +32,8 @@ FAILURE = HttpResponse("FAILURE")
 ##
 ## template abstraction
 ##
+
+
 def prepare_vars(request, vars):
     vars_with_user = vars.copy()
     vars_with_user['user'] = getattr(request, 'zeususer', None)
@@ -65,6 +67,7 @@ def prepare_vars(request, vars):
 
     return vars_with_user
 
+
 def render_template(request, template_name, vars = {}, include_user=True):
     vars_with_user = prepare_vars(request, vars)
 
@@ -93,6 +96,7 @@ def render_template(request, template_name, vars = {}, include_user=True):
 
     return render(request, tpl, vars_with_user)
 
+
 def render_template_raw(request, template_name, vars={}):
     t = loader.get_template(template_name)
 
@@ -109,6 +113,8 @@ def render_json(json_txt):
     return HttpResponse(json_txt, "application/json")
 
 # decorator
+
+
 def json(func):
     """
     A decorator that serializes the output to JSON before returning to the

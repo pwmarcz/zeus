@@ -29,6 +29,7 @@ from base64 import b64encode
 
 p, g, q, x, y = c2048()
 
+
 def get_http_connection(url):
     parsed = urlparse(url)
     kwargs = {}
@@ -47,9 +48,11 @@ def get_http_connection(url):
     conn.path = parsed.path
     return conn
 
+
 def generate_voter_file(nr, domain='zeus.minedu.gov.gr'):
     return '\n'.join(('%d, voter-%d@%s, Ψηφοφόρος, %d' % (i, i, domain, i))
                      for i in range(nr))
+
 
 def generate_vote(p, g, q, y, choices):
     if isinstance(choices, int):
@@ -71,6 +74,7 @@ def generate_vote(p, g, q, y, choices):
     encrypted_vote['election_uuid'] = ''
     encrypted_vote['election_hash'] = ''
     return encrypted_vote, encoded, rand
+
 
 def main_verify(sigfile, randomness=None, plaintext=None):
     with open(sigfile) as f:
@@ -114,6 +118,7 @@ def main_verify(sigfile, randomness=None, plaintext=None):
         print("%d: [%d] %s" % (i, o, candidates[o]))
     print("")
 
+
 def get_poll_info(url):
     conn = get_http_connection(url)
     path = conn.path
@@ -156,6 +161,7 @@ def do_cast_vote(conn, cast_path, token, headers, vote):
     if response.status != 200:
         print(response.status)
     conn.close()
+
 
 def cast_vote(voter_url, choices=None):
     conn, headers, poll_info = get_poll_info(voter_url)
@@ -207,6 +213,7 @@ def cast_vote(voter_url, choices=None):
     do_cast_vote(conn, cast_path, csrf_token, headers, vote)
     return encoded, rand
 
+
 def main_generate(nr, domain, voters_file):
     if exists(voters_file):
         m = "%s: file exists, will not overwrite" % (voters_file,)
@@ -214,6 +221,7 @@ def main_generate(nr, domain, voters_file):
 
     with open(voters_file, "w") as f:
         f.write(generate_voter_file(nr, domain=domain).encode('utf-8'))
+
 
 def main_random_cast_thread(inqueue, outqueue):
     while 1:
@@ -227,6 +235,7 @@ def main_random_cast_thread(inqueue, outqueue):
         print("%d/%d" % (i+1, total))
         encoded, rand = cast_vote(voter_url)
         outqueue.put(encoded)
+
 
 def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
     if exists(plaintexts_file):
@@ -273,6 +282,7 @@ def main_vote(url, choice_str):
     encoded, rand = cast_vote(url, choices)
     print("encoded selection:", encoded)
     print("encryption randomness:", rand)
+
 
 def do_download_mix(url, savefile):
     if exists(savefile):
@@ -485,6 +495,7 @@ def main_help():
     sys.stderr.write(usage)
     raise SystemExit
 
+
 def main(argv=None):
     argv = argv or sys.argv
     argc = len(argv)
@@ -553,6 +564,7 @@ def main(argv=None):
         main_verify(argv[2], randomness, plaintext)
     else:
         main_help()
+
 
 if __name__ == '__main__':
     main(sys.argv)

@@ -10,6 +10,7 @@ get_voters_filters = lambda inp: get_filters(inp, VOTER_TABLE_HEADERS,
                                                   VOTER_BOOL_KEYS_MAP,
                                                   VOTER_EXTRA_HEADERS)
 
+
 class TestUtils(TestCase):
 
     def test_q_args(self):
@@ -22,6 +23,7 @@ class TestUtils(TestCase):
 
         qs = get_voters_filters("-voted")
         assert qs.children[1] == ('cast_votes__id__isnull', True)
+
 
 class TestUniGovGr(TestCase):
 

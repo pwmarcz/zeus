@@ -26,6 +26,7 @@ def election_trustees_to_text(election):
         content += "%s, %s\n" % (trustee.name, trustee.email)
     return content
 
+
 def append_ballot_to_msg(election, msg):
     if msg[-1] != '\n':
         msg += '\n'
@@ -66,6 +67,7 @@ def append_ballot_to_msg(election, msg):
         candidates = str(candidates)
         msg += "- do_get_candidates:\n{}\n\n".format(candidates)
     return msg
+
 
 def election_reverse(election, view, **extra):
     kwargs = {'election_uuid': election.uuid}
@@ -236,6 +238,7 @@ def parse_q_param(q):
             args.append(special_arg)
     return q, args
 
+
 def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_headers=[], exclude_fields=[]):
 
     q = Q()
@@ -260,6 +263,7 @@ def get_filters(q_param, table_headers, search_fields, bool_keys_map, extra_head
                     arg_type = not arg_type
                 q = q & Q(**{'%s%s' % (key, flt): arg_type})
     return q
+
 
 def get_voters_filters_with_constraints(q_param=None, constraints_include=None,
                                         constraints_exclude=None):

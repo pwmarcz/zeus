@@ -15,6 +15,7 @@ import logging
 from .algs import Utils
 from zeus.core import prove_dlog, prove_ddh_tuple
 
+
 class Cryptosystem(object):
     def __init__(self):
         self.p = None
@@ -55,6 +56,7 @@ class Cryptosystem(object):
 
         return keypair
 
+
 class KeyPair(object):
     def __init__(self):
         self.pk = PublicKey()
@@ -72,6 +74,7 @@ class KeyPair(object):
         self.pk.y = pow(g, self.sk.x, p)
 
         self.sk.public_key = self.pk
+
 
 class PublicKey:
     def __init__(self):
@@ -204,6 +207,7 @@ class Plaintext:
     def __init__(self, m = None, pk = None):
         self.m = m
         self.pk = pk
+
 
 class Ciphertext:
     def __init__(self, alpha=None, beta=None, pk=None):
@@ -410,9 +414,11 @@ class ZKProof(object):
         proof.response = response
         return proof
 
+
 class ZKDisjunctiveProof:
     def __init__(self, proofs = None):
         self.proofs = proofs
+
 
 class DLogProof(object):
     def __init__(self, commitment=None, challenge=None, response=None):

@@ -9,6 +9,7 @@ from zeus.mobile import mybsms
 
 logger = logging.getLogger(__name__)
 
+
 class FileClient():
 
     location = getattr(settings, 'SMS_FILE_LOCATION', '/tmp')
@@ -29,6 +30,7 @@ class FileClient():
         f.close()
         self._last_uid = fname
         return True, fname
+
 
 def get_client(election, data, **kwargs):
 

@@ -55,6 +55,7 @@ def polls_list(request, election):
     set_menu('polls', context)
     return render_template(request, "election_polls_list", context)
 
+
 @transaction.atomic
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
@@ -230,6 +231,7 @@ def _add_batch(request, election):
     url = election_reverse(election, 'polls_list')
     return HttpResponseRedirect(url)
 
+
 @auth.election_admin_required
 @require_http_methods(["POST", "GET"])
 def add_edit(request, election, poll=None):
@@ -266,6 +268,7 @@ def add_edit(request, election, poll=None):
         set_menu('edit_poll', context)
     tpl = "election_poll_add_or_edit"
     return render_template(request, tpl, context)
+
 
 @auth.election_admin_required
 @require_http_methods(["POST"])
@@ -312,6 +315,7 @@ voter_bool_keys_map = {
         'invited': ('last_booth_invitation_send_at', 'nullcheck'),
         'excluded': ('excluded_at', 'nullcheck'),
      }
+
 
 @auth.election_admin_required
 @require_http_methods(["GET"])
@@ -371,6 +375,7 @@ def voters_list(request, election, poll):
     set_menu('voters', context)
     return render_template(request, 'election_poll_voters_list', context)
 
+
 @auth.election_admin_required
 @auth.requires_poll_features('can_clear_voters')
 @transaction.atomic
@@ -399,6 +404,7 @@ def voters_clear(request, election, poll):
 ENCODINGS = [('utf-8', _('Unicode')),
              ('iso-8859-7', _('Greek (iso-8859-7)')),
              ('iso-8859-1', _('Latin (iso-8859-1)'))]
+
 
 @auth.election_admin_required
 @auth.requires_poll_features('can_add_voter')
@@ -840,6 +846,7 @@ def voter_booth_linked_login(request, election, poll, voter_uuid):
                      voter.voter_login_id, poll.uuid)
     url = linked_poll.get_booth_url(request)
     return HttpResponseRedirect(url)
+
 
 @auth.election_view(check_access=False)
 @require_http_methods(["GET"])

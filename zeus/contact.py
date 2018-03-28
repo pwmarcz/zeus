@@ -9,6 +9,7 @@ from helios.view_utils import render_template_raw
 from django.db import transaction
 from zeus import mobile
 
+
 class ContactError(Exception):
     pass
 

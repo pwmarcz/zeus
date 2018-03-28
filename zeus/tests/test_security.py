@@ -11,6 +11,8 @@ from helios.models import Election
 from .utils import SetUpAdminAndClientMixin
 
 # subclass order is significant
+
+
 class TestUsersWithClient(SetUpAdminAndClientMixin, TestCase):
 
     def setUp(self):

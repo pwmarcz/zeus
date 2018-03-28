@@ -3,11 +3,13 @@
 
 from zeus.core import gamma_decode, to_absolute_answers
 
+
 def extract_publishables(zeus_finished):
     publishables = dict(zeus_finished)
     del publishables['zeus_secret']
     # duh
     return publishables
+
 
 def extract_ecounting_ballots(zeus_results, nr_candidates):
     ballots = []

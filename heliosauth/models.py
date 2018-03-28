@@ -16,6 +16,8 @@ from helios.fields import SeparatedValuesField
 from .auth_systems import AUTH_SYSTEMS
 
 # an exception to catch when a user is no longer authenticated
+
+
 class AuthenticationExpired(Exception):
     pass
 
@@ -23,6 +25,7 @@ class AuthenticationExpired(Exception):
 def default_election_types_modules():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
     return [s[0] for s in ELECTION_MODULES_CHOICES]
+
 
 def election_types_choices():
     from zeus.election_modules import ELECTION_MODULES_CHOICES
@@ -65,6 +68,7 @@ class SMSBackendData(models.Model):
     def display(self):
         return "%s [%d/%d/%d]" % \
             (self.credentials, self.sent, self.limit, self.left)
+
 
 class User(models.Model):
     user_type = models.CharField(max_length=50)

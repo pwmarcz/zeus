@@ -20,15 +20,19 @@ from gmpy2 import mpz
 _pow = pow
 inverse = number.inverse
 
+
 def pow(b, e, m):
     return int(_pow(mpz(b), e, m))
+
 
 bit_length = lambda num: num.bit_length()
 
 inverse = number.inverse
 
+
 class ZeusError(Exception):
     pass
+
 
 ALPHA = 0
 BETA  = 1
@@ -103,39 +107,50 @@ _default_secret_key['secret'] = x
 def crypto_args(cryptosys):
     return [cryptosys['modulus'], cryptosys['generator'], cryptosys['order']]
 
+
 def crypto_from_args(p, g, q):
     return {'modulus': p, 'generator': g, 'order': q}
+
 
 def key_proof(k):
     return [k['commitment'], k['challenge'], k['response']]
 
+
 def key_public(pk):
     return pk['public']
+
 
 def key_secret(sk):
     return sk['secret']
 
+
 def pk_args(pk):
     return [pk['modulus'], pk['generator'], pk['order'], pk['public']]
+
 
 def pk_all_args(pk):
     return [pk['modulus'], pk['generator'], pk['order'], pk['public'],
             ['commitment'], pk['challenge'], pk['response']]
 
+
 def pk_noproof_from_args(p, g, q, y):
     return {'modulus': p, 'generator': g, 'order': q, 'public': y}
+
 
 def pk_from_args(p, g, q, y, t, c, f):
     return {'modulus': p, 'generator': g, 'order': q, 'public': y,
             'commitment': t, 'challenge': c, 'response': f}
 
+
 def sk_args(pk):
     return [pk['modulus'], pk['generator'], pk['order'], pk['secret']]
+
 
 def sk_all_args(sk):
     return [sk['modulus'], sk['generator'], sk['order'],
             sk['secret'], sk['public'],
             ['commitment'], sk['challenge'], sk['response']]
+
 
 def sk_from_args(p, g, q, x, y, t, c, f):
     return {'modulus': p, 'generator': g, 'order': q,
@@ -601,6 +616,7 @@ def get_choice_params(nr_choices, nr_candidates=None, max_choices=None):
 
     return [nr_candidates, max_choices]
 
+
 def validate_choices(choices, nr_candidates=None, max_choices=None):
     nr_candidates, max_choices = \
         get_choice_params(len(choices), nr_candidates, max_choices)
@@ -673,6 +689,7 @@ def permutation_to_selection(permutation):
 
     return selection
 
+
 def get_random_selection(nr_elements, full=1):
     selection = []
     variable = not bool(full)
@@ -685,6 +702,7 @@ def get_random_selection(nr_elements, full=1):
     else:
         append(0)
     return selection
+
 
 def get_random_party_selection(nr_elements, nr_parties=2):
     party = get_random_int(0, nr_parties)
@@ -705,6 +723,7 @@ def get_random_party_selection(nr_elements, nr_parties=2):
         append(i)
 
     return to_relative_answers(choices, nr_elements)
+
 
 def selection_to_permutation(selection):
     nr_elements = len(selection)
@@ -771,10 +790,13 @@ def selection_to_permutation(selection):
 
     return permutation
 
+
 def get_random_permutation(nr_elements):
     return selection_to_permutation(get_random_selection(nr_elements, full=1))
 
+
 _terms = {}
+
 
 def get_term(n, k):
     if k >= n:
@@ -804,7 +826,9 @@ def get_term(n, k):
 
     return term
 
+
 _offsets = {}
+
 
 def get_offsets(n):
     if n in _offsets:
@@ -824,7 +848,9 @@ def get_offsets(n):
     _offsets[n] = offsets
     return offsets
 
+
 _factors = {}
+
 
 def get_factor(b, n):
     if n <= 1:
@@ -854,6 +880,7 @@ def get_factor(b, n):
 
     return f
 
+
 def gamma_encode(choices, nr_candidates=None, max_choices=None):
     nr_choices = len(choices)
     nr_candidates, max_choices = \
@@ -874,6 +901,7 @@ def gamma_encode(choices, nr_candidates=None, max_choices=None):
 
     return sumus
 
+
 def gamma_encoding_max(nr_candidates, max_choices=None):
     if max_choices is None:
         max_choices = nr_candidates
@@ -881,6 +909,7 @@ def gamma_encoding_max(nr_candidates, max_choices=None):
         return 0
     choices = list(range(nr_candidates - 1, nr_candidates - max_choices -1, -1))
     return gamma_encode(choices, nr_candidates, max_choices)
+
 
 def gamma_decode(sumus, nr_candidates=None, max_choices=None):
     nr_candidates, max_choices = \
@@ -905,6 +934,7 @@ def gamma_decode(sumus, nr_candidates=None, max_choices=None):
         i -= 1
 
     return choices
+
 
 def verify_gamma_encoding(n, completeness=1):
     choice_sets = {}
@@ -950,6 +980,7 @@ def verify_gamma_encoding(n, completeness=1):
             raise AssertionError(m)
         print("%d length-%d choices OK" % (c, i))
 
+
 def factorial_encode(choices, nr_candidates=None, max_choices=None):
     nr_choices = len(choices)
     nr_candidates, max_choices = \
@@ -969,6 +1000,7 @@ def factorial_encode(choices, nr_candidates=None, max_choices=None):
         base -= 1
 
     return sumus
+
 
 def factorial_decode(encoded, nr_candidates=None, max_choices=None):
     nr_candidates, max_choices = \
@@ -1011,6 +1043,7 @@ def factorial_decode(encoded, nr_candidates=None, max_choices=None):
     choices.reverse()
     return choices
 
+
 def maxbase_encode(choices, nr_candidates=None, max_choices=None):
     nr_candidates, max_choices = \
         get_choice_params(len(choices), nr_candidates, max_choices)
@@ -1024,6 +1057,7 @@ def maxbase_encode(choices, nr_candidates=None, max_choices=None):
 
     return sumus
 
+
 def maxbase_decode(sumus, nr_candidates, max_choices=None):
     nr_candidates, max_choices = \
         get_choice_params(nr_candidates, nr_candidates, max_choices)
@@ -1036,6 +1070,7 @@ def maxbase_decode(sumus, nr_candidates, max_choices=None):
         append(choice - 1)
 
     return choices
+
 
 def cross_check_encodings(n):
     # verify_gamma_encoding(n)
@@ -1056,11 +1091,13 @@ def cross_check_encodings(n):
                  % (e, choices, maxbase_choices, factorial_choices))
             raise AssertionError(m)
 
+
 def gamma_decode_to_candidates(encoded, candidates):
     nr_candidates = len(candidates)
     selection = gamma_decode(encoded, nr_candidates)
     choices = to_absolute_answers(selection, nr_candidates)
     return [candidates[i] for i in choices]
+
 
 def gamma_count_candidates(encoded_list, candidates):
     encoded_list = sorted(encoded_list)
@@ -1268,8 +1305,10 @@ def gamma_count_range(encoded_list, candidates_and_points, params):
 PARTY_SEPARATOR = ': '
 PARTY_OPTION_SEPARATOR = ', '
 
+
 class FormatError(ValueError):
     pass
+
 
 def parse_party_options(optstring):
     substrings = optstring.split(PARTY_OPTION_SEPARATOR, 1)
@@ -1306,6 +1345,7 @@ def parse_party_options(optstring):
 
     return options
 
+
 def parties_from_candidates(candidates, separator=PARTY_SEPARATOR):
     parties = {}
     theparty = None
@@ -1341,6 +1381,7 @@ def parties_from_candidates(candidates, separator=PARTY_SEPARATOR):
         parties[theparty][i] = name
 
     return parties, nr_groups
+
 
 def gamma_decode_to_party_ballot(encoded, candidates, parties, nr_groups,
                                  separator=PARTY_SEPARATOR):
@@ -1445,6 +1486,7 @@ def gamma_decode_to_party_ballot(encoded, candidates, parties, nr_groups,
 
     return ballot
 
+
 def gamma_count_parties(encoded_list, candidates, separator=PARTY_SEPARATOR):
     invalid_count = 0
     blank_count = 0
@@ -1516,6 +1558,7 @@ def gamma_count_parties(encoded_list, candidates, separator=PARTY_SEPARATOR):
                'invalid_count': invalid_count}
     return results
 
+
 def chooser(answers, candidates):
     candidates = list(candidates)
     nr_candidates = len(candidates)
@@ -1528,6 +1571,7 @@ def chooser(answers, candidates):
 
     return [rank, candidates]
 
+
 def strbin_to_int_mul(string):
     # lsb
     s = 0
@@ -1538,14 +1582,17 @@ def strbin_to_int_mul(string):
 
     return s
 
+
 def strbin_to_int_native(string: bytes) -> int:
     return int.from_bytes(string, 'little')
+
 
 PYTHON_MAJOR = sys.version_info[0]
 if PYTHON_MAJOR == 3:
     strbin_to_int = strbin_to_int_native
 else:
     strbin_to_int = strbin_to_int_mul
+
 
 def bit_iterator(nr, infinite=True):
     while nr:
@@ -1557,6 +1604,7 @@ def bit_iterator(nr, infinite=True):
 
     while 1:
         yield 0
+
 
 def get_random_int(minimum, ceiling):
     top = ceiling - minimum
@@ -1571,14 +1619,17 @@ def get_random_int(minimum, ceiling):
         num -= top
     return num + minimum
 
+
 def get_random_element(modulus, generator, order):
     exponent = get_random_int(2, order)
     element = pow(generator, exponent, modulus)
     return element
 
+
 def validate_element(modulus, generator, order, element):
     legendre = pow(element, order, modulus)
     return legendre == 1
+
 
 def encrypt(message, modulus, generator, order, public, randomness=None):
     if randomness is None:
@@ -1595,6 +1646,7 @@ def encrypt(message, modulus, generator, order, public, randomness=None):
     beta = (message * pow(public, randomness, modulus)) % modulus
     return [alpha, beta, randomness]
 
+
 def decrypt_with_randomness(modulus, generator, order, public,
                             beta, secret):
     encoded = pow(public, secret, modulus)
@@ -1603,6 +1655,7 @@ def decrypt_with_randomness(modulus, generator, order, public,
     if encoded >= order:
         encoded = -encoded % modulus
     return encoded - 1
+
 
 def decrypt_with_decryptor(modulus, generator, order, beta, decryptor):
     decryptor = inverse(decryptor, modulus)
@@ -1614,6 +1667,7 @@ def decrypt_with_decryptor(modulus, generator, order, beta, decryptor):
     if message >= order:
         message = -message % modulus
     return message - 1
+
 
 def decrypt(modulus, generator, order, secret, alpha, beta):
     decryptor = pow(alpha, secret, modulus)
@@ -1627,6 +1681,7 @@ def numbers_hash(numbers) -> str:
         update(("%x:" % num).encode())
     return h.hexdigest()
 
+
 def texts_hash(texts) -> bytes:
     h = sha256()
     texts_gen = ((t.encode('utf8') if not isinstance(t, bytes) else t)
@@ -1634,15 +1689,18 @@ def texts_hash(texts) -> bytes:
     h.update(b'\x00'.join(texts_gen))
     return h.digest()
 
+
 def number_from_texts_hash(modulus, *texts):
     digest = texts_hash(texts)
     number = strbin_to_int(digest) % modulus
     return number
 
+
 def number_from_numbers_hash(modulus, *numbers):
     hexdigest = numbers_hash(numbers)
     number = strbin_to_int(hexdigest.encode()) % modulus
     return number
+
 
 def element_from_texts_hash(modulus, generator, order, *texts):
     num_hash = numbers_hash((modulus, generator, order))
@@ -1651,11 +1709,13 @@ def element_from_texts_hash(modulus, generator, order, *texts):
     element = pow(generator, number, modulus)
     return element
 
+
 def element_from_elements_hash(modulus, generator, order, *elements):
     hexdigest = numbers_hash((modulus, generator, order) + elements)
     number = strbin_to_int(hexdigest.encode()) % order
     element = pow(generator, number, modulus)
     return element
+
 
 def prove_dlog_zeus(modulus, generator, order, power, dlog,
                     *extra_challenge_input):
@@ -1666,6 +1726,7 @@ def prove_dlog_zeus(modulus, generator, order, power, dlog,
                                            *extra_challenge_input)
     response = (randomness + challenge * dlog) % order
     return [commitment, challenge, response]
+
 
 def verify_dlog_power_zeus(modulus, generator, order, power,
                            commitment, challenge, response,
@@ -1678,8 +1739,10 @@ def verify_dlog_power_zeus(modulus, generator, order, power,
     return (pow(generator, response, modulus)
             == ((commitment * pow(power, challenge, modulus)) % modulus))
 
+
 prove_dlog = prove_dlog_zeus
 verify_dlog_power = verify_dlog_power_zeus
+
 
 def generate_keypair(modulus, generator, order, secret_key=None):
     if secret_key is None:
@@ -1693,6 +1756,7 @@ def generate_keypair(modulus, generator, order, secret_key=None):
         prove_dlog(modulus, generator, order, public, secret_key)
     return [secret_key, public, commitment, challenge, response]
 
+
 def validate_public_key(modulus, generator, order, public_key,
                         commitment, challenge, response):
     if not validate_element(modulus, generator, order, public_key):
@@ -1700,6 +1764,7 @@ def validate_public_key(modulus, generator, order, public_key,
 
     return verify_dlog_power(modulus, generator, order, public_key,
                              commitment, challenge, response)
+
 
 def prove_ddh_tuple_zeus(modulus, generator, order,
                     message, base_power, message_power, exponent):
@@ -1713,6 +1778,7 @@ def prove_ddh_tuple_zeus(modulus, generator, order,
     challenge = element_from_elements_hash(*args)
     response = (randomness + challenge * exponent) % order
     return [base_commitment, message_commitment, challenge, response]
+
 
 def verify_ddh_tuple_zeus(modulus, generator, order,
                      message, base_power, message_power,
@@ -1734,8 +1800,10 @@ def verify_ddh_tuple_zeus(modulus, generator, order,
 
     return 1
 
+
 prove_ddh_tuple = prove_ddh_tuple_zeus
 verify_ddh_tuple = verify_ddh_tuple_zeus
+
 
 def prove_encryption(modulus, generator, order, alpha, beta, secret):
     """Prove ElGamal encryption"""
@@ -1743,12 +1811,14 @@ def prove_encryption(modulus, generator, order, alpha, beta, secret):
     commitment, challenge, response = ret
     return [commitment, challenge, response]
 
+
 def verify_encryption(modulus, generator, order, alpha, beta,
                       commitment, challenge, response):
     """Verify ElGamal encryption"""
     ret = verify_dlog_power(modulus, generator, order, alpha,
                             commitment, challenge, response, beta)
     return ret
+
 
 def sign_element(element, modulus, generator, order, key):
     """Compute ElGamal signature"""
@@ -1764,6 +1834,7 @@ def sign_element(element, modulus, generator, order, key):
             'crypto':  {'modulus': modulus,
                         'generator': generator,
                         'order': order}}
+
 
 def verify_element_signature(signature, modulus, generator, order, public):
     """Verify ElGamal signature"""
@@ -1787,11 +1858,13 @@ def verify_element_signature(signature, modulus, generator, order, public):
 
     return 1
 
+
 def sign_text_message(text_message, modulus, generator, order, key):
     element = element_from_texts_hash(modulus, generator, order, text_message)
     signature = sign_element(element, modulus, generator, order, key)
     signature['m'] = text_message
     return signature
+
 
 def verify_text_signature(signature, modulus, generator, order, public):
     text_message = signature['m']
@@ -1806,6 +1879,7 @@ def encode_selection(selection, nr_candidates=None):
     if nr_candidates is None:
         nr_candidates = len(selection)
     return gamma_encode(selection, nr_candidates, nr_candidates)
+
 
 def vote_from_encoded(modulus, generator, order, public,
                       voter, encoded, nr_candidates,
@@ -1837,6 +1911,7 @@ def vote_from_encoded(modulus, generator, order, public,
         vote['voter_secret'] = rnd
 
     return vote
+
 
 def sign_vote(vote, trustees, candidates, comments,
               modulus, generator, order, public, secret):
@@ -1871,6 +1946,7 @@ def sign_vote(vote, trustees, candidates, comments,
     text += '\n-----------------\n'
     text += '%x\n%x\n%x\n' % (signature['e'], signature['r'], signature['s'])
     return text
+
 
 def verify_vote_signature(vote_signature):
     message, sep, e, r, s, null = vote_signature.rsplit('\n', 5)
@@ -1959,6 +2035,7 @@ def verify_vote_signature(vote_signature):
 
     return vote, crypto, trustees, candidates, comments
 
+
 def to_relative_answers(choices, nr_candidates):
     """
     Answer choices helper, convert absolute indexed answers to relative.
@@ -1975,6 +2052,7 @@ def to_relative_answers(choices, nr_candidates):
         candidates.remove(choice)
 
     return relative
+
 
 def to_absolute_answers(choices, nr_candidates):
     """
@@ -2017,6 +2095,7 @@ def compute_decryption_factors1(modulus, generator, order, secret, ciphers,
             teller.advance()
     return factors
 
+
 def _compute_decryption_factor(data):
     modulus, generator, order, secret, public, cipher = data
     alpha, beta = cipher
@@ -2024,6 +2103,7 @@ def _compute_decryption_factor(data):
     proof = prove_ddh_tuple(modulus, generator, order,
                             alpha, public, factor, secret)
     return [factor, proof]
+
 
 def compute_decryption_factors(modulus, generator, order, secret, ciphers,
                                teller=_teller, nr_parallel=1):
@@ -2052,6 +2132,7 @@ def compute_decryption_factors(modulus, generator, order, secret, ciphers,
     pool.join()
     return factors
 
+
 def verify_decryption_factors1(modulus, generator, order, public,
                                ciphers, factors, teller=_teller):
     nr_ciphers = len(ciphers)
@@ -2068,6 +2149,7 @@ def verify_decryption_factors1(modulus, generator, order, public,
                 return 0
             teller.advance()
     return 1
+
 
 def _verify_decryption_factor(data):
     modulus, generator, order, public, cipher, factor = data
@@ -4134,6 +4216,7 @@ def main(cmd=None):
         parser.print_help()
 
     teller_stream.flush()
+
 
 retval = []
 

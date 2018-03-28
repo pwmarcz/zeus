@@ -10,6 +10,7 @@ import json
 from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
 
+
 class JSONField(models.TextField):
     """
     JSONField is a generic textfield that neatly serializes/unserializes

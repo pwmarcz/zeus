@@ -5,10 +5,12 @@ from django.core.management.base import BaseCommand
 
 from helios.models import Election, Voter
 
+
 def strforce(thing):
     if isinstance(thing, str):
         return thing.encode('utf-8')
     return thing
+
 
 class Command(BaseCommand):
     args = ''

@@ -105,6 +105,7 @@ def change_password(request):
                            {'form': form,
                             'password_changed': password_changed})
 
+
 @auth.unauthenticated_user_required
 def oauth2_login(request):
     poll_uuid = request.GET.get('state')

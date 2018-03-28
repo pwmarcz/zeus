@@ -70,8 +70,10 @@ to_keep = set([
     "29c50f16-cf47-11e2-8cc9-aa000039f982",
 ])
 
+
 def order_elections_key(e):
     return e[1]['election']['voting_ended_at']
+
 
 with open(sys.argv[1], 'r') as elections_file:
     elections_json = json.load(elections_file)

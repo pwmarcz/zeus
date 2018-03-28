@@ -39,6 +39,7 @@ def list_users(request):
         context
         )
 
+
 @manager_or_superadmin_required
 def list_institutions(request):
     institutions = Institution.objects.all()
@@ -108,6 +109,7 @@ def create_user(request):
     context = {'form': form}
     return render_template(request, tpl, context)
 
+
 @manager_or_superadmin_required
 def create_institution(request):
     inst_id = sanitize_get_param(request.GET.get('id'))
@@ -131,6 +133,7 @@ def create_institution(request):
         'account_administration/create_institution',
         context
         )
+
 
 @superadmin_required
 def create_usergroup(request):
@@ -159,6 +162,7 @@ def create_usergroup(request):
     context = {'form': form}
     return render_template(request, tpl, context)
 
+
 @manager_or_superadmin_required
 def manage_user(request):
     users = User.objects.all()
@@ -179,6 +183,7 @@ def manage_user(request):
         'account_administration/user_manage',
         context)
 
+
 @manager_or_superadmin_required
 def reset_password(request):
     uid = request.GET.get('uid')
@@ -189,6 +194,7 @@ def reset_password(request):
         request,
         'account_administration/reset_password',
         context)
+
 
 @manager_or_superadmin_required
 def reset_password_confirmed(request):

@@ -210,6 +210,7 @@ def election_validate_create(election_id):
     msg = utils.append_ballot_to_msg(election, msg)
     election.notify_admins(msg=msg, subject=subject)
 
+
 @task(ignore_result=True)
 def election_validate_voting(election_id):
     election = Election.objects.get(pk=election_id)

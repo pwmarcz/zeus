@@ -9,6 +9,7 @@ from django.utils.timesince import timesince
 
 from helios.models import Election, Poll
 
+
 class Command(BaseCommand):
     args = ''
     help = 'Show election status'

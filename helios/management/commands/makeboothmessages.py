@@ -13,6 +13,7 @@ from django.utils.text import get_text_list
 
 plural_forms_re = re.compile(r'^(?P<value>"Plural-Forms.+?\\n")\s*$', re.MULTILINE | re.DOTALL)
 
+
 def handle_extensions(extensions=('html',), ignored=('py',)):
     """
     Organizes multiple extensions that are separated with commas or passed by
@@ -37,12 +38,14 @@ def handle_extensions(extensions=('html',), ignored=('py',)):
             ext_list[i] = '.%s' % ext_list[i]
     return set([x for x in ext_list if x.strip('.') not in ignored])
 
+
 def _popen(cmd):
     """
     Friendly wrapper around Popen for Windows
     """
     p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, close_fds=os.name != 'nt', universal_newlines=True)
     return p.communicate()
+
 
 def walk(root, topdown=True, onerror=None, followlinks=False,
          ignore_patterns=None, verbosity=0, stdout=sys.stdout):
@@ -71,6 +74,7 @@ def walk(root, topdown=True, onerror=None, followlinks=False,
                     for link_dirpath, link_dirnames, link_filenames in walk(p):
                         yield (link_dirpath, link_dirnames, link_filenames)
 
+
 def is_ignored(path, ignore_patterns):
     """
     Helper function to check if the given path should be ignored or not.
@@ -79,6 +83,7 @@ def is_ignored(path, ignore_patterns):
         if fnmatch.fnmatchcase(path, pattern):
             return True
     return False
+
 
 def find_files(root, ignore_patterns, verbosity, stdout=sys.stdout, symlinks=False):
     """
@@ -96,6 +101,7 @@ def find_files(root, ignore_patterns, verbosity, stdout=sys.stdout, symlinks=Fal
                 all_files.extend([(dirpath, filename)])
     all_files.sort()
     return all_files
+
 
 def copy_plural_forms(msgs, locale, domain, verbosity, stdout=sys.stdout):
     """
@@ -126,6 +132,7 @@ def copy_plural_forms(msgs, locale, domain, verbosity, stdout=sys.stdout):
                 break
     return msgs
 
+
 def write_pot_file(potfile, msgs, file, work_file, is_templatized):
     """
     Write the :param potfile: POT file with the :param msgs: contents,
@@ -145,6 +152,7 @@ def write_pot_file(potfile, msgs, file, work_file, is_templatized):
         f.write(msgs)
     finally:
         f.close()
+
 
 def process_file(file, dirpath, potfile, domain, verbosity,
                  extensions, wrap, location, stdout=sys.stdout):
@@ -220,6 +228,7 @@ def process_file(file, dirpath, potfile, domain, verbosity,
     if is_templatized:
         os.unlink(work_file)
 
+
 def write_po_file(pofile, potfile, domain, locale, verbosity, stdout,
                   copy_pforms, wrap, location, no_obsolete):
     """
@@ -261,6 +270,7 @@ def write_po_file(pofile, potfile, domain, locale, verbosity, stdout,
         if errors:
             raise CommandError(
                 "errors happened while running msgattrib\n%s" % errors)
+
 
 def make_messages(locale=None, domain='django', verbosity=1, all=False,
         extensions=None, symlinks=False, ignore_patterns=None, no_wrap=False,

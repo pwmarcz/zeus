@@ -20,6 +20,7 @@ def _d_to_dl(d):
     html += "</dl>"
     return html
 
+
 def _l_to_table(l):
     if not len(l):
         return "<table></table>"
@@ -47,13 +48,18 @@ def _l_to_table(l):
     html += "</tbody></table>"
     return html
 
+
 @register.filter
 def as_dl(d):
     return _d_to_dl(d)
+
+
 as_dl.is_safe = True
 
 
 @register.filter
 def as_table(l):
     return _l_to_table(l)
+
+
 as_dl.is_safe = True
