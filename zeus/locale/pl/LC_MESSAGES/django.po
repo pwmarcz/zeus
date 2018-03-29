@@ -1,0 +1,665 @@
+﻿# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-13 22:56+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#, python-format
+msgid "%s is not a valid character."
+msgstr "%s nie jest prawidłowym znakiem."
+
+msgid "Trustees"
+msgstr "Powierniczki"
+
+msgid "Multiple mixnets"
+msgstr "Kilka sieci mieszających"
+
+msgid "Linked polls (experimental)"
+msgstr "Połączone głosowania (eksperymentalne)"
+
+msgid "English"
+msgstr "Angielski"
+
+msgid "Greek"
+msgstr "Polski"
+
+msgid "Set the language that will be used for email messages"
+msgstr "Ustaw język stosowany do wiadomości e-mail"
+
+msgid "Communication language"
+msgstr "Język komunikacji"
+
+msgid "Invalid voting end date"
+msgstr "Nieprawidłowa data zakończenia głosowania"
+
+msgid "Invalid voting dates"
+msgstr "Nieprawidłowe daty głosowania"
+
+msgid "Invalid voting extension date"
+msgstr "Nieprawidłowa data przedłużenia głosowania"
+
+msgid "Invalid trustees format"
+msgstr "Nieprawidłowy format powierniczek"
+
+msgid "Choice"
+msgstr "Wybór"
+
+msgid "Question"
+msgstr "Pytanie"
+
+msgid "Min answers"
+msgstr "Minimum odpowiedzi"
+
+msgid "Max answers"
+msgstr "Maksymalnie odpowiedzi"
+
+msgid "Max answers should be greater or equal to min answers"
+msgstr "Maksymalna liczba odpowiedzi musi być większa lub równa minimalnej liczbie."
+
+msgid "No duplicate choices allowed"
+msgstr "Duplikaty nie są dozwolone"
+
+msgid "Party name"
+msgstr "Nazwa frakcji"
+
+msgid "Scores"
+msgstr "Oceny"
+
+msgid "Number of answers must be equal or bigger than max answers"
+msgstr "Liczba odpowiedzi musi być większa lub równa maksymalnej liczbie odpowiedzi"
+
+msgid "set the eligibles count of the election"
+msgstr "ustaw liczbę mandatów w wyborach"
+
+msgid "Eligibles count"
+msgstr "Liczba mandatów"
+
+msgid "enable limiting the elections from the same constituency"
+msgstr "włącz ograniczenie osób wybranych z tej samej grupy"
+
+msgid "Limit elected per constituency"
+msgstr "Ograniczenie osób wybranych z tej samej grupy"
+
+msgid "maximum number of elected from the same constituency"
+msgstr "maksymalna liczba osób wybranych z tej samej grupy"
+
+msgid "Constituency limit"
+msgstr "Ograniczenie grup"
+
+msgid "This field is required."
+msgstr "To pole jest wymagane."
+
+msgid "Value must be a positve integer"
+msgstr "Wartość musi być liczbą dodatnią"
+
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+msgid "Password"
+msgstr "Hasło"
+
+msgid "Invalid username or password"
+msgstr "Nieprawidłowa nazwa użytkownika lub hasło"
+
+msgid "Your account is disabled"
+msgstr "Twoje konto jest wyłączone"
+
+msgid "2-factor authentication"
+msgstr "Uwierzytelnianie dwuskładnikowe"
+
+msgid "2-factor authentication help text"
+msgstr "Tekst pomocy uwierzytelniania dwuskładnikowego"
+
+msgid "Duplicate poll names are not allowed"
+msgstr "Nazwy głosowań nie mogą się powtarzać"
+
+msgid ""
+"Poll name cannot be changed                                               "
+"after freeze"
+msgstr ""
+"Nazwy głosowania nie można zmienić po finalizacji"
+
+msgid "This URL is invalid"
+msgstr "URL nieprawidłowy"
+
+msgid "all selected voters"
+msgstr "wszystkie wybrane głosujące"
+
+msgid "selected voters who have cast a ballot"
+msgstr "wybrano głosujące, które już zagłosowały"
+
+msgid "selected voters who have not yet cast a ballot"
+msgstr "wybrano głosujące, które jeszcze nie zagłosowały"
+
+msgid "Email subject"
+msgstr "Temat e-maila"
+
+msgid "In place of BODY"
+msgstr "Zamiast BODY"
+
+msgid "Send To"
+msgstr "Wyślij do"
+
+msgid "Current password"
+msgstr "Aktualne hasło"
+
+msgid "New password"
+msgstr "Nowe hasło"
+
+msgid "New password confirm"
+msgstr "Potwierdź nowe hasło"
+
+msgid "Invalid password"
+msgstr "Hasło nieprawidłowe"
+
+msgid "Passwords don't match"
+msgstr "Hasła się różnią"
+
+msgid "Login password"
+msgstr "Hasło logowania"
+
+msgid "Invalid login code"
+msgstr "Nieprawidłowy kod logowania"
+
+msgid "Invalid email or password"
+msgstr "Nieprawidłowa e-mail lub hasło"
+
+#, python-format
+msgid "Ballot choice %s"
+msgstr "Wybór karty %s"
+
+msgid "Invalid ballot"
+msgstr "Nieprawidłowa karta"
+
+msgid ""
+"Candidates list. e.g., <br/><br/>\n"
+"FirstName, LastName, FatherName, SchoolA<br />\n"
+"FirstName, LastName, FatherName, SchoolB<br />\n"
+msgstr ""
+"Lista kandydatów. np., <br/><br/>\n"
+"Imię, Nazwisko, okręg<br />\n"
+"Imię, Nazwisko, okręg<br />\n"
+
+msgid "Election name"
+msgstr "Nazwa wyborów"
+
+msgid "Voting start date"
+msgstr "Data rozpoczęcia wyborów"
+
+msgid "e.g. 25/01/2015 07:00"
+msgstr "np. 25/01/2015 07:00"
+
+msgid "Voting end date"
+msgstr "Data zakończenia wyborów"
+
+msgid "e.g. 25/01/2015 19:00"
+msgstr "np. 25/01/2015 19:00"
+
+msgid "Institution name"
+msgstr "Nazwa instytucji"
+
+msgid "Candidates"
+msgstr "Kandydaci"
+
+msgid "Maximum elected per department"
+msgstr "Maksymalna liczba wybranych osób z grupy"
+
+msgid "Ballots count"
+msgstr "Liczba kart do głosowania"
+
+msgid "Invalid date format"
+msgstr "Nieprawidłowy format daty"
+
+#, python-format
+msgid "Candidate %s is invalid"
+msgstr "Kandydatka %s jest nieprawidłowa"
+
+msgid "This is a trial election"
+msgstr "To wybory testowe"
+
+msgid "Choose the type of the election"
+msgstr "Wybierz typ wyborów"
+
+msgid "TRUSTEES_LIST_HELP_TEXT"
+msgstr "TRUSTEES_LIST_HELP_TEXT"
+
+msgid "Election description"
+msgstr "Opis wyborów"
+
+msgid "When voting ends"
+msgstr "Kiedy głosowanie się kończy"
+
+msgid "When voting starts"
+msgstr "Kiedy głosowanie się zaczyna"
+
+msgid "Voting extension date"
+msgstr "Data przedłużenia wyborów"
+
+msgid "Voters can contact this email for election support"
+msgstr "Głosujące mogą napisać na ten adres e-mail, aby uzyskać pomoc przy głosowaniu"
+
+msgid "Voters can contact this phone for election support"
+msgstr "Głosujące mogą zadzwonić pod ten telefon, aby uzyskać pomoc przy głosowaniu"
+
+msgid "Whether or not to allow remote mixing"
+msgstr "Czy zezwolić na mieszanie na zewnętrznym serwerze"
+
+msgid ""
+"Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
+"{{ voter.voter_fathername }} ({{ voter.voter_email }})"
+msgstr ""
+"Potwierdź usunięcie głosującej: {{ voter.voter_name}} {{ voter.voter_surname }} {{ voter.voter_fathername }} ({{ voter.voter_email }})"
+
+msgid "Are you sure you want to delete the selected trustee ?"
+msgstr "Czy na pewno usunąć wybraną powierniczkę?"
+
+msgid "Are you sure you want to freeze the election ?"
+msgstr "Czy na pewno sfinalizować wybory?"
+
+msgid "Are you sure you want to delete the selected poll ?"
+msgstr "Czy na pewno usunąć wybrane głosowanie?"
+
+msgid "Start"
+msgstr "Początek"
+
+msgid "End"
+msgstr "Koniec"
+
+msgid "Extension"
+msgstr "Przełużenie"
+
+msgid "Voters"
+msgstr "Głosujący"
+
+msgid "Excluded voters"
+msgstr "Wyłączone głosujące"
+
+msgid "Poll name"
+msgstr "Nazwa głosowania"
+
+msgid "RESULTS"
+msgstr "WYNIKI"
+
+msgid "TOTAL VOTES"
+msgstr "GŁOSÓW W SUMIE"
+
+msgid "VALID VOTES"
+msgstr "GŁOSÓW WAŻNYCH"
+
+msgid "INVALID VOTES"
+msgstr "GŁOSÓW NIEWAŻNYCH"
+
+msgid "BLANK VOTES"
+msgstr "GŁOSÓW PUSTYCH"
+
+msgid "PARTY RESULTS"
+msgstr "WYNIKI FRAKCJI"
+
+msgid "CANDIDATE RESULTS"
+msgstr "WYNIKI KANDYDATA"
+
+msgid "BALLOTS"
+msgstr "KARTY DO GŁOSOWANIA"
+
+msgid "ID"
+msgstr "IDENTYFIKATOR"
+
+msgid "PARTY"
+msgstr "FRAKCJA"
+
+msgid "CANDIDATE"
+msgstr "KANDYDAT"
+
+msgid "VALID/INVALID/BLANK"
+msgstr "WAŻNY/NIEWAŻNY/PUSTY"
+
+msgid "VALID"
+msgstr "WAŻNY"
+
+msgid "INVALID"
+msgstr "NIEWAŻNY"
+
+msgid "BLANK"
+msgstr "PUSTY"
+
+msgid "Elect"
+msgstr "Wybierz"
+
+msgid "Eliminated"
+msgstr "Wyeliminowany"
+
+msgid "Eliminated due to quota restriction"
+msgstr "Wyeliminowany z uwagi na ograniczenie"
+
+msgid "Elected"
+msgstr "Wybrano"
+
+msgid "Departments"
+msgstr "Grupy"
+
+msgid "Round "
+msgstr "Runda"
+
+msgid "Candidate"
+msgstr "Kandydatka"
+
+msgid "Votes"
+msgstr "Głosów"
+
+msgid "Draw"
+msgstr "Remis"
+
+msgid "Action"
+msgstr "Działanie"
+
+msgid "NO"
+msgstr "NIE"
+
+msgid "YES"
+msgstr "TAK"
+
+msgid "RANKING"
+msgstr "RANGA"
+
+msgid "SCORES"
+msgstr "WYNIKI"
+
+msgid "SCORES:"
+msgstr "WYNIKI:"
+
+msgid "Institution"
+msgstr "Instytucja"
+
+msgid "Electors"
+msgstr "Wyborcy"
+
+msgid "uuid"
+msgstr "uuid"
+
+msgid "Name"
+msgstr "Nazwa"
+
+msgid "Polls"
+msgstr "Głosowania"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Official"
+msgstr "Oficjalne"
+
+#, python-format
+msgid "Total votes: %d"
+msgstr "Głosów w sumie: %d"
+
+#, python-format
+msgid "Blank: %d"
+msgstr "Pustych: %d"
+
+msgid "Zeus Elections - Poll Results"
+msgstr "Wybory Zeus - wyniki głosowania"
+
+msgid "Results"
+msgstr "Wyniki"
+
+#, python-format
+msgid "Start: %(date)s"
+msgstr "Początek: %(date)s"
+
+#, python-format
+msgid "End: %(date)s"
+msgstr "Koniec: %(date)s"
+
+#, python-format
+msgid "Extension: %(date)s"
+msgstr "Przedłużenie: %(date)s"
+
+#, python-format
+msgid "%(election_name)s - vote cast"
+msgstr "%(election_name)s - oddano głos"
+
+#, python-format
+msgid ""
+"You have successfully cast a vote in\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"    \n"
+"as\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"with registration ID: %(reg_id)s\n"
+"\n"
+"you can find your encrypted vote attached in this mail.\n"
+msgstr ""
+"Udało Ci się oddać głos w \n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"    \n"
+"jako\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"z identyfikatorem: %(reg_id)s\n"
+"\n"
+"Twój zaszyfrowany głos załączono do e-maila.\n"
+
+msgid "Registration ID"
+msgstr "Identyfikator rejestracji"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Surname"
+msgstr "Nazwisko"
+
+msgid "Given name"
+msgstr "Imię"
+
+msgid "Middle name"
+msgstr "Drugie imię"
+
+msgid "Mobile phone"
+msgstr "Telefon komórkowy"
+
+msgid "Vote weight"
+msgstr "Waga głosu"
+
+msgid "Has voted"
+msgstr "Zagłosowała"
+
+msgid "Booth invitation sent at"
+msgstr "Zaproszenie do kabiny do głosowania wysłano"
+
+msgid "Last visit"
+msgstr "Ostatnia wizyta"
+
+msgid "Actions"
+msgstr "Działania"
+
+msgid "Creation"
+msgstr "Utworzenie"
+
+msgid "Election status"
+msgstr "Stan wyboru"
+
+msgid "Trial"
+msgstr "Próba"
+
+msgid "Voters Voted"
+msgstr "Głosujących zagłosowało"
+
+msgid "Number of Polls"
+msgstr "Liczba głosowań"
+
+msgid "Administrators"
+msgstr "Administratorzy"
+
+msgid "Simple election with one or more questions"
+msgstr "Proste wybory z jednym lub kilkoma pytaniami"
+
+msgid "Ballot"
+msgstr "Karta do głosowania"
+
+msgid "Answer"
+msgstr "Odpowiedź"
+
+msgid "Add questions to the election"
+msgstr "Dodaj pytań do wyborów"
+
+msgid "Too many choices"
+msgstr "Za dużo wyborów"
+
+#, python-brace-format
+msgid "Question '{0}' requires at least {1} choices."
+msgstr "Pytanie '{0}' wymaga zaznaczenia co najmniej {1} wyborów."
+
+msgid "Party lists election"
+msgstr "Wybory z listą frakcyjną"
+
+msgid "Party"
+msgstr "Frakcja"
+
+msgid "Score voting election"
+msgstr "Wybory z oceną kandydatur (Score Voting)"
+
+msgid "Manage questions"
+msgstr "Zarządzaj odpowiedziami"
+
+msgid "No questions set"
+msgstr "Nie ustawiono pytań"
+
+msgid "Single transferable vote election"
+msgstr "Wybory z Pojedynczym Głosem Przechodnim (STV)"
+
+msgid "Candidates List"
+msgstr "Lista kandydatur"
+
+msgid "Are you sure ?"
+msgstr "Jesteś pewna?"
+
+msgid "Are you sure?"
+msgstr "Jesteś pewna?"
+
+msgid "(all voters selected)"
+msgstr "(wybrano wszystkie głosujące)"
+
+msgid "Uninitialized shibboleth session."
+msgstr "Uninitialized shibboleth session."
+
+msgid "Invalid shibboleth endpoint"
+msgstr "Invalid shibboleth endpoint"
+
+msgid "Invalid shibboleth data resolved."
+msgstr "Invalid shibboleth data resolved."
+
+msgid "Shibboleth voter info assertion failed."
+msgstr "Shibboleth voter info assertion failed."
+
+msgid "Trustee login url sent"
+msgstr "Przesłano powierniczce jej URL do logowania"
+
+msgid "Invalid batch file contents"
+msgstr "Nieprawidłowa zawartość pliku wsadowego"
+
+msgid "Poll updated successfully"
+msgstr "Aktualizacja głosowania powiodła się"
+
+msgid "Unicode"
+msgstr "Unicode"
+
+msgid "Greek (iso-8859-7)"
+msgstr "Greek (iso-8859-7)"
+
+msgid "Latin (iso-8859-1)"
+msgstr "Latin (iso-8859-1)"
+
+msgid "Invalid encoding"
+msgstr "Nieprawidłowe kodowanie"
+
+msgid "Invalid voter file id"
+msgstr "Nieprawidłowy identyfikator pliku głosujących"
+
+msgid "Enter a valid email address. <br />"
+msgstr "Wprowadź prawidłowy adres e-mail. <br />"
+
+msgid "No file uploaded"
+msgstr "Nie wysłano pliku"
+
+msgid "Time to Vote"
+msgstr "Czas głosowania"
+
+msgid "Additional Info"
+msgstr "Dodatkowe informacje"
+
+msgid "Voting end date extended"
+msgstr "Przedłużono datę zakończenia wyborów"
+
+msgid "No voters were found."
+msgstr "Nie znaleziono głosujących."
+
+msgid "Email sending started"
+msgstr "Rozpoczęto wysyłkę e-maili."
+
+msgid "Poll does not support voter url login."
+msgstr "Głosowanie nie obsługuje logowania przez URL głosującej."
+
+msgid "You need to logout from your current account to access this view."
+msgstr "Musisz zalogować się z aktualnego konta aby uzyskać dostęp do tego widoku."
+
+msgid "Invalid ballot data"
+msgstr "Nieprawidłowe dane karty"
+
+msgid "Invalid email address"
+msgstr "Nieprawidłowy adres e-mail"
+
+msgid "Client address unavailable"
+msgstr "Adres klienta niedostępny"
+
+msgid "There are too many requests from your address"
+msgstr "Za dużo żądań z Twojego adresu internetowego"
+
+msgid "There are too many emails registered from your address"
+msgstr "Zarejestrowano za dużo e-maili z Twojego adresu"
+
+msgid "Cannot create demo users right now. Sorry."
+msgstr "Nie można tworzyć użytkowników demo, przepraszamy."
+
+#, python-format
+msgid "An email with demo credentials has been sent to %s"
+msgstr "E-mail z danymi uwierzytelniającymi został wysłany na adres %s"
+
+msgid "You do not have permission to access this page."
+msgstr "Nie masz pozwolenia na dostęp do tej strony."
+
+msgid "An error has been occured. Please notify the server admin."
+msgstr "Wystąpił błąd. Zawiadom administratora serwera."
+
+msgid "The requested page was not found."
+msgstr "Nie znaleziono żądanej strony."
+
+#~ msgid "&#37; is not a valid character"
+#~ msgstr "Ο χαρακτήρας % δεν επιτρέπεται"
+
+#~ msgid "Max answers should be greater or equal than min answers"
+#~ msgstr ""
+#~ "Ο μέγιστος αριθμός απαντήσεων πρέπει να είναι ίσος ή μεγαλύτερος του "
+#~ "ελάχιστου αριθμού απαντήσεων"
+
+#~ msgid "Department limit"
+#~ msgstr "Κανόνας των '2'"
+
