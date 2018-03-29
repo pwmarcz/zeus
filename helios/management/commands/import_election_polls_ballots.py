@@ -16,7 +16,8 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         election = Election.objects.get(uuid=args[0])
-        data = yaml.load(open(args[1]))
+        with open(args[1]) as f:
+            data = yaml.load(f)
         for poll_data in data:
             if not poll_data.get('uuid', None):
                 poll = Poll(election=election)
@@ -45,5 +46,5 @@ class Command(BaseCommand):
             poll.save()
             poll_data['uuid'] = str(poll.uuid)
 
-        write = open(args[1], 'w')
-        yaml.dump(data, write, allow_unicode=True, default_flow_style=False)
+        with open(args[1], 'w') as f:
+            yaml.dump(data, f, allow_unicode=True, default_flow_style=False)
