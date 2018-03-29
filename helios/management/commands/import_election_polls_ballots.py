@@ -18,32 +18,32 @@ class Command(BaseCommand):
         election = Election.objects.get(uuid=args[0])
         with open(args[1]) as f:
             data = yaml.load(f)
-            for poll_data in data:
-                if not poll_data.get('uuid', None):
-                    poll = Poll(election=election)
-                else:
-                    poll = election.polls.get(uuid=poll_data.get('uuid'))
-                poll.name = poll_data.get('name')
+        for poll_data in data:
+            if not poll_data.get('uuid', None):
+                poll = Poll(election=election)
+            else:
+                poll = election.polls.get(uuid=poll_data.get('uuid'))
+            poll.name = poll_data.get('name')
 
-                questions = poll_data.get('questions')
-                questions_data = []
-                for qdata in questions:
-                    question = qdata.get('question')
-                    answers = qdata.get('answers')
-                    _min, _max = qdata.get('min', 1), qdata.get('max', 1)
-                    q = {
-                        'choice_type': 'choice',
-                        'question': question,
-                        'max_answers': _max,
-                        'min_answers': _min,
-                        'answers': answers
-                    }
-                    for i, ans in enumerate(answers):
-                        q['answer_%d' % i] = ans
-                    questions_data.append(q)
-                poll.questions_data = questions_data
-                poll.update_answers()
-                poll.save()
+            questions = poll_data.get('questions')
+            questions_data = []
+            for qdata in questions:
+                question = qdata.get('question')
+                answers = qdata.get('answers')
+                _min, _max = qdata.get('min', 1), qdata.get('max', 1)
+                q = {
+                    'choice_type': 'choice',
+                    'question': question,
+                    'max_answers': _max,
+                    'min_answers': _min,
+                    'answers': answers
+                }
+                for i, ans in enumerate(answers):
+                    q['answer_%d' % i] = ans
+                questions_data.append(q)
+            poll.questions_data = questions_data
+            poll.update_answers()
+            poll.save()
                 poll_data['uuid'] = str(poll.uuid)
 
         with open(args[1], 'w') as f:
