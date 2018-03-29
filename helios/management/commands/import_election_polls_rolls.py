@@ -51,55 +51,56 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         election = Election.objects.get(uuid=args[0])
-        data = yaml.load(open(args[1]))
         skip = 0
         add = 0
         voters_count = 0
         updated = 0
-        for poll_data in data:
-            poll = election.polls.get(uuid=poll_data.get('uuid'))
-            voter_data = '\n'.join(poll_data.get('voters'))
-            voters = iter_voter_data(StringIO(voter_data))
-            ids = []
-            for voter_data in voters:
-                voters_count += 1
-                voter_id = voter_data.get('voter_id')
-                ids.append(voter_id)
-                existing = False
-                try:
-                    voter = poll.voters.get(voter_login_id=voter_id)
-                    existing = True
-                except Voter.DoesNotExist:
-                    voter = Voter(poll=poll)
+        with open(args[1]) as f:
+            data = yaml.load(f)
+            for poll_data in data:
+                poll = election.polls.get(uuid=poll_data.get('uuid'))
+                voter_data = '\n'.join(poll_data.get('voters'))
+                voters = iter_voter_data(StringIO(voter_data))
+                ids = []
+                for voter_data in voters:
+                    voters_count += 1
+                    voter_id = voter_data.get('voter_id')
+                    ids.append(voter_id)
+                    existing = False
+                    try:
+                        voter = poll.voters.get(voter_login_id=voter_id)
+                        existing = True
+                    except Voter.DoesNotExist:
+                        voter = Voter(poll=poll)
 
-                voter.voter_login_id = voter_id
-                voter.voter_email = voter_data.get('email')
-                voter.voter_surname = voter_data.get('surname', None)
-                voter.voter_name = voter_data.get('name', None)
-                voter.voter_fathername = voter_data.get('fathername', None)
-                voter.voter_mobile = voter_data.get('mobile', None)
-                voter.voter_weight = voter_data.get('weight', 1)
-                if not existing:
-                    validate_voter(voter.voter_mobile, voter.voter_email)
-                    voter.uuid = str(uuid.uuid4())
-                    voter.init_audit_passwords()
-                    voter.generate_password()
-                    voter.save()
-                    add += 1
-                    print("New voter added {}".format(voter.voter_email))
-                else:
-                    if UPDATE:
+                    voter.voter_login_id = voter_id
+                    voter.voter_email = voter_data.get('email')
+                    voter.voter_surname = voter_data.get('surname', None)
+                    voter.voter_name = voter_data.get('name', None)
+                    voter.voter_fathername = voter_data.get('fathername', None)
+                    voter.voter_mobile = voter_data.get('mobile', None)
+                    voter.voter_weight = voter_data.get('weight', 1)
+                    if not existing:
                         validate_voter(voter.voter_mobile, voter.voter_email)
-                        updated += 1
+                        voter.uuid = str(uuid.uuid4())
+                        voter.init_audit_passwords()
+                        voter.generate_password()
                         voter.save()
+                        add += 1
+                        print("New voter added {}".format(voter.voter_email))
                     else:
-                        skip += 1
-                        print("Skip import of existing voter {}".format(voter.voter_email))
+                        if UPDATE:
+                            validate_voter(voter.voter_mobile, voter.voter_email)
+                            updated += 1
+                            voter.save()
+                        else:
+                            skip += 1
+                            print("Skip import of existing voter {}".format(voter.voter_email))
 
-            existing = poll.voters.all()
-            stray = 0
-            for voter in existing.exclude(voter_login_id__in=ids):
-                stray += 1
-                print("Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email))
+                existing = poll.voters.all()
+                stray = 0
+                for voter in existing.exclude(voter_login_id__in=ids):
+                    stray += 1
+                    print("Stray voter {} {} ({})".format(voter.poll.name, voter.voter_login_id, voter.voter_email))
 
         print("Found: {}  New: {}  Existing: {}  Updated: {}  Stray: {}".format(voters_count, add, skip, updated, stray))
