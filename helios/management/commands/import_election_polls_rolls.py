@@ -51,11 +51,12 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         election = Election.objects.get(uuid=args[0])
-        data = yaml.load(open(args[1]))
         skip = 0
         add = 0
         voters_count = 0
         updated = 0
+        with open(args[1]) as f:
+            data = yaml.load(f)
         for poll_data in data:
             poll = election.polls.get(uuid=poll_data.get('uuid'))
             voter_data = '\n'.join(poll_data.get('voters'))
