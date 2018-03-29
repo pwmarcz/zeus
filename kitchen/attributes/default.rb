@@ -6,10 +6,11 @@
 # 2018
 #
 
-default['postgresql']['version'] = '9.4'
-default['postgresql']['dir'] = '/var/lib/postgresql/9.4/main'
+default['postgresql']['version'] = '9.6'
+default['postgresql']['dir'] = '/var/lib/postgresql/9.6/main'
 default['postgresql']['password']['postgres'] = 'qa-password'
 default['postgresql']['config']['listen_addresses'] = 'localhost'
+default['postgresql']['initdb_locale'] = 'UTF-8'
 default['postgresql']['pg_hba'] =  [{
     comment: '# Vagrant user access',
     type: 'host',
@@ -18,6 +19,6 @@ default['postgresql']['pg_hba'] =  [{
     addr: '127.0.0.1/32',
     method: 'md5'
 }]
-default['python']['install_python2'] = true
-default['python']['install_python3'] = false
-default['python']['install_pypy']    = true
+# default['python']['install_python2'] = false
+# default['python']['install_python3'] = true
+# default['python']['install_pypy']    = false

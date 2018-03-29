@@ -18,11 +18,13 @@ verifier:
   name: inspec
 
 platforms:
-  - name: debian-8.10
+  # - name: debian-8.10
+  - name: ubuntu-18.04
 
 suites:
   - name: default
     run_list:
+      - recipe[zeus::locale]
       - recipe[postgresql::server]
       - recipe[postgresql::client]
       - recipe[zeus::default]

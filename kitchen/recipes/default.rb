@@ -12,7 +12,7 @@ execute 'Create postgresql user and db' do
 end
 execute 'Create postgresql db' do
   command "su vagrant -l -c 'createdb helios -O vagrant'"
-  not_if 'psql -lqt | cut -d \| -f 1 | grep -qw helios'
+  # not_if 'psql -lqt | cut -d \| -f 1 | grep -qw helios'
 end
 
 package 'Install build-essential' do
@@ -39,15 +39,20 @@ package 'Install mpc' do
   package_name 'libmpc-dev'
 end
 
-execute 'Copy zeus dir to home' do
-  command 'rsync -av --progress /zeus /home/vagrant --exclude .git --exclude kitchen'
-  not_if {::File.exists?('/home/vagrant/zeus')}
-end
 
-python_runtime '2'
+python_runtime '3.6' do
+  provider :system
+  version '3.6'
+  options :system, package_name: 'python3'
+end
 
 execute 'Change perms for gnu local' do
   command 'sudo chown -R vagrant:vagrant ~/.gnupg'
+end
+
+execute 'Copy zeus dir to home' do
+  command 'rsync -av --progress /zeus /home/vagrant --exclude .git --exclude kitchen'
+  not_if {::File.exists?('/home/vagrant/zeus')}
 end
 
 execute 'Install pipenv' do
@@ -56,7 +61,7 @@ execute 'Install pipenv' do
 end
 
 execute 'Generate new venv' do
-  command "su vagrant -l -c 'cd zeus; pipenv --python python2'"
+  command "su vagrant -l -c 'cd zeus; pipenv --python python3.6'"
   action :run
 end
 
