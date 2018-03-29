@@ -10,6 +10,7 @@ default['postgresql']['version'] = '9.6'
 default['postgresql']['dir'] = '/var/lib/postgresql/9.6/main'
 default['postgresql']['password']['postgres'] = 'qa-password'
 default['postgresql']['config']['listen_addresses'] = 'localhost'
+default['postgresql']['initdb_locale'] = 'UTF-8'
 default['postgresql']['pg_hba'] =  [{
     comment: '# Vagrant user access',
     type: 'host',

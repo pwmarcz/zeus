@@ -24,6 +24,7 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[zeus::locale]
       - recipe[postgresql::server]
       - recipe[postgresql::client]
       - recipe[zeus::default]
