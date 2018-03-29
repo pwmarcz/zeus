@@ -18,7 +18,8 @@ verifier:
   name: inspec
 
 platforms:
-  - name: debian-8.10
+  # - name: debian-8.10
+  - name: ubuntu-18.04
 
 suites:
   - name: default
