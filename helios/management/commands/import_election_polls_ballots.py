@@ -44,7 +44,7 @@ class Command(BaseCommand):
             poll.questions_data = questions_data
             poll.update_answers()
             poll.save()
-                poll_data['uuid'] = str(poll.uuid)
+            poll_data['uuid'] = str(poll.uuid)
 
         with open(args[1], 'w') as f:
             yaml.dump(data, f, allow_unicode=True, default_flow_style=False)
