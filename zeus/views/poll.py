@@ -347,7 +347,7 @@ def voters_list(request, election, poll):
     hash_invalid = None
     hash_valid = None
 
-    if (order_type == 'asc') or (order_type == None):
+    if (order_type == 'asc') or (order_type is None):
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
     else:
         order_by = '-%s' % order_by

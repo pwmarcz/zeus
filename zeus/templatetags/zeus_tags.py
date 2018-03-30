@@ -270,9 +270,9 @@ def complete_get_parameters(context, GET, new_order,
         page_param += "&page=%s" % page
     order_by = GET.get('order', default_sort_key)
     order_type = GET.get('order_type', None)
-    if order_type == None and order_by == 'created_at':
+    if order_type is None and order_by == 'created_at':
         order_type = 'desc'
-    elif order_type == None:
+    elif order_type is None:
         order_type = 'asc'
 
     order_param = ''

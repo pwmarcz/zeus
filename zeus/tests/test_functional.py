@@ -218,7 +218,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                         follow=True
                         )
         e = Election.objects.get(uuid=self.e_uuid)
-        assert e.voting_extended_until != None
+        assert e.voting_extended_until is not None
 
     def create_duplicate_polls(self):
         e = Election.objects.all()[0]
@@ -807,7 +807,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.admin_can_submit_election_form()
         self.first_trustee_step_and_admin_mail()
         e = Election.objects.get(uuid=self.e_uuid)
-        assert self.freeze_election() == None
+        assert self.freeze_election() is None
         pks = self.prepare_trustees(self.e_uuid)
         self.second_trustee_step_mail()
         self.create_duplicate_polls()
@@ -852,7 +852,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.admin_can_submit_election_form()
         self.first_trustee_step_and_admin_mail()
         e = Election.objects.get(uuid=self.e_uuid)
-        assert self.freeze_election() == None
+        assert self.freeze_election() is None
         self.prepare_trustees(self.e_uuid)
         self.second_trustee_step_mail()
         self.create_polls()
@@ -1309,10 +1309,8 @@ class TestThirdPartyShibboleth(TestSimpleElection):
         assert r.status_code == 200
         assert r.context['user']
         assert r.context['user']._user.uuid == voter.uuid
-        assert self.c.session.get('shibboleth_voter_email', None) == \
-                         None
-        assert self.c.session.get('shibboleth_voter_uuid', None) == \
-                         None
+        assert self.c.session.get('shibboleth_voter_email', None) is None
+        assert self.c.session.get('shibboleth_voter_uuid', None) is None
 
     def _get_poll_params(self, index, poll=None):
         return {

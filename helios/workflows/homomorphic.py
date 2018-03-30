@@ -72,10 +72,10 @@ class EncryptedAnswer(WorkflowObject):
                 return False
 
             # compute homomorphic sum if needed
-            if max != None:
+            if max is not None:
                 homomorphic_sum = choice * homomorphic_sum
 
-        if max != None:
+        if max is not None:
             # determine possible plaintexts for the sum
             sum_possible_plaintexts = self.generate_plaintexts(pk, min=min, max=max)
 
@@ -377,7 +377,7 @@ def tally_hash(election):
 
 
 def ready_for_decription(election):
-    return election.encrypted_tally != None
+    return election.encrypted_tally is not None
 
 
 def decrypt_tally(election, decryption_factors):

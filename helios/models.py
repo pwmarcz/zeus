@@ -408,13 +408,13 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
             })
 
         for t in trustees:
-            if t.public_key == None:
+            if t.public_key is None:
                 issues.append({
                     'type': 'trustee-keypairs',
                     'action': _('Have trustee %s generate a keypair') % t.name
                 })
 
-            if t.public_key and t.last_verified_key_at == None:
+            if t.public_key and t.last_verified_key_at is None:
                 issues.append({
                     'type': 'trustee-verification',
                     'action': _('Have trustee %s verify his key') % t.name
@@ -563,7 +563,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
             return None
 
     def has_helios_trustee(self):
-        return self.get_zeus_trustee() != None
+        return self.get_zeus_trustee() is not None
 
     @transaction.atomic
     def update_trustees(self, trustees):
@@ -1835,7 +1835,7 @@ class Voter(HeliosModel, VoterFeatures):
 
         # little trick to get around GAE limitation
         # order by uuid only when no inequality has been added
-        if cast == None or order_by == 'cast_at' or order_by =='-cast_at':
+        if cast is None or order_by == 'cast_at' or order_by =='-cast_at':
             query = query.order_by(order_by)
 
             # if we want the list after a certain UUID, add the inequality here
