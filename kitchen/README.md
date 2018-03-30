@@ -14,11 +14,11 @@ Then follow it up with instructions from zeus README:
 
     cd zeus
     pipenv shell
-    
+
     cp settings/local_template.py settings/local.py
-    
+
     python manage.py migrate
-    
+
     python manage.py manage_users --create-institution "ZEUS"
     python manage.py manage_users --create-user <username> --institution=1
 
