@@ -578,7 +578,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
         if self.trustees.count() != len(trustees):
             emails = [t[1] for t in trustees]
             for trustee in self.trustees.filter().no_secret():
-                if not trustee.email in emails:
+                if trustee.email not in emails:
                     self.zeus.invalidate_election_public()
                     trustee.delete()
                     self.logger.info("Trustee %r deleted", trustee.email)

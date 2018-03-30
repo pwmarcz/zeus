@@ -86,7 +86,7 @@ def _action(context, label, url, icon="", cls="", extra_cls="",
     if not url:
         url = "#"
 
-    if not "nobutton" in cls:
+    if "nobutton" not in cls:
         cls += " button"
 
     html = """

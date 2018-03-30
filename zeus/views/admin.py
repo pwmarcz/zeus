@@ -33,7 +33,7 @@ class HomeView(View):
             elections_per_page = default_elections_per_page
         order_by=request.GET.get('order', 'created_at')
         order_type = request.GET.get('order_type', 'desc')
-        if not order_by in ELECTION_TABLE_HEADERS:
+        if order_by not in ELECTION_TABLE_HEADERS:
             order_by = 'name'
 
         elections = Election.objects.administered_by(request.admin)
@@ -108,7 +108,7 @@ def find_elections(request):
         REPORT_BOOL_KEYS_MAP
     )
 
-    if not order_by in ELECTION_TABLE_HEADERS:
+    if order_by not in ELECTION_TABLE_HEADERS:
         order_by = 'completed_at'
 
     elections = Election.objects.filter(**filter).order_by(order_by)

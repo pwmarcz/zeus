@@ -116,7 +116,7 @@ def stv_count(request):
 
 def setlang(request):
     lang = request.POST.get('language')
-    if not lang in [x[0] for x in settings.LANGUAGES]:
+    if lang not in [x[0] for x in settings.LANGUAGES]:
         return HttpResponseRedirect(reverse('home'))
     return set_language(request)
 

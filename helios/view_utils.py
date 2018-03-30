@@ -52,7 +52,7 @@ def prepare_vars(request, vars):
     #vars_with_user['voter'] = request.session.get('CURRENT_VOTER')
 
     trustee = None
-    if 'helios_trustee_uuid' in session and not 'trustee' in vars:
+    if 'helios_trustee_uuid' in session and 'trustee' not in vars:
         try:
             from helios.models import Trustee
             trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))

@@ -336,7 +336,7 @@ def voters_list(request, election, poll):
 
     module = election.get_module()
     table_headers = copy.copy(module.get_voters_list_headers(request))
-    if not order_by in table_headers:
+    if order_by not in table_headers:
         order_by = 'voter_login_id'
 
     if not poll.voters.filter(voter_weight__gt=1).count():
@@ -593,7 +593,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
     else:
         template = request.GET.get('template', default_template)
 
-    if not template in [t[0] for t in TEMPLATES]:
+    if template not in [t[0] for t in TEMPLATES]:
         raise Exception("bad template")
 
     election_url = election.get_absolute_url()

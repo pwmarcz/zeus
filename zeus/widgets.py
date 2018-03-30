@@ -39,7 +39,7 @@ class JqSplitDateTimeWidget(MultiWidget):
         if value:
             d = strftime("%Y-%m-%d", value.timetuple())
             timeofday = strftime("%H:%M", value.timetuple())
-            if not timeofday in list(dict(hour_selections).keys()):
+            if timeofday not in list(dict(hour_selections).keys()):
                 timeofday = strftime("%H:00", value.timetuple())
             return (d, timeofday)
         else:

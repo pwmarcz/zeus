@@ -17,7 +17,5 @@ ignore =
     E722,
     # do not assign a lambda expression, use a def (TODO fix)
     E731,
-    # test for membership should be 'not in' (TODO fix)
-    E713,
     # 'x' may be undefined, or defined from star imports (happens in settings)
     F405
