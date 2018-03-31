@@ -92,7 +92,9 @@ def stv_count(request):
         if not os.path.exists(filename):
             return HttpResponseRedirect(reverse('stv_count') + "?reset=1")
 
-        wrapper = FileWrapper(open(filename))
+        with open(filename) as f:
+            wrapper = FileWrapper(f)
+
         response = HttpResponse(wrapper, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
         response['Content-Length'] = os.path.getsize(filename)
@@ -136,9 +138,8 @@ def terms(request):
     if terms_file is None:
         return HttpResponseRedirect(reverse('home'))
 
-    terms_fd = open(terms_file % {'lang': get_language()}, 'r')
-    terms_contents = terms_fd.read()
-    terms_fd.close()
+    with open(terms_file % {'lang': get_language()}, "r") as terms_fd:
+        terms_contents = terms_fd.read()
 
     return render_template(request, "zeus/terms", {
         'content': terms_contents

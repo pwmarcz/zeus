@@ -329,12 +329,12 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             fname = '/tmp/faulty_voters%s.csv' % counter
             voter_files[p_uuid] = fname
             fp = open(fname, 'w')
-            for i in range(0, 2):
-                voter = "1,voter%s@mail.com,test_name%s,test_surname%s\n" \
-                    % (i, i, i)
-                fp.write(voter)
-            fp.close()
-            counter += 1
+            with open(fname, "w") as fp:
+                for i in range(0, 2):
+                    voter = "1,voter%s@mail.com,test_name%s,test_surname%s\n" \
+                        % (i, i, i)
+                    fp.write(voter)
+                counter += 1
         self.verbose('- Faulty voters file(duplicate ids) created')
         for p_uuid in self.p_uuids:
             upload_voters_location = '/elections/%s/polls/%s/voters/upload' \
