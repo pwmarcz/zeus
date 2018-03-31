@@ -437,24 +437,24 @@ def main(cmd=None):
             if args.seats == 0:
                 args.seats = len(ballots) // 2
 
-        constituencies = {}
-        if args.constituencies_file:
-            with open(args.constituencies_file) as constituencies_file:
-                constituencies_reader = csv.reader(constituencies_file,
-                                                   delimiter=',',
-                                                   quotechar='"',
-                                                   skipinitialspace=True)
-                constituency_id = 0
-                for constituency in constituencies_reader:
-                    for candidate in constituency:
-                        constituencies[candidate] = constituency_id
-                    constituency_id += 1
+            constituencies = {}
+            if args.constituencies_file:
+                with open(args.constituencies_file) as f:
+                    constituencies_reader = csv.reader(f,
+                                                       delimiter=',',
+                                                       quotechar='"',
+                                                       skipinitialspace=True)
+                    constituency_id = 0
+                    for constituency in constituencies_reader:
+                        for candidate in constituency:
+                            constituencies[candidate] = constituency_id
+                        constituency_id += 1
 
-    (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
-                                      constituencies,
-                                      args.quota,
-                                      args.random,
-                                      logger=logger)
+            (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
+                                              constituencies,
+                                              args.quota,
+                                              args.random,
+                                              logger=logger)
 
     return elected
 
