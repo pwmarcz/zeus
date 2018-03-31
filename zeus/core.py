@@ -2975,7 +2975,7 @@ class ZeusCoreElection(object):
 
         with teller.task("Verifying audit votes", total=len(votes)):
             for vote in votes:
-                if not 'voter_secret' in vote:
+                if 'voter_secret' not in vote:
                     missing.append(vote)
                     m = "[%s] public audit secret not found"
                     teller.notice(m, vote['fingerprint'])

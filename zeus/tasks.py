@@ -34,7 +34,7 @@ def task(*taskargs, **taskkwargs):
                 translation.activate(settings.LANGUAGE_CODE)
             return func(*args, **kwargs)
         # prevent magic kwargs passthrough
-        if not 'accept_magic_kwargs' in taskkwargs:
+        if 'accept_magic_kwargs' not in taskkwargs:
             taskkwargs['accept_magic_kwargs'] = False
         return app.task(*taskargs, **taskkwargs)(inner)
     return wrapper

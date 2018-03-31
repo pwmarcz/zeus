@@ -283,7 +283,7 @@ class QuestionBaseForm(forms.Form):
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)])
         if not answers:
-            answers = len([k for k in list(self.initial.keys()) if k.startswith("answer_") and not "indexes" in k])
+            answers = len([k for k in list(self.initial.keys()) if k.startswith("answer_") and "indexes" not in k])
 
         if answers == 0:
             answers = DEFAULT_ANSWERS_COUNT

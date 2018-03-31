@@ -265,7 +265,7 @@ class Ciphertext:
         """
         Check for ciphertext equality.
         """
-        if other == None:
+        if other is None:
             return False
 
         return (self.alpha == other.alpha and self.beta == other.beta)

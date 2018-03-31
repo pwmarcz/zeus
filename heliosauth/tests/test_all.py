@@ -57,9 +57,9 @@ class UserModelTests(TestCase):
             u = models.User.update_or_create(user_type=auth_system, user_id='foobar_status_update', info={'name': 'Foo Bar Status Update'})
 
             if hasattr(auth_system_module, 'send_message'):
-                assert u.update_status_template != None
+                assert u.update_status_template is not None
             else:
-                assert u.update_status_template == None
+                assert u.update_status_template is None
 
     def test_eligibility(self):
         """

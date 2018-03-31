@@ -14,7 +14,7 @@ LOCAL_MIXES_COUNT = 1
 
 def feature(ns, *features):
 
-    if not ns in FEATURES_REGISTRY:
+    if ns not in FEATURES_REGISTRY:
         FEATURES_REGISTRY[ns] = {}
 
     def wrapper(func):
@@ -23,7 +23,7 @@ def feature(ns, *features):
             _features = [func.__name__.replace(
                 '_feature_', '').replace('_feature', '')]
         for feature in _features:
-            if not feature in FEATURES_REGISTRY[ns]:
+            if feature not in FEATURES_REGISTRY[ns]:
                 FEATURES_REGISTRY[ns][feature] = []
             FEATURES_REGISTRY[ns][feature].append(func)
 

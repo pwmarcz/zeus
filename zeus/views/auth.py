@@ -186,7 +186,7 @@ def shibboleth_login(request, endpoint):
 
     if not error:
         for key in constraints.get('required_fields'):
-            if not key in shibboleth:
+            if key not in shibboleth:
                 error = 403
                 poll.logger.error('[thirdparty] %s field not found in shibboleth data', key)
                 messages.error(request, _('Invalid shibboleth data resolved.'))
@@ -214,7 +214,7 @@ def shibboleth_login(request, endpoint):
     if idp_field and ":" in idp_field:
         idp_field_arr = [x.strip() for x in idp_field.split(":")]
 
-    if (not error and not idp_field == voter_field) and (not error and not voter_field in idp_field_arr):
+    if (not error and not idp_field == voter_field) and (not error and voter_field not in idp_field_arr):
         error = 403
         err_fields = [idp_field, idp_field_key, voter_field_key, voter_field]
         poll.logger.error('[thirdparty] assertion failed (%r=%s != %r=%s)', *err_fields)

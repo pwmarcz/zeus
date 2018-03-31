@@ -37,7 +37,7 @@ class JSONField(models.TextField):
         if isinstance(value, dict) or isinstance(value, list):
             return value
 
-        if value == "" or value == None:
+        if value == "" or value is None:
             return None
 
         try:
@@ -58,7 +58,7 @@ class JSONField(models.TextField):
         if isinstance(value, str):
             return value
 
-        if value == None:
+        if value is None:
             return None
 
         if self.json_type and isinstance(value, self.json_type):

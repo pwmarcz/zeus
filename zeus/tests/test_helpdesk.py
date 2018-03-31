@@ -478,7 +478,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
     def test_edit_user(self):
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
         u = User.objects.get(user_id='test_admin')
-        assert u.name == None
+        assert u.name is None
         post_data = {
             'user_id': 'test_admin',
             'name': 'test_name',
@@ -653,7 +653,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
         group_id = UserGroup.objects.create(election_types=["parties"], name="party user").pk
         self.c.post(self.locations['login'], self.manager_creds, follow=True)
         u = User.objects.get(user_id='test_admin')
-        assert u.name == None
+        assert u.name is None
         post_data = {
             'user_id': 'test_user_groups',
             'name': 'test_name',

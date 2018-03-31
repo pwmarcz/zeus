@@ -25,7 +25,7 @@ class HeliosObject(object):
         self.set_from_args(**kwargs)
 
         # generate uuid if need be
-        if 'uuid' in self.FIELDS and (not hasattr(self, 'uuid') or self.uuid == None):
+        if 'uuid' in self.FIELDS and (not hasattr(self, 'uuid') or self.uuid is None):
             self.uuid = str(uuid.uuid4())
 
     def set_from_args(self, **kwargs):
@@ -86,11 +86,11 @@ class HeliosObject(object):
         """
         process some fields on the way into the object
         """
-        if field_value == None:
+        if field_value is None:
             return None
 
         val = self._process_value_in(field_name, field_value)
-        if val != None:
+        if val is not None:
             return val
         else:
             return field_value
@@ -102,11 +102,11 @@ class HeliosObject(object):
         """
         process some fields on the way out of the object
         """
-        if field_value == None:
+        if field_value is None:
             return None
 
         val = self._process_value_out(field_name, field_value)
-        if val != None:
+        if val is not None:
             return val
         else:
             return field_value
@@ -118,7 +118,7 @@ class HeliosObject(object):
         if not hasattr(self, 'uuid'):
             return super(HeliosObject, self) == other
 
-        return other != None and self.uuid == other.uuid
+        return other is not None and self.uuid == other.uuid
 
 
 class EncryptedAnswer(HeliosObject):
@@ -329,7 +329,7 @@ class Voter(HeliosObject):
 
     def toJSONDict(self):
         fields = None
-        if self.alias != None:
+        if self.alias is not None:
             return super(Voter, self).toJSONDict(self.ALIASED_VOTER_JSON_FIELDS)
         else:
             return super(Voter, self).toJSONDict()
@@ -478,7 +478,7 @@ class Tally(HeliosObject):
                 self.tally = None
 
         # initialize
-        if self.num_tallied == None:
+        if self.num_tallied is None:
             self.num_tallied = 0
 
     def init_election(self, election):
