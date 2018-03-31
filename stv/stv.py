@@ -427,8 +427,8 @@ def main(cmd=None):
     ballots = []
     ballots_file = sys.stdin
     if args.ballots_file != 'sys.stdin':
-        with open(args.ballots_file, 'U') as ballots_file:
-            ballots_reader = csv.reader(ballots_file, delimiter=',',
+        with open(args.ballots_file) as f:
+            ballots_reader = csv.reader(f, delimiter=',',
                                         quotechar='"',
                                         skipinitialspace=True)
             for ballot in ballots_reader:
@@ -437,18 +437,18 @@ def main(cmd=None):
             if args.seats == 0:
                 args.seats = len(ballots) // 2
 
-    constituencies = {}
-    if args.constituencies_file:
-        with open(args.constituencies_file, 'U') as constituencies_file:
-            constituencies_reader = csv.reader(constituencies_file,
-                                               delimiter=',',
-                                               quotechar='"',
-                                               skipinitialspace=True)
-            constituency_id = 0
-            for constituency in constituencies_reader:
-                for candidate in constituency:
-                    constituencies[candidate] = constituency_id
-                constituency_id += 1
+        constituencies = {}
+        if args.constituencies_file:
+            with open(args.constituencies_file) as constituencies_file:
+                constituencies_reader = csv.reader(constituencies_file,
+                                                   delimiter=',',
+                                                   quotechar='"',
+                                                   skipinitialspace=True)
+                constituency_id = 0
+                for constituency in constituencies_reader:
+                    for candidate in constituency:
+                        constituencies[candidate] = constituency_id
+                    constituency_id += 1
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
                                       constituencies,
