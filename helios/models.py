@@ -1349,9 +1349,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         results_json = self.zeus.get_results()
 
         # json file
-        jsonfile = open(self.get_result_file_path('json', 'json'), 'w')
-        json.dump(results_json, jsonfile)
-        jsonfile.close()
+        with open(self.get_resul_file_path('json', 'json'), 'w') as jsonfile:
+            json.dump(results_json, jsonfile)
 
         # pdf report
         if self.get_module().module_id =='score':
@@ -1366,9 +1365,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                       self.get_result_file_path('pdf', 'pdf'), score=True)
 
             from zeus.reports import csv_from_score_polls
-            csvfile = open(self.get_result_file_path('csv', 'csv'), "w")
-            csv_from_score_polls(self.election, [self], csvfile)
-            csvfile.close()
+            with open(self.get_result_file_path('csv', 'csv'), 'w') as csvfile:
+                csv_from_score_polls(self.election, [self], csvfile)
         else:
             from zeus.results_report import build_doc
             results_name = self.election.name
@@ -1384,9 +1382,8 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
             # CSV
             from zeus.reports import csv_from_polls
-            csvfile = open(self.get_result_file_path('csv', 'csv'), "w")
-            csv_from_polls(self.election, [self], csvfile)
-            csvfile.close()
+            with open(self.get_result_file_path('csv', 'csv'), 'w') as csvfile:
+                csv_from_polls(self.election, [self], csvfile)
 
     def save(self, *args, **kwargs):
         if not self.uuid:
@@ -1528,7 +1525,8 @@ class VoterFile(models.Model):
         if self.voter_file_content:
             voter_data = base64.b64decode(self.voter_file_content.encode())
         else:
-            voter_data = open(self.voter_file.path, "rb").read()
+            with open(self.voter_file.path, "rb") as voter_data:
+                voter_data.read()
 
         return iter_voter_data(voter_data, email_validator=email_validator,
                                preferred_encoding=preferred_encoding)
@@ -1564,7 +1562,8 @@ class VoterFile(models.Model):
         if self.voter_file_content:
             voter_data = base64.decodestring(self.voter_file_content.encode())
         else:
-            voter_data = open(self.voter_file.path, "rb").read()
+            with open(self.voter_file.path, "rb") as voter_data:
+                voter_data.read()
 
         reader = iter_voter_data(voter_data, preferred_encoding=preferred_encoding)
 

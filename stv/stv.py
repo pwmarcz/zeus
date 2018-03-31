@@ -427,10 +427,10 @@ def main(cmd=None):
     ballots = []
     ballots_file = sys.stdin
     if args.ballots_file != 'sys.stdin':
-        ballots_file = open(args.ballots_file, 'U')
-    ballots_reader = csv.reader(ballots_file, delimiter=',',
-                                quotechar='"',
-                                skipinitialspace=True)
+        with open(args.ballots_file, 'U') as ballots_file:
+            ballots_reader = csv.reader(ballots_file, delimiter=',',
+                                        quotechar='"',
+                                        skipinitialspace=True)
     for ballot in ballots_reader:
         ballots.append(Ballot(ballot))
 
@@ -439,11 +439,11 @@ def main(cmd=None):
 
     constituencies = {}
     if args.constituencies_file:
-        constituencies_file = open(args.constituencies_file, 'U')
-        constituencies_reader = csv.reader(constituencies_file,
-                                           delimiter=',',
-                                           quotechar='"',
-                                           skipinitialspace=True)
+        with open(args.constituencies_file, 'U') as constituencies_file:
+            constituencies_reader = csv.reader(constituencies_file,
+                                               delimiter=',',
+                                               quotechar='"',
+                                               skipinitialspace=True)
         constituency_id = 0
         for constituency in constituencies_reader:
             for candidate in constituency:
