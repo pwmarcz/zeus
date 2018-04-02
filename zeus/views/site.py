@@ -29,7 +29,6 @@ from zeus.auth import ZeusUser
 
 from zeus.stv_count_reports import stv_count_and_report
 
-from wsgiref.util import FileWrapper
 from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
@@ -92,8 +91,7 @@ def stv_count(request):
         if not os.path.exists(filename):
             return HttpResponseRedirect(reverse('stv_count') + "?reset=1")
 
-        wrapper = FileResponse(open(filename, 'rb'))
-        response = HttpResponse(wrapper, content_type='application/pdf')
+        response = FileResponse(open(filename, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
         response['Content-Length'] = os.path.getsize(filename)
         return response
