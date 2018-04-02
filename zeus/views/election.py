@@ -359,7 +359,6 @@ def results_file(request, election, ext='pdf', shortname='',
         response['X-Sendfile'] = fpath
         return response
     else:
-        data = open(fpath, 'rb')
         with open(fpath, "rb") as data:
             response = HttpResponse(data.read(), content_type='application/%s' % ext)
         basename = os.path.basename(fpath)

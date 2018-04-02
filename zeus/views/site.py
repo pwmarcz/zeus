@@ -9,7 +9,7 @@ from time import time
 from random import randint
 
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -92,9 +92,7 @@ def stv_count(request):
         if not os.path.exists(filename):
             return HttpResponseRedirect(reverse('stv_count') + "?reset=1")
 
-        with open(filename) as f:
-            wrapper = FileWrapper(f)
-
+        wrapper = FileResponse(open(filename, 'rb'))
         response = HttpResponse(wrapper, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
         response['Content-Length'] = os.path.getsize(filename)

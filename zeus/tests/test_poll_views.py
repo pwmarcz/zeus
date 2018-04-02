@@ -46,13 +46,12 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         for p_uuid in self.p_uuids:
             fname = '/tmp/random_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = open(fname, 'w')
             with open(fname, "w") as fp:
                 for i in range(1, self.voters_num + 1):
                     voter = "%s,voter%s@mail.com,test_name%s,test_surname%s\n" \
                             % (i, i, i, i)
                     fp.write(voter)
-                counter += 1
+            counter += 1
         return voter_files
 
     def submit_voters_file(self):
