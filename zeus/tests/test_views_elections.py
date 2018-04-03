@@ -5,12 +5,18 @@ from django.test import TestCase
 from django.urls import reverse
 from helios.models import Election
 from zeus.forms import ElectionForm
-from zeus.tests.utils import SetUpAdminAndClientMixin, get_election
+from zeus.tests.utils import (
+    SetUpAdminAndClientMixin,
+    get_election,
+    get_poll,
+    get_trustee,
+    get_voter,
+)
 
 
 class TestAddOrUpdateElection(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
-        super(TestElectionView, self).setUp()
+        super(TestAddOrUpdateElection, self).setUp()
 
     def test_election_create(self):
         # election-create form cannot be seen without logging in
@@ -78,3 +84,26 @@ class TestAddOrUpdateElection(SetUpAdminAndClientMixin, TestCase):
         assert response.status_code == 302
         election.refresh_from_db()
         assert election.name == 'election B'
+
+
+class TestTrusteesList(SetUpAdminAndClientMixin, TestCase):
+    def setUp(self):
+        super(TestTrusteesList, self).setUp()
+
+    # def test_trustee_list_get(self):
+    #     election = get_election()
+    #     trustee = get_trustee(election=election)
+    #     poll = get_poll(election=election)
+    #     voter = get_voter(poll=poll)
+
+    #     self.login()
+    #     election.admins.add(self.admin)
+
+    #     response = self.c.get(
+    #         reverse('election_trustees_list', kwargs={'election_uuid': election.uuid}),
+    #         {'voter': voter}
+    #     )
+    #     assert response.context['election'] == election
+    #     assert trustee in response.context['trustees']
+    #     # assert response.context['poll'] == poll
+    #     assert response.context['voter'] == voter

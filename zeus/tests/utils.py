@@ -5,7 +5,7 @@ from django.conf import settings
 from django.test.client import Client
 from django.contrib.auth.hashers import make_password
 
-from helios.models import Election
+from helios.models import Election, Poll, Trustee, Voter
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
 
@@ -111,6 +111,21 @@ def get_election(**kwargs):
     institution = get_institution()
     election, _ = Election.objects.get_or_create(institution=institution, **kwargs)
     return election
+
+
+def get_poll(election, **kwargs):
+    poll, _ = Poll.objects.get_or_create(election=election, **kwargs)
+    return poll
+
+
+def get_trustee(election, **kwargs):
+    trustee, _ = Trustee.objects.get_or_create(election=election, **kwargs)
+    return trustee
+
+
+def get_voter(poll, **kwargs):
+    voter, _ = Voter.objects.get_or_create(poll=poll, **kwargs)
+    return voter
 
 
 def get_messages_from_response(response):
