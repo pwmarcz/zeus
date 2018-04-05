@@ -444,17 +444,17 @@ def main(cmd=None):
                                             delimiter=',',
                                             quotechar='"',
                                             skipinitialspace=True)
-        constituency_id = 0
-        for constituency in constituencies_reader:
-            for candidate in constituency:
-                constituencies[candidate] = constituency_id
-            constituency_id += 1
+         constituency_id = 0
+         for constituency in constituencies_reader:
+             for candidate in constituency:
+                 constituencies[candidate] = constituency_id
+             constituency_id += 1
 
-        (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
-                                          constituencies,
-                                          args.quota,
-                                          args.random,
-                                          logger=logger)
+    (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
+                                      constituencies,
+                                      args.quota,
+                                      args.random,
+                                      logger=logger)
 
         return elected
 
