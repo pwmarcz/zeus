@@ -429,8 +429,8 @@ def main(cmd=None):
     if args.ballots_file != 'sys.stdin':
         ballots_file = open(args.ballots_file)
     ballots_reader = csv.reader(ballots_file, delimiter=',',
-                                    quotechar='"',
-                                    skipinitialspace=True)
+                                quotechar='"',
+                                skipinitialspace=True)
     for ballot in ballots_reader:
         ballots.append(Ballot(ballot))
 
@@ -439,24 +439,24 @@ def main(cmd=None):
 
     constituencies = {}
     if args.constituencies_file:
-         constituencies_file = open(args.constituencies_file)
-         constituencies_reader = csv.reader(constituencies_file,
-                                            delimiter=',',
-                                            quotechar='"',
-                                            skipinitialspace=True)
-         constituency_id = 0
-         for constituency in constituencies_reader:
-             for candidate in constituency:
-                 constituencies[candidate] = constituency_id
-             constituency_id += 1
+        constituencies_file = open(args.constituencies_file)
+        constituencies_reader = csv.reader(constituencies_file,
+                                           delimiter=',',
+                                           quotechar='"',
+                                           skipinitialspace=True)
+        constituency_id = 0
+        for constituency in constituencies_reader:
+            for candidate in constituency:
+                constituencies[candidate] = constituency_id
+            constituency_id += 1
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
-                                      constituencies,
-                                      args.quota,
-                                      args.random,
-                                      logger=logger)
+                                                 constituencies,
+                                                 args.quota,
+                                                 args.random,
+                                                 logger=logger)
 
-        return elected
+    return elected
 
 
 if __name__ == '__main__':
