@@ -1525,8 +1525,8 @@ class VoterFile(models.Model):
         if self.voter_file_content:
             voter_data = base64.b64decode(self.voter_file_content.encode())
         else:
-            with open(self.voter_file.path, "rb") as voter_data:
-                voter_data.read()
+            with open(self.voter_file.path, "rb") as f:
+                voter_data = f.read()
 
         return iter_voter_data(voter_data, email_validator=email_validator,
                                preferred_encoding=preferred_encoding)
