@@ -398,6 +398,30 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
     return elected, vote_count, full_data
 
 
+def read_ballots(f):
+    ballots = []
+    ballots_reader = csv.reader(f, delimiter=',',
+                                quotechar='"',
+                                skipinitialspace=True)
+    for ballot in ballots_reader:
+        ballots.append(Ballot(ballot))
+    return ballots
+
+
+def read_constituencies(f):
+    constituencies = {}
+    constituencies_reader = csv.reader(f,
+                                       delimiter=',',
+                                       quotechar='"',
+                                       skipinitialspace=True)
+    constituency_id = 0
+    for constituency in constituencies_reader:
+        for candidate in constituency:
+            constituencies[candidate] = constituency_id
+        constituency_id += 1
+    return constituencies
+
+
 def main(cmd=None):
     parser = argparse.ArgumentParser(description='Perform STV')
     parser.add_argument('-b', '--ballots', default='sys.stdin',
@@ -424,31 +448,19 @@ def main(cmd=None):
     logger.setLevel(args.loglevel)
     logger.addHandler(stream_handler)
 
-    ballots = []
-    ballots_file = sys.stdin
-    if args.ballots_file != 'sys.stdin':
-        ballots_file = open(args.ballots_file)
-    ballots_reader = csv.reader(ballots_file, delimiter=',',
-                                quotechar='"',
-                                skipinitialspace=True)
-    for ballot in ballots_reader:
-        ballots.append(Ballot(ballot))
+    if args.ballots_file == 'sys.stdin':
+        ballots = read_ballots(sys.stdin)
+    else:
+        with open(args.ballots_file) as f:
+            ballots = read_ballots(f)
 
     if args.seats == 0:
         args.seats = len(ballots) // 2
 
     constituencies = {}
     if args.constituencies_file:
-        constituencies_file = open(args.constituencies_file)
-        constituencies_reader = csv.reader(constituencies_file,
-                                           delimiter=',',
-                                           quotechar='"',
-                                           skipinitialspace=True)
-        constituency_id = 0
-        for constituency in constituencies_reader:
-            for candidate in constituency:
-                constituencies[candidate] = constituency_id
-            constituency_id += 1
+        with open(args.constituencies_file) as f:
+            constituencies = read_constituencies(f)
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
                                                  constituencies,
