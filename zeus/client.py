@@ -243,7 +243,8 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
         raise ValueError(m)
     f = open(plaintexts_file, "w")
 
-    voter_urls = open(voter_url_file).read().splitlines()
+    with open(voter_url_file) as f:
+        voter_urls = f.read().splitlines()
     total = len(voter_urls)
     inqueue = Queue(maxsize=total)
     outqueue = Queue(maxsize=total)
