@@ -174,7 +174,8 @@ class PollMix(models.Model):
         return True
 
     def zeus_mix(self):
-        return from_canonical(self.mix_file.read())
+        with self.mix_file as f:
+            return from_canonical(f.read())
 
     def mix_parts_iter(self, mix):
         size = len(mix)
