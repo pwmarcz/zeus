@@ -401,7 +401,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             with open(voter_files[p_uuid]) as f:
                 self.c.post(
                     upload_voters_location,
-                    {'voters_file': open(voter_files[p_uuid]),
+                    {'voters_file': f,
                      'encoding': 'iso-8859-7'}
                 )
             self.c.post(upload_voters_location, {'confirm_p': 1, 'encoding': 'iso-8859-7'})
@@ -1249,13 +1249,12 @@ class TestWeightElection(TestSimpleElection):
         for p_uuid in self.p_uuids:
             fname = '/tmp/random_voters%s.csv' % counter
             voter_files[p_uuid] = fname
-            fp = open(fname, 'w')
-            for i in range(1, self.voters_num+1):
-                weight = 1 + (i % 5)
-                voter = "%s,voter%s@mail.com,test_name%s,test_surname%s,,,%s\n" \
-                    % (i, i, i, i, weight)
-                fp.write(voter)
-            fp.close()
+            with open(fname, 'w') as fp:
+                for i in range(1, self.voters_num+1):
+                    weight = 1 + (i % 5)
+                    voter = "%s,voter%s@mail.com,test_name%s,test_surname%s,,,%s\n" \
+                        % (i, i, i, i, weight)
+                    fp.write(voter)
             counter += 1
         self.verbose('+ Voters file created')
         return voter_files
