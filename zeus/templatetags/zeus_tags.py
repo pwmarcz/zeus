@@ -186,7 +186,7 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
     if q:
         q_field = """<input type="hidden" """ + \
                   """value="%s" """ % q + \
-                  """name="q_param" \>"""
+                  """name="q_param" />"""
 
     html = """
     <li>
