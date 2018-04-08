@@ -1169,9 +1169,8 @@ def results_file(request, election, poll, language, ext):
         response['X-Sendfile'] = fname
         return response
     else:
-        zip_data = open(fname, 'rb')
-        response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
-        zip_data.close()
+        with open(fname, "rb") as zip_data:
+            response = HttpResponse(zip_data.read(), content_type='application/%s' % ext)
         basename = os.path.basename(fname)
         response['Content-Disposition'] = 'attachment; filename=%s' % basename
         return response
@@ -1191,9 +1190,8 @@ def zeus_proofs(request, election, poll):
         response['X-Sendfile'] = poll.zeus_proofs_path()
         return response
     else:
-        zip_data = open(poll.zeus_proofs_path(), 'rb')
-        response = HttpResponse(zip_data.read(), content_type='application/zip')
-        zip_data.close()
+        with open(poll.zeus_proofs_path(), "rb") as zip_data:
+            response = HttpResponse(zip_data.read(), content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename=%s_proofs.zip' % election.uuid
         return response
 

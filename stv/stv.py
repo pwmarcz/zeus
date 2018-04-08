@@ -427,7 +427,7 @@ def main(cmd=None):
     ballots = []
     ballots_file = sys.stdin
     if args.ballots_file != 'sys.stdin':
-        ballots_file = open(args.ballots_file, 'U')
+        ballots_file = open(args.ballots_file)
     ballots_reader = csv.reader(ballots_file, delimiter=',',
                                 quotechar='"',
                                 skipinitialspace=True)
@@ -439,7 +439,7 @@ def main(cmd=None):
 
     constituencies = {}
     if args.constituencies_file:
-        constituencies_file = open(args.constituencies_file, 'U')
+        constituencies_file = open(args.constituencies_file)
         constituencies_reader = csv.reader(constituencies_file,
                                            delimiter=',',
                                            quotechar='"',
@@ -451,10 +451,10 @@ def main(cmd=None):
             constituency_id += 1
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
-                                      constituencies,
-                                      args.quota,
-                                      args.random,
-                                      logger=logger)
+                                                 constituencies,
+                                                 args.quota,
+                                                 args.random,
+                                                 logger=logger)
 
     return elected
 

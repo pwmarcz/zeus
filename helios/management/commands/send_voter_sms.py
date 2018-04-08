@@ -119,9 +119,8 @@ class Command(BaseCommand):
 
         voters = Voter.objects.filter()
         all_voters = Voter.objects.filter()
-        tplfd = open(template)
-        tpl = tplfd.read()
-        tplfd.close()
+        with open(template) as f:
+            tpl = f.read()
 
         election = None
 
