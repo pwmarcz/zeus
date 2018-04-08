@@ -160,8 +160,8 @@ class UniGovGr(SimpleElection):
 
     def generate_election_csv_file(self, results, lang):
         csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
-        csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
-        csv_from_unigovgr_results(self.election, results, lang[0], csvfile)
+        with open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w") as f:
+            csv_from_unigovgr_results(self.election, results, lang[0], f)
 
     def compute_election_results(self):
         results = self._count_election_results()
