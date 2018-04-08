@@ -59,11 +59,12 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         for p_uuid in self.p_uuids:
             upload_voters_location = '/elections/%s/polls/%s/voters/upload' \
                                      % (self.e_uuid, p_uuid)
-            self.c.post(
-                upload_voters_location,
-                {'voters_file': open(voter_files[p_uuid]),
-                 'encoding': 'iso-8859-7'}
-            )
+            with open(voter_files[p_uuid]) as f:
+                self.c.post(
+                    upload_voters_location,
+                    {'voters_file': f,
+                     'encoding': 'iso-8859-7'}
+                )
             self.c.post(upload_voters_location, {'confirm_p': 1, 'encoding': 'iso-8859-7'})
 
     def voter_login(self, voter, voter_login_url=None):
