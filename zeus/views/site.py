@@ -89,7 +89,7 @@ def stv_count(request):
         if not os.path.exists(filename):
             return HttpResponseRedirect(reverse('stv_count') + "?reset=1")
 
-        response = FileResponse(open(filename, 'rb'))
+        response = FileResponse(open(filename, 'rb'), content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
         response['Content-Length'] = os.path.getsize(filename)
         return response
