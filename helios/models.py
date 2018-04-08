@@ -1093,7 +1093,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         # new_voter_file.voter_file.save(random_filename, uploaded_file)
 
         new_voter_file = VoterFile(poll=self,
-                                   voter_file_content=base64.encodestring(uploaded_file.read()).decode())
+                                   voter_file_content=base64.encodebytes(uploaded_file.read()).decode())
         new_voter_file.save()
         return new_voter_file
 
@@ -1561,7 +1561,7 @@ class VoterFile(models.Model):
 
         # now we're looking straight at the content
         if self.voter_file_content:
-            voter_data = base64.decodestring(self.voter_file_content.encode())
+            voter_data = base64.decodebytes(self.voter_file_content.encode())
         else:
             with open(self.voter_file.path, "rb") as f:
                 voter_data = f.read()
