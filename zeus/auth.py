@@ -18,7 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-AUTH_RE = re.compile('Basic (\w+[=]*)')
+AUTH_RE = re.compile(r'Basic (\w+[=]*)')
 
 
 def get_ip(request):

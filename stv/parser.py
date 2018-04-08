@@ -17,13 +17,13 @@ class STVParser(object):
     }
 
     regex = {
-        'count': re.compile('(?:([0-9]+) = ([e\-0-9\.]+)[;]{0,1})'),
-        'random': re.compile('([0-9]+) from \[((?:\'[0-9]+\'(?:, ){0,1})+)\] to (.*)'),
-        'elect': re.compile('([0-9]+) = ([e\-0-9\.]+)'),
-        'quota': re.compile('([0-9]+) = ([e\-0-9\.]+)'),
-        'eliminate': re.compile('([0-9]+) = ([e\-0-9\.]+)'),
-        'zombies': re.compile('(?:([0-9]+) = ([e\-0-9\.]+)[;]{0,1})'),
-        'transfer': re.compile('from ([0-9]+) to ([0-9]+) ([0-9]+)\*([e\-0-9\.]+)=([e\-0-9\.]+)')
+        'count': re.compile(r'(?:([0-9]+) = ([e\-0-9\.]+)[;]{0,1})'),
+        'random': re.compile(r'([0-9]+) from \[((?:\'[0-9]+\'(?:, ){0,1})+)\] to (.*)'),
+        'elect': re.compile(r'([0-9]+) = ([e\-0-9\.]+)'),
+        'quota': re.compile(r'([0-9]+) = ([e\-0-9\.]+)'),
+        'eliminate': re.compile(r'([0-9]+) = ([e\-0-9\.]+)'),
+        'zombies': re.compile(r'(?:([0-9]+) = ([e\-0-9\.]+)[;]{0,1})'),
+        'transfer': re.compile(r'from ([0-9]+) to ([0-9]+) ([0-9]+)\*([e\-0-9\.]+)=([e\-0-9\.]+)')
     }
 
     def _norm_quota(self, data):
