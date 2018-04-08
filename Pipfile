@@ -12,7 +12,6 @@ pycryptodome = "*"
 "gmpy2" = "*"
 reportlab = "*"
 pyyaml = "*"
-uwsgi = "*"
 ipython = "*"
 
 [dev-packages]

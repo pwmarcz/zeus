@@ -106,12 +106,16 @@
         state: link
       notify: reload nginx
 
-    - name: make virtualenv with pipenv
+    - name: make initial virtualenv
       pip:
-        name: pipenv
+        name: "{{ item }}"
+        state: latest
         virtualenv: /srv/zeus/virtualenv
         virtualenv_python: python3.6
       become_user: zeus
+      with_items:
+        - pipenv
+        - uwsgi
 
     # Deploy!
 
