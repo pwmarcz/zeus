@@ -117,7 +117,7 @@ def copy_plural_forms(msgs, locale, domain, verbosity, stdout=sys.stdout):
     for domain in domains:
         django_po = os.path.join(django_dir, 'conf', 'locale', locale, 'LC_MESSAGES', '%s.po' % domain)
         if os.path.exists(django_po):
-            with open(django_po, 'rU') as f:
+            with open(django_po, 'r') as f:
                 m = plural_forms_re.search(f.read())
             if m:
                 if verbosity > 1:
@@ -190,7 +190,7 @@ def process_file(file, dirpath, potfile, domain, verbosity,
         orig_file = os.path.join(dirpath, file)
         is_templatized = file_ext in extensions
         if is_templatized:
-            with open(orig_file, "rU") as f:
+            with open(orig_file, "r") as f:
                 src_data = f.read()
             thefile = '%s.py' % file
             content = templatize(src_data, orig_file[2:])
