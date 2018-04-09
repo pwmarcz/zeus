@@ -5,8 +5,7 @@ Data Objects for Helios.
 Ben Adida
 (ben@adida.net)
 """
-
-
+import binascii
 import traceback
 import datetime
 import logging
@@ -356,7 +355,7 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
             if not data:
                 return None
             return data.strip().split(":")
-        except:
+        except AttributeError:
             return None
 
     @property
@@ -1876,7 +1875,7 @@ class Voter(HeliosModel, VoterFeatures):
 
         try:
             return query[0]
-        except:
+        except query[0].DoesNotExist:
             return None
 
     @classmethod
@@ -1920,10 +1919,10 @@ class Voter(HeliosModel, VoterFeatures):
 
         try:
             return utils.hash_b64(value_to_hash)
-        except:
+        except UnicodeError:
             try:
                 return utils.hash_b64(value_to_hash.encode('latin-1'))
-            except:
+            except UnicodeError:
                 return utils.hash_b64(value_to_hash.encode('utf-8'))
 
     @property
