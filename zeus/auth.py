@@ -348,7 +348,7 @@ def get_users_from_request(request):
             trustee_pk = session.get(TRUSTEE_SESSION_KEY, None)
             if trustee_pk:
                 trustee = Trustee.objects.get(pk=int(trustee_pk))
-        except:
+        except Trustee.DoesNotExist:
             pass
 
     # identify trustee http basic authentication

@@ -139,7 +139,7 @@ def get_poll_info(url):
 
     try:
         parsed = urlparse(html.split('<a id="booth-link"')[1].split('href="')[1].split('"')[0])
-    except:
+    except ValueError:
         print(html)
         raise
     poll_url = dict(parse_qsl(parsed.query))['continue_url']
