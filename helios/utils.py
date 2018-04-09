@@ -56,10 +56,4 @@ def lock_row(model, pk):
     cursor.execute("select * from " + model._meta.db_table + " where id = %s for update", [pk])
     row = cursor.fetchone()
 
-    # if this is under transaction management control, mark the transaction dirty
-    try:
-        transaction.set_dirty()
-    except:
-        pass
-
     return row
