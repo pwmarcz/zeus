@@ -244,7 +244,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
         try:
             outfile.seek(0)
             return outfile.read()
-        except TypeError:
+        except AttributeError:
             return None
 
 
@@ -374,7 +374,7 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
         try:
             outfile.seek(0)
             return outfile.read()
-        except TypeError:
+        except AttributeError:
             return None
 
 
@@ -568,5 +568,5 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         try:
             outfile.seek(0)
             return outfile.read()
-        except TypeError:
+        except AttributeError:
             return None
