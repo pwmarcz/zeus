@@ -5,7 +5,6 @@ Data Objects for Helios.
 Ben Adida
 (ben@adida.net)
 """
-import binascii
 import traceback
 import datetime
 import logging

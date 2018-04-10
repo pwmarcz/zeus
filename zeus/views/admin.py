@@ -29,7 +29,7 @@ class HomeView(View):
         elections_per_page = request.GET.get('limit', default_elections_per_page)
         try:
             elections_per_page = int(elections_per_page)
-        except TypeError:
+        except ValueError:
             elections_per_page = default_elections_per_page
         order_by=request.GET.get('order', 'created_at')
         order_type = request.GET.get('order_type', 'desc')
