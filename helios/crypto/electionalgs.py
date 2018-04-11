@@ -72,10 +72,7 @@ class HeliosObject(object):
             # FIXME: why isn't this working?
             if hasattr(o, f):
                 # BIG HAMMER
-                try:
-                    setattr(o, f, self.process_value_out(f, getattr(self, f)))
-                except:
-                    pass
+                setattr(o, f, self.process_value_out(f, getattr(self, f)))
 
     @property
     def hash(self):
