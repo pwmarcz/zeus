@@ -147,33 +147,29 @@ class ElectionModuleBase(ElectionHooks):
 
     def generate_json_file(self):
         results_json = self.poll.zeus.get_results()
-        jsonfile = open(self.get_poll_result_file_path('json', 'json'), 'w')
-        json.dump(results_json, jsonfile)
-        jsonfile.close()
+        with open(self.get_poll_result_file_path('json', 'json'), 'w') as f:
+            json.dump(results_json, f)
 
     def generate_csv_file(self, lang):
-        csvfile = open(self.get_poll_result_file_path('csv', 'csv', lang[0]), "w")
-        if self.module_id == "score":
-            csv_from_score_polls(self.election, [self.poll], lang[0], csvfile)
-        elif self.module_id == "stv":
-            csv_from_stv_polls(self.election, [self.poll], lang[0], csvfile)
-        else:
-            csv_from_polls(self.election, [self.poll], lang[0], csvfile)
-        csvfile.close()
+        with open(self.get_poll_result_file_path('csv', 'csv', lang[0]), "w") as f:
+            if self.module_id == "score":
+                csv_from_score_polls(self.election, [self.poll], lang[0], f)
+            elif self.module_id == "stv":
+                csv_from_stv_polls(self.election, [self.poll], lang[0], f)
+            else:
+                csv_from_polls(self.election, [self.poll], lang[0], f)
 
     def generate_election_csv_file(self, lang):
-        csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
-        csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
-        if self.module_id == "score":
-            csv_from_score_polls(self.election, self.election.polls.all(),
-                lang[0], csvfile)
-        elif self.module_id == "stv":
-            csv_from_stv_polls(self.election, self.election.polls.all(),
-                               lang[0], csvfile)
-        else:
-            csv_from_polls(self.election, self.election.polls.all(),
-                           lang[0], csvfile)
-        csvfile.close()
+        with open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w") as f:
+            if self.module_id == "score":
+                csv_from_score_polls(self.election, self.election.polls.all(),
+                    lang[0], f)
+            elif self.module_id == "stv":
+                csv_from_stv_polls(self.election, self.election.polls.all(),
+                                   lang[0], f)
+            else:
+                csv_from_polls(self.election, self.election.polls.all(),
+                               lang[0], f)
 
     def generate_election_zip_file(self, lang):
         zippath = self.get_election_result_file_path('zip', 'zip', lang[0])
