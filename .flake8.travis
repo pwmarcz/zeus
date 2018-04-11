@@ -3,8 +3,6 @@ exclude = docs
 ignore =
     # line too long
     E501,
-    # local variable assigned to but never used (TODO fix)
-    F841,
     # indentation issues
     E121, E122, E123, E124, E125, E126, E127, E128, E129, E130, E131
     # missing whitespace around operator
