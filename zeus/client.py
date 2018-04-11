@@ -136,12 +136,8 @@ def get_poll_info(url):
     conn.request('GET', poll_intro, headers=headers)
     response = conn.getresponse()
     html = response.read()
+    parsed = urlparse(html.split('<a id="booth-link"')[1].split('href="')[1].split('"')[0])
 
-    try:
-        parsed = urlparse(html.split('<a id="booth-link"')[1].split('href="')[1].split('"')[0])
-    except ValueError:
-        print(html)
-        raise
     poll_url = dict(parse_qsl(parsed.query))['continue_url']
     parsed = urlparse(poll_url)
     booth_path = parsed.path

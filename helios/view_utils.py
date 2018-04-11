@@ -58,10 +58,8 @@ def prepare_vars(request, vars):
             trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))
             election = trustee.election
         except Trustee.DoesNotExist:
-            try:
+            if 'helios_trustee_uuid' in session:
                 del session['helios_trustee_uuid']
-            except NameError:
-                pass
 
     vars_with_user['trustee'] = vars.get('trustee', trustee)
 
