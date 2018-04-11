@@ -160,7 +160,7 @@ class Command(BaseCommand):
                 }
                 try:
                     utils.sanitize_mobile_number(mobile)
-                except:
+                except Exception:
                     raise CommandError("Invalid mobile number: %s (%s)" % (
                         email, mobile
                     ))

@@ -5,8 +5,6 @@ Data Objects for Helios.
 Ben Adida
 (ben@adida.net)
 """
-
-
 import traceback
 import datetime
 import logging
@@ -351,13 +349,9 @@ class Election(ElectionTasks, HeliosModel, ElectionFeatures):
 
     @property
     def sms_credentials(self):
-        try:
-            data = self.sms_data.credentials
-            if not data:
-                return None
-            return data.strip().split(":")
-        except:
+        if not self.sms_data or not self.sms_data.credentials:
             return None
+        return self.sms_data.credentials.strip().split(":")
 
     @property
     def sms_enabled(self):
@@ -1874,10 +1868,9 @@ class Voter(HeliosModel, VoterFeatures):
     def get_by_election_and_uuid(cls, election, uuid):
         query = cls.objects.filter(election=election, uuid=uuid)
 
-        try:
+        if query.exists():
             return query[0]
-        except:
-            return None
+        return None
 
     @classmethod
     def get_by_user(cls, user):
@@ -1920,10 +1913,10 @@ class Voter(HeliosModel, VoterFeatures):
 
         try:
             return utils.hash_b64(value_to_hash)
-        except:
+        except UnicodeError:
             try:
                 return utils.hash_b64(value_to_hash.encode('latin-1'))
-            except:
+            except UnicodeError:
                 return utils.hash_b64(value_to_hash.encode('utf-8'))
 
     @property

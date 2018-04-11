@@ -57,11 +57,9 @@ def prepare_vars(request, vars):
             from helios.models import Trustee
             trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))
             election = trustee.election
-        except:
-            try:
+        except Trustee.DoesNotExist:
+            if 'helios_trustee_uuid' in session:
                 del session['helios_trustee_uuid']
-            except:
-                pass
 
     vars_with_user['trustee'] = vars.get('trustee', trustee)
 

@@ -241,12 +241,6 @@ def csv_from_polls(election, polls, lang, outfile=None):
                 for candidate in candidates:
                     writerow([counter, party, strforce(": ".join(candidate)), valid])
 
-        try:
-            outfile.seek(0)
-            return outfile.read()
-        except:
-            return None
-
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
     with translation.override(lang):
@@ -371,11 +365,6 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
                     candidate = candidate.replace("{newline}", " ")
                     writerow([strforce(counter), strforce(candidate),
                             strforce(score), valid])
-        try:
-            outfile.seek(0)
-            return outfile.read()
-        except:
-            return None
 
 
 class ElectionsReport(object):
@@ -564,9 +553,3 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
 
             for candidate in candidates:
                 writerow([unigov_group, counter, party, strforce(": ".join(candidate)), valid])
-
-        try:
-            outfile.seek(0)
-            return outfile.read()
-        except:
-            return None
