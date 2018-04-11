@@ -328,7 +328,6 @@ class Voter(HeliosObject):
     ALIASED_VOTER_JSON_FIELDS = ['election_uuid', 'uuid', 'alias']
 
     def toJSONDict(self):
-        fields = None
         if self.alias is not None:
             return super(Voter, self).toJSONDict(self.ALIASED_VOTER_JSON_FIELDS)
         else:

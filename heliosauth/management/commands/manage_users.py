@@ -84,7 +84,6 @@ class Command(BaseCommand):
                 print("Provide the institution name")
                 exit()
 
-            name = options['param'].strip()
             Institution.objects.create(name=options['param'].strip())
 
         if options.get('remove_user'):

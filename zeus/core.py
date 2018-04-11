@@ -1200,7 +1200,6 @@ def gamma_decode_to_range_ballot(encoded, candidates_and_points):
     permutation = to_absolute_answers(selection, nr_candidates)
     ballot = {}
     counts = {}
-    valid = False
     candidate = None
     old_nr_points = None
 
@@ -1394,7 +1393,6 @@ def gamma_decode_to_party_ballot(encoded, candidates, parties, nr_groups,
     voted_parties_counts = {}
     last_index = -1
     thegroup = None
-    party_list = None
     valid = True
     invalid_reason = None
     no_candidates_flag = 0
@@ -1528,7 +1526,6 @@ def gamma_count_parties(encoded_list, candidates, separator=PARTY_SEPARATOR):
                 if len(ballot_candidates) != 1:
                     m = "Cannot find initialized counter at %s!" % (key,)
                     raise FormatError()
-                opts = parse_party_options(candidate)
                 filtered_append((party, ''))
                 continue
             else:

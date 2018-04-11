@@ -49,7 +49,6 @@ def load_results(data, repr_data, qdata):
     parties_results = []
     candidates_results = {}
     total_votes = 0
-    blank_votes = 0
     parties_indexes = {}
     candidates_indexes = {}
 
@@ -92,7 +91,6 @@ def load_parties_results(data, repr_data, qdata):
     parties_results = []
     candidates_results = {}
     total_votes = 0
-    blank_votes = 0
     parties_indexes = {}
     candidates_indexes = {}
     if isinstance(data, str):
