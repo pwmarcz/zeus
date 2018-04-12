@@ -14,8 +14,6 @@ class Command(BaseCommand):
     help = 'List users'
 
     def handle(self, *args, **options):
-        info = False
-
         print(user_row_header % ('ID', 'USERNAME', 'NAME', 'INSTITUTION',
                                    'ECOUNTING', 'ELECTIONS'))
         for user in User.objects.all():
