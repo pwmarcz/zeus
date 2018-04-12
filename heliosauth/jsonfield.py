@@ -42,7 +42,7 @@ class JSONField(models.TextField):
 
         try:
             parsed_value = json.loads(value)
-        except:
+        except json.JSONDecodeError:
             raise Exception("not JSON")
 
         if self.json_type and parsed_value:

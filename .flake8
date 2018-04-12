@@ -11,8 +11,6 @@ ignore =
     W503,
     # issues with comments
     E116, E261, E265, E266
-    # do not use bare 'except' (TODO fix)
-    E722,
     # do not assign a lambda expression, use a def (TODO fix)
     E731,
     # 'x' may be undefined, or defined from star imports (happens in settings)
