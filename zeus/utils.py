@@ -93,8 +93,7 @@ def extract_trustees(content):
 
 
 def render_template(request, template_name, vars={}):
-    t = loader.get_template(template_name + '.html')
-
+    loader.get_template(template_name + '.html')
     vars_with_user = vars.copy()
     vars_with_user['user'] = request.zeususer
     vars_with_user['settings'] = settings

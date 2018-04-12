@@ -44,7 +44,6 @@ def task_fields(task):
     extra_fields.update(_get_fields_for_task(task_name))
 
     # register task status feature methods
-    feature_fields = {}
     status_field = '%s_status' % task_name
     error_field = '%s_error' % task_name
     started_field = '%s_started_at' % task_name

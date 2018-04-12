@@ -316,8 +316,6 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             poll_intro_contents = [
                 poll_name
             ]
-            parties_results = []
-            candidates_results = {}
 
             #total_votes, blank_votes, parties_results, candidates_results = \
             #    load_results(poll_results)
