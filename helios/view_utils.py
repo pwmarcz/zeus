@@ -53,14 +53,7 @@ def prepare_vars(request, vars):
 
     trustee = None
     if 'helios_trustee_uuid' in session and 'trustee' not in vars:
-        try:
-            from helios.models import Trustee
-            trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))
-        except:
-            try:
-                del session['helios_trustee_uuid']
-            except:
-                pass
+        del session['helios_trustee_uuid']
 
     vars_with_user['trustee'] = vars.get('trustee', trustee)
 

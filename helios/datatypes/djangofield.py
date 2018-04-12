@@ -43,7 +43,7 @@ class LDObjectField(models.TextField):
         if isinstance(value, str):
             try:
                 parsed_value = json.loads(value)
-            except:
+            except json.JSONDecodeError:
                 raise Exception("value is not JSON parseable, that's bad news")
         else:
             parsed_value = value

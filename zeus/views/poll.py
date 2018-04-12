@@ -326,7 +326,7 @@ def voters_list(request, election, poll):
     voters_per_page = request.GET.get('limit', default_voters_per_page)
     try:
         voters_per_page = int(voters_per_page)
-    except:
+    except ValueError:
         voters_per_page = default_voters_per_page
     order_by = request.GET.get('order', 'voter_login_id')
     order_type = request.GET.get('order_type', 'desc')

@@ -208,7 +208,7 @@ class ElectionForm(forms.ModelForm):
         try:
             for tname, temail in extract_trustees(trustees):
                 validate_email(temail)
-        except:
+        except ValueError:
             raise forms.ValidationError(_("Invalid trustees format"))
         return trustees
 
@@ -961,7 +961,7 @@ class STVElectionForm(forms.Form):
         d = d.strip()
         try:
             datetime.strptime(d, "%d/%m/%Y %H:%M")
-        except:
+        except ValueError:
             raise ValidationError(_("Invalid date format"))
         return d
 
@@ -970,7 +970,7 @@ class STVElectionForm(forms.Form):
         d = d.strip()
         try:
             datetime.strptime(d, "%d/%m/%Y %H:%M")
-        except:
+        except ValueError:
             raise ValidationError(_("Invalid date format"))
         return d
 

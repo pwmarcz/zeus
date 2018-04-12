@@ -25,4 +25,4 @@ matrix:
         pip install flake8
 
       script:
-        - flake8 --config=.flake8.travis
+        - flake8 --config=.flake8
