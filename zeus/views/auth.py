@@ -37,7 +37,6 @@ logger = logging.getLogger(__name__)
 @auth.unauthenticated_user_required
 @require_http_methods(["POST", "GET"])
 def voter_login(request):
-    form_cls = VoterLoginForm
     form = VoterLoginForm()
     if request.method == 'POST':
         form = VoterLoginForm(request.POST)
