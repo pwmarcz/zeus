@@ -56,7 +56,6 @@ def prepare_vars(request, vars):
         try:
             from helios.models import Trustee
             trustee = Trustee.objects.get(uuid=session.get('helios_trustee_uuid'))
-            election = trustee.election
         except:
             try:
                 del session['helios_trustee_uuid']
