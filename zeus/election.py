@@ -622,7 +622,6 @@ class ZeusDjangoElection(ZeusCoreElection):
             return self.get_results_pretty_stv()
 
         results = self.get_results()
-        total = results['ballot_count']
         parties = []
 
         for count, party in results['party_counts']:

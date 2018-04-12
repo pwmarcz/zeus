@@ -142,7 +142,6 @@ class StvElection(ElectionModuleBase):
              self.poll.voters.all())
             ]
         from zeus.results_report import build_stv_doc
-        results_json = self.poll.zeus.get_results()
         build_stv_doc(_('Results'), self.election.name,
                     self.election.institution.name,
                     self.election.voting_starts_at, self.election.voting_ends_at,
@@ -153,7 +152,6 @@ class StvElection(ElectionModuleBase):
 
     def generate_election_result_docs(self, lang):
         from zeus.results_report import build_stv_doc
-        pdfpath = self.get_election_result_file_path('pdf', 'pdf', lang[0])
         polls_data = []
 
         for poll in self.election.polls.filter():

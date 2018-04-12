@@ -162,7 +162,6 @@ class ElectionModuleBase(ElectionHooks):
         csvfile.close()
 
     def generate_election_csv_file(self, lang):
-        csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
         csvfile = open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w")
         if self.module_id == "score":
             csv_from_score_polls(self.election, self.election.polls.all(),
@@ -217,7 +216,6 @@ class ElectionModuleBase(ElectionHooks):
 
     def generate_result_docs(self, lang):
         from zeus.results_report import build_doc
-        results_name = self.election.name
         score = self.election.election_module == "score"
         parties = self.election.election_module == "parties"
         poll = self.poll

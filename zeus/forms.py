@@ -315,7 +315,6 @@ class QuestionForm(QuestionBaseForm):
         super(QuestionForm, self).__init__(*args, **kwargs)
         answers = self._answers
         max_choices = [(x, x) for x in range(1, self.max_limit or answers+1)]
-        min_choices = [(x, x) for x in range(0, answers+1 if self.min_limit is None else self.min_limit)]
 
         self.fields['max_answers'].choices = max_choices
         self.fields['max_answers'].initial = min([x[1] for x in max_choices])
@@ -468,7 +467,6 @@ class StvForm(QuestionBaseForm):
         self.fields.clear()
         for ans in range(answers):
             field_key = 'answer_%d' % ans
-            field_key1 = 'department_%d' % ans
             self.fields[field_key] = forms.CharField(max_length=600,
                                               required=True,
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),

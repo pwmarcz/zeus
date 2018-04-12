@@ -9,7 +9,7 @@ import pytest
 class CSVReaderTests(TestCase):
 
     def test001_nodata(self):
-        reader = CSVReader('')
+        CSVReader('')
         assert ValueError
 
     def test002_data(self):
