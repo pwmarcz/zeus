@@ -130,6 +130,7 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
 
     with teller.task('Answering according to challenge', total=nr_rounds):
         for i, bit in zip(range(nr_rounds), bits):
+            ciphers = cipher_collections[i]
             offsets = offset_collections[i]
             randoms = random_collections[i]
 
