@@ -23,7 +23,7 @@ class UniElectionHooks(ElectionHooks):
 
     def post_create(self, election):
         # create the two polls
-        poll = election.polls.create(
+        election.polls.create(
             name=str(_("Electors: Group A")),
             oauth2_type='',
             oauth2_code_url='',
@@ -159,7 +159,6 @@ class UniGovGr(SimpleElection):
         return result.compute()
 
     def generate_election_csv_file(self, results, lang):
-        csvpath = self.get_election_result_file_path('csv', 'csv', lang[0])
         with open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w") as f:
             csv_from_unigovgr_results(self.election, results, lang[0], f)
 
