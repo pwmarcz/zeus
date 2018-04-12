@@ -160,7 +160,6 @@ class ElectionModuleBase(ElectionHooks):
                 csv_from_polls(self.election, [self.poll], lang[0], f)
 
     def generate_election_csv_file(self, lang):
-
         with open(self.get_election_result_file_path('csv', 'csv', lang[0]), "w") as f:
             if self.module_id == "score":
                 csv_from_score_polls(self.election, self.election.polls.all(),
