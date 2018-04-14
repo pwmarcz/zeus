@@ -139,9 +139,12 @@ class ElectionForm(forms.ModelForm):
         eligible_types_choices = [x for x in ELECTION_MODULES_CHOICES if x[0] in eligible_types]
 
         self.fields['election_module'].choices = eligible_types_choices
+
+        self.fields['departments'].required = False
         if 'election_module' in self.data:
-            if self.data['election_module'] != 'stv':
-                self.fields['departments'].required = False
+            if self.data['election_module'] == 'stv':
+                self.fields['departments'].required = True
+
         if self.instance and self.instance.pk:
             self.fields.get('trustees').initial = \
                 election_trustees_to_text(self.instance)
