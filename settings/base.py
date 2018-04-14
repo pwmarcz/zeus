@@ -45,7 +45,7 @@ TIME_ZONE = 'Europe/Athens'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
-LANGUAGES = (('en', 'English'),)
+LANGUAGES = [('en', 'English'), ('el', 'Greek'), ('pl', 'Polish')]
 
 SITE_ID = 1
 
@@ -102,7 +102,7 @@ TEMPLATES = [
 ]
 
 
-MIDDLEWARE = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -111,7 +111,7 @@ MIDDLEWARE = (
     'dj_pagination.middleware.PaginationMiddleware',
     'zeus.middleware.AuthenticationMiddleware',
     'zeus.middleware.ExceptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'urls'
 
@@ -119,7 +119,7 @@ BOOTH_PATH = os.path.join('zeus', 'static', 'booth')
 
 LOCALE_PATHS = (os.path.join(BOOTH_PATH, 'locale'),)
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
@@ -131,8 +131,8 @@ INSTALLED_APPS = (
     'helios',
     'zeus',
     'server_ui',
-    'account_administration'
-)
+    'account_administration',
+]
 
 ##
 ## HELIOS
@@ -303,7 +303,7 @@ SMS_BACKEND = "mybsms"
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'simple': {
             'format': '%(asctime)s [%(levelname)s] %(message)s'

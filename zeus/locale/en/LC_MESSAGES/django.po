@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-11 15:18+0200\n"
+"POT-Creation-Date: 2018-04-14 17:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,680 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "set the eligibles count of the election"
-msgstr "Number of open positions"
+msgid "Simple election with one or more questions"
+msgstr ""
 
-msgid "enable limiting the elections from the same constituency"
-msgstr "Enable limit of open positions per constituency"
+msgid "Ballot"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "Answer"
+msgstr ""
+
+msgid "Add questions to the election"
+msgstr ""
+
+msgid "Too many choices"
+msgstr ""
+
+#, python-brace-format
+msgid "Question '{0}' requires at least {1} choices."
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Party lists election"
+msgstr ""
+
+msgid "Manage ballot"
+msgstr ""
+
+msgid "Candidate"
+msgstr ""
+
+msgid "Party"
+msgstr ""
+
+msgid "Score voting election"
+msgstr ""
+
+msgid "Manage questions"
+msgstr ""
+
+msgid "No questions set"
+msgstr ""
+
+msgid "Single transferable vote election"
+msgstr ""
+
+msgid "Candidates List"
+msgstr ""
+
+msgid "Electors: Group A"
+msgstr ""
+
+msgid "Electors: Group B"
+msgstr ""
+
+msgid "Greek Universities single governing bodies election"
+msgstr ""
+
+msgid "Voter excluded"
+msgstr ""
+
+#, python-format
+msgid "%s is not a valid character."
+msgstr ""
+
+msgid "Trustees"
+msgstr ""
+
+msgid "Multiple mixnets"
+msgstr ""
+
+msgid "Linked polls (experimental)"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Greek"
+msgstr ""
+
+msgid "Set the language that will be used for email messages"
+msgstr ""
+
+msgid "Communication language"
+msgstr ""
+
+#, python-format
+msgid "Notify voters using SMS (%d deliveries available for your account)"
+msgstr ""
+
+msgid "Mobile SMS notifications enabled"
+msgstr ""
+
+msgid "Invalid voting end date"
+msgstr ""
+
+msgid "Invalid voting dates"
+msgstr ""
+
+msgid "Invalid voting extension date"
+msgstr ""
+
+msgid "Invalid trustees format"
+msgstr ""
+
+msgid "Choice"
+msgstr ""
+
+msgid "Min answers"
+msgstr ""
+
+msgid "Max answers"
+msgstr ""
+
+msgid "Max answers should be greater or equal to min answers"
+msgstr ""
+
+msgid "No duplicate choices allowed"
+msgstr ""
+
+msgid "Party name"
+msgstr ""
+
+msgid "Scores"
+msgstr ""
+
+msgid "Number of answers must be equal or bigger than max answers"
+msgstr ""
 
 msgid "maximum number of elected from the same constituency"
 msgstr "Set the maximum number of open positions per constituency"
 
+msgid "Constituency limit"
+msgstr ""
+
+msgid "enable limiting the elections from the same constituency"
+msgstr "Enable limit of open positions per constituency"
+
+#, fuzzy
+#| msgid "maximum number of elected from the same constituency"
+msgid "Limit elected per constituency"
+msgstr "Set the maximum number of open positions per constituency"
+
+msgid "set the eligibles count of the election"
+msgstr "Number of open positions"
+
+msgid "Eligibles count"
+msgstr ""
+
+msgid "This field is required."
+msgstr ""
+
+msgid "Value must be a positve integer"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Invalid username or password"
+msgstr ""
+
+msgid "Your account is disabled"
+msgstr ""
+
+#, fuzzy
+#| msgid "2-factor authentication help text"
+msgid "2-factor authentication"
+msgstr "Optionally select 2-factor voter authentication"
+
 msgid "2-factor authentication help text"
 msgstr "Optionally select 2-factor voter authentication"
 
+msgid "Duplicate poll names are not allowed"
+msgstr ""
+
+msgid ""
+"Poll name cannot be changed                                               "
+"after freeze"
+msgstr ""
+
+msgid "This URL is invalid"
+msgstr ""
+
+msgid "all selected voters"
+msgstr ""
+
+msgid "selected voters who have cast a ballot"
+msgstr ""
+
+msgid "selected voters who have not yet cast a ballot"
+msgstr ""
+
+msgid "Email only"
+msgstr ""
+
+msgid "SMS only"
+msgstr ""
+
+msgid "Email and SMS"
+msgstr ""
+
+msgid "Email subject"
+msgstr ""
+
+msgid "In place of BODY"
+msgstr ""
+
+msgid "In place of SMS_BODY"
+msgstr ""
+
+msgid "Contact method"
+msgstr ""
+
+msgid "Do not send sms if voter email is set"
+msgstr ""
+
+msgid "Send To"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+#, python-format
+msgid "%d deliveries available"
+msgstr ""
+
+msgid "Please provide SMS body"
+msgstr ""
+
+msgid "Current password"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "New password confirm"
+msgstr ""
+
+msgid "Invalid password"
+msgstr ""
+
+msgid "Passwords don't match"
+msgstr ""
+
+msgid "Login password"
+msgstr ""
+
+msgid "Invalid login code"
+msgstr ""
+
+msgid "Invalid email or password"
+msgstr ""
+
+#, python-format
+msgid "Ballot choice %s"
+msgstr ""
+
+msgid "Invalid ballot"
+msgstr ""
+
+msgid ""
+"Candidates list. e.g., <br/><br/>\n"
+"FirstName, LastName, FatherName, SchoolA<br />\n"
+"FirstName, LastName, FatherName, SchoolB<br />\n"
+msgstr ""
+
+msgid "Election name"
+msgstr ""
+
+msgid "Voting start date"
+msgstr ""
+
+msgid "e.g. 25/01/2015 07:00"
+msgstr ""
+
+msgid "Voting end date"
+msgstr ""
+
+msgid "e.g. 25/01/2015 19:00"
+msgstr ""
+
+msgid "Institution name"
+msgstr ""
+
+msgid "Candidates"
+msgstr ""
+
+msgid "Maximum elected per department"
+msgstr ""
+
+msgid "Ballots count"
+msgstr ""
+
+msgid "Invalid date format"
+msgstr ""
+
+#, python-format
+msgid "Candidate %s is invalid"
+msgstr ""
+
+msgid "This is a trial election"
+msgstr ""
+
+#, fuzzy
+#| msgid "set the eligibles count of the election"
+msgid "Choose the type of the election"
+msgstr "Number of open positions"
+
 msgid "TRUSTEES_LIST_HELP_TEXT"
 msgstr ""
-"Trustees list. e.g., <br/><br/>Helen Jones, hjones@email.com<br/>John "
-"Smith, jsmith79@gmail.com<br/>"
+"Trustees list. e.g., <br/><br/>Helen Jones, hjones@email.com<br/>John Smith, "
+"jsmith79@gmail.com<br/>"
 
+msgid "Election description"
+msgstr ""
+
+msgid "When voting ends"
+msgstr ""
+
+msgid "When voting starts"
+msgstr ""
+
+msgid "Voting extension date"
+msgstr ""
+
+msgid "Voters can contact this email for election support"
+msgstr ""
+
+msgid "Voters can contact this phone for election support"
+msgstr ""
+
+msgid "Whether or not to allow remote mixing"
+msgstr ""
+
+msgid "Require voters to accept specified terms in order to cast a vote."
+msgstr ""
+
+msgid ""
+"Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
+"{{ voter.voter_fathername }} ({{ voter.voter_contact_field_display }})"
+msgstr ""
+
+msgid "Are you sure you want to delete the selected trustee ?"
+msgstr ""
+
+msgid "Are you sure you want to freeze the election ?"
+msgstr ""
+
+msgid "Are you sure you want to delete the selected poll ?"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "End"
+msgstr ""
+
+msgid "Extension"
+msgstr ""
+
+msgid "Voters"
+msgstr ""
+
+msgid "Excluded voters"
+msgstr ""
+
+msgid "Poll name"
+msgstr ""
+
+msgid "RESULTS"
+msgstr ""
+
+msgid "TOTAL VOTES"
+msgstr ""
+
+msgid "VALID VOTES"
+msgstr ""
+
+msgid "INVALID VOTES"
+msgstr ""
+
+msgid "BLANK VOTES"
+msgstr ""
+
+msgid "PARTY RESULTS"
+msgstr ""
+
+msgid "CANDIDATE RESULTS"
+msgstr ""
+
+msgid "BALLOTS"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "PARTY"
+msgstr ""
+
+msgid "CANDIDATE"
+msgstr ""
+
+msgid "VALID/INVALID/BLANK"
+msgstr ""
+
+msgid "VALID"
+msgstr ""
+
+msgid "INVALID"
+msgstr ""
+
+msgid "BLANK"
+msgstr ""
+
+msgid "Elect"
+msgstr ""
+
+msgid "Eliminated"
+msgstr ""
+
+msgid "Eliminated due to quota restriction"
+msgstr ""
+
+msgid "Elected"
+msgstr ""
+
+msgid "Departments"
+msgstr ""
+
+msgid "Round "
+msgstr ""
+
+msgid "Votes"
+msgstr ""
+
+msgid "Draw"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "NO"
+msgstr ""
+
+msgid "YES"
+msgstr ""
+
+msgid "RANKING"
+msgstr ""
+
+msgid "SCORES"
+msgstr ""
+
+msgid "SCORES:"
+msgstr ""
+
+msgid "Institution"
+msgstr ""
+
+msgid "Electors"
+msgstr ""
+
+msgid "uuid"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Polls"
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Total rounded"
+msgstr ""
+
+msgid "GROUP"
+msgstr ""
+
+msgid "QUESTION"
+msgstr ""
+
+#, python-format
+msgid "Total votes: %d"
+msgstr ""
+
+#, python-format
+msgid "Blank: %d"
+msgstr ""
+
+msgid "Zeus Elections - Poll Results"
+msgstr ""
+
+#, python-format
+msgid "Start: %(date)s"
+msgstr ""
+
+#, python-format
+msgid "End: %(date)s"
+msgstr ""
+
+#, python-format
+msgid "Extension: %(date)s"
+msgstr ""
+
+msgid "Are you sure ?"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "(all voters selected)"
+msgstr ""
+
+msgid "Registration ID"
+msgstr ""
+
+msgid "Surname"
+msgstr ""
+
+msgid "Given name"
+msgstr ""
+
+msgid "Middle name"
+msgstr ""
+
+msgid "Mobile phone"
+msgstr ""
+
+msgid "Vote weight"
+msgstr ""
+
+msgid "Has voted"
+msgstr ""
+
+msgid "Booth invitation sent at"
+msgstr ""
+
+msgid "Last visit"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Creation"
+msgstr ""
+
+msgid "Election status"
+msgstr ""
+
+msgid "Trial"
+msgstr ""
+
+msgid "Voters Voted"
+msgstr ""
+
+msgid "Number of Polls"
+msgstr ""
+
+msgid "Administrators"
+msgstr ""
+
+msgid "Uninitialized shibboleth session."
+msgstr ""
+
+msgid "Invalid shibboleth endpoint"
+msgstr ""
+
+msgid "Invalid shibboleth data resolved."
+msgstr ""
+
+msgid "Shibboleth voter info assertion failed."
+msgstr ""
+
+msgid "Trustee login url sent"
+msgstr ""
+
+msgid "Invalid batch file contents"
+msgstr ""
+
+msgid "Poll updated successfully"
+msgstr ""
+
+msgid "Unicode"
+msgstr ""
+
+msgid "Greek (iso-8859-7)"
+msgstr ""
+
+msgid "Latin (iso-8859-1)"
+msgstr ""
+
+msgid "Invalid encoding"
+msgstr ""
+
+msgid "Invalid voter file id"
+msgstr ""
+
+msgid "Enter a valid email address. <br />"
+msgstr ""
+
+msgid "No file uploaded"
+msgstr ""
+
+msgid "Time to Vote"
+msgstr ""
+
+msgid "Additional Info"
+msgstr ""
+
+msgid "Voting end date extended"
+msgstr ""
+
+msgid "No voters were found."
+msgstr ""
+
+msgid "Email sending started"
+msgstr ""
+
+msgid "Something went wrong"
+msgstr ""
+
+msgid "No SMS deliveries left."
+msgstr ""
+
+msgid "Voter removed successfully"
+msgstr ""
+
+msgid "Poll does not support voter url login."
+msgstr ""
+
+msgid "You need to logout from your current account to access this view."
+msgstr ""
+
+msgid "Invalid ballot data"
+msgstr ""
+
+msgid "Invalid email address"
+msgstr ""
+
+msgid "Client address unavailable"
+msgstr ""
+
+msgid "There are too many requests from your address"
+msgstr ""
+
+msgid "There are too many emails registered from your address"
+msgstr ""
+
+msgid "Cannot create demo users right now. Sorry."
+msgstr ""
+
+#, python-format
+msgid "An email with demo credentials has been sent to %s"
+msgstr ""
+
+msgid "You do not have permission to access this page."
+msgstr ""
+
+msgid "An error has been occured. Please notify the server admin."
+msgstr ""
+
+msgid "The requested page was not found."
+msgstr ""
