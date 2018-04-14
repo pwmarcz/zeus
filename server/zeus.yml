@@ -178,6 +178,14 @@
           chdir: /srv/zeus/install
         become_user: zeus
 
+      - name: compile translations
+        shell: |
+          . ../virtualenv/bin/activate
+          ./compile-translations.sh
+        args:
+          chdir: /srv/zeus/install
+        become_user: zeus
+
       - name: update static files
         shell: |
           . ../virtualenv/bin/activate

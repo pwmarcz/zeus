@@ -13,6 +13,7 @@ matrix:
         - pipenv sync --dev
 
       script:
+        - pipenv run ./compile-translations.sh
         - pipenv run pytest -v --cov -n 2
 
       after_success:
