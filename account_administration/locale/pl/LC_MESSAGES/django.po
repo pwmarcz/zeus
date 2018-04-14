@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-13 22:56+0200\n"
+"POT-Creation-Date: 2018-04-14 17:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,9 @@ msgstr "Instytucja"
 
 msgid "Disable account"
 msgstr "Wyłącz konto"
+
+msgid "Helpdesk user"
+msgstr ""
 
 msgid "User already exists"
 msgstr "Użytkowniczka już istnieje"
@@ -47,6 +50,15 @@ msgstr "Zapisano zmiany."
 
 msgid "Institution created."
 msgstr "Instytucja utworzona."
+
+#, fuzzy
+#| msgid "Changes on user were successfully saved"
+msgid "Changes on user group were successfully saved"
+msgstr "Zmiany użytkowniczki zostały zapisane"
+
+#, python-format
+msgid "Group %s was created"
+msgstr ""
 
 msgid "You didn't choose a user"
 msgstr "Nie wybrałaś użytkownika."
@@ -172,4 +184,3 @@ msgstr "Nie masz do tego uprawnień"
 
 #~ msgid "Results"
 #~ msgstr "Αποτελέσματα"
-
