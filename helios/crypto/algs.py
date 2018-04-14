@@ -280,7 +280,6 @@ class EGSecretKey:
         """
 
         m = (Utils.inverse(pow(ciphertext.alpha, self.x, self.pk.p), self.pk.p) * ciphertext.beta) % self.pk.p
-        beta_over_m = (ciphertext.beta * Utils.inverse(m, self.pk.p)) % self.pk.p
 
         # pick a random w
         w = Utils.random_mpz_lt(self.pk.q)

@@ -22,12 +22,9 @@ class Command(BaseCommand):
                         'uuid', 'ΌΝΟΜΑ', 'admin')))
 
         for e in Election.objects.filter(trial=False).exclude(institution__name__in=('HELPDESK', 'ZEUS-DEV')).order_by('voting_starts_at'):
-            uuid = strforce(e.uuid)
-            name = strforce(e.name)
             admins = list(e.admins.all())
             admin = strforce(admins[0].pretty_name) if admins else ''
             institution = strforce(e.institution.name)
-            polls = e.polls.all()
             for poll in e.polls.all():
                 poll_name = strforce(poll.name)
                 poll_uuid = strforce(poll.uuid)

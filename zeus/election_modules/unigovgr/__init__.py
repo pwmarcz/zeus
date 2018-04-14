@@ -23,7 +23,7 @@ class UniElectionHooks(ElectionHooks):
 
     def post_create(self, election):
         # create the two polls
-        poll = election.polls.create(
+        election.polls.create(
             name=str(_("Electors: Group A")),
             oauth2_type='',
             oauth2_code_url='',

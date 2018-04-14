@@ -21,8 +21,6 @@ class Command(BaseCommand):
 
         uuid = args[0]
         poll = Poll.objects.get(uuid=uuid)
-        poll_pk = poll.pk
-        voter_logins = args[1:]
         print('%20s %7s %25s %12s' % ("Login code", "Reg num", "Email", "Secret"))
         print('%20s %7s %25s %12s' % ("==========", "=======", "=====", "======"))
         for voter in poll.voters.filter():

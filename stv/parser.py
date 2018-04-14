@@ -56,7 +56,6 @@ class STVParser(object):
     def _parse_action(self, action, data):
         r = self.regex.get(action, None)
         if r:
-            d = data
             data = r.findall(data)
 
         if hasattr(self, '_norm_%s' % action):
@@ -105,7 +104,6 @@ class STVParser(object):
                     }
 
             if action == 'random':
-                cands = data[1]
                 for cand in data[1]:
                     self.round_data['candidates'][cand]['actions'].append((action, data))
 

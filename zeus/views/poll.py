@@ -60,8 +60,6 @@ def polls_list(request, election):
 def _handle_batch(election, polls, vars, auto_link=False):
     errors = []
     existing = election.polls.filter()
-    get_poll = lambda ref: election.polls.filter(linked_ref=ref).count() \
-        and election.polls.get(linked_ref=ref)
 
     # Import/update/remove polls
     polls_form_data = {}
@@ -322,7 +320,6 @@ voter_bool_keys_map = {
 def voters_list(request, election, poll):
     # for django pagination support
     page = int(request.GET.get('page', 1))
-    limit = int(request.GET.get('limit', 10))
     q_param = request.GET.get('q', '')
 
     default_voters_per_page = getattr(settings, 'ELECTION_VOTERS_PER_PAGE', 100)
@@ -342,10 +339,6 @@ def voters_list(request, election, poll):
     if not poll.voters.filter(voter_weight__gt=1).count():
         table_headers.pop('voter_weight')
     display_weight_col = 'voter_weight' in table_headers
-
-    validate_hash = request.GET.get('vote_hash', "").strip()
-    hash_invalid = None
-    hash_valid = None
 
     if (order_type == 'asc') or (order_type is None):
         voters = Voter.objects.filter(poll=poll).annotate(cast_votes__id=Max('cast_votes__id')).order_by(order_by)
@@ -546,7 +539,6 @@ def voters_upload_cancel(request, election, poll):
 @auth.election_admin_required
 @require_http_methods(["POST", "GET"])
 def voters_email(request, election, poll=None, voter_uuid=None):
-    user = request.admin
 
     TEMPLATES = [
         ('vote', _('Time to Vote')),

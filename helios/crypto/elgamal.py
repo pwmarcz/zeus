@@ -164,8 +164,6 @@ class SecretKey:
         return pow(ciphertext.alpha, self.x, self.pk.p)
 
     def decryption_factor_and_proof(self, ciphertext):
-        dec_factor = self.decryption_factor(ciphertext)
-
         modulus = self.pk.p
         generator = self.pk.g
         order = self.pk.q

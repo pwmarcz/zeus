@@ -140,7 +140,6 @@ def get_poll_info(url):
 
     poll_url = dict(parse_qsl(parsed.query))['continue_url']
     parsed = urlparse(poll_url)
-    booth_path = parsed.path
     poll_info = dict(parse_qsl(parsed.query))
     poll_json_path = urlparse(poll_info['poll_json_url']).path
     conn.request('GET', poll_json_path, headers=headers)
@@ -153,7 +152,6 @@ def do_cast_vote(conn, cast_path, token, headers, vote):
     body = urlencode({'encrypted_vote': dumps(vote), 'csrfmiddlewaretoken': token})
     conn.request('POST', cast_path, headers=headers, body=body)
     response = conn.getresponse()
-    body = response.read()
     if response.status != 200:
         print(response.status)
     conn.close()
@@ -166,7 +164,6 @@ def cast_vote(voter_url, choices=None):
     headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
     headers['Referer'] = voter_url
 
-    voter_path = conn.path
     poll_data = poll_info['poll_data']
     pk = poll_data['public_key']
     p = int(pk['p'])
@@ -237,7 +234,6 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
     if exists(plaintexts_file):
         m = "%s: file exists, will not overwrite" % (plaintexts_file,)
         raise ValueError(m)
-    f = open(plaintexts_file, "w")
 
     with open(voter_url_file) as f:
         voter_urls = f.read().splitlines()
@@ -256,8 +252,8 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
         t.start()
 
     plaintexts = [outqueue.get() for _ in range(total)]
-    f.write(repr(plaintexts))
-    f.close()
+    with open(plaintexts, 'w') as f:
+        f.write(repr(plaintexts))
 
     for t in threads:
         t.join()
@@ -428,7 +424,6 @@ def do_decrypt(savefile, outfile, keyfile, nr_parallel):
     modulus = int(pk['p'])
     generator = int(pk['g'])
     order = int(pk['q'])
-    public = int(pk['y'])
     del key
 
     while(os.path.isfile(curr_file)):

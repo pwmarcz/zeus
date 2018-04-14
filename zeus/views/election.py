@@ -162,7 +162,6 @@ def index(request, election, poll=None):
                 linked_booth_urls.append((p.name, burl,
                                           voter.cast_at))
 
-    voter = None
     votes = None
     if user.is_voter:
         # cast any votes?
@@ -415,7 +414,6 @@ def nocookies(request):
 
 @auth.election_view(check_access=False)
 def remote_mix(request, election, mix_key):
-    urls = []
     if not election.check_mix_key(mix_key):
         raise PermissionDenied
 

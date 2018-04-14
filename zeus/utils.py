@@ -6,7 +6,6 @@ from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
 from django.db.models import Q
-from django.template import loader
 from django.urls import reverse
 from django.shortcuts import render
 from django.conf import settings
@@ -93,8 +92,6 @@ def extract_trustees(content):
 
 
 def render_template(request, template_name, vars={}):
-    t = loader.get_template(template_name + '.html')
-
     vars_with_user = vars.copy()
     vars_with_user['user'] = request.zeususer
     vars_with_user['settings'] = settings

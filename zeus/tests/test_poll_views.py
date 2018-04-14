@@ -100,7 +100,6 @@ class TestPollViews(SetUpAdminAndClientMixin, TestCase):
         self.election.save()
         self.e_uuid = self.election.uuid
         self.create_poll(self.election, name="linked_poll")
-        poll = Poll.objects.all()[0]
 
         with open(os.path.join(os.path.dirname(__file__),
                                'test_sample_survey_for_linked_election.yml')) as batch_file:

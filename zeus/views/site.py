@@ -265,7 +265,6 @@ def _get_demo_user(email_address):
 
 @csrf_exempt
 def demo(request):
-    user = request.zeususer
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
 

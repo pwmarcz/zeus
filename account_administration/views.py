@@ -70,7 +70,6 @@ def list_usergroups(request):
 
 @manager_or_superadmin_required
 def create_user(request):
-    users = User.objects.all()
     inst_id = sanitize_get_param(request.GET.get('id'))
     institution = get_institution(inst_id)
     edit_id = sanitize_get_param(request.GET.get('edit_id'))
@@ -137,12 +136,10 @@ def create_institution(request):
 
 @superadmin_required
 def create_usergroup(request):
-    groups = UserGroup.objects.all()
     edit_id = sanitize_get_param(request.GET.get('edit_id'))
     edit_group = None
     if edit_id:
         edit_group = get_object_or_404(UserGroup, id=edit_id)
-    logged_user = request.zeususer._user
     if request.method == 'POST':
         form = userGroupForm(request.POST, instance=edit_group)
         if form.is_valid():
@@ -165,7 +162,6 @@ def create_usergroup(request):
 
 @manager_or_superadmin_required
 def manage_user(request):
-    users = User.objects.all()
     uid = request.GET.get('uid')
     uid = sanitize_get_param(uid)
 

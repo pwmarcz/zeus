@@ -151,7 +151,7 @@ def elections_report(request):
     """
     q_param = request.GET.get('q', '')
 
-    polls_count = votes_count = voters_count = 0
+    polls_count = voters_count = 0
     percentage_voted = voters_voted_count = 0
 
     elections = find_elections(request)

@@ -27,7 +27,6 @@ class Command(BaseCommand):
             admins = list(e.admins.all())
             admin = strforce(admins[0].pretty_name) if admins else ''
             institution = strforce(e.institution.name)
-            polls = e.polls.all()
             for poll in e.polls.all():
                 poll_name = strforce(poll.name)
                 poll_uuid = strforce(poll.uuid)

@@ -82,7 +82,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         returned should not contain a form.
         """
         self.login()
-        election = get_election()
+        get_election()
 
         response = self.c.get(
             reverse('admin_home'),
@@ -106,7 +106,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         response = self.c.get(reverse('admin_home'), {})
         assert response.status_code == 302
 
-        election = get_election(name='first_election')
+        get_election(name='first_election')
 
         response = self.c.get(
             reverse('admin_home'),
@@ -119,7 +119,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         assert '<input type="hidden"' in response.content.decode()
 
         # ensure the ordering works
-        newer_newer = get_election(name='second_election')
+        get_election(name='second_election')
 
         response = self.c.get(reverse('admin_home'), {'order': 'name', 'order_type': 'desc'})
         assert response.context['elections_administered'][0].name == 'second_election'

@@ -77,6 +77,6 @@ def test_generate(processes):
         main(['--generate', filename, '--parallel', str(processes)])
         # Parse the results back.
         with open(filename) as f:
-            election = from_canonical(f)
+            from_canonical(f)
     finally:
         shutil.rmtree(d)

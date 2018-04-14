@@ -213,7 +213,6 @@ class ElectionModuleBase(ElectionHooks):
 
     def generate_result_docs(self, lang):
         from zeus.results_report import build_doc
-        results_name = self.election.name
         score = self.election.election_module == "score"
         parties = self.election.election_module == "parties"
         poll = self.poll

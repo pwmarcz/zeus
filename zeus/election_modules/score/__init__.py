@@ -94,10 +94,6 @@ class ScoreBallotElection(ElectionModuleBase):
         answers = []
         scores = []
         questions_data = self.poll.questions_data or []
-        prepend_empty_answer = True
-
-        if self.auto_append_answer:
-            prepend_empty_answer = True
 
         for index, q in enumerate(questions_data):
             question = q['question'].replace(":", "{semi}") \

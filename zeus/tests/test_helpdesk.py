@@ -78,7 +78,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             self.locations['login'],
             self.login_data
             )
-        active_lang = translation.get_language()
         asrt_message = 'Your account is disabled'
         self.assertFormError(
             r,
@@ -307,7 +306,7 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             'user_groups': [self.group.id],
             'is_disabled': 'on',
             }
-        r = self.c.post(
+        self.c.post(
             '/account_administration/user_creation/?edit_id=%s'
             % uid,
             post_data,
@@ -525,7 +524,6 @@ class TestHelpdeskWithClient(SetUpAdminAndClientMixin, TestCase):
             follow=True
             )
         assert User.objects.all().count() == 3
-        active_lang = translation.get_language()
         asrt_message = 'User already exists'
         self.assertFormError(
             r,

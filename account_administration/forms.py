@@ -52,9 +52,9 @@ class userForm(ModelForm):
         user_id = self.cleaned_data['user_id']
         try:
             if self.instance.pk:
-                user = User.objects.exclude(user_id=self.instance.user_id).get(user_id=user_id)
+                User.objects.exclude(user_id=self.instance.user_id).get(user_id=user_id)
             else:
-                user = User.objects.get(user_id=user_id)
+                User.objects.get(user_id=user_id)
             message = _("User already exists")
             raise ValidationError(message)
         except User.DoesNotExist:
@@ -107,9 +107,9 @@ class institutionForm(ModelForm):
         name = self.cleaned_data['name']
         try:
             if self.instance.pk:
-                inst = Institution.objects.exclude(name=self.instance.name).get(name=name)
+                Institution.objects.exclude(name=self.instance.name).get(name=name)
             else:
-                inst = Institution.objects.get(name=name)
+                Institution.objects.get(name=name)
             message = _("Institution already exists")
             raise ValidationError(message)
         except Institution.DoesNotExist:

@@ -195,7 +195,6 @@ def csv_from_polls(election, polls, lang, outfile=None):
 
             writerow([])
             writerow([strforce(_('PARTY RESULTS'))])
-            party_counters = party_results['party_counts']
             for count, party in party_results['party_counts']:
                 if party is None:
                     continue
@@ -267,7 +266,6 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                 counter += 1
 
             results_winners = poll.stv_results[0]
-            results_all = poll.stv_results[1]
             result_steps = poll.stv_results[2]
             stv = STVParser(result_steps)
             rounds = list(stv.rounds())
@@ -353,7 +351,6 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
             counter = 0
             valid = strforce(_('VALID'))
             invalid = strforce(_('INVALID'))
-            blank = strforce(_('BLANK'))
             empty = '---'
             for ballot in score_results['ballots']:
                 counter += 1

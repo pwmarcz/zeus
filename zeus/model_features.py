@@ -87,7 +87,6 @@ class ElectionFeatures(FeaturesMixin):
         return nr_polls > 0 and sum(results) == nr_polls
 
     def polls_feature_iter(self, *args, **kwargs):
-        result = True
         for poll in self.polls.all():
             yield poll.check_features(*args)
 

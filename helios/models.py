@@ -1091,24 +1091,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
         new_voter_file.save()
         return new_voter_file
 
-    def election_progress(self):
-        PROGRESS_MESSAGES = {
-          'created': _('Election initialized.'),
-          'candidates_added': _('Election candidates added.'),
-          'votres_added': _('Election voters added.'),
-          'keys_generated': _('Trustees keys generated.'),
-          'opened': _('Election opened.'),
-          'voters_notified': _('Election voters notified'),
-          'voters_not_voted_notified': _('Election voters which not voted notified'),
-          'extended': _('Election extension needed.'),
-          'closed': _('Election closed.'),
-          'tallied': _('Election tallied.'),
-          'combined_decryptions': _('Trustees should decrypt results.'),
-          'results_decrypted': _('Election results where decrypted.'),
-        }
-
-        OPTIONAL_STEPS = ['voters_not_voted_notified', 'extended']
-
     def voters_to_csv(self, q_param=None, to=None, include_vote_field=True):
         if not to:
             to = io.StringIO()
@@ -1295,7 +1277,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                                       prefix='tmp', dir='/tmp')
         to_canonical(export_data[0], out=tmpf)
         tmpf.flush()
-        size = tmpf.tell()
         zeus_data = mmap.mmap(tmpf.fileno(), 0, mmap.MAP_SHARED, mmap.PROT_READ)
         zf.writestr(data_info, zeus_data)
         zf.close()
@@ -1316,7 +1297,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
             selection = gamma_decode(vote, cands_count, cands_count)
             abs_selection = to_absolute_answers(selection, cands_count)
             cands = [answers[i] for i in abs_selection]
-            cands_objs = [self.candidates[i].update() for i in abs_selection]
             cands_objs = []
             for i in abs_selection:
                 obj = self.candidates[i]
@@ -1364,7 +1344,6 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
                 csv_from_score_polls(self.election, [self], csvfile)
         else:
             from zeus.results_report import build_doc
-            results_name = self.election.name
             parties = self.get_module().module_id == 'parties'
             build_doc(_('Results'), self.election.name,
                       self.election.institution.name,
@@ -1416,7 +1395,7 @@ def iter_voter_data(voter_data, email_validator=validate_email,
     for voter_fields in reader:
         line += 1
         # bad line
-        if len(voter_fields) < 1:
+        if len(voter_fields) == 0:
             continue
 
         return_dict = {}
@@ -1565,7 +1544,6 @@ class VoterFile(models.Model):
         last_alias_num = poll.last_alias_num
 
         num_voters = 0
-        new_voters = []
         for voter in reader:
             num_voters += 1
             voter_id = voter['voter_id']
@@ -1716,9 +1694,6 @@ class Voter(HeliosModel, VoterFeatures):
         unique_together = (('poll', 'voter_login_id'), ('poll', 'voter_password'))
 
     user = None
-
-    def notify(self, method, subject, body, vars):
-        backend = self.get
 
     @property
     def contact_methods(self):
