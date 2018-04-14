@@ -252,8 +252,8 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
         t.start()
 
     plaintexts = [outqueue.get() for _ in range(total)]
-    f.write(repr(plaintexts))
-    f.close()
+    with open(plaintexts, 'w') as f:
+        f.write(repr(plaintexts))
 
     for t in threads:
         t.join()

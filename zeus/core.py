@@ -1200,6 +1200,7 @@ def gamma_decode_to_range_ballot(encoded, candidates_and_points):
     permutation = to_absolute_answers(selection, nr_candidates)
     ballot = {}
     counts = {}
+    valid = False
     candidate = None
     old_nr_points = None
 
