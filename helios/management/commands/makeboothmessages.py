@@ -8,7 +8,7 @@ from itertools import dropwhile
 from subprocess import PIPE, Popen
 
 import django
-from django.core.management.base import CommandError, NoArgsCommand
+from django.core.management.base import CommandError, BaseCommand
 from django.utils.text import get_text_list
 
 plural_forms_re = re.compile(r'^(?P<value>"Plural-Forms.+?\\n")\s*$', re.MULTILINE | re.DOTALL)
@@ -148,7 +148,7 @@ def write_pot_file(potfile, msgs, file, work_file, is_templatized):
         msgs = '\n'.join(dropwhile(len, msgs.split('\n')))
     else:
         msgs = msgs.replace('charset=CHARSET', 'charset=UTF-8')
-    with open(potfile, 'ab') as f:
+    with open(potfile, 'a') as f:
         f.write(msgs)
 
 
@@ -249,7 +249,7 @@ def write_po_file(pofile, potfile, domain, locale, verbosity, stdout,
         msgs = copy_plural_forms(msgs, locale, domain, verbosity, stdout)
     msgs = msgs.replace(
         "#. #-#-#-#-#  %s.pot (PACKAGE VERSION)  #-#-#-#-#\n" % domain, "")
-    with open(pofile, "wb") as f:
+    with open(pofile, "w") as f:
         f.write(msgs)
     os.unlink(potfile)
     if no_obsolete:
@@ -345,7 +345,7 @@ def make_messages(locale=None, domain='django', verbosity=1, all=False,
                     not invoked_for_django, wrap, location, no_obsolete)
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = ("Runs over the entire source tree of the current directory and "
 "pulls out all strings marked for translation. It creates (or updates) a message "
 "file in the conf/locale (in the django tree) or locale (for projects and "
@@ -379,7 +379,7 @@ class Command(NoArgsCommand):
         parser.add_argument('--no-obsolete', action='store_true', dest='no_obsolete',
             default=False, help="Remove obsolete message strings")
 
-    def handle_noargs(self, *args, **options):
+    def handle(self, *args, **options):
         # booth dir
         os.chdir("zeus/static/booth/")
 
