@@ -834,7 +834,7 @@ msgid "Loading cryptographic functions..."
 msgstr "Wczytuję funkcje kryptograficzne..."
 
 msgid "Select your trustee key file and press 'Verify'."
-msgstr "Wybierz plik klucza powierniczki i naciśnij "Sprawdź"."
+msgstr "Wybierz plik klucza powierniczki i naciśnij \"Sprawdź\"."
 
 msgid "To verify your trustee key, paste it here:"
 msgstr "Aby sprawdzić klucz powierniczki, wklej go tutaj:"
