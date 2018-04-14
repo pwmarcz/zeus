@@ -6,7 +6,6 @@ from codecs import BOM_LE, BOM_BE, getreader
 from collections import OrderedDict
 
 from django.db.models import Q
-from django.template import loader
 from django.urls import reverse
 from django.shortcuts import render
 from django.conf import settings
