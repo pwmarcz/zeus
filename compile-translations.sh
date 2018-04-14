@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PYTHONPATH=`pwd`;
-export DJANGO_SETTINGS_MODULE=settings;
+export DJANGO_SETTINGS_MODULE=settings.local;
 export DJANGO_ADMIN=`which django-admin`;
 export VENV_DJANGO_ADMIN=`which django-admin.py`;
 
