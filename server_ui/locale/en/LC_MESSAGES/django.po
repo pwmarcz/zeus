@@ -16,31 +16,31 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 msgid "Elections report"
-msgstr "Αναφορά ψηφοφοριών"
+msgstr ""
 
 msgid "Export"
-msgstr "Εξαγωγή"
+msgstr ""
 
 msgid "to CSV"
-msgstr "σε CSV"
+msgstr ""
 
 msgid "Number of elections"
-msgstr "Σύνολο ψηφοφορίων"
+msgstr ""
 
 msgid "Number of polls"
-msgstr "Σύνολο κάλπεων"
+msgstr ""
 
 msgid "Number of voters"
-msgstr "Σύνολο ψηφοφόρων"
+msgstr ""
 
 msgid "Number of voters that voted"
-msgstr "Ψηφίσαντες"
+msgstr ""
 
 msgid "Filter"
-msgstr "Φίλτρο"
+msgstr ""
 
 #, python-format
 msgid ""
@@ -52,55 +52,49 @@ msgid_plural ""
 "                                %(elections_count)s results found\n"
 "                                "
 msgstr[0] ""
-"\n"
-"                                %(elections_count)s αποτέλεσμα\n"
-"                                "
 msgstr[1] ""
-"\n"
-"                                %(elections_count)s αποτελέσματα\n"
-"                                "
 
 msgid "No results found"
-msgstr "Δεν βρέθηκαν αποτελέσματα"
+msgstr ""
 
 msgid "Zeus Electronic Voting"
-msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς»"
+msgstr ""
 
 msgid "Form data have changed!"
-msgstr "Τα στοιχεία της φόρμας έχουν τροποποιηθεί!"
+msgstr ""
 
 msgid "Terms of use"
-msgstr "Όροι χρήσης"
+msgstr ""
 
 msgid "You are logged in as election administrator"
-msgstr "Είστε συνδεδεμένοι ως χειριστής εκλογών"
+msgstr ""
 
 msgid "logout"
-msgstr "έξοδος"
+msgstr ""
 
 msgid "manage"
-msgstr "διαχείριση"
+msgstr ""
 
 msgid "accounts"
-msgstr "λογαριασμοί"
+msgstr ""
 
 msgid "change password"
-msgstr "αλλαγή κωδικού"
+msgstr ""
 
 msgid "You are logged in as voter"
-msgstr "Συνδεθήκατε ως ψηφοφόρος"
+msgstr ""
 
 msgid "You are logged in as trustee"
-msgstr "Συνδεθήκατε ως μέλος εφορευτικής"
+msgstr ""
 
 msgid "Logout"
-msgstr "Έξοδος"
+msgstr ""
 
 msgid "Login"
-msgstr "Είσοδος"
+msgstr ""
 
 msgid "Your new password was set."
-msgstr "Ο νέος σας κωδικός έχει οριστεί."
+msgstr ""
 
 #, python-format
 msgid ""
@@ -115,34 +109,34 @@ msgstr[0] ""
 msgstr[1] ""
 
 msgid "COMPLETED"
-msgstr "ΕΧΕΙ ΟΛΟΚΛΗΡΩΘΕΙ"
+msgstr ""
 
 msgid "CANCELED"
-msgstr "ΕΧΕΙ ΑΚΥΡΩΘΕΙ"
+msgstr ""
 
 msgid "PUBLIC"
-msgstr "ΔΗΜΟΣΙΑ ΠΡΟΒΟΛΗ"
+msgstr ""
 
 msgid "SET PUBLIC"
-msgstr "ΔΗΜΟΣΙΑ ΠΡΟΒΟΛΗ"
+msgstr ""
 
 msgid "UNSET PUBLIC"
-msgstr "ΑΚΥΡΩΣΗ ΔΗΜΟΣΙΑΣ ΠΡΟΒΟΛΗΣ"
+msgstr ""
 
 msgid "YES"
-msgstr "ΝΑΙ"
+msgstr ""
 
 msgid "NO"
-msgstr "ΟΧΙ"
+msgstr ""
 
 msgid "Not Decided"
-msgstr "Εκκρεμής"
+msgstr ""
 
 msgid "Unofficial"
-msgstr "Ανεπίσημη"
+msgstr ""
 
 msgid "Official"
-msgstr "Επίσημη"
+msgstr ""
 
 msgid "Change language"
-msgstr "Change language"
+msgstr ""

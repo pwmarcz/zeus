@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-12 15:27+0200\n"
+"POT-Creation-Date: 2018-04-14 17:45+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,306 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-
-msgid "Email subject"
-msgstr "Τίτλος ηλεκτρονικού μηνύματος (email)"
-
-msgid "Email body"
-msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
-
-msgid "Send To"
-msgstr "Αποστολή Προς"
-
-msgid "all voters"
-msgstr "όλους τους ψηφοφόρους"
-
-msgid "voters who have cast a ballot"
-msgstr "τους ψηφοφόρους που έχουν ψηφίσει"
-
-msgid "voters who have not yet cast a ballot"
-msgstr "τους ψηφοφόρους που δεν έχουν ψηφίσει ακόμη"
-
-msgid "Voter ID"
-msgstr "Αναγνωριστικό ψηφοφόρου"
-
-msgid "Unresolved"
-msgstr "Εκκρεμής"
-
-msgid "Unofficial"
-msgstr "Ανεπίσημη"
-
-msgid "Official"
-msgstr "Επίσημη"
-
-msgid "Linked polls"
-msgstr "Συνδεδεμένες κάλπες"
-
-msgid "Election type"
-msgstr "Τύπος ψηφοφορίας"
-
-msgid "Election name"
-msgstr "Τίτλος ψηφοφορίας"
-
-msgid "Support email"
-msgstr "Email υποστήριξης"
-
-msgid "Support phone"
-msgstr "Τηλέφωνο υποστήριξης"
-
-msgid "Election description"
-msgstr "Περιγραφή ψηφοφορίας"
-
-msgid "Trial election"
-msgstr "Δοκιμαστική ψηφοφορία"
-
-msgid "Departments"
-msgstr "Σχολές και Ανεξάρτητα Τμήματα του Ιδρύματος"
-
-msgid ""
-"University Schools. e.g.<br/><br/> School of Engineering <br />School of "
-"Medicine<br />School ofInformatics<br />"
-msgstr ""
-"συμπληρώστε τις σχολές και τα ανεξάρτητα τμήματα του ιδρύματος για το οποίο "
-"διεξάγεται η ψηφοφορία. Π.χ. <br/><br/>Σχολή Θετικών Επιστημών<br/"
-">Φιλοσοφική Σχολή<br/>Ανεξάρτητο Παιδαγωγικό Τμήμα Δημοτικής Εκπαίδευσης<br/>"
-
-msgid "Voting starts at"
-msgstr "Έναρξη της ψηφοφορίας στις"
-
-msgid "Voting ends at"
-msgstr "Λήξη της ψηφοφορίας"
-
-msgid "Voting extended until"
-msgstr "Η ψηφοφορία έχει παραταθεί μέχρι"
-
-msgid "Cast consent test"
-msgstr "Όροι κατάθεσης ψήφου"
-
-msgid "Add at least one trustee"
-msgstr "προσθέστε τουλάχιστον ένα μέλος στην εφορευτική επιτροπή"
-
-#, python-format
-msgid "Have trustee %s generate a keypair"
-msgstr ""
-"Το μέλος της εφορευτικής επιτροπής '%s' πρέπει να δημιουργήσει τον Κωδικό "
-"Ψηφοφορίας του"
-
-#, python-format
-msgid "Have trustee %s verify his key"
-msgstr ""
-"Το μέλος της εφορευτικής επιτροπης '%s' πρέπει να επιβεβαιώσει τον Κωδικό "
-"Ψηφοφορίας του"
-
-msgid "Canceled"
-msgstr "Ακυρώθηκε"
-
-msgid "Completed"
-msgstr "Ολοκληρώθηκε"
-
-msgid "Voting"
-msgstr "Ψηφοφορία σε εξέλιξη"
-
-msgid "Results computed"
-msgstr "Εξήχθησαν αποτελέσματα"
-
-msgid "Computing results"
-msgstr "Υπολογισμός αποτελεσμάτων"
-
-msgid "Decryption finished"
-msgstr "Η αποκρυπτογράφηση ολοκληρώθηκε"
-
-msgid "Decrypting"
-msgstr "Αποκρυπτογράφηση"
-
-msgid "Partial decryptions finished"
-msgstr "Οι μερικές αποκρυπτογραφήσεις ολοκληρώθηκαν"
-
-msgid "Pending completion of partial decryptions"
-msgstr "Εκκρεμούν οι μερικές αποκρυπτογραφήσεις"
-
-msgid "Validating mixing"
-msgstr "Επικύρωση μίξης σε εξέλιξη"
-
-msgid "Mixing finished"
-msgstr "Η μίξη ολοκληρώθηκε"
-
-msgid "Waiting for remote mixes"
-msgstr "Αναμονή για καταχώρηση ανάμιξης ψηφοδελτίων"
-
-msgid "Mixing"
-msgstr "Κρυπτογραφική ανάμιξη ψηφοδελτίων"
-
-msgid "Validating voting"
-msgstr "Επικύρωση ψηφοφορίας σε εξέλιξη"
-
-msgid "Election closed"
-msgstr "Η ψηφοφορία έχει λήξει"
-
-msgid "Waiting for voting to start."
-msgstr "Αναμονή για την έναρξη της ψηφοφορίας"
-
-msgid "Voting stopped. Pending close."
-msgstr "Η ψηφοφορία έχει σταματήσει. Αναμένεται η οριστική λήξη της."
-
-msgid "Freezing"
-msgstr "Οριστικοποίηση..."
-
-msgid "Frozen"
-msgstr "Οριστικοποιημένη"
-
-msgid "Election pending to freeze"
-msgstr "Αναμονή για οριστικοποίηση της ψηφοφορίας"
-
-msgid "Poll link group"
-msgstr "Όνομα γκρούπ κάλπης"
-
-msgid "Poll reference id"
-msgstr "Όνομα αντιστοιχίας κάλπης"
-
-msgid "Poll name"
-msgstr "Όνομα κάλπης"
-
-msgid "Oauth2 login"
-msgstr "Σύνδεση με Oauth2"
-
-msgid "JWT login"
-msgstr "Σύνδεση με JWT"
-
-msgid "Shibboleth login"
-msgstr "Σύνδεση με ακαδημαϊκό λογαριασμό (shibboleth)"
-
-msgid "JSON Web Token Login"
-msgstr "Σύνδεση με JSON Web Token"
-
-#, python-format
-msgid "Oauth2 Login %s"
-msgstr "Σύνδεση με Oauth2 (%s)"
-
-msgid "Shibboleth authentication"
-msgstr "Σύνδεση με ακαδημαϊκό λογαριασμό (shibboleth)"
-
-msgid "Prepare poll questions"
-msgstr "Ορισμός των ερωτήσεων της κάλπης"
-
-msgid "Import voters list"
-msgstr "Εισαγωγή ψηφοφόρων"
-
-msgid "Waiting for all partial decryptions to finish"
-msgstr "Αναμονή για την ολοκλήρωση των μερικών αποκρυπτογραφήσεων"
-
-msgid "Voting closed"
-msgstr "Η ψηφοφορία έχει λήξει"
-
-msgid "Pending election close"
-msgstr "Αναμένεται λήξη της ψηφοφορίας"
-
-msgid "No questions set"
-msgstr "Δεν έχουν οριστεί ακόμη ερωτήσεις"
-
-msgid "No voters set"
-msgstr "Δεν έχουν εισαχθεί ακόμη ψηφοφόροι"
-
-msgid "Ready to freeze"
-msgstr "Έτοιμη προς οριστικοποίηση"
-
-msgid "Election initialized."
-msgstr "Η ψηφοφορία αρχικοποιήθηκε."
-
-msgid "Election candidates added."
-msgstr "Οι υποψήφιοι έχουν καταχωρισθεί."
-
-msgid "Election voters added."
-msgstr "Οι εκλέκτορες ψηφοφόροι έχουν καταχωρισθεί."
-
-msgid "Trustees keys generated."
-msgstr "Οι Κωδικοί της ψηφοφορίας έχουν παραχθεί."
-
-msgid "Election opened."
-msgstr "Η ψηφοφορία έχει αρχίσει."
-
-msgid "Election voters notified"
-msgstr "Οι ψηφοφόροι έχουν ειδοποιηθεί"
-
-msgid "Election voters which not voted notified"
-msgstr "Οι ψηφοφόροι που δεν έχουν ψηφήσει έχουν ειδοποιηθεί"
-
-msgid "Election extension needed."
-msgstr "Παράταση της ψηφοφορίας."
-
-msgid "Election closed."
-msgstr "Η ψηφοφορία έχει λήξει."
-
-msgid "Election tallied."
-msgstr "Τα ψηφοδέλτια έχουν αναμιχθεί"
-
-msgid "Trustees should decrypt results."
-msgstr ""
-"Η εφορευτική επιτροπή πρέπει να αποκρυπτογραφήσει τα τελικά ψηφοδέλτια."
-
-msgid "Election results where decrypted."
-msgstr "Τα τελικά ψηφοδέλτια έχουν αποκρυπτογραφηθεί."
-
-msgid "YES"
-msgstr "ΝΑΙ"
-
-msgid "NO"
-msgstr "ΟΧΙ"
-
-msgid "(EXCLUDED)"
-msgstr "(ΕΞΑΙΡΕΣΗ)"
-
-msgid "Results"
-msgstr "Αποτελέσματα"
-
-msgid "There must be at least two fields, Registration ID and Email"
-msgstr ""
-"Πρέπει να υπάρχουν τουλάχιστον δύο πεδία, Αριθμός Καταχώρισης και Email"
-
-#, python-format
-msgid "Malformed mobile phone number: %s"
-msgstr "Μη έγκυρος αριθμός τηλεφώνου: %s"
-
-#, python-format
-msgid "Voter weight must be a positive integer, not %s"
-msgstr "Tο βάρος ψήφου πρέπει να είναι θετικός ακέραιος αριθμός, όχι %s"
-
-#, python-format
-msgid "Invalid voter data at line %s"
-msgstr "Λανθασμένα στοιχεία ψηφοφόρου στην γραμμή %s"
-
-#, python-format
-msgid "Voter [%s]: Provide at least one of the email and mobile fields."
-msgstr ""
-"Ψηφοφόρος [%s]: Παρακαλούμε δηλώστε τουλάχιστον ένα από τα πεδία διεύθυνσης "
-"ηλεκτρονικού ταχυδρομείου και κινητού."
-
-msgid "Mobile backend is not set for this election"
-msgstr "Η δυνατότητα αποστολής SMS είναι απενεργοποιημένη"
-
-#, python-format
-msgid "Duplicate voter id : %s"
-msgstr "Διπλότυπο αναγνωριστικό χρήστη %s"
-
-msgid "No email set"
-msgstr "Δεν έχει οριστεί διεύθυνση ηλεκτρονικού ταχυδρομείου"
-
-msgid "Create trustee key"
-msgstr "Δημιουργία κωδικού ψηφοφορίας"
-
-msgid "Verify trustee key"
-msgstr "Επιβεβαίωση κωδικού ψηφοφορίας"
-
-msgid "Partially decrypt votes"
-msgstr "Μερική αποκρυπτογράφηση ψήφων"
-
-msgid "Choice"
-msgstr "Απλή επιλογή"
-
-msgid "Ranked"
-msgstr "Με σειρά προτίμησης"
-
-msgid "STV"
-msgstr "Ταξινομική"
 
 msgid "Elections list"
 msgstr "Ψηφοφορίες"
@@ -366,6 +66,12 @@ msgstr ""
 msgid "Save"
 msgstr "Αποθήκευση"
 
+msgid "Voting starts at"
+msgstr "Έναρξη της ψηφοφορίας στις"
+
+msgid "Voting ends at"
+msgstr "Λήξη της ψηφοφορίας"
+
 msgid "Voters count"
 msgstr "Αριθμός ψηφοφόρων"
 
@@ -377,6 +83,9 @@ msgstr "Επεξεργασία κάλπης"
 
 msgid "Voters"
 msgstr "Ψηφοφόροι"
+
+msgid "Results"
+msgstr "Αποτελέσματα"
 
 msgid "Election information"
 msgstr "Πληροφορίες ψηφοφορίας"
@@ -407,6 +116,9 @@ msgstr "Είσοδος στο ηλεκτρονικό παραπέτασμα"
 
 msgid "No cast yet"
 msgstr "Χωρίς ψήφο"
+
+msgid "Waiting for voting to start."
+msgstr "Αναμονή για την έναρξη της ψηφοφορίας"
 
 msgid "Voting date passed."
 msgstr "Ο χρόνος λήξης της ψηφοφορίας έχει παρέλθει"
@@ -472,12 +184,6 @@ msgstr "Ναι, επιβεβαιώνω!"
 msgid "Confirm close mixing"
 msgstr "Επιβεβαίωση ολοκλρήωσης κρυπτογραφικών αναμίξεων ψηφοδελτίων"
 
-msgid "Rename poll"
-msgstr "Μετονομασία κάλπης"
-
-msgid "New name"
-msgstr "Όνομα"
-
 msgid "Compute tally"
 msgstr "Υπολογισμός αποτελεσμάτων"
 
@@ -505,6 +211,9 @@ msgstr "Εσφαλμένος μυστικός κωδικός ψηφοφορία�
 msgid "Upload failed"
 msgstr "Η αποστολή απέτυχε"
 
+msgid "Decrypting"
+msgstr "Αποκρυπτογράφηση"
+
 msgid "The final ballots are ready to be decrypted."
 msgstr "Τα τελικά ψηφοδέλτια είναι έτοιμα προς αποκρυπτογράφηση."
 
@@ -513,6 +222,9 @@ msgstr "Προσκομίστε τον μυστικό κωδικό ψηφοφορ
 
 msgid "Perform partial decryption"
 msgstr "Εκτέλεση μερικής αποκρυπτογράφησης"
+
+msgid "Poll name"
+msgstr "Όνομα κάλπης"
 
 msgid "Decryption status"
 msgstr "Κατάσταση αποκρυπτογράφησης"
@@ -527,6 +239,99 @@ msgid ""
 "You have successfully uploaded your partial decryption of the election tally."
 msgstr "Έχετε ολοκληρώσει επιτυχώς την διαδικασία μερικής αποκρυπτογράφησης."
 
+msgid "Create Institution"
+msgstr "Δημιουργία Ιδρύματος"
+
+msgid "Please confirm the deletion of institution"
+msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του ιδρύματος"
+
+msgid "Yes, I confirm!"
+msgstr "Ναι, επιβεβαιώνω!"
+
+msgid "Insitution has users, can't be deleted."
+msgstr "Το ίδρυμα έχει χρήστες, δεν μπορεί να διαγραφεί."
+
+msgid "You didn't choose an institution."
+msgstr "Δεν επιλέχθηκε ίδρυμα."
+
+msgid "Please confirm the deletion of user"
+msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του χρήστη"
+
+msgid "You didn't choose a user."
+msgstr "Δεν επιλέχθηκε χρήστης."
+
+msgid "Institution"
+msgstr "Ίδρυμα"
+
+msgid "Filter"
+msgstr "Φίλτρο"
+
+msgid "Clear"
+msgstr "Εκκαθάριση"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Users"
+msgstr "Χρήστες"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "Create User"
+msgstr "Δημιουργία Χρήστη"
+
+msgid "No results found"
+msgstr "Δεν βρέθηκαν αποτελέσματα"
+
+msgid "Election types"
+msgstr "Τύποι ψηφοφορίας"
+
+msgid "Users count"
+msgstr "Αριθμός χρηστών"
+
+msgid "Actions"
+msgstr "Επιλογές"
+
+msgid "User Groups"
+msgstr "Ομάδες χρηστών"
+
+msgid "Is helpdesk user"
+msgstr "Χρήστης helpdesk"
+
+msgid "Elections Held"
+msgstr "Αριθμός Εκλογών"
+
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+msgid "Institutions"
+msgstr "Ιδρύματα"
+
+msgid "Groups"
+msgstr "Ομάδες"
+
+msgid "Create Group"
+msgstr "Δημιουργία ομάδας χρηστών"
+
+msgid "Please confirm the password reset of user "
+msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
+
+msgid "SMS backend"
+msgstr "Πάροχος SMS"
+
+msgid "Reset Password"
+msgstr "Επανέκδοση κωδικού"
+
+msgid "Election Name"
+msgstr "Τίτλος ψηφοφορίας"
+
+msgid "Start date"
+msgstr "Ημερομηνία έναρξης"
+
+msgid "End Date"
+msgstr "Ημερομηνία Λήξης"
+
 msgid "Change password"
 msgstr "Αλλαγή κωδικού"
 
@@ -535,6 +340,18 @@ msgstr "Ο νέος κωδικός έχει καταχωρισθεί"
 
 msgid "SAVE"
 msgstr "Αποθήκευση"
+
+msgid "votes cast"
+msgstr "ψηφοδέλτια"
+
+msgid "Total score"
+msgstr "Σύνολο ψήφων"
+
+msgid "Elected"
+msgstr "Εκλεγμένοι"
+
+msgid "Save proof data"
+msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
 
 msgid "To create a new election, enter the necessary information below."
 msgstr ""
@@ -586,9 +403,6 @@ msgstr "Προεπισκόπηση παραπετάσματος"
 msgid "Total votes"
 msgstr "Σύνολο ψήφων"
 
-msgid "Save proof data"
-msgstr "Αποθήκευση κρυπτογραφικών δεδομένων"
-
 msgid "Total voters count"
 msgstr "Σύνολο ψηφοφόρων"
 
@@ -621,9 +435,6 @@ msgstr "Εξαγωγή λίστας ψηφοφόρων σε αρχείο CSV"
 msgid "Delete all voters"
 msgstr "Διαγραφή όλων των ψηφοφόρων"
 
-msgid "Filter"
-msgstr "Φίλτρο"
-
 #, python-format
 msgid ""
 "\n"
@@ -640,8 +451,14 @@ msgstr[1] ""
 "\n"
 "%(voters_count)s ψηφοφόρους"
 
+msgid "YES"
+msgstr "ΝΑΙ"
+
 msgid "(Excluded)"
 msgstr "(Εξαίρεση)"
+
+msgid "NO"
+msgstr "ΟΧΙ"
 
 msgid "Voter actions"
 msgstr "Επιλογές ψηφοφόρου"
@@ -790,6 +607,9 @@ msgstr "Κινητό τηλ."
 msgid "Vote weight"
 msgstr "Βάρος ψήφου"
 
+msgid "No email set"
+msgstr "Δεν έχει οριστεί διεύθυνση ηλεκτρονικού ταχυδρομείου"
+
 msgid "Show all voters"
 msgstr "Προβολή ολόκληρης της λίστας"
 
@@ -836,9 +656,6 @@ msgstr "τελευταία ψήφος"
 
 msgid "select action"
 msgstr "επιλογές"
-
-msgid "Actions"
-msgstr "Επιλογές"
 
 msgid "Manage voters"
 msgstr "Διαχείριση ψηφοφόρων"
@@ -1085,9 +902,220 @@ msgstr "Email υποστήριξης"
 msgid "Election support phone"
 msgstr "Τηλέφωνο υποστήριξης"
 
+msgid "System message"
+msgstr "Μήνυμα συστήματος"
+
+msgid "ELECTION INFO"
+msgstr "Πληροφορίες ψηφοφορίας"
+
+#, python-format
+msgid ""
+"You have successfully cast a vote in\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"\n"
+"as\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"with registration ID: %(voter_login_id)s\n"
+"\n"
+"you can find your encrypted vote attached in this mail."
+msgstr ""
+"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"\n"
+"ως\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"με αριθμό καταχώρισης: %(voter_login_id)s\n"
+"\n"
+"H απόδειξη της καταχώρισης βρίσκεται συνημμένη στο παρόν μήνυμα."
+
+msgid "Thank you for voting"
+msgstr "Ευχαριστούμε που ψηφίσατε"
+
+msgid ""
+"Greetings,\n"
+"\n"
+"You can use the following credentials to access a demo account as an\n"
+"election operator at:\n"
+"\n"
+msgstr ""
+"Χαίρετε,\n"
+"\n"
+"Τα ακόλουθα διαπιστευτήρια σας δίνουν πρόσβαση χειριστή ψηφοφοριών σε\n"
+"δοκιμαστικό λογαριασμό στο:\n"
+"\n"
+
+msgid "The total voters across all elections for demo accounts is limited to"
+msgstr ""
+"Το μέγιστο σύνολο ψηφοφόρων για όλες τις ψηφοφορίες\n"
+"δοκιμαστικών λόγαριασμών είναι"
+
+msgid ""
+"Demo accounts are periodically purged.\n"
+"\n"
+"If you need a normal account, or have any questions,\n"
+"please contact us at helpdesk@zeus.grnet.gr.\n"
+"\n"
+"--\n"
+"https://zeus.grnet.gr/\n"
+"Zeus Elections\n"
+msgstr ""
+"Οι δοκιμαστικοί λογαριασμοί καταργούνται περιοδικά.\n"
+"\n"
+"Εάν χρειάζεστε ένα κανονικό λογαριασμό, ή εάν έχετε ερωτήσεις,\n"
+"παρακαλούμε επικοινωνήστε μαζί μας στο helpdesk@zeus.grnet.gr.\n"
+"\n"
+"--\n"
+"https://zeus.grnet.gr/\n"
+"Ηλεκτρονικές Ψηφοφορίες «Ζευς»\n"
+
+msgid "Demo account for"
+msgstr "Δοκιμαστικός λογαριασμός"
+
+msgid "Legitimate recipient:"
+msgstr "Νόμιμος παραλήπτης"
+
+msgid "Election name"
+msgstr "Τίτλος ψηφοφορίας"
+
+msgid "Dear voter,"
+msgstr "Αξιότιμε κύριε ή κυρία,"
+
+msgid "The ending date of the election has changed. New ending date is:"
+msgstr "Η ημερομηνία λήξης της ψηφοφορίας άλλαξε. Η νέα ημερομηνία είναι:"
+
+msgid "Zeus Elections"
+msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς»"
+
+msgid "Intended recipient"
+msgstr "Νόμιμος παραλήπτης"
+
+msgid "Voting link"
+msgstr "Σύνδεσμος ψηφοφορίας"
+
+msgid "You are invited to vote in the poll:"
+msgstr "Προσκαλείστε να συμμετάσχετε στην ψηφοφορία:"
+
+msgid "starting"
+msgstr "με ημ/νία έναρξης"
+
+msgid "and ending"
+msgstr "και λήξης"
+
+msgid "Your registration ID is:"
+msgstr "Ο αριθμός καταχώρισής σας είναι:"
+
+msgid "To submit your vote, follow the link below"
+msgstr "Για να υποβάλετε ψήφο, ακολουθήστε τον παρακάτω σύνδεσμο"
+
+msgid "Information:"
+msgstr "Πληροφορίες:"
+
+msgid "You can vote more than once. Only your last vote will be counted."
+msgstr ""
+"Μπορείτε να υποβάλετε ψήφο πολλές φορές. Μόνο η τελευταία ψήφος σας θα "
+"καταμετρηθεί."
+
+msgid "For information about the voting you can contact the trustees by phone,"
+msgstr "Για πληροφορίες επικοινωνήστε με την εφορευτική επιτροπή τηλεφωνικώς,"
+
+msgid "or by email,"
+msgstr "ή μέσω email,"
+
+msgid "If you want to initiate an audit vote,"
+msgstr "Εάν επιθυμείτε να εκκινήσετε ψήφο ελέγχου,"
+
+msgid "the valid audit codes are"
+msgstr "οι έγκυροι κωδικοί ελέγχου είναι"
+
+msgid "Otherwise ignore those codes above."
+msgstr "Διαφορετικά αγνοήστε τους παραπάνω κωδικούς."
+
+msgid ""
+"The voting takes place in the web browser in your computer,\n"
+"where your choices are recorded and encrypted before being submitted.\n"
+"We recommend the following browsers:"
+msgstr ""
+"Η ψηφοφορία λαμβάνει χώρα στον φυλλομετρητή του υπολογιστή σας, όπου οι\n"
+"επιλογές σας καταγράφονται και κρυπτογραφούνται πριν την υποβολή της ψήφου.\n"
+"Προτείνουμε τους παρακάτω φυλλομετρητές:"
+
+msgid "version"
+msgstr "έκδοση"
+
+msgid "or newer"
+msgstr "ή νεότερη"
+
+msgid ""
+"Important:\n"
+"\n"
+"The present message is strictly personal and confidential.\n"
+"Do not forward or show it to others. Do not reply to this."
+msgstr ""
+"Προσοχή:\n"
+"\n"
+"Το παρόν μήνυμα είναι αυστηρά προσωπικό και εμπιστευτικό.\n"
+"Μην το προωθείτε ή το δείχνετε σε άλλους. Μην απαντάτε στον παρόν."
+
+msgid "Instead, you can write to"
+msgstr "Μπορείτε να επικοινωνήσετε στο"
+
+msgid ""
+"If you are not the legitimate recipient, please delete this message\n"
+"and contact helpdesk@zeus.grnet.gr"
+msgstr ""
+"Εάν δεν είστε ο νόμιμος παραλήπτης, παρακαλούμε διαγράψτε το μήνυμα αυτό\n"
+"και επικοινωνήστε με το helpdesk@zeus.grnet.gr"
+
+msgid "Audit codes only apply for poll:"
+msgstr "Οι κωδικοί αφορούν μόνο την κάλπη:"
+
 msgid "Error saving form."
 msgstr ""
 "Η αποθήκευση της φόρμας απέτυχε. Παρακαλούμε ελέγξτε την εγκυρότητά της."
+
+msgid "Home"
+msgstr "Αρχική"
+
+msgid "Contact"
+msgstr "Επικοινωνία"
+
+msgid ""
+"For questions and comments regarding the Zeus platform you may contact us at "
+"<a href=\"mailto:helpdesk@zeus.grnet.gr\">helpdesk@zeus.grnet.gr</a>.\n"
+"    <br /> \n"
+"    <br /> \n"
+"    <br /> \n"
+"\n"
+"    <cite>\n"
+"    Notice that if you are a voter and want to report an issue related to a "
+"running election you should get in contact with the corresponding election "
+"support group. \n"
+"    You can find contact details in the election page.\n"
+"    </cite>\n"
+"    </p>\n"
+"    "
+msgstr ""
+"Για σχόλια και απορίες σχετικά με την πλατφόρμα Ζεύς μπορείτε να \n"
+" επικοινωνήσετε στο \n"
+"<a href=\"mailto:helpdesk@zeus.grnet.gr\">helpdesk@zeus.grnet.gr</a>.\n"
+"    <br /> \n"
+"    <br /> \n"
+"    <br /> \n"
+"\n"
+"    <cite>\n"
+"    Σε περίπτωση που αντιμετωπίζετε πρόβλημα σχετικά με κάποια ψηφοφορία "
+"παρακαλούμε επικοινωνήστε με την υπεύθυνη ομάδα υποστήριξης της "
+"ψηφοφορίας.    Τα στοιχεία επικοινωνίας μπορείτε να τα βρείτε στην σελίδα "
+"της ψηφοφορίας.\n"
+"    </cite>\n"
+"    </p>\n"
+"    "
 
 msgid "Login"
 msgstr "Είσοδος"
@@ -1101,6 +1129,34 @@ msgstr ""
 "Εδώ εισέρχονται μόνο οι διαχειριστές ψηφοφοριών.\n"
 "Οι ψηφοφόροι πρέπει να ακολουθήσουν το σύνδεσμο που τους έχει αποσταλεί μέσω "
 "email ή SMS.\n"
+
+#, python-format
+msgid ""
+"You have successfully cast a vote in %(election_name)s\n"
+"%(vote_receipt_url)s"
+msgstr ""
+"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία %(election_name)s\n"
+"%(vote_receipt_url)s"
+
+#, python-format
+msgid ""
+"ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
+"WITH REG CODE %(voter_login_id)s\n"
+"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
+"%(custom_message_sms)s"
+msgstr ""
+"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s ΠΑΡΑΤΑΣΗ ΨΗΦΟΥ ΕΩΣ ΤΙΣ %(ext_date)s: Ο ΑΜ "
+"%(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ %(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
+"%(custom_message_sms)s"
+
+#, python-format
+msgid ""
+"ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
+"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
+"%(custom_message_sms)s"
+msgstr ""
+"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ "
+"%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s%(custom_message_sms)s"
 
 msgid "As a trustee for the election"
 msgstr "Ως μέλος της εφορευτικής επιτροπής για την ψηφοφορία"
@@ -1210,6 +1266,9 @@ msgstr "Το μήνυμα θα σταλεί μόνο στον ακόλουθο �
 msgid "Email content"
 msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
 
+msgid "Email subject"
+msgstr "Τίτλος ηλεκτρονικού μηνύματος (email)"
+
 msgid "SMS content"
 msgstr "Περιεχόμενο μηνύματος SMS"
 
@@ -1227,338 +1286,6 @@ msgstr "Πίσω στις κάλπες"
 
 msgid "Error emailing voters"
 msgstr "Σφάλμα κατά την αποστολή email στους ψηφοφόρους"
-
-msgid "Create Institution"
-msgstr "Δημιουργία Ιδρύματος"
-
-msgid "Please confirm the deletion of institution"
-msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του ιδρύματος"
-
-msgid "Yes, I confirm!"
-msgstr "Ναι, επιβεβαιώνω!"
-
-msgid "Insitution has users, can't be deleted."
-msgstr "Το ίδρυμα έχει χρήστες, δεν μπορεί να διαγραφεί."
-
-msgid "You didn't choose an institution."
-msgstr "Δεν επιλέχθηκε ίδρυμα."
-
-msgid "Please confirm the deletion of user"
-msgstr "Παρακαλώ επιβεβαιώστε την διαγραφή του χρήστη"
-
-msgid "You didn't choose a user."
-msgstr "Δεν επιλέχθηκε χρήστης."
-
-msgid "Institution"
-msgstr "Ίδρυμα"
-
-msgid "Clear"
-msgstr "Εκκαθάριση"
-
-msgid "Name"
-msgstr "Όνομα"
-
-msgid "Users"
-msgstr "Χρήστες"
-
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-msgid "Create User"
-msgstr "Δημιουργία Χρήστη"
-
-msgid "No results found"
-msgstr "Δεν βρέθηκαν αποτελέσματα"
-
-msgid "Election types"
-msgstr "Τύποι ψηφοφορίας"
-
-msgid "Users count"
-msgstr "Αριθμός χρηστών"
-
-msgid "User Groups"
-msgstr "Ομάδες χρηστών"
-
-msgid "Is helpdesk user"
-msgstr "Χρήστης helpdesk"
-
-msgid "Elections Held"
-msgstr "Αριθμός Εκλογών"
-
-msgid "Details"
-msgstr "Λεπτομέρειες"
-
-msgid "Institutions"
-msgstr "Ιδρύματα"
-
-msgid "Groups"
-msgstr "Ομάδες"
-
-msgid "Create Group"
-msgstr "Δημιουργία ομάδας χρηστών"
-
-msgid "Please confirm the password reset of user "
-msgstr "Παρακαλούμε επιβεβαιώστε την επανέκδοση του κωδικού του χρήστη "
-
-msgid "SMS backend"
-msgstr "Πάροχος SMS"
-
-msgid "Reset Password"
-msgstr "Επανέκδοση κωδικού"
-
-msgid "Election Name"
-msgstr "Τίτλος ψηφοφορίας"
-
-msgid "Start date"
-msgstr "Ημερομηνία έναρξης"
-
-msgid "End Date"
-msgstr "Ημερομηνία Λήξης"
-
-msgid "votes cast"
-msgstr "ψηφοδέλτια"
-
-msgid "Total score"
-msgstr "Σύνολο ψήφων"
-
-msgid "Elected"
-msgstr "Εκλεγμένοι"
-
-msgid "System message"
-msgstr "Μήνυμα συστήματος"
-
-msgid "ELECTION INFO"
-msgstr "Πληροφορίες ψηφοφορίας"
-
-#, python-format
-msgid ""
-"You have successfully cast a vote in\n"
-"\n"
-"%(election_name)s\n"
-"%(poll_name)s\n"
-"\n"
-"as\n"
-"\n"
-"%(voter_name)s %(voter_surname)s\n"
-"with registration ID: %(voter_login_id)s\n"
-"\n"
-"you can find your encrypted vote attached in this mail."
-msgstr ""
-"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία\n"
-"\n"
-"%(election_name)s\n"
-"%(poll_name)s\n"
-"\n"
-"ως\n"
-"\n"
-"%(voter_name)s %(voter_surname)s\n"
-"με αριθμό καταχώρισης: %(voter_login_id)s\n"
-"\n"
-"H απόδειξη της καταχώρισης βρίσκεται συνημμένη στο παρόν μήνυμα."
-
-msgid "Thank you for voting"
-msgstr "Ευχαριστούμε που ψηφίσατε"
-
-msgid ""
-"Greetings,\n"
-"\n"
-"You can use the following credentials to access a demo account as an\n"
-"election operator at:\n"
-"\n"
-msgstr ""
-"Χαίρετε,\n"
-"\n"
-"Τα ακόλουθα διαπιστευτήρια σας δίνουν πρόσβαση χειριστή ψηφοφοριών σε\n"
-"δοκιμαστικό λογαριασμό στο:\n"
-"\n"
-
-msgid "The total voters across all elections for demo accounts is limited to"
-msgstr ""
-"Το μέγιστο σύνολο ψηφοφόρων για όλες τις ψηφοφορίες\n"
-"δοκιμαστικών λόγαριασμών είναι"
-
-msgid ""
-"Demo accounts are periodically purged.\n"
-"\n"
-"If you need a normal account, or have any questions,\n"
-"please contact us at helpdesk@zeus.grnet.gr.\n"
-"\n"
-"--\n"
-"https://zeus.grnet.gr/\n"
-"Zeus Elections\n"
-msgstr ""
-"Οι δοκιμαστικοί λογαριασμοί καταργούνται περιοδικά.\n"
-"\n"
-"Εάν χρειάζεστε ένα κανονικό λογαριασμό, ή εάν έχετε ερωτήσεις,\n"
-"παρακαλούμε επικοινωνήστε μαζί μας στο helpdesk@zeus.grnet.gr.\n"
-"\n"
-"--\n"
-"https://zeus.grnet.gr/\n"
-"Ηλεκτρονικές Ψηφοφορίες «Ζευς»\n"
-
-msgid "Demo account for"
-msgstr "Δοκιμαστικός λογαριασμός"
-
-msgid "Legitimate recipient:"
-msgstr "Νόμιμος παραλήπτης"
-
-msgid "Dear voter,"
-msgstr "Αξιότιμε κύριε ή κυρία,"
-
-msgid "The ending date of the election has changed. New ending date is:"
-msgstr "Η ημερομηνία λήξης της ψηφοφορίας άλλαξε. Η νέα ημερομηνία είναι:"
-
-msgid "Zeus Elections"
-msgstr "Ηλεκτρονικές Ψηφοφορίες «Ζευς»"
-
-msgid "Intended recipient"
-msgstr "Νόμιμος παραλήπτης"
-
-msgid "Voting link"
-msgstr "Σύνδεσμος ψηφοφορίας"
-
-msgid "You are invited to vote in the poll:"
-msgstr "Προσκαλείστε να συμμετάσχετε στην ψηφοφορία:"
-
-msgid "starting"
-msgstr "με ημ/νία έναρξης"
-
-msgid "and ending"
-msgstr "και λήξης"
-
-msgid "Your registration ID is:"
-msgstr "Ο αριθμός καταχώρισής σας είναι:"
-
-msgid "To submit your vote, follow the link below"
-msgstr "Για να υποβάλετε ψήφο, ακολουθήστε τον παρακάτω σύνδεσμο"
-
-msgid "Information:"
-msgstr "Πληροφορίες:"
-
-msgid "You can vote more than once. Only your last vote will be counted."
-msgstr ""
-"Μπορείτε να υποβάλετε ψήφο πολλές φορές. Μόνο η τελευταία ψήφος σας θα "
-"καταμετρηθεί."
-
-msgid "For information about the voting you can contact the trustees by phone,"
-msgstr "Για πληροφορίες επικοινωνήστε με την εφορευτική επιτροπή τηλεφωνικώς,"
-
-msgid "or by email,"
-msgstr "ή μέσω email,"
-
-msgid "If you want to initiate an audit vote,"
-msgstr "Εάν επιθυμείτε να εκκινήσετε ψήφο ελέγχου,"
-
-msgid "the valid audit codes are"
-msgstr "οι έγκυροι κωδικοί ελέγχου είναι"
-
-msgid "Otherwise ignore those codes above."
-msgstr "Διαφορετικά αγνοήστε τους παραπάνω κωδικούς."
-
-msgid ""
-"The voting takes place in the web browser in your computer,\n"
-"where your choices are recorded and encrypted before being submitted.\n"
-"We recommend the following browsers:"
-msgstr ""
-"Η ψηφοφορία λαμβάνει χώρα στον φυλλομετρητή του υπολογιστή σας, όπου οι\n"
-"επιλογές σας καταγράφονται και κρυπτογραφούνται πριν την υποβολή της ψήφου.\n"
-"Προτείνουμε τους παρακάτω φυλλομετρητές:"
-
-msgid "version"
-msgstr "έκδοση"
-
-msgid "or newer"
-msgstr "ή νεότερη"
-
-msgid ""
-"Important:\n"
-"\n"
-"The present message is strictly personal and confidential.\n"
-"Do not forward or show it to others. Do not reply to this."
-msgstr ""
-"Προσοχή:\n"
-"\n"
-"Το παρόν μήνυμα είναι αυστηρά προσωπικό και εμπιστευτικό.\n"
-"Μην το προωθείτε ή το δείχνετε σε άλλους. Μην απαντάτε στον παρόν."
-
-msgid "Instead, you can write to"
-msgstr "Μπορείτε να επικοινωνήσετε στο"
-
-msgid ""
-"If you are not the legitimate recipient, please delete this message\n"
-"and contact helpdesk@zeus.grnet.gr"
-msgstr ""
-"Εάν δεν είστε ο νόμιμος παραλήπτης, παρακαλούμε διαγράψτε το μήνυμα αυτό\n"
-"και επικοινωνήστε με το helpdesk@zeus.grnet.gr"
-
-msgid "Audit codes only apply for poll:"
-msgstr "Οι κωδικοί αφορούν μόνο την κάλπη:"
-
-msgid "Home"
-msgstr "Αρχική"
-
-msgid "Contact"
-msgstr "Επικοινωνία"
-
-msgid ""
-"For questions and comments regarding the Zeus platform you may contact us at "
-"<a href=\"mailto:helpdesk@zeus.grnet.gr\">helpdesk@zeus.grnet.gr</a>.\n"
-"    <br /> \n"
-"    <br /> \n"
-"    <br /> \n"
-"\n"
-"    <cite>\n"
-"    Notice that if you are a voter and want to report an issue related to a "
-"running election you should get in contact with the corresponding election "
-"support group. \n"
-"    You can find contact details in the election page.\n"
-"    </cite>\n"
-"    </p>\n"
-"    "
-msgstr ""
-"Για σχόλια και απορίες σχετικά με την πλατφόρμα Ζεύς μπορείτε να \n"
-" επικοινωνήσετε στο \n"
-"<a href=\"mailto:helpdesk@zeus.grnet.gr\">helpdesk@zeus.grnet.gr</a>.\n"
-"    <br /> \n"
-"    <br /> \n"
-"    <br /> \n"
-"\n"
-"    <cite>\n"
-"    Σε περίπτωση που αντιμετωπίζετε πρόβλημα σχετικά με κάποια ψηφοφορία "
-"παρακαλούμε επικοινωνήστε με την υπεύθυνη ομάδα υποστήριξης της "
-"ψηφοφορίας.    Τα στοιχεία επικοινωνίας μπορείτε να τα βρείτε στην σελίδα "
-"της ψηφοφορίας.\n"
-"    </cite>\n"
-"    </p>\n"
-"    "
-
-#, python-format
-msgid ""
-"You have successfully cast a vote in %(election_name)s\n"
-"%(vote_receipt_url)s"
-msgstr ""
-"Η ψήφος σας καταχωρίσθηκε επιτυχώς για την ψηφοφορία %(election_name)s\n"
-"%(vote_receipt_url)s"
-
-#, python-format
-msgid ""
-"ZEUS ELECTION %(election_name)s VOTING EXTENDED UNTIL %(ext_date)s: VOTER "
-"WITH REG CODE %(voter_login_id)s\n"
-"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
-msgstr ""
-"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s ΠΑΡΑΤΑΣΗ ΨΗΦΟΥ ΕΩΣ ΤΙΣ %(ext_date)s: Ο ΑΜ "
-"%(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ %(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s"
-"%(custom_message_sms)s"
-
-#, python-format
-msgid ""
-"ZEUS ELECTION %(election_name)s: VOTER WITH REG CODE %(voter_login_id)s\n"
-"VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
-"%(custom_message_sms)s"
-msgstr ""
-"ΕΚΛΟΓΕΣ ΖΕΥΣ %(election_name)s: Ο ΑΜ %(voter_login_id)s ΨΗΦΙΖΕΙ ΣΤΟ "
-"%(voter_url)s - ΚΩΔΙΚΟΣ: %(voter_login_code)s%(custom_message_sms)s"
 
 msgid "FAQ"
 msgstr "Ερωτήσεις-Απαντήσεις"
@@ -1635,3 +1362,269 @@ msgstr "Για να ξεκινήσετε νέα καταμέτρηση πατή�
 
 msgid "Terms of use"
 msgstr "Όροι χρήσης"
+
+#~ msgid "Email body"
+#~ msgstr "Περιεχόμενο ηλεκτρονικού μηνύματος (email)"
+
+#~ msgid "Send To"
+#~ msgstr "Αποστολή Προς"
+
+#~ msgid "all voters"
+#~ msgstr "όλους τους ψηφοφόρους"
+
+#~ msgid "voters who have cast a ballot"
+#~ msgstr "τους ψηφοφόρους που έχουν ψηφίσει"
+
+#~ msgid "voters who have not yet cast a ballot"
+#~ msgstr "τους ψηφοφόρους που δεν έχουν ψηφίσει ακόμη"
+
+#~ msgid "Voter ID"
+#~ msgstr "Αναγνωριστικό ψηφοφόρου"
+
+#~ msgid "Unresolved"
+#~ msgstr "Εκκρεμής"
+
+#~ msgid "Unofficial"
+#~ msgstr "Ανεπίσημη"
+
+#~ msgid "Official"
+#~ msgstr "Επίσημη"
+
+#~ msgid "Linked polls"
+#~ msgstr "Συνδεδεμένες κάλπες"
+
+#~ msgid "Election type"
+#~ msgstr "Τύπος ψηφοφορίας"
+
+#~ msgid "Support email"
+#~ msgstr "Email υποστήριξης"
+
+#~ msgid "Support phone"
+#~ msgstr "Τηλέφωνο υποστήριξης"
+
+#~ msgid "Election description"
+#~ msgstr "Περιγραφή ψηφοφορίας"
+
+#~ msgid "Trial election"
+#~ msgstr "Δοκιμαστική ψηφοφορία"
+
+#~ msgid "Departments"
+#~ msgstr "Σχολές και Ανεξάρτητα Τμήματα του Ιδρύματος"
+
+#~ msgid ""
+#~ "University Schools. e.g.<br/><br/> School of Engineering <br />School of "
+#~ "Medicine<br />School ofInformatics<br />"
+#~ msgstr ""
+#~ "συμπληρώστε τις σχολές και τα ανεξάρτητα τμήματα του ιδρύματος για το "
+#~ "οποίο διεξάγεται η ψηφοφορία. Π.χ. <br/><br/>Σχολή Θετικών Επιστημών<br/"
+#~ ">Φιλοσοφική Σχολή<br/>Ανεξάρτητο Παιδαγωγικό Τμήμα Δημοτικής "
+#~ "Εκπαίδευσης<br/>"
+
+#~ msgid "Voting extended until"
+#~ msgstr "Η ψηφοφορία έχει παραταθεί μέχρι"
+
+#~ msgid "Cast consent test"
+#~ msgstr "Όροι κατάθεσης ψήφου"
+
+#~ msgid "Add at least one trustee"
+#~ msgstr "προσθέστε τουλάχιστον ένα μέλος στην εφορευτική επιτροπή"
+
+#~ msgid "Have trustee %s generate a keypair"
+#~ msgstr ""
+#~ "Το μέλος της εφορευτικής επιτροπής '%s' πρέπει να δημιουργήσει τον Κωδικό "
+#~ "Ψηφοφορίας του"
+
+#~ msgid "Have trustee %s verify his key"
+#~ msgstr ""
+#~ "Το μέλος της εφορευτικής επιτροπης '%s' πρέπει να επιβεβαιώσει τον Κωδικό "
+#~ "Ψηφοφορίας του"
+
+#~ msgid "Canceled"
+#~ msgstr "Ακυρώθηκε"
+
+#~ msgid "Completed"
+#~ msgstr "Ολοκληρώθηκε"
+
+#~ msgid "Voting"
+#~ msgstr "Ψηφοφορία σε εξέλιξη"
+
+#~ msgid "Results computed"
+#~ msgstr "Εξήχθησαν αποτελέσματα"
+
+#~ msgid "Computing results"
+#~ msgstr "Υπολογισμός αποτελεσμάτων"
+
+#~ msgid "Decryption finished"
+#~ msgstr "Η αποκρυπτογράφηση ολοκληρώθηκε"
+
+#~ msgid "Partial decryptions finished"
+#~ msgstr "Οι μερικές αποκρυπτογραφήσεις ολοκληρώθηκαν"
+
+#~ msgid "Pending completion of partial decryptions"
+#~ msgstr "Εκκρεμούν οι μερικές αποκρυπτογραφήσεις"
+
+#~ msgid "Validating mixing"
+#~ msgstr "Επικύρωση μίξης σε εξέλιξη"
+
+#~ msgid "Mixing finished"
+#~ msgstr "Η μίξη ολοκληρώθηκε"
+
+#~ msgid "Waiting for remote mixes"
+#~ msgstr "Αναμονή για καταχώρηση ανάμιξης ψηφοδελτίων"
+
+#~ msgid "Mixing"
+#~ msgstr "Κρυπτογραφική ανάμιξη ψηφοδελτίων"
+
+#~ msgid "Validating voting"
+#~ msgstr "Επικύρωση ψηφοφορίας σε εξέλιξη"
+
+#~ msgid "Election closed"
+#~ msgstr "Η ψηφοφορία έχει λήξει"
+
+#~ msgid "Voting stopped. Pending close."
+#~ msgstr "Η ψηφοφορία έχει σταματήσει. Αναμένεται η οριστική λήξη της."
+
+#~ msgid "Freezing"
+#~ msgstr "Οριστικοποίηση..."
+
+#~ msgid "Frozen"
+#~ msgstr "Οριστικοποιημένη"
+
+#~ msgid "Election pending to freeze"
+#~ msgstr "Αναμονή για οριστικοποίηση της ψηφοφορίας"
+
+#~ msgid "Poll link group"
+#~ msgstr "Όνομα γκρούπ κάλπης"
+
+#~ msgid "Poll reference id"
+#~ msgstr "Όνομα αντιστοιχίας κάλπης"
+
+#~ msgid "Oauth2 login"
+#~ msgstr "Σύνδεση με Oauth2"
+
+#~ msgid "JWT login"
+#~ msgstr "Σύνδεση με JWT"
+
+#~ msgid "Shibboleth login"
+#~ msgstr "Σύνδεση με ακαδημαϊκό λογαριασμό (shibboleth)"
+
+#~ msgid "JSON Web Token Login"
+#~ msgstr "Σύνδεση με JSON Web Token"
+
+#~ msgid "Oauth2 Login %s"
+#~ msgstr "Σύνδεση με Oauth2 (%s)"
+
+#~ msgid "Shibboleth authentication"
+#~ msgstr "Σύνδεση με ακαδημαϊκό λογαριασμό (shibboleth)"
+
+#~ msgid "Prepare poll questions"
+#~ msgstr "Ορισμός των ερωτήσεων της κάλπης"
+
+#~ msgid "Import voters list"
+#~ msgstr "Εισαγωγή ψηφοφόρων"
+
+#~ msgid "Waiting for all partial decryptions to finish"
+#~ msgstr "Αναμονή για την ολοκλήρωση των μερικών αποκρυπτογραφήσεων"
+
+#~ msgid "Voting closed"
+#~ msgstr "Η ψηφοφορία έχει λήξει"
+
+#~ msgid "Pending election close"
+#~ msgstr "Αναμένεται λήξη της ψηφοφορίας"
+
+#~ msgid "No questions set"
+#~ msgstr "Δεν έχουν οριστεί ακόμη ερωτήσεις"
+
+#~ msgid "No voters set"
+#~ msgstr "Δεν έχουν εισαχθεί ακόμη ψηφοφόροι"
+
+#~ msgid "Ready to freeze"
+#~ msgstr "Έτοιμη προς οριστικοποίηση"
+
+#~ msgid "Election initialized."
+#~ msgstr "Η ψηφοφορία αρχικοποιήθηκε."
+
+#~ msgid "Election candidates added."
+#~ msgstr "Οι υποψήφιοι έχουν καταχωρισθεί."
+
+#~ msgid "Election voters added."
+#~ msgstr "Οι εκλέκτορες ψηφοφόροι έχουν καταχωρισθεί."
+
+#~ msgid "Trustees keys generated."
+#~ msgstr "Οι Κωδικοί της ψηφοφορίας έχουν παραχθεί."
+
+#~ msgid "Election opened."
+#~ msgstr "Η ψηφοφορία έχει αρχίσει."
+
+#~ msgid "Election voters notified"
+#~ msgstr "Οι ψηφοφόροι έχουν ειδοποιηθεί"
+
+#~ msgid "Election voters which not voted notified"
+#~ msgstr "Οι ψηφοφόροι που δεν έχουν ψηφήσει έχουν ειδοποιηθεί"
+
+#~ msgid "Election extension needed."
+#~ msgstr "Παράταση της ψηφοφορίας."
+
+#~ msgid "Election closed."
+#~ msgstr "Η ψηφοφορία έχει λήξει."
+
+#~ msgid "Election tallied."
+#~ msgstr "Τα ψηφοδέλτια έχουν αναμιχθεί"
+
+#~ msgid "Trustees should decrypt results."
+#~ msgstr ""
+#~ "Η εφορευτική επιτροπή πρέπει να αποκρυπτογραφήσει τα τελικά ψηφοδέλτια."
+
+#~ msgid "Election results where decrypted."
+#~ msgstr "Τα τελικά ψηφοδέλτια έχουν αποκρυπτογραφηθεί."
+
+#~ msgid "(EXCLUDED)"
+#~ msgstr "(ΕΞΑΙΡΕΣΗ)"
+
+#~ msgid "There must be at least two fields, Registration ID and Email"
+#~ msgstr ""
+#~ "Πρέπει να υπάρχουν τουλάχιστον δύο πεδία, Αριθμός Καταχώρισης και Email"
+
+#~ msgid "Malformed mobile phone number: %s"
+#~ msgstr "Μη έγκυρος αριθμός τηλεφώνου: %s"
+
+#~ msgid "Voter weight must be a positive integer, not %s"
+#~ msgstr "Tο βάρος ψήφου πρέπει να είναι θετικός ακέραιος αριθμός, όχι %s"
+
+#~ msgid "Invalid voter data at line %s"
+#~ msgstr "Λανθασμένα στοιχεία ψηφοφόρου στην γραμμή %s"
+
+#~ msgid "Voter [%s]: Provide at least one of the email and mobile fields."
+#~ msgstr ""
+#~ "Ψηφοφόρος [%s]: Παρακαλούμε δηλώστε τουλάχιστον ένα από τα πεδία "
+#~ "διεύθυνσης ηλεκτρονικού ταχυδρομείου και κινητού."
+
+#~ msgid "Mobile backend is not set for this election"
+#~ msgstr "Η δυνατότητα αποστολής SMS είναι απενεργοποιημένη"
+
+#~ msgid "Duplicate voter id : %s"
+#~ msgstr "Διπλότυπο αναγνωριστικό χρήστη %s"
+
+#~ msgid "Create trustee key"
+#~ msgstr "Δημιουργία κωδικού ψηφοφορίας"
+
+#~ msgid "Verify trustee key"
+#~ msgstr "Επιβεβαίωση κωδικού ψηφοφορίας"
+
+#~ msgid "Partially decrypt votes"
+#~ msgstr "Μερική αποκρυπτογράφηση ψήφων"
+
+#~ msgid "Choice"
+#~ msgstr "Απλή επιλογή"
+
+#~ msgid "Ranked"
+#~ msgstr "Με σειρά προτίμησης"
+
+#~ msgid "STV"
+#~ msgstr "Ταξινομική"
+
+#~ msgid "Rename poll"
+#~ msgstr "Μετονομασία κάλπης"
+
+#~ msgid "New name"
+#~ msgstr "Όνομα"
