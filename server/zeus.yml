@@ -29,6 +29,7 @@
         - libmpfr-dev
         - libmpc-dev
         - g++
+        - gettext
         # TODO configure Redis, set up a password
         - redis-server
 
