@@ -21,28 +21,28 @@ msgstr ""
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 msgid "Elections report"
-msgstr ""
+msgstr "Raport z wyborów"
 
 msgid "Export"
-msgstr ""
+msgstr "Eksport"
 
 msgid "to CSV"
-msgstr ""
+msgstr "do CSV"
 
 msgid "Number of elections"
-msgstr ""
+msgstr "Liczba wyborów"
 
 msgid "Number of polls"
-msgstr ""
+msgstr "Liczba głosowań"
 
 msgid "Number of voters"
-msgstr ""
+msgstr "Liczba osób głosujących"
 
 msgid "Number of voters that voted"
-msgstr ""
+msgstr "Liczba osób głosujących, które zagłosowały"
 
 msgid "Filter"
-msgstr ""
+msgstr "Filtruj"
 
 #, python-format
 msgid ""
@@ -51,52 +51,59 @@ msgid ""
 "                                "
 msgid_plural ""
 "\n"
+"\n"
+"                                %(elections_count)s results found\n"
 "                                %(elections_count)s results found\n"
 "                                "
-msgstr[0] ""
-msgstr[1] ""
+"                                "
+msgstr[0] "
+                                Znaleziono %(elections_count)s wynik
+                                "
+msgstr[1] "
+                                Znaleziono %(elections_count)s wyników
+                                "
 
 msgid "No results found"
-msgstr ""
+msgstr "Nie znaleziono wyników"
 
 msgid "Zeus Electronic Voting"
-msgstr ""
+msgstr "Głosowanie elektroniczne Zeus"
 
 msgid "Form data have changed!"
-msgstr ""
+msgstr "Dane formularza zostały zmienione!"
 
 msgid "Terms of use"
-msgstr ""
+msgstr "Warunki wykorzystania"
 
 msgid "You are logged in as election administrator"
-msgstr ""
+msgstr "Jesteś zalogowana jako administratorka wyborów"
 
 msgid "logout"
-msgstr ""
+msgstr "wyloguj się"
 
 msgid "manage"
-msgstr ""
+msgstr "zarządzaj"
 
 msgid "accounts"
-msgstr ""
+msgstr "konta"
 
 msgid "change password"
-msgstr ""
+msgstr "zmień hasło"
 
 msgid "You are logged in as voter"
-msgstr ""
+msgstr "Jesteś zalogowana jako osoba głosująca"
 
 msgid "You are logged in as trustee"
-msgstr ""
+msgstr "Jesteś zalogowana jako powierniczka"
 
 msgid "Logout"
-msgstr ""
+msgstr "Wyloguj się"
 
 msgid "Login"
-msgstr ""
+msgstr "Logowanie"
 
 msgid "Your new password was set."
-msgstr ""
+msgstr "Nowe hasło zostało ustawione."
 
 #, python-format
 msgid ""
@@ -105,40 +112,47 @@ msgid ""
 "                "
 msgid_plural ""
 "\n"
+"\n"
+"                %(elections_count)s results found\n"
 "                %(elections_count)s results found\n"
 "                "
-msgstr[0] ""
-msgstr[1] ""
+"                "
+msgstr[0] "
+                Znaleziono %(elections_count)s wynik
+                "
+msgstr[1] "
+                Znaleziono %(elections_count)s wyników
+                "
 
 msgid "COMPLETED"
-msgstr ""
+msgstr "ZAKOŃCZONE"
 
 msgid "CANCELED"
-msgstr ""
+msgstr "ANULOWANE"
 
 msgid "PUBLIC"
-msgstr ""
+msgstr "PUBLICZNE"
 
 msgid "SET PUBLIC"
-msgstr ""
+msgstr "USTAW PUBLICZNE"
 
 msgid "UNSET PUBLIC"
-msgstr ""
+msgstr "COFNIJ USTAWIENIE PUBLICZNE"
 
 msgid "YES"
-msgstr ""
+msgstr "TAK"
 
 msgid "NO"
-msgstr ""
+msgstr "NIE"
 
 msgid "Not Decided"
-msgstr ""
+msgstr "Niezdecydowane"
 
 msgid "Unofficial"
-msgstr ""
+msgstr "Nieoficjalne"
 
 msgid "Official"
-msgstr ""
+msgstr "Oficjalne"
 
 msgid "Change language"
-msgstr ""
+msgstr "Zmień język"

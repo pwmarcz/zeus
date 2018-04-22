@@ -21,190 +21,192 @@ msgstr ""
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 msgid "STEP_1_TITLE"
-msgstr ""
+msgstr "ETAP_1_TYTUŁ"
 
 msgid "STEP_2_TITLE"
-msgstr ""
+msgstr "ETAP_2_TYTUŁ"
 
 msgid "INITIALIZING_BOOTH"
-msgstr ""
+msgstr "INICJALIZACJA_KABINY"
 
 msgid "INIT_BOOTH_ESTIMATED_TIME"
-msgstr ""
+msgstr "SZACOWANY_CZAS_INICJ_KABINY"
 
 msgid "PLEASE_WAIT"
-msgstr ""
+msgstr "CZEKAJ"
 
 msgid "BALLOT_ENCRYPTION_IN_PROGRESS"
-msgstr ""
+msgstr "TRWA_SZYFROWANIE_KARTY"
 
 msgid "BALLOT_ENCRYPTION_ESTIMATED_TIME"
-msgstr ""
+msgstr "SZACOWANY_CZAS_SZYFROWANIA_KARTY"
 
 msgid "HELP"
-msgstr ""
+msgstr "POMOC"
 
 msgid "LOGOUT"
-msgstr ""
+msgstr "WYLOGUJ"
 
 msgid "BLANK_BALLOT"
-msgstr ""
+msgstr "PUSTA_KARTA"
 
 msgid "BALLOT_CONTINUE_BUTTON"
-msgstr ""
+msgstr "PRZYCISK_KONTYN_KARTY"
 
 msgid ""
 "If you leave this page with an in-progress ballot, your ballot will be lost."
 msgstr ""
+"Jeżeli wyjdziesz z tej strony z kartą w trakcie wypełniania, to karta zostanie utracona."
 
 msgid ""
 "Are you sure you want to exit the booth and lose all information about your "
 "current ballot?"
 msgstr ""
+"Czy na pewno chcesz wyjść z kabiny i stracić wszystkie informacje o aktualnej karcie?"
 
 msgid "BROWSER_NOT_SUPPORTED_ALERT"
-msgstr ""
+msgstr "ALARM_PRZEGLĄDARKA_NIE_OBSŁUGIWANA"
 
 msgid "EMPTY_PARTY_CHOICE"
-msgstr ""
+msgstr "PUSTY_WYBÓR_FRAKCJI"
 
 msgid "HELP_EMAIL_SUBJECT"
-msgstr ""
+msgstr "TEMAT_EMAILA_POMOCY"
 
 msgid "HELP_EMAIL_BODY"
-msgstr ""
+msgstr "TEKST_EMAILA_POMOCY"
 
 msgid "ELECTION_INIT_ERROR"
-msgstr ""
+msgstr "BŁĄD_INICJALIZACJI_WYBORÓW"
 
 msgid "ENCRYPTION_PROCESS_FAILED"
-msgstr ""
+msgstr "NIEPOWODZENIE_PROCESU_SZYFROWANIA"
 
 msgid "AUDIT_BALLOT_CAST_COMPLETE"
-msgstr ""
+msgstr "KONTROLA_WYSŁANEJ_KARTY_ZAKOŃCZONA"
 
 msgid "ELECTION_TERMS_ACCEPT_REQUIRED"
-msgstr ""
+msgstr "WYMAGANA_AKCEPTACJA_WARUNKÓW_WYBORÓW"
 
 msgid "BALLOT_CAST_FAILED"
-msgstr ""
+msgstr "WYSŁANIE_KARTY_NIE_POWIODŁO_SIĘ"
 
 msgid "CAST_VOTE_ID"
-msgstr ""
+msgstr "ID_ODDANEGO_GŁOSU"
 
 msgid "WINDOW_CLOSE_CONFIRM"
-msgstr ""
+msgstr "POTWIERDŹ_ZAMKNIĘCIE_OKNA"
 
 msgid "AUDIT_BALLOT_SUBMIT"
-msgstr ""
+msgstr "KONTROLA_KARTY_WYŚLIJ"
 
 msgid "AUDIT_BALLOT_SET"
-msgstr ""
+msgstr "KONTROLA_KARTY_USTAW"
 
 msgid "AUDIT_BALLOT_BACK_PROMPT"
-msgstr ""
+msgstr "KONTROLA_KARTY_COFNIJ_PYTANIE"
 
 msgid "AUDIT_BALLOT_CONFIRM_BUTTON"
-msgstr ""
+msgstr "KONTROLA_KARTY_PRZYCISK_POTWIERDŹ"
 
 msgid "AUDIT_BALLOT_BACK_BUTTON"
-msgstr ""
+msgstr "KONTROLA_KARTY_PRZYCISK_COFNIJ"
 
 msgid "AUDIT_BALLOT_BACK_TO_ELECTION_BUTTON"
-msgstr ""
+msgstr "KONTROLA_KARTY_PRZYCISK_POWRÓT_DO_WYBORÓW"
 
 msgid "BALLOT_SUBMISSION_IN_PROGRESS"
-msgstr ""
+msgstr "WYSYŁANIE_KARTY_TRWA"
 
 msgid "BALLOT_SUBMISSION_PLEASE_WAIT"
-msgstr ""
+msgstr "WYSYŁANIE_KARTY_CZEKAJ"
 
 msgid "ELECTION_INTRO_BODY"
-msgstr ""
+msgstr "TEKST_WPROWADZENIA_WYBORÓW"
 
 msgid "START"
-msgstr ""
+msgstr "START"
 
 msgid "ELECTION_KEY_NOT_INITIALIZED"
-msgstr ""
+msgstr "KLUCZ_WYBORÓW_NIE_ZAINICJOWANY"
 
 msgid "POLL_IDENTIFIER"
-msgstr ""
+msgstr "IDENTYFIKATOR_GŁOSOWANIA"
 
 msgid "ELECTION_INFO_BUTTON"
-msgstr ""
+msgstr "PRZYCISK_INFORMACJE_WYBORÓW"
 
 msgid "CONTACT_DETAILS"
-msgstr ""
+msgstr "INFORMACJE_KONTAKTOWE"
 
 msgid "EMAIL"
-msgstr ""
+msgstr "EMAIL"
 
 msgid "PHONE"
-msgstr ""
+msgstr "TELEFON"
 
 msgid "AUDIT_VOTE_CODE_PROMPT"
-msgstr ""
+msgstr "PODAJ_KOD_KONTROLI_GŁOSU"
 
 msgid "AUDIT_VOTE_INSTRUCTIONS"
-msgstr ""
+msgstr "INSTRUKCJE_KONTROLI_GŁOSU"
 
 msgid "AUDIT_VOTE_CODE_LABEL"
-msgstr ""
+msgstr "ETYKIETA_KODU_KONTROLI_GŁOSU"
 
 msgid "UP_TO"
-msgstr ""
+msgstr "DO"
 
 msgid "CHOICE"
-msgstr ""
+msgstr "WYBÓR"
 
 msgid "CHOICES"
-msgstr ""
+msgstr "WYBORÓW"
 
 msgid "choice"
-msgstr ""
+msgstr "wybór"
 
 msgid "choices"
-msgstr ""
+msgstr "wyborów"
 
 msgid "to"
-msgstr ""
+msgstr "do"
 
 msgid "Blank vote"
-msgstr ""
+msgstr "Pusty głos"
 
 msgid "AUDIT_VOTE_SUBMISSION_BUTTON"
-msgstr ""
+msgstr "PRZYCISK_WYSŁANIA_KONTROLI_GŁOSU"
 
 msgid "STV_BALLOT_HELP_TEXT"
-msgstr ""
+msgstr "TEKST_POMOCY_KARTY_PGP"
 
 msgid "STV_BALLOT_CANDIDATES_HEADER"
-msgstr ""
+msgstr "NAGŁÓWEK_KANDYDATUR_KARTA_PGP"
 
 msgid "STV_BALLOT_CANDIDATES_SELECT_HEADER"
-msgstr ""
+msgstr "NAGŁÓWEK_WYBÓR_KANDYDATUR_KARTA_PGP"
 
 msgid "STV_BALLOT_CHOICE"
-msgstr ""
+msgstr "WYBÓR_KARTA_PGP"
 
 msgid "BALLOT_ENCRYPTED_SUCCESS"
-msgstr ""
+msgstr "SUKCES_SZYFROWANIA_KARTY"
 
 msgid "CHOICE_RANK"
-msgstr ""
+msgstr "WYBÓR_RANGA"
 
 msgid "BACK_TO_BALLOT_CHOICES"
-msgstr ""
+msgstr "POWRÓT_DO_KARTY_WYBORY"
 
 msgid "SUBMIT_BALLOT_PROMPT"
-msgstr ""
+msgstr "ZGŁOSZENIE_WYŚLIJ_KARTĘ"
 
 msgid "CONFIRM"
-msgstr ""
+msgstr "POTWIERDŹ"
 
 msgid "ELECTION_TERMS_LABEL"
-msgstr ""
+msgstr "ETYKIETA_WARUNKI_WYBORÓW"
 
 msgid "SUBMIT_BALLOT"
-msgstr ""
+msgstr "WYŚLIJ_KARTĘ"
