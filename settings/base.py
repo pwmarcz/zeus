@@ -18,13 +18,13 @@ TESTING = False
 DEBUG = False
 ZEUS_TASK_DEBUG = False
 
-ADMINS = (
-    ('Grnet user', 'test@grnet.gr'),
-)
+ADMINS = [
+    ('Zeus admin', 'zeus.admin@localhost'),
+]
 
-ELECTION_ADMINS = (
-    ('Grnet user', 'tesst@grnet.gr'),
-)
+ELECTION_ADMINS = [
+    ('Zeus election admin', 'zeus.election@localhost'),
+]
 
 MANAGERS = ADMINS
 
@@ -40,7 +40,7 @@ DATABASES = {
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Athens'
+TIME_ZONE = 'Europe/Warsaw'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -144,8 +144,8 @@ MEDIA_ROOT = MEDIA_ROOT
 VOTER_UPLOAD_REL_PATH = "voters/%Y/%m/%d"
 
 # Change your email settings
-DEFAULT_FROM_EMAIL = get_from_env('DEFAULT_FROM_EMAIL', 'elections@zeus.minedu.gov.gr')
-DEFAULT_FROM_NAME = get_from_env('DEFAULT_FROM_NAME', 'Εκλογές zeus.minedu.gov.gr')
+DEFAULT_FROM_EMAIL = get_from_env('DEFAULT_FROM_EMAIL', 'zeus.from@localhost')
+DEFAULT_FROM_NAME = get_from_env('DEFAULT_FROM_NAME', 'Zeus admin')
 SERVER_EMAIL = '%s <%s>' % (DEFAULT_FROM_NAME, DEFAULT_FROM_EMAIL)
 
 LOGIN_URL = '/auth/'
@@ -168,7 +168,7 @@ SECURE_URL_HOST = get_from_env("SECURE_URL_HOST", "http://%s:8000" % SITE_DOMAIN
 SOCIALBUTTONS_URL_HOST= get_from_env("SOCIALBUTTONS_URL_HOST", "http://%s:8000" % SITE_DOMAIN)
 
 # election stuff
-SITE_TITLE = get_from_env('SITE_TITLE', 'Ηλεκτρονική κάλπη "Ζευς"')
+SITE_TITLE = get_from_env('SITE_TITLE', 'Zeus election server')
 
 # FOOTER links
 FOOTER_LINKS = []
@@ -176,7 +176,7 @@ FOOTER_LOGO = False
 
 WELCOME_MESSAGE = get_from_env('WELCOME_MESSAGE', "This is the default message")
 
-HELP_EMAIL_ADDRESS = get_from_env('HELP_EMAIL_ADDRESS', 'help@heliosvoting.org')
+HELP_EMAIL_ADDRESS = get_from_env('HELP_EMAIL_ADDRESS', 'zeus.help@localhost')
 
 AUTH_TEMPLATE_BASE = "server_ui/templates/base.html"
 HELIOS_TEMPLATE_BASE = "server_ui/templates/base.html"
