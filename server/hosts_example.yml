@@ -6,3 +6,4 @@ all:
       zeus_use_ssl: yes
       zeus_git_repo: https://github.com/pwmarcz/zeus.git
       zeus_git_version: prod
+      zeus_settings: prod

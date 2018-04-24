@@ -1,5 +1,5 @@
 
-from .prod import *  # noqa
+from .{{ zeus_settings }} import *  # noqa
 from copy import deepcopy
 
 DATABASES = deepcopy(DATABASES)

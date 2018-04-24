@@ -19,6 +19,7 @@ SECRET_KEY = SECRETS['secret_key']
 CELERY_TASK_ALWAYS_EAGER = False
 
 if 'EMAIL_HOST' in SECRETS:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = SECRETS['EMAIL_HOST']
     EMAIL_PORT = SECRETS['EMAIL_PORT']
     EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
