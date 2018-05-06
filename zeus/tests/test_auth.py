@@ -1,8 +1,6 @@
-
 from django.test import TestCase
 
 import datetime
-import os
 
 from helios.models import Election, Poll, Voter
 from heliosauth.models import User
@@ -83,6 +81,8 @@ class TestAuth(SetUpAdminAndClientMixin, TestCase):
                                })
 
         assert response.status_code == 302
+        
+
 
 
 
