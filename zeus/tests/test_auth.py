@@ -81,7 +81,7 @@ class TestAuth(SetUpAdminAndClientMixin, TestCase):
                                })
 
         assert response.status_code == 302
-        
+
 
 
 
