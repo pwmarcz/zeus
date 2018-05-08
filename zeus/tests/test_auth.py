@@ -82,6 +82,16 @@ class TestAuth(SetUpAdminAndClientMixin, TestCase):
 
         assert response.status_code == 302
 
+    def test_change_password(self):
+        response = self.c.post('/auth/auth/change_password',
+                               {
+                                   'password': self.login_data['password'],
+                                   'new_password': 'adminadmin',
+                                   'new_password_confirm': 'adminadmin'
+                               })
+        assert response.status_code == 302
+
+
 
 
 
