@@ -90,4 +90,3 @@ class TestAuth(SetUpAdminAndClientMixin, TestCase):
                                    'new_password_confirm': 'adminadmin'
                                })
         assert response.status_code == 302
-
