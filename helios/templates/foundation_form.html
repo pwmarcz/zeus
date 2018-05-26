@@ -12,7 +12,6 @@
 <br />
 {% endif %}
 {% for field in form %}
-
 {% if not form.fieldsets or not field.field in form.fieldset_fields %}
 {% if field.is_hidden %}
 {{ field }}
