@@ -28,14 +28,29 @@ class SavElection(ElectionModuleBase):
         if not poll.questions_data:
             poll.questions_data = [{}]
 
+        initial = poll.questions_data
+
+
         questions_formset = formset_factory(SavForm,
                                             can_delete=True, can_order=True)
 
         if request.method == 'POST':
             formset = questions_formset(request.POST, initial=initial)
+        else:
+            formset = questions_formset(initial=initial)
+
+        context = {
+            # 'default_answers_count': DEFAULT_ANSWERS_COUNT,
+            'formset': formset,
+            # 'max_questions_limit': 1,
+            'election': election,
+            'poll': poll,
+            'module': self
+        }
+        set_menu('questions', context)
 
         tpl = 'election_modules/sav/election_poll_questions_manage'
-        return render_template(request, tpl)
+        return render_template(request, tpl, context)
 
 
     # def extract_question_data(self, questions):

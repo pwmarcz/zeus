@@ -1,1 +1,38 @@
-<div> dupa</div>
+{% extends "election_page.html" %}{% load i18n %}
+
+{% block title %}{{election.name}}: Candidates{% endblock %}
+{% block tabs_menu %}
+{% include "_election_view_menu.html" %}
+{% endblock %}
+{% block content %}
+
+<form class="prettyform questions" action="" method="POST" id="create_election_form">
+<dl class="tabs contained">
+  <dd class="add_new"><a href="#" style="color: green">
+    <i class="general foundicon-plus"></i></a></dd>
+  {% for form in formset %}
+  <dd class="{% if forloop.counter == 1 %}active{% endif %} hide-for-small"><a
+      href="#q{{ forloop.counter }}">
+      {% trans module.question_title_message %}
+      {{ forloop.counter}}</a></dd>
+  {% endfor %}
+  <dd class="remove_current" style="float: right"><a href="#"
+    style="color:red"><i class="general foundicon-minus"></i></a></dd>
+</dl>
+{{ formset.management_form }}
+{% if not formset.management_form.is_valid %}
+{{ formset.management_form.errors }}
+{% endif %}
+<ul class="tabs-content contained">
+  {% for form in formset %}
+  <li id="q{{ forloop.counter }}Tab" {% if forloop.counter == 1 %}style="display:block"{% endif %}>
+  {% include "foundation_form.html" %}
+  <a href="#" class="add_answer" style="font-weight: bold;color: green; display:block;">
+    <i class="general foundicon-plus"></i>
+  </a>
+  </li>
+  {% endfor %}
+  </ul>
+  <input class="button" type="submit" value="{% trans "Save" %}" id="next_button" />
+</form>
+{% endblock %}
