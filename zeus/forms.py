@@ -449,6 +449,20 @@ class CandidateWidget(MultiWidget):
         return json.dumps(datalist)
 
 
+class SavForm(QuestionBaseForm):
+
+    def __init__(self, *args, **kwargs):
+
+        super(SavForm, self).__init__(*args, **kwargs)
+
+        elig_help_text = _("set the eligibles count of the election")
+        label_text = _("Eligibles count")
+        ordered_dict_prepend(self.fields, 'eligibles',
+                             forms.CharField(
+                                 label=label_text,
+                                 help_text=elig_help_text))
+
+
 class StvForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
