@@ -7,7 +7,7 @@ except ImportError:
 import os
 import errno
 import datetime
-import multiprocessing
+import billiard
 from copy import deepcopy
 
 DEBUG = False
@@ -45,7 +45,7 @@ SOUTH_TESTS_MIGRATE = False
     #}
 #}
 
-ZEUS_MIXNET_NR_PARALLEL = multiprocessing.cpu_count()
+ZEUS_MIXNET_NR_PARALLEL = billiard.cpu_count()
 ZEUS_MIXNET_NR_ROUNDS = 16
 
 ZEUS_ELECTION_STREAM_HANDLER = os.environ.get("ZEUS_TESTS_VERBOSE", False)
