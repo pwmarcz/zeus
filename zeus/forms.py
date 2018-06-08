@@ -476,7 +476,6 @@ class StvForm(QuestionBaseForm):
                                               label=('Candidate'))
             self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
-
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
         dep_lim_label = _("Constituency limit")
