@@ -369,6 +369,8 @@ $(document).ready(function(){
 
     add_answer: function(qindex) {
       var answer_index = this.answers(qindex).length;
+      console.log(this.answers(qindex))
+      console.log(answer_index)
       var last = this.answers(qindex).last().closest(".form-field");
       var el = this._new_answer_el(qindex, answer_index);
       $(el).insertAfter(last);

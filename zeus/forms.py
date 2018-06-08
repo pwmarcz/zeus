@@ -296,7 +296,7 @@ class QuestionBaseForm(forms.Form):
             self.fields[field_key] = forms.CharField(max_length=300,
                                               required=True,
                                               widget=AnswerWidget)
-            self.fields[field_key].widget.attrs = {'class': 'answer_input'}
+            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
         self._answers = answers
 
@@ -488,6 +488,7 @@ class StvForm(QuestionBaseForm):
                                               required=True,
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
                                               label=('Candidate'))
+
 
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
