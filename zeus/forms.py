@@ -455,12 +455,68 @@ class SavForm(QuestionBaseForm):
 
         super(SavForm, self).__init__(*args, **kwargs)
 
+        self.fields.pop('question')
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)]) // 2
+        if not answers:
+            answers = len([k for k in self.initial if k.startswith("answer_")])
+        if answers == 0:
+            answers = DEFAULT_ANSWERS_COUNT
+
+        self.fields.clear()
+        for ans in range(answers):
+            field_key = 'answer_%d' % ans
+            self.fields[field_key] = forms.CharField(max_length=600,
+                                              required=True,
+                                              label=('Candidate'))
+            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
+
         elig_help_text = _("set the eligibles count of the election")
         label_text = _("Eligibles count")
         ordered_dict_prepend(self.fields, 'eligibles',
                              forms.CharField(
                                  label=label_text,
                                  help_text=elig_help_text))
+
+    min_answers = None
+    max_answers = None
+    #
+    # def clean(self):
+    #     from django.forms.utils import ErrorList
+    #     message = _("This field is required.")
+    #     answers = len([k for k in self.data if k.startswith("%s-answer_" %
+    #                                             self.prefix)]) // 2
+    #     #list used for checking duplicate candidates
+    #     candidates_list = []
+    #
+    #     for ans in range(answers):
+    #         field_key = 'answer_%d' % ans
+    #         answer = self.cleaned_data[field_key]
+    #         answer_lst = json.loads(answer)
+    #         if '%' in answer_lst[0]:
+    #             raise forms.ValidationError(INVALID_CHAR_MSG)
+    #         candidates_list.append(answer_lst[0])
+    #         if not answer_lst[0]:
+    #             self._errors[field_key] = ErrorList([message])
+    #         answer_lst[0] = answer_lst[0].strip()
+    #         self.cleaned_data[field_key] = json.dumps(answer_lst)
+    #
+    #     if len(candidates_list) > len(set(candidates_list)):
+    #         raise forms.ValidationError(_("No duplicate choices allowed"))
+    #
+    #     return self.cleaned_data
+
+    def clean_eligibles(self):
+        message = _("Value must be a positve integer")
+        eligibles = self.cleaned_data.get('eligibles')
+        try:
+            eligibles = int(eligibles)
+            if eligibles > 0:
+                return eligibles
+            else:
+                raise forms.ValidationError(message)
+        except ValueError as TypeError:
+            raise forms.ValidationError(message)
 
 
 class StvForm(QuestionBaseForm):
@@ -488,7 +544,7 @@ class StvForm(QuestionBaseForm):
                                               required=True,
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
                                               label=('Candidate'))
-
+            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
