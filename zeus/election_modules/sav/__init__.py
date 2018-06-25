@@ -2,11 +2,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from fractions import Fraction
 
 from zeus.election_modules import ElectionModuleBase, election_module
 from zeus.views.utils import set_menu
 
 from helios.view_utils import render_template
+from zeus.core import gamma_decode, to_absolute_answers
+
 
 import json
 
@@ -23,6 +26,29 @@ class SavElection(ElectionModuleBase):
     no_questions_added_message = _('No questions set')
     manage_questions_title = _('Manage questions')
 
+    def extract_question_data(self, questions):
+        questions_data = []
+        for question in questions:
+            if not question:
+                continue
+
+            # force sort of answers by extracting index from answer key.
+            # cast answer index to integer, otherwise answer_10 would
+            # be placed before answer_2
+            answer_index = lambda a: int(a[0].replace('answer_', ''))
+            isanswer = lambda a: a[0].startswith('answer_')
+            answer_values = list(filter(isanswer, iter(question.items())))
+            sorted_answers = sorted(answer_values, key=answer_index)
+
+            answers = [x[1] for x in sorted_answers]
+            question['answers'] = answers
+            for k in list(question.keys()):
+                if k in ['DELETE', 'ORDER']:
+                    del question[k]
+
+            questions_data.append(question)
+        return questions_data
+
     def questions_update_view(self, request, election, poll):
         from zeus.utils import poll_reverse
         from zeus.forms import SavForm, DEFAULT_ANSWERS_COUNT
@@ -30,7 +56,6 @@ class SavElection(ElectionModuleBase):
         if not poll.questions_data:
             poll.questions_data = [{}]
 
-        poll.questions_data[0]['departments_data'] = election.departments
         initial = poll.questions_data
 
         extra = 1
@@ -41,30 +66,23 @@ class SavElection(ElectionModuleBase):
                                             can_delete=True, can_order=True)
 
         if request.method == 'POST':
-            formset = questions_formset(request.POST, initial=initial)
-
+            formset = questions_formset(request.POST)
             if formset.is_valid():
                 questions_data = []
-
                 for question in formset.cleaned_data:
                     if not question:
                         continue
+
                     # force sort of answers by extracting index from answer key.
                     # cast answer index to integer, otherwise answer_10 would
                     # be placed before answer_2
                     answer_index = lambda a: int(a[0].replace('answer_', ''))
                     isanswer = lambda a: a[0].startswith('answer_')
-
                     answer_values = list(filter(isanswer, iter(question.items())))
                     sorted_answers = sorted(answer_values, key=answer_index)
 
-                    answers = [json.loads(x[1])[0] for x in sorted_answers]
-                    departments = [json.loads(x[1])[1] for x in sorted_answers]
+                    question['answers'] = [x[1] for x in sorted_answers]
 
-                    final_answers = []
-                    for a, d in zip(answers, departments):
-                        final_answers.append(a+':'+d)
-                    question['answers'] = final_answers
                     for k in list(question.keys()):
                         if k in ['DELETE', 'ORDER']:
                             del question[k]
@@ -74,13 +92,12 @@ class SavElection(ElectionModuleBase):
                 poll.questions_data = questions_data
                 poll.update_answers()
                 poll.logger.info("Poll ballot updated")
-                poll.eligibles_count = int(formset.cleaned_data[0]['eligibles'])
                 poll.save()
 
                 url = poll_reverse(poll, 'questions')
                 return HttpResponseRedirect(url)
         else:
-            formset = questions_formset(initial=initial)
+            formset = questions_formset(initial=poll.questions_data)
 
         context = {
             'default_answers_count': DEFAULT_ANSWERS_COUNT,
@@ -119,4 +136,18 @@ class SavElection(ElectionModuleBase):
         self.poll._init_questions(len(answers))
         self.poll.questions[0]['answers'] = answers
 
+    def compute_results(self):
+        cands_data = self.poll.questions_data[0]['answers']
+        cands_count = len(cands_data)
+        ballots_data = self.poll.result[0]
+        candidates_dict = {candidate: 0 for candidate in cands_data}
+
+        for ballot in ballots_data:
+            if not ballot:
+                continue
+            ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
+                                         cands_count)
+
+            for i in ballot:
+                candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
 

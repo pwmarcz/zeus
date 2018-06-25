@@ -457,7 +457,7 @@ class SavForm(QuestionBaseForm):
 
         self.fields.pop('question')
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
-                                                self.prefix)]) // 2
+                                                self.prefix)])
         if not answers:
             answers = len([k for k in self.initial if k.startswith("answer_")])
         if answers == 0:
@@ -471,44 +471,41 @@ class SavForm(QuestionBaseForm):
                                               label=('Candidate'))
             self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
-        elig_help_text = _("set the eligibles count of the election")
-        label_text = _("Eligibles count")
-        ordered_dict_prepend(self.fields, 'eligibles',
+        elig_help_text = _("set minimal number of votes")
+        label_text = _("Minimum votes")
+        ordered_dict_prepend(self.fields, 'min_votes',
                              forms.CharField(
                                  label=label_text,
                                  help_text=elig_help_text))
 
     min_answers = None
     max_answers = None
-    #
-    # def clean(self):
-    #     from django.forms.utils import ErrorList
-    #     message = _("This field is required.")
-    #     answers = len([k for k in self.data if k.startswith("%s-answer_" %
-    #                                             self.prefix)]) // 2
-    #     #list used for checking duplicate candidates
-    #     candidates_list = []
-    #
-    #     for ans in range(answers):
-    #         field_key = 'answer_%d' % ans
-    #         answer = self.cleaned_data[field_key]
-    #         answer_lst = json.loads(answer)
-    #         if '%' in answer_lst[0]:
-    #             raise forms.ValidationError(INVALID_CHAR_MSG)
-    #         candidates_list.append(answer_lst[0])
-    #         if not answer_lst[0]:
-    #             self._errors[field_key] = ErrorList([message])
-    #         answer_lst[0] = answer_lst[0].strip()
-    #         self.cleaned_data[field_key] = json.dumps(answer_lst)
-    #
-    #     if len(candidates_list) > len(set(candidates_list)):
-    #         raise forms.ValidationError(_("No duplicate choices allowed"))
-    #
-    #     return self.cleaned_data
+
+    def clean(self):
+        from django.forms.utils import ErrorList
+        message = _("This field is required.")
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)])
+
+        #list used for checking duplicate candidates
+        candidates_list = []
+
+        for ans in range(0, answers):
+            field_key = 'answer_%d' % ans
+            answer = self.cleaned_data[field_key]
+            if not answer:
+                self._errors[field_key] = ErrorList([message])
+            if '%' in answer:
+                raise forms.ValidationError(INVALID_CHAR_MSG)
+
+        if len(candidates_list) > len(set(candidates_list)):
+            raise forms.ValidationError(_("No duplicate choices allowed"))
+
+        return self.cleaned_data
 
     def clean_eligibles(self):
         message = _("Value must be a positve integer")
-        eligibles = self.cleaned_data.get('eligibles')
+        eligibles = self.cleaned_data.get('min_votes')
         try:
             eligibles = int(eligibles)
             if eligibles > 0:
@@ -579,8 +576,10 @@ class StvForm(QuestionBaseForm):
     def clean(self):
         from django.forms.utils import ErrorList
         message = _("This field is required.")
+
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)]) // 2
+
         #list used for checking duplicate candidates
         candidates_list = []
 
@@ -588,6 +587,7 @@ class StvForm(QuestionBaseForm):
             field_key = 'answer_%d' % ans
             answer = self.cleaned_data[field_key]
             answer_lst = json.loads(answer)
+            print(answer_lst)
             if '%' in answer_lst[0]:
                 raise forms.ValidationError(INVALID_CHAR_MSG)
             candidates_list.append(answer_lst[0])

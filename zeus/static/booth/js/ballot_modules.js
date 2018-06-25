@@ -759,12 +759,32 @@ BM.ModuleBase, {
 
     return choices;
   }
+
 });
+
+BM.SAVElection = function(election) {
+  this._init(election);
+};
+
+_.extend(BM.SAVElection.prototype,
+BM.ModuleBase, {
+    tpl: 'question_sav',
+
+    can_add: function(choice, question) {
+      return true;
+  },
+
+    update_layout: function() {
+
+    }
+  })
+
 
 BM.registry = {
   simple: BM.SimpleElection,
   parties: BM.PartiesElection,
   score: BM.ScoreElection,
-  stv: BM.STVElection
+  stv: BM.STVElection,
+  sav: BM.SAVElection,
 }
 
