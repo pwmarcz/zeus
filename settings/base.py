@@ -342,11 +342,12 @@ LOGGING = {
             'propagate': True,
         },
         'django.request': {
+            'handlers': ['mail_admins'],
             'propagate': True,
         },
     },
     'root': {
-        'handlers': ['console', 'syslog', 'mail_admins'],
+        'handlers': ['console', 'syslog'],
         'level': 'DEBUG',
         'propagate': True,
     },
