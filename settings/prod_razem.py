@@ -5,9 +5,6 @@ ADMIN_EMAIL = 'razem.pkw@gmail.com'
 
 ADMINS = [
     ('PKW Gmail', 'razem.pkw@gmail.com'),
-    ('Leszek Karlik', 'leszek.karlik@gmail.com'),
-    ('Zarzad', 'razem.zarzad@gmail.com'),
-    ('Prezydium RK', 'razem.prezydiumrk@gmail.com'),
 ]
 ELECTION_ADMINS = ADMINS
 MANAGERS = ADMINS
