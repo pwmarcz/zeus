@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
-from django.conf import settings
 from fractions import Fraction
 
 from zeus.election_modules import ElectionModuleBase, election_module
@@ -9,9 +8,6 @@ from zeus.views.utils import set_menu
 
 from helios.view_utils import render_template
 from zeus.core import gamma_decode, to_absolute_answers
-
-
-import json
 
 
 @election_module
@@ -55,8 +51,6 @@ class SavElection(ElectionModuleBase):
 
         if not poll.questions_data:
             poll.questions_data = [{}]
-
-        initial = poll.questions_data
 
         extra = 1
         if poll.questions_data:
@@ -109,7 +103,6 @@ class SavElection(ElectionModuleBase):
         }
         set_menu('questions', context)
 
-
         tpl = 'election_modules/sav/election_poll_questions_manage'
         return render_template(request, tpl, context)
 
@@ -150,4 +143,3 @@ class SavElection(ElectionModuleBase):
 
             for i in ballot:
                 candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
-
