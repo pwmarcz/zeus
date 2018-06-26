@@ -587,7 +587,6 @@ class StvForm(QuestionBaseForm):
             field_key = 'answer_%d' % ans
             answer = self.cleaned_data[field_key]
             answer_lst = json.loads(answer)
-            print(answer_lst)
             if '%' in answer_lst[0]:
                 raise forms.ValidationError(INVALID_CHAR_MSG)
             candidates_list.append(answer_lst[0])
