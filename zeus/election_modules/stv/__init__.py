@@ -97,7 +97,7 @@ class StvElection(ElectionModuleBase):
 
                 url = poll_reverse(poll, 'questions')
                 return HttpResponseRedirect(url)
-        else:
+        else:  # method != 'POST'
             formset = questions_formset(initial=initial)
 
         context = {

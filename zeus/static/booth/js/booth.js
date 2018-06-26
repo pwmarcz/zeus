@@ -175,6 +175,7 @@ BOOTH.setup_election = function(raw_json) {
   var answers_index = 0;
   _.each(BOOTH.election.questions_data, function(data, index){
     BOOTH.election.questions_data[index]['answers_index'] = answers_index;
+
     var prepend = 0;
     if (BOOTH.election.election_module == "simple") {
       prepend = 1;

@@ -449,6 +449,73 @@ class CandidateWidget(MultiWidget):
         return json.dumps(datalist)
 
 
+class SavForm(QuestionBaseForm):
+
+    def __init__(self, *args, **kwargs):
+
+        super(SavForm, self).__init__(*args, **kwargs)
+
+        self.fields.pop('question')
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)])
+        if not answers:
+            answers = len([k for k in self.initial if k.startswith("answer_")])
+        if answers == 0:
+            answers = DEFAULT_ANSWERS_COUNT
+
+        self.fields.clear()
+        for ans in range(answers):
+            field_key = 'answer_%d' % ans
+            self.fields[field_key] = forms.CharField(max_length=600,
+                                              required=True,
+                                              label=('Candidate'))
+            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
+
+        elig_help_text = _("set minimal number of votes")
+        label_text = _("Minimum votes")
+        ordered_dict_prepend(self.fields, 'min_votes',
+                             forms.CharField(
+                                 label=label_text,
+                                 help_text=elig_help_text))
+
+    min_answers = None
+    max_answers = None
+
+    def clean(self):
+        from django.forms.utils import ErrorList
+        message = _("This field is required.")
+        answers = len([k for k in self.data if k.startswith("%s-answer_" %
+                                                self.prefix)])
+
+        #list used for checking duplicate candidates
+        candidates_list = []
+
+        for ans in range(0, answers):
+            field_key = 'answer_%d' % ans
+            answer = self.cleaned_data[field_key]
+            if not answer:
+                self._errors[field_key] = ErrorList([message])
+            if '%' in answer:
+                raise forms.ValidationError(INVALID_CHAR_MSG)
+
+        if len(candidates_list) > len(set(candidates_list)):
+            raise forms.ValidationError(_("No duplicate choices allowed"))
+
+        return self.cleaned_data
+
+    def clean_eligibles(self):
+        message = _("Value must be a positive integer")
+        eligibles = self.cleaned_data.get('min_votes')
+        try:
+            eligibles = int(eligibles)
+            if eligibles > 0:
+                return eligibles
+            else:
+                raise forms.ValidationError(message)
+        except ValueError as TypeError:
+            raise forms.ValidationError(message)
+
+
 class StvForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
@@ -509,8 +576,10 @@ class StvForm(QuestionBaseForm):
     def clean(self):
         from django.forms.utils import ErrorList
         message = _("This field is required.")
+
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)]) // 2
+
         #list used for checking duplicate candidates
         candidates_list = []
 
@@ -532,7 +601,7 @@ class StvForm(QuestionBaseForm):
         return self.cleaned_data
 
     def clean_eligibles(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         eligibles = self.cleaned_data.get('eligibles')
         try:
             eligibles = int(eligibles)
@@ -544,7 +613,7 @@ class StvForm(QuestionBaseForm):
             raise forms.ValidationError(message)
 
     def clean_department_limit(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         dep_limit = self.cleaned_data.get('department_limit')
         if self.cleaned_data.get('has_department_limit'):
             if not dep_limit:

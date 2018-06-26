@@ -297,4 +297,5 @@ from zeus.election_modules.simple import *  # noqa
 from zeus.election_modules.parties import * # noqa
 from zeus.election_modules.score import * # noqa
 from zeus.election_modules.stv import * # noqa
+from zeus.election_modules.sav import * # noqa
 from zeus.election_modules.unigovgr import * # noqa
