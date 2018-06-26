@@ -308,6 +308,9 @@ LOGGING = {
         'simple': {
             'format': '%(asctime)s [%(levelname)s] %(message)s'
         },
+        'verbose': {
+            'format': 'zeus: %(process)d [%(levelname)s] %(message)s'
+        },
     },
     'filters': {},
     'handlers': {
@@ -317,10 +320,23 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'syslog': {
+            'level': 'INFO',
+            'class': 'logging.handlers.SysLogHandler',
+            'address': '/dev/log',
+            'formatter': 'verbose'
+        },
     },
-    'loggers': {},
+    'loggers': {
+        'django': {
+            'propagate': True,
+        },
+        'django.request': {
+            'propagate': True,
+        },
+    },
     'root': {
-        'handlers': ['console'],
+        'handlers': ['console', 'syslog'],
         'level': 'DEBUG',
         'propagate': True,
     },
