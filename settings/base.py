@@ -312,7 +312,11 @@ LOGGING = {
             'format': 'zeus: %(process)d [%(levelname)s] %(message)s'
         },
     },
-    'filters': {},
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
     'handlers': {
         'console': {
             'level': 'INFO',
@@ -326,6 +330,12 @@ LOGGING = {
             'address': '/dev/log',
             'formatter': 'verbose'
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false'],
+            'include_html': True,
+        },
     },
     'loggers': {
         'django': {
@@ -336,7 +346,7 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'syslog'],
+        'handlers': ['console', 'syslog', 'mail_admins'],
         'level': 'DEBUG',
         'propagate': True,
     },
