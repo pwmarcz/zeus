@@ -504,7 +504,7 @@ class SavForm(QuestionBaseForm):
         return self.cleaned_data
 
     def clean_eligibles(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         eligibles = self.cleaned_data.get('min_votes')
         try:
             eligibles = int(eligibles)
@@ -601,7 +601,7 @@ class StvForm(QuestionBaseForm):
         return self.cleaned_data
 
     def clean_eligibles(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         eligibles = self.cleaned_data.get('eligibles')
         try:
             eligibles = int(eligibles)
@@ -613,7 +613,7 @@ class StvForm(QuestionBaseForm):
             raise forms.ValidationError(message)
 
     def clean_department_limit(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         dep_limit = self.cleaned_data.get('department_limit')
         if self.cleaned_data.get('has_department_limit'):
             if not dep_limit:
