@@ -3,6 +3,7 @@ import datetime
 
 from email.utils import formataddr
 from django.conf import settings
+from django.utils import translation
 from django.core.mail import EmailMessage
 from django.urls import reverse
 from helios.view_utils import render_template_raw
@@ -73,12 +74,14 @@ class ContactBackend():
                 data = poll.election.sms_data
             backend = ContactBackend.get_backend(method, logger, data)
 
-            subject_tpl = subjects.get(method)
-            body_tpl = bodies.get(method)
-            subject = None
-            if subject_tpl:
-                subject = backend.render_template(subject_tpl, the_vars)
-            body = backend.render_template(body_tpl, the_vars)
+            lang = poll.election.communication_language
+            with translation.override(lang):
+                subject_tpl = subjects.get(method)
+                body_tpl = bodies.get(method)
+                subject = None
+                if subject_tpl:
+                    subject = backend.render_template(subject_tpl, the_vars)
+                body = backend.render_template(body_tpl, the_vars)
             backend.notify(voter, id, subject, body, attachments, sent_hook)
             notified = True
 

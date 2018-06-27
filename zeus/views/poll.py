@@ -10,6 +10,7 @@ import logging
 
 from django.urls import reverse
 from django.forms import ValidationError
+from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.db import connection
 from django.db.models import Max
@@ -590,10 +591,13 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
     election_url = election.get_absolute_url()
 
-    default_subject = render_to_string(
-        'email/%s_subject.txt' % template, {
-            'custom_subject': "&lt;SUBJECT&gt;"
-        })
+    lang = poll.election.communication_language
+
+    with translation.override(lang):
+        default_subject = render_to_string(
+            'email/%s_subject.txt' % template, {
+                'custom_subject': "&lt;SUBJECT&gt;"
+            })
 
     tpl_context = {
             'election': election,
@@ -617,11 +621,12 @@ def voters_email(request, election, poll=None, voter_uuid=None):
                 'election': election}
             }
 
-    default_body = render_to_string(
-        'email/%s_body.txt' % template, tpl_context)
+    with translation.override(lang):
+        default_body = render_to_string(
+            'email/%s_body.txt' % template, tpl_context)
 
-    default_sms_body = render_to_string(
-        'sms/%s_body.txt' % template, tpl_context)
+        default_sms_body = render_to_string(
+            'sms/%s_body.txt' % template, tpl_context)
 
     q_param = request.GET.get('q', None)
 
