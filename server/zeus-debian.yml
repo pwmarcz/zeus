@@ -121,6 +121,20 @@
           refspec: "refs/heads/{{ zeus_git_version }}"
         become_user: zeus
 
+      - name: set permissions of data directories
+        file:
+          path: "/srv/zeus/install/{{ item }}"
+          state: directory
+          owner: zeus
+          group: zeus
+          mode: 0770
+        with_items:
+          - data
+          - data/election_logs
+          - data/mixes
+          - data/proofs
+          - data/results
+
       - name: symlink settings/local.py
         file:
           src: /srv/zeus/config/settings_local.py
