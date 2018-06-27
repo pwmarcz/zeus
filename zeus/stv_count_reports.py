@@ -57,7 +57,7 @@ def stv_count_and_report(uuid, el_data, base_path="/tmp/"):
     stv_logger.setLevel(logging.DEBUG)
 
     count_results = count_stv(input_ballots, eligibles,
-                                droop=False,
+                                droop=True,
                                 constituencies=constituencies,
                                 quota_limit=elected_limit if elected_limit else 0,
                                 rnd_gen=None, logger=stv_logger)
