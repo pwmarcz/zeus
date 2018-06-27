@@ -3,13 +3,14 @@ import os
 import logging
 import uuid
 import json
+import subprocess
 
 from collections import defaultdict
 from time import time
 from random import randint
 
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed, FileResponse
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, FileResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -354,3 +355,13 @@ def handler400(request):
 def handler404(request):
     msg = _("The requested page was not found.")
     return error(request, 404, msg)
+
+
+def commit(request):
+    output = subprocess.check_output(
+        ['git', 'log', '-n1'],
+        cwd=settings.ROOT_PATH,
+        encoding='utf-8',
+        errors='ignore'
+    )
+    return HttpResponse(output, content_type='text/plain; charset=utf-8')

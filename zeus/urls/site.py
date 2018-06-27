@@ -4,6 +4,7 @@ from zeus.views import site
 
 urlpatterns = [
     url(r'^$', site.home, name='home'),
+    url(r'^commit/$', site.commit, name='commit'),
     url(r'^stvcount/$', site.stv_count, name='stv_count'),
     url(r'^terms/$', site.terms, name='terms'),
     url(r'^faqs/$', site.faqs_voter, name='faqs'),
