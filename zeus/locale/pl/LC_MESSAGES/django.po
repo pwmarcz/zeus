@@ -107,6 +107,9 @@ msgid "English"
 msgstr "Angielski"
 
 msgid "Greek"
+msgstr "Grecki"
+
+msgid "Polish"
 msgstr "Polski"
 
 msgid "Set the language that will be used for email messages"

@@ -9,7 +9,7 @@ with open('/srv/zeus/config/secrets.json') as f:
 DEBUG = False
 
 LANGUAGE_CODE = 'pl'
-LANGUAGES = [('pl', 'Polish'), ('en', 'English')]
+LANGUAGES = [('pl', _('Polish')), ('en', _('English'))]
 
 # TODO make this a per-server secret
 HELIOS_CRYPTOSYSTEM_PARAMS = {}

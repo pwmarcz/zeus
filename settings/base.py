@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from django.utils.translation import ugettext_lazy as _
 
 # go through environment variables and override them
 
@@ -45,7 +46,7 @@ TIME_ZONE = 'Europe/Warsaw'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
-LANGUAGES = [('en', 'English'), ('el', 'Greek'), ('pl', 'Polish')]
+LANGUAGES = [('en', _('English')), ('el', _('Greek')), ('pl', _('Polish'))]
 
 SITE_ID = 1
 
