@@ -35,7 +35,3 @@ Create a secrets file with all passwords generated:
 Apply with:
 
     ansible-playbook zeus.yml -i hosts.yml
-
-To just deploy a new version of the code, run:
-
-    ansible-playbook zeus.yml -i hosts.yml -t deploy

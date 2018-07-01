@@ -184,7 +184,7 @@ class StvElection(ElectionModuleBase):
             count_id += 1
 
         seats = self.poll.eligibles_count
-        droop = False
+        droop = True
         rnd_gen = None # TODO: should be generated and stored on poll freeze
         if self.poll.has_department_limit:
             quota_limit = self.poll.department_limit

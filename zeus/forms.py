@@ -107,8 +107,7 @@ class ElectionForm(forms.ModelForm):
         else:
             lang = None
         super(ElectionForm, self).__init__(*args, **kwargs)
-        choices = [('en', _('English')),
-                   ('el', _('Greek'))]
+        choices = settings.LANGUAGES
         help_text = _("Set the language that will be used for email messages")
         self.fields['communication_language'] = forms.ChoiceField(label=_("Communication language"),
                                                     choices=choices,
@@ -412,6 +411,7 @@ class RequiredFormset(BaseFormSet):
 
 
 class CandidateWidget(MultiWidget):
+    template_name = 'election_modules/stv/candidate_widget.html'
 
     def __init__(self, *args, **kwargs):
         departments = kwargs.pop('departments', [])
@@ -424,23 +424,6 @@ class CandidateWidget(MultiWidget):
             return [None, None]
 
         return json.loads(value)
-
-    def format_output(self, rendered_widgets):
-        """
-        Given a list of rendered widgets (as strings), it inserts an HTML
-        linebreak between them.
-
-        Returns a Unicode string representing the HTML for the whole lot.
-        """
-        return """
-        <div class="row answer_input"><div class="columns nine">%s</div>
-        <div class="columns two" placeholder="">%s</div>
-        <div class="columns one">
-        <a href="#" style="font-weight: bold; color:red"
-        class="remove_answer">X</a>
-        </div>
-        </div>
-        """ % (rendered_widgets[0], rendered_widgets[1])
 
     def value_from_datadict(self, data, files, name):
         datalist = [
@@ -504,7 +487,7 @@ class SavForm(QuestionBaseForm):
         return self.cleaned_data
 
     def clean_eligibles(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         eligibles = self.cleaned_data.get('min_votes')
         try:
             eligibles = int(eligibles)
@@ -541,7 +524,6 @@ class StvForm(QuestionBaseForm):
                                               required=True,
                                               widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
                                               label=('Candidate'))
-            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
@@ -587,7 +569,6 @@ class StvForm(QuestionBaseForm):
             field_key = 'answer_%d' % ans
             answer = self.cleaned_data[field_key]
             answer_lst = json.loads(answer)
-            print(answer_lst)
             if '%' in answer_lst[0]:
                 raise forms.ValidationError(INVALID_CHAR_MSG)
             candidates_list.append(answer_lst[0])
@@ -602,7 +583,7 @@ class StvForm(QuestionBaseForm):
         return self.cleaned_data
 
     def clean_eligibles(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         eligibles = self.cleaned_data.get('eligibles')
         try:
             eligibles = int(eligibles)
@@ -614,7 +595,7 @@ class StvForm(QuestionBaseForm):
             raise forms.ValidationError(message)
 
     def clean_department_limit(self):
-        message = _("Value must be a positve integer")
+        message = _("Value must be a positive integer")
         dep_limit = self.cleaned_data.get('department_limit')
         if self.cleaned_data.get('has_department_limit'):
             if not dep_limit:

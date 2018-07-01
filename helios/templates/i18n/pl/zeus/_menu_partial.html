@@ -1,0 +1,5 @@
+{% load i18n %}
+<dd id="" class="{% if menu_active == "home" %}active{% endif %}"><a
+  href="{% url "home" %}">{% trans "Home" %}</a></dd>
+<dd id="" class="{% if menu_active == "contact" %}active{% endif %}"><a 
+  href="{% url "site_contact" %}">{% trans "Contact" %}</a></dd>

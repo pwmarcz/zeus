@@ -11,7 +11,7 @@ from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
 from Crypto import Random
-from multiprocessing import Pool
+from billiard import Pool
 import json
 from json import load as json_load
 from time import time

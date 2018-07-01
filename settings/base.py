@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+from django.utils.translation import ugettext_lazy as _
 
 # go through environment variables and override them
 
@@ -45,7 +46,7 @@ TIME_ZONE = 'Europe/Warsaw'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
-LANGUAGES = [('en', 'English'), ('el', 'Greek'), ('pl', 'Polish')]
+LANGUAGES = [('en', _('English')), ('el', _('Greek')), ('pl', _('Polish'))]
 
 SITE_ID = 1
 
@@ -308,8 +309,15 @@ LOGGING = {
         'simple': {
             'format': '%(asctime)s [%(levelname)s] %(message)s'
         },
+        'verbose': {
+            'format': 'zeus: %(process)d [%(levelname)s] %(message)s'
+        },
     },
-    'filters': {},
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
     'handlers': {
         'console': {
             'level': 'INFO',
@@ -317,10 +325,30 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'syslog': {
+            'level': 'INFO',
+            'class': 'logging.handlers.SysLogHandler',
+            'address': '/dev/log',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false'],
+            'include_html': False,
+        },
     },
-    'loggers': {},
+    'loggers': {
+        'django': {
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'propagate': True,
+        },
+    },
     'root': {
-        'handlers': ['console'],
+        'handlers': ['console', 'syslog'],
         'level': 'DEBUG',
         'propagate': True,
     },

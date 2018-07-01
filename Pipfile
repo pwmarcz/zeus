@@ -13,6 +13,7 @@ pycryptodome = "*"
 reportlab = "*"
 pyyaml = "*"
 ipython = "*"
+billiard = "*"
 
 [dev-packages]
 codecov = "*"

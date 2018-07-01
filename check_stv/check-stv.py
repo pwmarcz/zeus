@@ -46,7 +46,7 @@ if __name__ == "__main__":
     draws = [str(c) for c in el_data['draws']]
     rnd_gen = draws if draws else None
     count_results = count_stv(input_ballots, eligibles,
-                              droop=False,
+                              droop=True,
                               constituencies=constituencies,
                               quota_limit=2 if hasLimit else 0,
                               rnd_gen=rnd_gen)

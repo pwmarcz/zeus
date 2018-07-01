@@ -1,5 +1,6 @@
 
 from .base import *  # noqa
+from django.utils.translation import ugettext_lazy as _
 
 import json
 
@@ -7,6 +8,9 @@ with open('/srv/zeus/config/secrets.json') as f:
     SECRETS = json.load(f)
 
 DEBUG = False
+
+LANGUAGE_CODE = 'pl'
+LANGUAGES = [('pl', _('Polish')), ('en', _('English'))]
 
 # TODO make this a per-server secret
 HELIOS_CRYPTOSYSTEM_PARAMS = {}
