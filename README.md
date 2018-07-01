@@ -77,7 +77,7 @@ localhost.
 
 Then, run:
 
-    celery worker -l INFO
+    celery worker -A zeus.celery -l INFO
 
 ## Test
 
