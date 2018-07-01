@@ -597,8 +597,7 @@ msgstr "Twój głos został oddany"
 #| "Your vote has been successfully cast.\n"
 #| "Thank you for participating."
 msgid "Your vote has been successfully cast. Thank you for participating."
-msgstr ""
-"Udało Ci się oddać głos.\n"
+msgstr "Udało Ci się oddać głos.\n"
 "Dziękujemy za udział."
 
 #, python-format
