@@ -133,12 +133,6 @@ def election_results_report(elections):
         yield entry
 
 
-def strforce(thing, encoding='utf8'):
-    if isinstance(thing, str):
-        return thing.encode(encoding)
-    return str(thing)
-
-
 def make_csv_intro(writerow, election, lang):
     with translation.override(lang):
         DATE_FMT = "%d/%m/%Y %H:%M"
@@ -147,18 +141,18 @@ def make_csv_intro(writerow, election, lang):
         extended_until = ""
         if election.voting_extended_until:
             extended_until = election.voting_extended_until.strftime(DATE_FMT)
-        writerow([strforce(_("Election name")), strforce(election.name)])
-        writerow([strforce(_("Institution name")), strforce(election.institution.name)])
-        writerow([strforce(_("Start")), strforce(voting_start)])
-        writerow([strforce(_("End")), strforce(voting_end)])
+        writerow([str(_("Election name")), str(election.name)])
+        writerow([str(_("Institution name")), str(election.institution.name)])
+        writerow([str(_("Start")), str(voting_start)])
+        writerow([str(_("End")), str(voting_end)])
         if extended_until:
-            writerow([strforce(_("Extension")), strforce(extended_until)])
+            writerow([str(_("Extension")), str(extended_until)])
         writerow([])
         nr_voters = election.voters.all().count()
-        writerow([strforce(_("Voters")), strforce(nr_voters)])
+        writerow([str(_("Voters")), str(nr_voters)])
         if election.voters.all().excluded().count() > 0:
             ex_voters = election.voters.all().excluded().count()
-            writerow([strforce(_("Excluded voters")), strforce(ex_voters)])
+            writerow([str(_("Excluded voters")), str(ex_voters)])
         writerow([])
 
 
@@ -178,42 +172,42 @@ def csv_from_polls(election, polls, lang, outfile=None):
             writerow([])
             writerow([])
             writerow([])
-            writerow([strforce(_("Poll name")), strforce(poll.name)])
+            writerow([str(_("Poll name")), str(poll.name)])
             writerow([])
             writerow([])
             nr_voters = poll.voters.all().count()
-            writerow([strforce(_("Voters")), strforce(nr_voters)])
+            writerow([str(_("Voters")), str(nr_voters)])
             if poll.voters.all().excluded().count() > 0:
                 ex_voters = poll.voters.all().excluded().count()
-                writerow([strforce(_("Excluded voters")), strforce(ex_voters)])
+                writerow([str(_("Excluded voters")), str(ex_voters)])
             writerow([])
-            writerow([strforce(_('RESULTS'))])
-            writerow([strforce(_('TOTAL VOTES')), strforce(ballot_count)])
-            writerow([strforce(_('VALID VOTES')), strforce(ballot_count - invalid_count)])
-            writerow([strforce(_('INVALID VOTES')), strforce(invalid_count)])
-            writerow([strforce(_('BLANK VOTES')), strforce(blank_count)])
+            writerow([str(_('RESULTS'))])
+            writerow([str(_('TOTAL VOTES')), str(ballot_count)])
+            writerow([str(_('VALID VOTES')), str(ballot_count - invalid_count)])
+            writerow([str(_('INVALID VOTES')), str(invalid_count)])
+            writerow([str(_('BLANK VOTES')), str(blank_count)])
 
             writerow([])
-            writerow([strforce(_('PARTY RESULTS'))])
+            writerow([str(_('PARTY RESULTS'))])
             for count, party in party_results['party_counts']:
                 if party is None:
                     continue
                 party = party.replace("{newline}", " ")
-                writerow([strforce(party), strforce(count)])
+                writerow([str(party), str(count)])
 
             writerow([])
-            writerow([strforce(_('CANDIDATE RESULTS'))])
+            writerow([str(_('CANDIDATE RESULTS'))])
             for count, candidate in party_results['candidate_counts']:
-                writerow([strforce(candidate), strforce(count)])
+                writerow([str(candidate), str(count)])
 
             writerow([])
-            writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('PARTY')),
-                strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
+            writerow([str(_('BALLOTS'))])
+            writerow([str(_('ID')), str(_('PARTY')),
+                str(_('CANDIDATE')), str(_('VALID/INVALID/BLANK'))])
             counter = 0
-            valid = strforce(_('VALID'))
-            invalid = strforce(_('INVALID'))
-            blank = strforce(_('BLANK'))
+            valid = str(_('VALID'))
+            invalid = str(_('INVALID'))
+            blank = str(_('BLANK'))
             empty = '---'
             for ballot in party_results['ballots']:
                 party = empty
@@ -230,7 +224,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
                             writerow([counter, empty, empty, empty])
                             continue
                         else:
-                            party = strforce(party)
+                            party = str(party)
 
                 candidates = ballot['candidates']
                 if not candidates:
@@ -238,7 +232,7 @@ def csv_from_polls(election, polls, lang, outfile=None):
                     continue
 
                 for candidate in candidates:
-                    writerow([counter, party, strforce(": ".join(candidate)), valid])
+                    writerow([counter, party, str(": ".join(candidate)), valid])
 
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
@@ -256,7 +250,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
         from stv.parser import STVParser
         for poll in polls:
             writerow([])
-            writerow([strforce(_("Poll name")), strforce(poll.name)])
+            writerow([str(_("Poll name")), str(poll.name)])
             writerow([])
             questions = poll.questions
             indexed_cands = {}
@@ -270,21 +264,21 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
             stv = STVParser(result_steps)
             rounds = list(stv.rounds())
             writerow([])
-            writerow([strforce(_("Elected")), strforce(_("Departments"))])
+            writerow([str(_("Elected")), str(_("Departments"))])
             for winner_data in results_winners:
                 winner_id = winner_data[0]
                 winner = indexed_cands[str(winner_id)]
                 winner = winner.split(':')
                 winner_name = winner[0]
                 winner_department = winner[1]
-                writerow([strforce(winner_name), strforce(winner_department)])
+                writerow([str(winner_name), str(winner_department)])
             for num, round in rounds:
                 round_name = _('Round ')
                 round_name +=str(num)
                 writerow([])
-                writerow([strforce(round_name)])
-                writerow([strforce(_('Candidate')), strforce(_('Votes')),
-                    strforce(_('Draw')), strforce(_('Action'))])
+                writerow([str(round_name)])
+                writerow([str(_('Candidate')), str(_('Votes')),
+                    str(_('Draw')), str(_('Action'))])
                 for name, cand in round['candidates'].items():
                     actions = [x[0] for x in cand['actions']]
                     actions = [x[0] for x in cand['actions']]
@@ -297,8 +291,8 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     votes = cand['votes']
                     cand_name = indexed_cands[str(name)]
                     cand_name = cand_name.split(':')[0]
-                    writerow([strforce(cand_name), strforce(votes),
-                    strforce(draw), strforce(action)])
+                    writerow([str(cand_name), str(votes),
+                    str(draw), str(action)])
 
 
 def csv_from_score_polls(election, polls, lang, outfile=None):
@@ -320,37 +314,37 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
             writerow([])
             writerow([])
             writerow([])
-            writerow([strforce(poll.name)])
+            writerow([str(poll.name)])
             writerow([])
             writerow([])
-            writerow([strforce(_('RESULTS'))])
-            writerow([strforce(_('TOTAL VOTES')), strforce(ballot_count)])
-            writerow([strforce(_('VALID VOTES')), strforce(ballot_count - invalid_count)])
-            writerow([strforce(_('INVALID VOTES')), strforce(invalid_count)])
-            writerow([strforce(_('BLANK VOTES')), strforce(blank_count)])
+            writerow([str(_('RESULTS'))])
+            writerow([str(_('TOTAL VOTES')), str(ballot_count)])
+            writerow([str(_('VALID VOTES')), str(ballot_count - invalid_count)])
+            writerow([str(_('INVALID VOTES')), str(invalid_count)])
+            writerow([str(_('BLANK VOTES')), str(blank_count)])
 
             writerow([])
-            writerow([strforce(_('RANKING'))])
+            writerow([str(_('RANKING'))])
             for score, candidate in sorted(score_results['totals']):
                 candidate = candidate.replace("{newline}", " ")
-                writerow([strforce(score), strforce(candidate)])
+                writerow([str(score), str(candidate)])
 
             writerow([])
-            writerow([strforce(_('SCORES'))])
+            writerow([str(_('SCORES'))])
             pointlist = list(sorted(score_results['points']))
             pointlist.reverse()
-            writerow([strforce(_('CANDIDATE')), strforce(_('SCORES:'))] + pointlist)
+            writerow([str(_('CANDIDATE')), str(_('SCORES:'))] + pointlist)
             for candidate, points in sorted(score_results['detailed'].items()):
-                writerow([strforce(candidate), ''] +
-                        [strforce(points[p]) for p in pointlist])
+                writerow([str(candidate), ''] +
+                        [str(points[p]) for p in pointlist])
 
             writerow([])
-            writerow([strforce(_('BALLOTS'))])
-            writerow([strforce(_('ID')), strforce(_('CANDIDATE')),
-                strforce(_('SCORES')), strforce(_('VALID/INVALID/BLANK'))])
+            writerow([str(_('BALLOTS'))])
+            writerow([str(_('ID')), str(_('CANDIDATE')),
+                str(_('SCORES')), str(_('VALID/INVALID/BLANK'))])
             counter = 0
-            valid = strforce(_('VALID'))
-            invalid = strforce(_('INVALID'))
+            valid = str(_('VALID'))
+            invalid = str(_('INVALID'))
             empty = '---'
             for ballot in score_results['ballots']:
                 counter += 1
@@ -360,8 +354,8 @@ def csv_from_score_polls(election, polls, lang, outfile=None):
                 points = sorted(ballot['candidates'].items())
                 for candidate, score in points:
                     candidate = candidate.replace("{newline}", " ")
-                    writerow([strforce(counter), strforce(candidate),
-                            strforce(score), valid])
+                    writerow([str(counter), str(candidate),
+                            str(score), valid])
 
 
 class ElectionsReport(object):
@@ -481,52 +475,52 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
         B = partial(get, 'group_b')
 
         def ROW(label, key):
-            return [strforce(label), strforce(T(key)), strforce(A(key)), strforce(B(key))]
+            return [str(label), str(T(key)), str(A(key)), str(B(key))]
 
         writerow([])
         writerow([])
         writerow([])
         writerow([])
         writerow([])
-        writerow(['', strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+        writerow(['', str(_("Total")), str(A('name')), str(B('name'))])
         writerow(ROW(_("Voters"), 'voters'))
         if T('excluded') > 0:
             writerow(ROW(_("Excluded voters"), 'excluded'))
         writerow([])
-        writerow([strforce(_('RESULTS'))])
+        writerow([str(_('RESULTS'))])
         writerow(ROW(_('TOTAL VOTES'), 'voted'))
         writerow(ROW(_('VALID VOTES'), 'valid'))
         writerow(ROW(_('INVALID VOTES'), 'invalid'))
         writerow(ROW(_('BLANK VOTES'), 'blank'))
 
         writerow([])
-        writerow([strforce(_('RESULTS'))])
+        writerow([str(_('RESULTS'))])
         for question, answers in list(T('counts').items()):
             writerow([])
-            writerow([strforce(question)])
-            writerow(['', strforce(_("Total rounded")), strforce(_("Total")), strforce(A('name')), strforce(B('name'))])
+            writerow([str(question)])
+            writerow(['', str(_("Total rounded")), str(_("Total")), str(A('name')), str(B('name'))])
             for answer in answers:
                 key = 'counts.%s.%s' % (question, answer)
                 key_round = 'counts_rounded.%s.%s' % (question, answer)
                 writerow([
-                    strforce(answer),
-                    strforce(T(key_round)),
-                    strforce(T(key)),
-                    strforce(A(key)),
-                    strforce(B(key))
+                    str(answer),
+                    str(T(key_round)),
+                    str(T(key)),
+                    str(A(key)),
+                    str(B(key))
                 ])
 
         writerow([])
-        writerow([strforce(_('BALLOTS'))])
-        writerow([strforce(_('GROUP')), strforce(_('ID')), strforce(_('QUESTION')),
-            strforce(_('CANDIDATE')), strforce(_('VALID/INVALID/BLANK'))])
+        writerow([str(_('BALLOTS'))])
+        writerow([str(_('GROUP')), str(_('ID')), str(_('QUESTION')),
+            str(_('CANDIDATE')), str(_('VALID/INVALID/BLANK'))])
         counter = 0
-        valid = strforce(_('VALID'))
-        invalid = strforce(_('INVALID'))
-        blank = strforce(_('BLANK'))
+        valid = str(_('VALID'))
+        invalid = str(_('INVALID'))
+        blank = str(_('BLANK'))
         empty = '---'
         for ballot in T('ballots'):
-            unigov_group = strforce(ballot['unigov_group'])
+            unigov_group = str(ballot['unigov_group'])
             party = empty
             counter += 1
             if not ballot['valid']:
@@ -541,7 +535,7 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
                         writerow([unigov_group, counter, empty, empty, empty])
                         continue
                     else:
-                        party = strforce(party)
+                        party = str(party)
 
             candidates = ballot['candidates']
             if not candidates:
@@ -549,4 +543,4 @@ def csv_from_unigovgr_results(election, results, lang, outfile=None):
                 continue
 
             for candidate in candidates:
-                writerow([unigov_group, counter, party, strforce(": ".join(candidate)), valid])
+                writerow([unigov_group, counter, party, str(": ".join(candidate)), valid])
