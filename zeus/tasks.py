@@ -5,6 +5,7 @@ import logging
 
 from functools import wraps
 
+from helios import datatypes
 from helios.models import Election, Voter, Poll
 
 from django.urls import reverse
@@ -301,7 +302,11 @@ def poll_zeus_partial_decrypt(poll_id):
 
 
 @poll_task(ignore_result=True)
-def poll_add_trustee_factors(poll_id, trustee_id, factors, proofs):
+def poll_add_trustee_factors(poll_id, trustee_id, factors, proofs_data):
+    LD = datatypes.LDObject
+    proof = lambda pd: LD.fromDict(pd, type_hint='legacy/EGZKProof').wrapped_obj
+    proofs = [[proof(p) for p in proofs_data[0]]]
+
     poll = Poll.objects.get(pk=poll_id)
     trustee = poll.election.trustees.get(pk=trustee_id)
     poll.partial_decrypt(trustee, factors, proofs)

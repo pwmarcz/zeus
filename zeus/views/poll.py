@@ -1091,10 +1091,8 @@ def upload_decryption(request, election, poll, trustee):
     factors = [[factor(f) for f in factors_data[0]]]
 
     proofs_data = factors_and_proofs['decryption_proofs']
-    proof = lambda pd: LD.fromDict(pd, type_hint='legacy/EGZKProof').wrapped_obj
-    proofs = [[proof(p) for p in proofs_data[0]]]
     poll.logger.info("Poll decryption uploaded")
-    tasks.poll_add_trustee_factors.delay(poll.pk, trustee.pk, factors, proofs)
+    tasks.poll_add_trustee_factors.delay(poll.pk, trustee.pk, factors, proofs_data)
 
     return HttpResponse("SUCCESS")
 
