@@ -172,6 +172,7 @@ class StvElection(ElectionModuleBase):
             self.generate_election_zip_file(lang)
 
     def compute_results(self):
+
         cands_data = self.poll.questions_data[0]['answers']
         cands_count = len(cands_data)
         constituencies = {}
