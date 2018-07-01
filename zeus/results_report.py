@@ -17,7 +17,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.platypus import PageBreak, Spacer
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.pdfbase import pdfdoc
+from reportlab.pdfbase import pdfdoc, pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
@@ -27,19 +28,18 @@ from stv.parser import STVParser
 
 PAGE_WIDTH, PAGE_HEIGHT = A4
 
-'''
-default_path = '/usr/share/fonts/truetype/linux-libertine/LinLibertine_Re.ttf'
-linlibertine = TTFont('LinLibertine',
-#                      '/Users/Panos/Library/Fonts/LinLibertine_Rah.ttf')
-                         getattr(settings, 'ZEUS_RESULTS_FONT_REGULAR_PATH', default_path))
-pdfmetrics.registerFont(linlibertine)
 
-default_path = '/usr/share/fonts/truetype/linux-libertine/LinLibertine_Bd.ttf'
-linlibertineb = TTFont('LinLibertineBd',
-#                       '/Users/Panos/Library/Fonts/LinLibertine_RBah.ttf')
-                        getattr(settings, 'ZEUS_RESULTS_FONT_BOLD_PATH', default_path))
-pdfmetrics.registerFont(linlibertineb)
-'''
+def get_default_font():
+    font_path = '/usr/share/fonts/truetype/open-sans/OpenSans-Regular.ttf'
+    if os.path.isfile(font_path):
+        pdfmetrics.registerFont(TTFont('OpenSans', font_path))
+        return 'OpenSans'
+    return 'Helvetica'
+
+
+DEFAULT_FONT = get_default_font()
+print(DEFAULT_FONT)
+
 ZEUS_LOGO = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                          'logo-positive.jpg')
 
@@ -153,7 +153,7 @@ def make_first_page_hf(canvas, doc):
 def make_later_pages_hf(pageinfo):
     def inner(canvas, doc):
         canvas.saveState()
-        canvas.setFont('Helvetica', 9)
+        canvas.setFont(DEFAULT_FONT, 9)
         canvas.drawImage(ZEUS_LOGO,
                         x=2 * cm,
                         y=PAGE_HEIGHT - 2 * cm,
@@ -227,7 +227,7 @@ def make_party_list_heading(elements, styles, party, count):
 
 def make_party_list_table(elements, styles, party_results):
 
-    table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
+    table_style = TableStyle([('FONT', (0, 0), (-1, -1), DEFAULT_FONT)])
     t = Table(party_results, style=table_style)
     elements.append(t)
 
@@ -281,24 +281,24 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
 
         styles = getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Zeus',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
         styles.add(ParagraphStyle(name='ZeusBold',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='ZeusSubHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=14,
                                   alignment=TA_JUSTIFY,
                                   spaceAfter=16))
 
         styles.add(ParagraphStyle(name='ZeusHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=16,
                                   alignment=TA_CENTER,
                                   spaceAfter=16))
@@ -340,7 +340,7 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
             for item in json_data:
                 elected.append([indexed_cands[item[0]]])
             t = Table(elected)
-            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1), DEFAULT_FONT),
                                          ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
                                          ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
                                          ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
@@ -421,25 +421,25 @@ def build_doc(title, name, institution_name, voting_start, voting_end,
 
         styles = getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Zeus',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='ZeusBold',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='ZeusSubHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=14,
                                   alignment=TA_JUSTIFY,
                                   spaceAfter=16))
 
         styles.add(ParagraphStyle(name='ZeusHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=16,
                                   alignment=TA_CENTER,
                                   spaceAfter=16))
@@ -517,25 +517,25 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
 
         styles = getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Zeus',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='ZeusBold',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=12,
                                   leading=16,
                                   alignment=TA_JUSTIFY))
 
         styles.add(ParagraphStyle(name='ZeusSubHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=14,
                                   alignment=TA_JUSTIFY,
                                   spaceAfter=16))
 
         styles.add(ParagraphStyle(name='ZeusHeading',
-                                  fontName='Helvetica',
+                                  fontName=DEFAULT_FONT,
                                   fontSize=16,
                                   alignment=TA_CENTER,
                                   spaceAfter=16))
@@ -577,7 +577,7 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
             groups_table.append(group_elements)
 
         t = Table(list(zip(*groups_table)))
-        table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica')])
+        table_style = TableStyle([('FONT', (0, 0), (-1, -1), DEFAULT_FONT)])
         t.setStyle(table_style)
         elements.append(t)
 
@@ -628,10 +628,10 @@ def build_unigov_doc(title, name, institution_name, voting_start, voting_end,
 
             t = Table(candidates_table, colWidths=[4*inch] + [1.2*inch] * 3)
             table_style = TableStyle([
-                ('FONT', (0, 0), (-1, -1), 'Helvetica'),
+                ('FONT', (0, 0), (-1, -1), DEFAULT_FONT),
                 ('ALIGN', (1, 1), (-2, -2), 'RIGHT'),
             ])
-            table_style = TableStyle([('FONT', (0, 0), (-1, -1), 'Helvetica'),
+            table_style = TableStyle([('FONT', (0, 0), (-1, -1), DEFAULT_FONT),
                                          ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
                                          ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
                                          ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
