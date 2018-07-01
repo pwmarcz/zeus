@@ -591,7 +591,7 @@ def voters_email(request, election, poll=None, voter_uuid=None):
 
     election_url = election.get_absolute_url()
 
-    lang = poll.election.communication_language
+    lang = election.communication_language
 
     with translation.override(lang):
         default_subject = render_to_string(
