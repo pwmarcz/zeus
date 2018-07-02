@@ -11,6 +11,7 @@ from collections import OrderedDict
 from zeus.forms import ElectionForm
 from zeus.utils import election_reverse
 from zeus.views.utils import set_menu
+from zeus.tasks import poll_compute_results
 
 from zeus import tasks
 from zeus import reports
@@ -241,6 +242,29 @@ def cancel(request, election):
     election.completed_at = cancel_date
 
     election.save()
+    url = election_reverse(election, 'index')
+    return HttpResponseRedirect(url)
+
+
+@auth.superadmin_required
+@auth.election_admin_required
+@auth.requires_election_features('can_recompute_results')
+@transaction.atomic
+@require_http_methods(["POST"])
+def recompute_results(request, election):
+    election.compute_results_started_at = None
+    election.compute_results_finished_at = None
+    election.compute_results_status = 'waiting'
+    election.completed_at = None
+    election.save()
+
+    for poll in election.polls.all():
+        poll.compute_results_started_at = None
+        poll.compute_results_finished_at = None
+        poll.compute_results_status = 'waiting'
+        poll.save()
+        transaction.on_commit(lambda: poll_compute_results.delay(poll.pk))
+
     url = election_reverse(election, 'index')
     return HttpResponseRedirect(url)
 

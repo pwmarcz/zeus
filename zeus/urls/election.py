@@ -19,7 +19,7 @@ election_patterns = [
     url(r'^trustee/', include(election_patterns)),
     url(r'^freeze$', election.freeze, name="election_freeze"),
     url(r'^cancel$', election.cancel, name="election_cancel"),
-    # superadmin url
+    url(r'^recompute$', election.recompute_results, name="election_recompute_results"),
     url(r'^endnow$', election.endnow, name="election_endnow"),
     url(r'^close$', election.close, name="election_close"),
     url(r'^start-mixing$', election.start_mixing, name="election_start_mixing"),

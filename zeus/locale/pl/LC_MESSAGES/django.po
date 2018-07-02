@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-14 17:48+0200\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,14 +57,17 @@ msgstr "Kandydatka"
 msgid "Party"
 msgstr "Frakcja"
 
-msgid "Score voting election"
-msgstr "Wybory z oceną kandydatur (Score Voting)"
+msgid "Satisfaction Approval Voting"
+msgstr ""
+
+msgid "No questions set"
+msgstr "Nie ustawiono pytań"
 
 msgid "Manage questions"
 msgstr "Zarządzaj odpowiedziami"
 
-msgid "No questions set"
-msgstr "Nie ustawiono pytań"
+msgid "Score voting election"
+msgstr "Wybory z oceną kandydatur (Score Voting)"
 
 msgid "Single transferable vote election"
 msgstr "Wybory z Pojedynczym Głosem Przechodnim (STV)"
@@ -102,15 +105,6 @@ msgstr "Kilka sieci mieszających"
 
 msgid "Linked polls (experimental)"
 msgstr "Połączone głosowania (eksperymentalne)"
-
-msgid "English"
-msgstr "Angielski"
-
-msgid "Greek"
-msgstr "Grecki"
-
-msgid "Polish"
-msgstr "Polski"
 
 msgid "Set the language that will be used for email messages"
 msgstr "Ustaw język stosowany do wiadomości e-mail"
@@ -163,6 +157,20 @@ msgid "Number of answers must be equal or bigger than max answers"
 msgstr ""
 "Liczba odpowiedzi musi być większa lub równa maksymalnej liczbie odpowiedzi"
 
+msgid "set minimal number of votes"
+msgstr ""
+
+msgid "Minimum votes"
+msgstr ""
+
+msgid "This field is required."
+msgstr "To pole jest wymagane."
+
+#, fuzzy
+#| msgid "Value must be a positve integer"
+msgid "Value must be a positive integer"
+msgstr "Wartość musi być liczbą dodatnią"
+
 msgid "maximum number of elected from the same constituency"
 msgstr "maksymalna liczba osób wybranych z tej samej grupy"
 
@@ -180,12 +188,6 @@ msgstr "ustaw liczbę mandatów w wyborach"
 
 msgid "Eligibles count"
 msgstr "Liczba mandatów"
-
-msgid "This field is required."
-msgstr "To pole jest wymagane."
-
-msgid "Value must be a positve integer"
-msgstr "Wartość musi być liczbą dodatnią"
 
 msgid "Username"
 msgstr "Nazwa użytkownika"
@@ -721,6 +723,15 @@ msgstr "Wystąpił błąd. Zawiadom administratora serwera."
 
 msgid "The requested page was not found."
 msgstr "Nie znaleziono żądanej strony."
+
+#~ msgid "English"
+#~ msgstr "Angielski"
+
+#~ msgid "Greek"
+#~ msgstr "Grecki"
+
+#~ msgid "Polish"
+#~ msgstr "Polski"
 
 #~ msgid "%(election_name)s - vote cast"
 #~ msgstr "%(election_name)s - oddano głos"
