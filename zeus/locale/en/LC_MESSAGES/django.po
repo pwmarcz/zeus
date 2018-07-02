@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-14 17:48+0200\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,13 +54,16 @@ msgstr ""
 msgid "Party"
 msgstr ""
 
-msgid "Score voting election"
+msgid "Satisfaction Approval Voting"
+msgstr ""
+
+msgid "No questions set"
 msgstr ""
 
 msgid "Manage questions"
 msgstr ""
 
-msgid "No questions set"
+msgid "Score voting election"
 msgstr ""
 
 msgid "Single transferable vote election"
@@ -92,12 +95,6 @@ msgid "Multiple mixnets"
 msgstr ""
 
 msgid "Linked polls (experimental)"
-msgstr ""
-
-msgid "English"
-msgstr ""
-
-msgid "Greek"
 msgstr ""
 
 msgid "Set the language that will be used for email messages"
@@ -149,6 +146,18 @@ msgstr ""
 msgid "Number of answers must be equal or bigger than max answers"
 msgstr ""
 
+msgid "set minimal number of votes"
+msgstr ""
+
+msgid "Minimum votes"
+msgstr ""
+
+msgid "This field is required."
+msgstr ""
+
+msgid "Value must be a positive integer"
+msgstr ""
+
 msgid "maximum number of elected from the same constituency"
 msgstr "Set the maximum number of open positions per constituency"
 
@@ -167,12 +176,6 @@ msgid "set the eligibles count of the election"
 msgstr "Number of open positions"
 
 msgid "Eligibles count"
-msgstr ""
-
-msgid "This field is required."
-msgstr ""
-
-msgid "Value must be a positve integer"
 msgstr ""
 
 msgid "Username"

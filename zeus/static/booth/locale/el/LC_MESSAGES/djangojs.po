@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-14 18:48+0300\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -222,6 +222,20 @@ msgstr "Λευκή ψήφος"
 
 msgid "AUDIT_VOTE_SUBMISSION_BUTTON"
 msgstr "Υποβολή ψήφου ελέγχου"
+
+#, fuzzy
+msgid "SAV_BALLOT_HELP_TEXT"
+msgstr ""
+"Κάντε κλικ στα ονόματα των υποψηφίων που θέλετε να επιλέξετε από τη στήλη "
+"'Υποψήφιοι' με τη σειρά που επιθυμείτε. Για να αφαιρέσετε μια επιλογή κάντε "
+"κλικ στο όνομα του υποψηφίου από τη στήλη 'Επιλογές'. Σε περίπτωση που δεν "
+"επιλέξετε κανέναν υποψήφιο, η ψήφος σας θα καταμετρηθεί ως 'Λευκή ψήφος'. "
+"Όταν τελειώσετε με την επιλογή των υποψηφίων πατήστε το κουμπί 'Συνέχεια' "
+"για να συνεχίσετε."
+
+#, fuzzy
+msgid "SAV_BALLOT_CANDIDATES_HEADER"
+msgstr "Υποψήφιοι"
 
 msgid "STV_BALLOT_HELP_TEXT"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-14 18:48+0300\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,6 +220,16 @@ msgstr "Blank vote"
 
 msgid "AUDIT_VOTE_SUBMISSION_BUTTON"
 msgstr "Submit audit ballot"
+
+#, fuzzy
+msgid "SAV_BALLOT_HELP_TEXT"
+msgstr ""
+"Click on the candidates names on the left to fill your ballot. If you want "
+"to remove a choice click over the candidate name on the right column."
+
+#, fuzzy
+msgid "SAV_BALLOT_CANDIDATES_HEADER"
+msgstr "Candidates"
 
 msgid "STV_BALLOT_HELP_TEXT"
 msgstr ""

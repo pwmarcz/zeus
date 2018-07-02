@@ -248,6 +248,10 @@ class ElectionFeatures(FeaturesMixin):
     def _feature_polls_results_computed(self):
         return self.polls_feature_compute_results_finished
 
+    @election_feature()
+    def _feature_can_recompute_results(self):
+        return self.polls_feature_can_recompute_results
+
 
 class PollFeatures(FeaturesMixin):
 
@@ -369,6 +373,12 @@ class PollFeatures(FeaturesMixin):
     def _feature_partial_decryptions_finished(self):
         return self.feature_partial_decrypt_finished and \
                self.feature_zeus_partial_decrypt_finished
+
+    @poll_feature()
+    def _feature_can_recompute_results(self):
+        return self.feature_can_compute_results or \
+               self.feature_compute_results_finished or \
+               self.feature_compute_results_error
 
 
 class VoterFeatures(FeaturesMixin):

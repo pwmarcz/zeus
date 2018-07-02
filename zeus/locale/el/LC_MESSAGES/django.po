@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-14 17:48+0200\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,14 +55,17 @@ msgstr "Υποψήφιος"
 msgid "Party"
 msgstr "Συνδυασμός"
 
-msgid "Score voting election"
-msgstr "Ψηφοφορία με βαθμολογία"
+msgid "Satisfaction Approval Voting"
+msgstr ""
+
+msgid "No questions set"
+msgstr "Δεν υπάρχουν ερωτήσεις ακόμη"
 
 msgid "Manage questions"
 msgstr "Διαχείριση ερωτήσεων"
 
-msgid "No questions set"
-msgstr "Δεν υπάρχουν ερωτήσεις ακόμη"
+msgid "Score voting election"
+msgstr "Ψηφοφορία με βαθμολογία"
 
 msgid "Single transferable vote election"
 msgstr "Ψηφοφορία με ταξινομική ψήφο"
@@ -95,12 +98,6 @@ msgstr "Πολλαπλές μίξεις"
 
 msgid "Linked polls (experimental)"
 msgstr "Ενεργοποίηση συνδεδεμένων καλπών (πειραματικό)"
-
-msgid "English"
-msgstr "Αγγλικά"
-
-msgid "Greek"
-msgstr "Ελληνικά"
 
 msgid "Set the language that will be used for email messages"
 msgstr "Επιλέξτε την γλώσσα που θα χρησιμοποιηθεί για τα μηνύματα των email"
@@ -155,6 +152,20 @@ msgstr ""
 "Ο αριθμός απαντήσεων πρέπει να είναι μεγαλύτερος ή ίσως του μέγιστου αριθμού "
 "απαντήσεων"
 
+msgid "set minimal number of votes"
+msgstr ""
+
+msgid "Minimum votes"
+msgstr ""
+
+msgid "This field is required."
+msgstr "Αυτό το πεδίο είναι απαραίτητο."
+
+#, fuzzy
+#| msgid "Value must be a positve integer"
+msgid "Value must be a positive integer"
+msgstr "Η τιμή πρέπει να είναι θετικός ακέραιος"
+
 msgid "maximum number of elected from the same constituency"
 msgstr "μέγιστος αριθμός εκλεγόμενων από την ίδια Σχολή ή Ανεξάρτητο Τμήμα"
 
@@ -172,12 +183,6 @@ msgstr "το πλήθος των εκλεγόμενων"
 
 msgid "Eligibles count"
 msgstr "Πλήθος εκλεγόμενων"
-
-msgid "This field is required."
-msgstr "Αυτό το πεδίο είναι απαραίτητο."
-
-msgid "Value must be a positve integer"
-msgstr "Η τιμή πρέπει να είναι θετικός ακέραιος"
 
 msgid "Username"
 msgstr "Όνομα χρήστη"
@@ -712,3 +717,9 @@ msgstr ""
 
 msgid "The requested page was not found."
 msgstr "Η σελίδα που ζητήσατε δεν βρέθηκε."
+
+#~ msgid "English"
+#~ msgstr "Αγγλικά"
+
+#~ msgid "Greek"
+#~ msgstr "Ελληνικά"

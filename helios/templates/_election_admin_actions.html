@@ -45,8 +45,13 @@
 {% trans "Cancel election" as label %}
 {% reveal_action label "#cancel-admin-action" cls="alert cancel-election" %}
 {% endif %}
+{% if election.feature_can_recompute_results and user.is_superadmin %}
+{% trans "Recompute results" as label %}
+{% reveal_action label "#recompute-results-admin-action" cls="alert recompute-results" %}
+{% endif %}
 {% if election.feature_compute_results_finished %}
 {% with election.get_module as module %}
+<br /><br />
   {% if module.pdf_result %}
     <a href="{% url "election_pdf_results" election.uuid election.short_name LANGUAGE_CODE %}">{% trans "Save results" %} (PDF)</a>
 <br /><br />
@@ -65,4 +70,3 @@
 {% endwith %}
 {% endif %}
 </div>
-
