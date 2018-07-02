@@ -376,10 +376,11 @@ class PollFeatures(FeaturesMixin):
 
     @poll_feature()
     def _feature_can_recompute_results(self):
-        return self.feature_can_compute_results or \
-               self.feature_compute_results_finished or \
-               self.feature_compute_results_error
-
+        return self.feature_partial_decrypt_finished and (
+            self.feature_can_compute_results or
+            self.feature_compute_results_finished or
+            self.feature_compute_results_error
+        )
 
 class VoterFeatures(FeaturesMixin):
     pass
