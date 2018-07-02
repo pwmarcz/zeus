@@ -443,7 +443,11 @@ def build_sav_doc(title, name, institution_name, voting_start, voting_end,
         intro_contents = [
             voting_start,
             voting_end,
+            extended_until
         ]
+
+        make_heading(elements, styles, [title, name, institution_name])
+        make_intro(elements, styles, intro_contents)
 
         for poll_name, poll_results, questions, poll_voters in data:
             poll_intro_contents = [

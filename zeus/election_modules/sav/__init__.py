@@ -138,7 +138,7 @@ class SavElection(ElectionModuleBase):
 
     def compute_election_results(self):
         for lang in settings.LANGUAGES:
-            # self.generate_election_result_docs(lang)
+            self.generate_election_result_docs(lang)
             self.generate_election_csv_file(lang)
 
     def generate_result_docs(self, lang):
@@ -154,6 +154,24 @@ class SavElection(ElectionModuleBase):
                     poll_data,
                     lang,
                     self.get_poll_result_file_path('pdf', 'pdf', lang[0]))
+
+    def generate_election_result_docs(self, lang):
+        from zeus.results_report import build_sav_doc
+        pdfpath = self.get_election_result_file_path('pdf', 'pdf', lang[0])
+        polls_data = []
+
+        for poll in self.election.polls.filter():
+            polls_data.append((poll.name,
+                               count_sav_results(poll),
+                               poll.questions,
+                               poll.voters.all()))
+
+        build_sav_doc(_('Results'), self.election.name, self.election.institution.name,
+                self.election.voting_starts_at, self.election.voting_ends_at,
+                self.election.voting_extended_until,
+                polls_data,
+                lang,
+                pdfpath)
 
 
 def count_sav_results(poll):
