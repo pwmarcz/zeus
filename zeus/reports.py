@@ -295,6 +295,26 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     str(draw), str(action)])
 
 
+def csv_from_sav_polls(election, polls, lang, outfile=None):
+    from zeus.election_modules.sav import count_sav_results
+
+    with translation.override(lang):
+        if outfile is None:
+            outfile = StringIO()
+        csvout = csv.writer(outfile, dialect='excel', delimiter=',')
+        writerow = csvout.writerow
+
+        make_csv_intro(writerow, election, lang)
+
+        for poll in polls:
+            writerow([])
+            writerow([str(_("Poll name")), str(poll.name)])
+            results = count_sav_results(poll)
+
+            for candidate, votes in results:
+                writerow([str(candidate), float(votes), str(votes.numerator), str(votes.denominator)])
+
+
 def csv_from_score_polls(election, polls, lang, outfile=None):
     with translation.override(lang):
         if outfile is None:

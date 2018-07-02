@@ -5,6 +5,7 @@ from fractions import Fraction
 
 from zeus.election_modules import ElectionModuleBase, election_module
 from zeus.views.utils import set_menu
+from django.conf import settings
 
 from helios.view_utils import render_template
 from zeus.core import gamma_decode, to_absolute_answers
@@ -130,16 +131,29 @@ class SavElection(ElectionModuleBase):
         self.poll.questions[0]['answers'] = answers
 
     def compute_results(self):
-        cands_data = self.poll.questions_data[0]['answers']
-        cands_count = len(cands_data)
-        ballots_data = self.poll.result[0]
-        candidates_dict = {candidate: 0 for candidate in cands_data}
 
-        for ballot in ballots_data:
-            if not ballot:
-                continue
-            ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
-                                         cands_count)
+        for lang in settings.LANGUAGES:
+            self.generate_csv_file(lang)
 
-            for i in ballot:
-                candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
+
+def count_sav_results(poll):
+    cands_data = poll.questions_data[0]['answers']
+    cands_count = len(cands_data)
+    ballots_data = poll.result[0]
+    candidates_dict = {candidate: 0 for candidate in cands_data}
+
+    for ballot in ballots_data:
+        if not ballot:
+            continue
+        ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
+                                     cands_count)
+
+        for i in ballot:
+            candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
+
+    candidate_data = [(candidate, votes) for candidate, votes in candidates_dict.items()]
+    candidate_data.sort(key=lambda x: x[1], reverse=True)
+
+    return candidate_data
+
+
