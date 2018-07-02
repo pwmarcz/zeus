@@ -38,7 +38,6 @@ def get_default_font():
 
 
 DEFAULT_FONT = get_default_font()
-print(DEFAULT_FONT)
 
 ZEUS_LOGO = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                          'logo-positive.jpg')
