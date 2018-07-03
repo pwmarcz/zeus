@@ -45,6 +45,7 @@
 {% trans "Cancel election" as label %}
 {% reveal_action label "#cancel-admin-action" cls="alert cancel-election" %}
 {% endif %}
+
 {% if election.feature_compute_results_finished %}
 {% with election.get_module as module %}
   {% if module.pdf_result %}
@@ -66,8 +67,8 @@
 {% endif %}
 {% if election.feature_can_recompute_results and user.is_superadmin %}
   {% trans "Recompute results" as label %}
-  <br>
-  {% reveal_action label "#recompute-results-admin-action" cls="secondary recompute-results" %}
-  <br>
+  <div style="margin-top: 40px">
+    {% reveal_action label "#recompute-results-admin-action" cls="secondary recompute-results" %}
+  </div>
 {% endif %}
 </div>
