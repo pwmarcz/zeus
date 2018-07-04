@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"PO-Revision-Date: 2018-07-04 16:56+0200\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.8\n"
 
 msgid "Simple election with one or more questions"
 msgstr "Proste wybory z jednym lub kilkoma pytaniami"
@@ -34,11 +34,11 @@ msgid "Add questions to the election"
 msgstr "Dodaj pytań do wyborów"
 
 msgid "Too many choices"
-msgstr "Za dużo wyborów"
+msgstr "Za dużo opcji do wyboru"
 
 #, python-brace-format
 msgid "Question '{0}' requires at least {1} choices."
-msgstr "Pytanie '{0}' wymaga zaznaczenia co najmniej {1} wyborów."
+msgstr "Pytanie '{0}' wymaga zaznaczenia co najmniej {1} odpowiedzi."
 
 msgid "Results"
 msgstr "Wyniki"
@@ -46,10 +46,8 @@ msgstr "Wyniki"
 msgid "Party lists election"
 msgstr "Wybory z listą frakcyjną"
 
-#, fuzzy
-#| msgid "Invalid ballot"
 msgid "Manage ballot"
-msgstr "Nieprawidłowa karta"
+msgstr "Zarządzanie karta"
 
 msgid "Candidate"
 msgstr "Kandydatka"
@@ -58,7 +56,7 @@ msgid "Party"
 msgstr "Frakcja"
 
 msgid "Satisfaction Approval Voting"
-msgstr ""
+msgstr "Pojedynczy Głos Aprobujący (SAV)"
 
 msgid "No questions set"
 msgstr "Nie ustawiono pytań"
@@ -75,23 +73,17 @@ msgstr "Wybory z Pojedynczym Głosem Przechodnim (STV)"
 msgid "Candidates List"
 msgstr "Lista kandydatur"
 
-#, fuzzy
-#| msgid "Electors"
 msgid "Electors: Group A"
-msgstr "Wyborcy"
+msgstr "Elektorzy: grupa A"
 
-#, fuzzy
-#| msgid "Electors"
 msgid "Electors: Group B"
-msgstr "Wyborcy"
+msgstr "Elektorzy: grupa B"
 
 msgid "Greek Universities single governing bodies election"
-msgstr ""
+msgstr "Wybory na greckim uniwersytecie"
 
-#, fuzzy
-#| msgid "Voters Voted"
 msgid "Voter excluded"
-msgstr "Głosujących zagłosowało"
+msgstr "Wyborczyni wykluczona"
 
 #, python-format
 msgid "%s is not a valid character."
@@ -115,9 +107,10 @@ msgstr "Język komunikacji"
 #, python-format
 msgid "Notify voters using SMS (%d deliveries available for your account)"
 msgstr ""
+"Powiadom wyborczynie SMSem (z Twojego konta można wysłać %d wiadomości)"
 
 msgid "Mobile SMS notifications enabled"
-msgstr ""
+msgstr "Włączone powiadomienie przez SMSy"
 
 msgid "Invalid voting end date"
 msgstr "Nieprawidłowa data zakończenia głosowania"
@@ -131,14 +124,14 @@ msgstr "Nieprawidłowa data przedłużenia głosowania"
 msgid "Invalid trustees format"
 msgstr "Nieprawidłowy format powierniczek"
 
-msgid "Choice"
-msgstr "Wybór"
-
 msgid "CSV file with answers"
 msgstr "Plik CSV z odpowiedziami"
 
 msgid "Attach a UTF-8 encoded file. Answers will replace the current list."
 msgstr "Załącz plik w kodowaniu UTF-8. Lista odpowiedzi zostanie zastąpiona."
+
+msgid "Choice"
+msgstr "Wybrana odpowiedź"
 
 msgid "Min answers"
 msgstr "Minimum odpowiedzi"
@@ -147,8 +140,7 @@ msgid "Max answers"
 msgstr "Maksymalnie odpowiedzi"
 
 msgid "Max answers should be greater or equal to min answers"
-msgstr ""
-"Maksymalna liczba odpowiedzi musi być większa lub równa minimalnej liczbie."
+msgstr "Maksymalna liczba odpowiedzi musi być większa lub równa minimalnej"
 
 msgid "No duplicate choices allowed"
 msgstr "Duplikaty nie są dozwolone"
@@ -164,16 +156,14 @@ msgstr ""
 "Liczba odpowiedzi musi być większa lub równa maksymalnej liczbie odpowiedzi"
 
 msgid "set minimal number of votes"
-msgstr ""
+msgstr "ustaw minimalną liczbę głosów"
 
 msgid "Minimum votes"
-msgstr ""
+msgstr "Minimum głosów"
 
 msgid "This field is required."
 msgstr "To pole jest wymagane."
 
-#, fuzzy
-#| msgid "Value must be a positve integer"
 msgid "Value must be a positive integer"
 msgstr "Wartość musi być liczbą dodatnią"
 
@@ -233,16 +223,14 @@ msgstr "wybrano głosujące, które już zagłosowały"
 msgid "selected voters who have not yet cast a ballot"
 msgstr "wybrano głosujące, które jeszcze nie zagłosowały"
 
-#, fuzzy
-#| msgid "Email"
 msgid "Email only"
-msgstr "E-mail"
+msgstr "Tylko e-mail"
 
 msgid "SMS only"
-msgstr ""
+msgstr "Tylko SMS"
 
 msgid "Email and SMS"
-msgstr ""
+msgstr "Email oraz SMS"
 
 msgid "Email subject"
 msgstr "Temat e-maila"
@@ -250,16 +238,14 @@ msgstr "Temat e-maila"
 msgid "In place of BODY"
 msgstr "Zamiast BODY"
 
-#, fuzzy
-#| msgid "In place of BODY"
 msgid "In place of SMS_BODY"
-msgstr "Zamiast BODY"
+msgstr "Zamiast SMS_BODY"
 
 msgid "Contact method"
-msgstr ""
+msgstr "Metoda kontaktu"
 
 msgid "Do not send sms if voter email is set"
-msgstr ""
+msgstr "Nie wysyłaj SMSa jeżeli ustawiono adres e-mail"
 
 msgid "Send To"
 msgstr "Wyślij do"
@@ -267,13 +253,12 @@ msgstr "Wyślij do"
 msgid "Email"
 msgstr "E-mail"
 
-#, fuzzy, python-format
-#| msgid "Client address unavailable"
+#, python-format
 msgid "%d deliveries available"
-msgstr "Adres klienta niedostępny"
+msgstr "Można wysłać %d SMSów"
 
 msgid "Please provide SMS body"
-msgstr ""
+msgstr "Podaj tekst SMSa"
 
 msgid "Current password"
 msgstr "Aktualne hasło"
@@ -356,7 +341,11 @@ msgid "Choose the type of the election"
 msgstr "Wybierz typ wyborów"
 
 msgid "TRUSTEES_LIST_HELP_TEXT"
-msgstr "TRUSTEES_LIST_HELP_TEXT"
+msgstr ""
+"Lista powierniczek, np.\n"
+"\n"
+"Janina Kowalska,janina.kowalska@gmail.com\n"
+"Partyjna Komisja Wyborcza,razem.pkw@gmail.com"
 
 msgid "Election description"
 msgstr "Opis wyborów"
@@ -383,17 +372,14 @@ msgstr "Czy zezwolić na mieszanie na zewnętrznym serwerze"
 
 msgid "Require voters to accept specified terms in order to cast a vote."
 msgstr ""
+"Wymaga od wyborczyń zaakceptowania podanych warunków w celu oddania głosu."
 
-#, fuzzy
-#| msgid ""
-#| "Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
-#| "{{ voter.voter_fathername }} ({{ voter.voter_email }})"
 msgid ""
 "Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
 "{{ voter.voter_fathername }} ({{ voter.voter_contact_field_display }})"
 msgstr ""
-"Potwierdź usunięcie głosującej: {{ voter.voter_name}} {{ voter."
-"voter_surname }} {{ voter.voter_fathername }} ({{ voter.voter_email }})"
+"Confirm voter removal: {{ voter.voter_name}} {{ voter.voter_surname }} "
+"{{ voter.voter_fathername }} ({{ voter.voter_contact_field_display }})"
 
 msgid "Are you sure you want to delete the selected trustee ?"
 msgstr "Czy na pewno usunąć wybraną powierniczkę?"
@@ -483,7 +469,7 @@ msgid "Departments"
 msgstr "Grupy"
 
 msgid "Round "
-msgstr "Runda"
+msgstr "Runda "
 
 msgid "Votes"
 msgstr "Głosów"
@@ -531,18 +517,17 @@ msgid "Official"
 msgstr "Oficjalne"
 
 msgid "Total"
-msgstr ""
+msgstr "W sumie"
 
-#, fuzzy
 #| msgid "Total votes: %d"
 msgid "Total rounded"
-msgstr "Głosów w sumie: %d"
+msgstr "W sumie zaokrąglono"
 
 msgid "GROUP"
-msgstr ""
+msgstr "GRUPA"
 
 msgid "QUESTION"
-msgstr ""
+msgstr "PYTANIE"
 
 #, python-format
 msgid "Total votes: %d"
@@ -679,18 +664,16 @@ msgid "No voters were found."
 msgstr "Nie znaleziono głosujących."
 
 msgid "Email sending started"
-msgstr "Rozpoczęto wysyłkę e-maili."
+msgstr "Rozpoczęto wysyłkę e-maili"
 
 msgid "Something went wrong"
-msgstr ""
+msgstr "Coś poszło nie tak"
 
 msgid "No SMS deliveries left."
-msgstr ""
+msgstr "Nie ma już możliwości wysyłki SMSów."
 
-#, fuzzy
-#| msgid "Poll updated successfully"
 msgid "Voter removed successfully"
-msgstr "Aktualizacja głosowania powiodła się"
+msgstr "Usunięcie wyborczyni powiodło się"
 
 msgid "Poll does not support voter url login."
 msgstr "Głosowanie nie obsługuje logowania przez URL głosującej."

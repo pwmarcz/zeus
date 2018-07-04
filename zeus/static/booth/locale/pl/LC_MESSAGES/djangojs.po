@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"PO-Revision-Date: 2018-07-04 16:40+0200\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.8\n"
 
 msgid "STEP_1_TITLE"
 msgstr "Głosowanie na karcie"
@@ -205,10 +205,10 @@ msgid "UP_TO"
 msgstr "do"
 
 msgid "CHOICE"
-msgstr "wybór"
+msgstr "kandydatury"
 
 msgid "CHOICES"
-msgstr "wyborów"
+msgstr "kandydatur"
 
 msgid "choice"
 msgstr "wybór"
@@ -225,14 +225,11 @@ msgstr "Pusty głos"
 msgid "AUDIT_VOTE_SUBMISSION_BUTTON"
 msgstr "Prześlij głos do kontroli"
 
-#, fuzzy
 msgid "SAV_BALLOT_HELP_TEXT"
 msgstr ""
-"Klikaj na kandydatury po lewej, aby przenieść je na kartę do głosowania. "
-"Jeżeli chcesz usunąć jakiś wybór, kliknij na nazwisko kandydatki w prawej "
-"kolumnie."
+"Możesz zaznaczyć dowolną liczbę kandydatur - Twój głos zostanie podzielony "
+"pomiędzy nie wszystkie."
 
-#, fuzzy
 msgid "SAV_BALLOT_CANDIDATES_HEADER"
 msgstr "Kandydatury"
 
@@ -270,7 +267,7 @@ msgstr "Potwierdź"
 
 msgid "ELECTION_TERMS_LABEL"
 msgstr ""
-"Potwierdzam, że jestem sam(a) i że nikt nie kontrolował mojego głosowania."
+"Potwierdzam, że jestem sam(a) i że nikt nie kontrolował tego, jak głosuję."
 
 msgid "SUBMIT_BALLOT"
 msgstr "Wyślij kartę"

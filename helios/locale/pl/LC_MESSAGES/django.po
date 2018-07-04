@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"PO-Revision-Date: 2018-07-04 16:27+0200\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.8\n"
 
 msgid "Unresolved"
 msgstr "Nierozwiązane"
@@ -68,7 +68,7 @@ msgid "Voting extended until"
 msgstr "Głosowanie przedłużono do"
 
 msgid "Cast consent test"
-msgstr ""
+msgstr "Tekst zgody do oddania głosu"
 
 msgid "Add at least one trustee"
 msgstr "Dodaj co najmniej jedną powierniczkę"
@@ -114,10 +114,8 @@ msgstr "Weryfikuję mieszanie"
 msgid "Mixing finished"
 msgstr "Mieszanie zakończone"
 
-#, fuzzy
-#| msgid "Waiting for voting to start."
 msgid "Waiting for remote mixes"
-msgstr "Oczekujemy na rozpoczęcie głosowania."
+msgstr "Oczekujemy na zdalne miksery"
 
 msgid "Mixing"
 msgstr "Mieszanie"
@@ -208,7 +206,8 @@ msgid "Results"
 msgstr "Wyniki"
 
 msgid "There must be at least two fields, Registration ID and Email"
-msgstr "Muszą być co najmniej dwa pola, Identyfikator rejestracji oraz E-mail"
+msgstr ""
+"Wymagane są co najmniej dwa pola, Identyfikator rejestracji oraz E-mail"
 
 #, python-format
 msgid "Malformed mobile phone number: %s"
@@ -225,20 +224,17 @@ msgstr "Nieprawidłowe dane głosującej w linii %s"
 #, python-format
 msgid "Voter [%s]: Provide at least one of the email and mobile fields."
 msgstr ""
+"Wyborczyni [%s]: Podaj co najmniej jedno z pól: e-mail lub telefon komórkowy."
 
-#, fuzzy
-#| msgid "No trustees are set for the election."
 msgid "Mobile backend is not set for this election"
-msgstr "Dla wyborów nie ustawiono powierniczek."
+msgstr "Dla tych wyborów nie ustawiono silnika obsługi SMSów"
 
 #, python-format
 msgid "Duplicate voter id : %s"
 msgstr "Duplikat identyfikatora głosującej: %s"
 
-#, fuzzy
-#| msgid "No questions set"
 msgid "No email set"
-msgstr "Nie ustawiono pytań"
+msgstr "Nie ustawiono e-maila"
 
 msgid "Create trustee key"
 msgstr "Utwórz klucz powierniczki"
@@ -262,7 +258,7 @@ msgid "Election status"
 msgstr "Stan wyborów"
 
 msgid "Use the following URL to append additional mixes"
-msgstr ""
+msgstr "Do dołączenia dodatkowych mikserów użyj następującego URLa"
 
 msgid "Mixing status"
 msgstr "Stan mieszania"
@@ -279,11 +275,11 @@ msgstr "Zamknij mieszanie"
 msgid "Cancel election"
 msgstr "Anuluj wybory"
 
-msgid "Save results"
-msgstr "Zapisz wyniki"
-
 msgid "Recompute results"
 msgstr "Oblicz ponownie wyniki"
+
+msgid "Save results"
+msgstr "Zapisz wyniki"
 
 #, python-format
 msgid ""
@@ -332,7 +328,7 @@ msgid "Polls"
 msgstr "Głosowania"
 
 msgid "Your vote weight is set to "
-msgstr "Waga Twojego głosu jest ustawiona na"
+msgstr "Waga Twojego głosu jest ustawiona na "
 
 msgid "Enter voting booth"
 msgstr "Otwórz kabinę wyborczą"
@@ -344,13 +340,13 @@ msgid "Voting date passed."
 msgstr "Data głosowania minęła."
 
 msgid "Voting closed. Please wait for results"
-msgstr "Głosowanie zamknięte. Poczekaj na wyniki."
+msgstr "Głosowanie zamknięte. Poczekaj na wyniki"
 
 msgid "Election canceled"
 msgstr "Wybory odwołano"
 
 msgid "Election completed."
-msgstr "Wybory zakończone"
+msgstr "Wybory zakończone."
 
 msgid "Election cancel message"
 msgstr "Komunikat odwołania wyborów"
@@ -395,15 +391,11 @@ msgstr ""
 msgid "Confirm freeze"
 msgstr "Potwierdź finalizację"
 
-#, fuzzy
-#| msgid "Yes, I confirm!"
 msgid "Please confirm."
-msgstr "Tak, potwierdzam!"
+msgstr "Prosimy potwierdzić."
 
-#, fuzzy
-#| msgid "Confirm election close"
 msgid "Confirm close mixing"
-msgstr "Potwierdź zamknięcie wyborów"
+msgstr "Potwierdź mieszanie po zamknięciu"
 
 msgid "Recompute election results"
 msgstr "Oblicz ponownie wyniki wyborów"
@@ -511,26 +503,20 @@ msgstr "Utwórz użytkownika"
 msgid "No results found"
 msgstr "Nie znaleziono wyników"
 
-#, fuzzy
-#| msgid "Election type"
 msgid "Election types"
-msgstr "Typ wyborów"
+msgstr "Typy wyborów"
 
-#, fuzzy
-#| msgid "Voters count"
 msgid "Users count"
-msgstr "Liczba głosujących"
+msgstr "Liczba użytkowniczek"
 
 msgid "Actions"
 msgstr "Działania"
 
-#, fuzzy
-#| msgid "Users"
 msgid "User Groups"
-msgstr "Użytkownicy"
+msgstr "Grupy użytkowników"
 
 msgid "Is helpdesk user"
-msgstr ""
+msgstr "Jest użytkownikiem pomocy technicznej"
 
 msgid "Elections Held"
 msgstr "Przeprowadzone wybory"
@@ -542,18 +528,16 @@ msgid "Institutions"
 msgstr "Instytucje"
 
 msgid "Groups"
-msgstr ""
+msgstr "Grupy"
 
-#, fuzzy
-#| msgid "Create User"
 msgid "Create Group"
-msgstr "Utwórz użytkownika"
+msgstr "Utwórz grupę"
 
 msgid "Please confirm the password reset of user "
-msgstr "Potwierdź zresetowanie hasła użytkowniczki"
+msgstr "Potwierdź zresetowanie hasła użytkowniczki "
 
 msgid "SMS backend"
-msgstr ""
+msgstr "Silnik obsługi SMSów"
 
 msgid "Reset Password"
 msgstr "Resetuj hasło"
@@ -603,14 +587,8 @@ msgstr "Nie opublikowano zweryfikowanych kart do głosowania"
 msgid "Your vote has been cast"
 msgstr "Twój głos został oddany"
 
-#, fuzzy
-#| msgid ""
-#| "Your vote has been successfully cast.\n"
-#| "Thank you for participating."
 msgid "Your vote has been successfully cast. Thank you for participating."
-msgstr ""
-"Udało Ci się oddać głos.\n"
-"Dziękujemy za udział."
+msgstr "Udało Ci się oddać głos. Dziękujemy za udział."
 
 #, python-format
 msgid ""
@@ -618,6 +596,9 @@ msgid ""
 "A %(anchor_start)ssubmission receipt%(anchor_end)s for your vote has been "
 "sent to your email address or mobile phone.\n"
 msgstr ""
+"\n"
+"Na Twój adres e-mail lub telefon komórkowy wysłano "
+"%(anchor_start)spotwierdzenie głosowania%(anchor_end)s dla Twojego głosu.\n"
 
 msgid "Eligibles count"
 msgstr "Liczba mandatów"
@@ -663,28 +644,16 @@ msgstr "Działania listy głosujących"
 msgid "Import voters"
 msgstr "Importuj głosujących"
 
-#, fuzzy
-#| msgid "No voters set"
 msgid "Notify voters"
-msgstr "Nie ustawiono głosujących"
+msgstr "Powiadom głosujące"
 
 msgid "Export voter list to CSV"
 msgstr "Eksportuj listę głosujących do CSV"
 
 msgid "Delete all voters"
-msgstr "Skasuj wszystkich głosujących"
+msgstr "Skasuj wszystkie głosujące"
 
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                                %(voters_count)s result found\n"
-#| "                                "
-#| msgid_plural ""
-#| "\n"
-#| "\n"
-#| "                                %(voters_count)s results found\n"
-#| "                                %(voters_count)s results found\n"
-#| "                                                                "
+#, python-format
 msgid ""
 "\n"
 "                                %(voters_count)s result found\n"
@@ -693,11 +662,17 @@ msgid_plural ""
 "\n"
 "                                %(voters_count)s results found\n"
 "                                "
-msgstr[0] "Znaleziono %(voters_count)s wynik"
-msgstr[1] "Znaleziono %(voters_count)s wyników"
+msgstr[0] ""
+"\n"
+"                                Znaleziono %(voters_count)s \n"
+"                                "
+msgstr[1] ""
+"\n"
+"                                %(voters_count)s results found\n"
+"                                "
 
 msgid "(Excluded)"
-msgstr "(Wyłączeni)"
+msgstr "(Wyłączone)"
 
 msgid "Voter actions"
 msgstr "Działania dla osób głosujących"
@@ -722,7 +697,7 @@ msgstr ""
 "przykładzie poniżej:"
 
 msgid "EXAMPLE_CSV_INPUT_TEXT"
-msgstr "EXAMPLE_CSV_INPUT_TEXT"
+msgstr "Format pliku CSV poniżej"
 
 msgid ""
 "*The last three fields (middle name, mobile phone and vote weight) are "
@@ -768,10 +743,10 @@ msgstr ""
 "    (np. jeżeli jest przedstawicielem kilku osób wykluczonych cyfrowo)."
 
 msgid "The voter's given name"
-msgstr "Imię osoby głosującej."
+msgstr "Imię osoby głosującej"
 
 msgid "The voter's surname"
-msgstr "Nazwisko osoby głosującej."
+msgstr "Nazwisko osoby głosującej"
 
 msgid "The voter's middle name, or other title or name (optional)"
 msgstr ""
@@ -1082,7 +1057,7 @@ msgid "No polls decrypted"
 msgstr "Nie odszyfrowano głosowań"
 
 msgid "No trustee election key set"
-msgstr "Nie ustawiono klucza powierniczki wyborów "
+msgstr "Nie ustawiono klucza powierniczki wyborów"
 
 msgid "Send trustee login url"
 msgstr "Wyślij powierniczce URL do logowania"
@@ -1139,6 +1114,18 @@ msgid ""
 "\n"
 "you can find your encrypted vote attached in this mail."
 msgstr ""
+"Udało Ci się zagłosować w\n"
+"\n"
+"%(election_name)s\n"
+"%(poll_name)s\n"
+"\n"
+"jako\n"
+"\n"
+"%(voter_name)s %(voter_surname)s\n"
+"z identyfikatorem: %(voter_login_id)s\n"
+"\n"
+"w niniejszym e-mailu znajduje się załączone zaszyfrowane potwierdzenie "
+"oddania głosu."
 
 msgid "Thank you for voting"
 msgstr "Dziękujemy za głosowanie"
@@ -1214,7 +1201,7 @@ msgid "Your registration ID is:"
 msgstr "Identyfikator wyborczyni to:"
 
 msgid "To submit your vote, follow the link below"
-msgstr "Aby zagłosować, kliknij na łącze poniżej."
+msgstr "Aby zagłosować, kliknij na łącze poniżej"
 
 msgid "Information:"
 msgstr "Informacja:"
@@ -1224,11 +1211,10 @@ msgstr "Możesz głosować więcej niż raz. Tylko ostatni głos zostanie policz
 
 msgid "For information about the voting you can contact the trustees by phone,"
 msgstr ""
-"Aby uzyskać informacje o głosowaniu, możesz skontaktować się telefonicznie "
-"lub"
+"Aby uzyskać informacje o głosowaniu, możesz skontaktować się telefonicznie"
 
 msgid "or by email,"
-msgstr "przez e-mail z Partyjną Komisją Wyborczą lub Zarządem Okręgu."
+msgstr "lub przez e-mail z Partyjną Komisją Wyborczą lub Zarządem Okręgu."
 
 msgid "If you want to initiate an audit vote,"
 msgstr "Aby wykonać głosowanie kontrolne,"
@@ -1274,7 +1260,7 @@ msgid ""
 msgstr ""
 "Jeżeli nie jesteś osobą, dla której ten e-mail był przeznaczony, to skasuj "
 "tę\n"
-"wiadomość i skontaktuj się z pkw@partiarazem.pl "
+"wiadomość i skontaktuj się z pkw@partiarazem.pl"
 
 msgid "Audit codes only apply for poll:"
 msgstr "Kody kontrolne dotyczą tylko głosowania:"
@@ -1305,6 +1291,8 @@ msgid ""
 "You have successfully cast a vote in %(election_name)s\n"
 "%(vote_receipt_url)s"
 msgstr ""
+"Udało Ci się oddać głos w %(election_name)s\n"
+"%(vote_receipt_url)s"
 
 #, python-format
 msgid ""
@@ -1313,6 +1301,10 @@ msgid ""
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
 "%(custom_message_sms)s"
 msgstr ""
+"WYBORY ZEUS %(election_name)s GŁOSOWANIE PRZEDŁUŻONO DO %(ext_date)s: "
+"WYBORCZYNI Z KODEM REJESTRACJI %(voter_login_id)s\n"
+"GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
+"%(custom_message_sms)s"
 
 #, python-format
 msgid ""
@@ -1320,9 +1312,13 @@ msgid ""
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
 "%(custom_message_sms)s"
 msgstr ""
+"WYBORY ZEUS %(election_name)s: WYBORCZYNI Z KODEM REJESTRACJI "
+"%(voter_login_id)s\n"
+"GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
+"%(custom_message_sms)s"
 
 msgid "As a trustee for the election"
-msgstr "Jesteś powierniczką tych wyborów,"
+msgstr "Jesteś powierniczką tych wyborów"
 
 msgid "please visit your control panel and follow the instructions"
 msgstr ""
@@ -1393,18 +1389,15 @@ msgstr ""
 "Wybory wymagają uwierzytelnienia przez stronę trzecią. Przechodzisz na "
 "zewnętrzną stronę logowania."
 
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "Send email to voter %(voter_name)s (%(voter_id)s)\n"
+#, python-format
 msgid ""
 "\n"
 "Notify voter %(voter_name)s (%(voter_id)s)\n"
 msgstr ""
 "\n"
-"Wyślij e-mail do głosującej %(voter_name)s (%(voter_id)s)\n"
+"Powiadom głosującą %(voter_name)s (%(voter_id)s)\n"
 
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "\n"
 #| "Send email to poll '%(poll_name)s' voters %(suffix)s\n"
@@ -1413,9 +1406,9 @@ msgid ""
 "Notify poll '%(poll_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
-"Wyślij e-mail do głosujących w głosowaniu '%(poll_name)s' voters %(suffix)s\n"
+"Powiadom głosujące w głosowaniu '%(poll_name)s' %(suffix)s\n"
 
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "\n"
 #| "Send email to election '%(election_name)s' voters %(suffix)s\n"
@@ -1424,21 +1417,19 @@ msgid ""
 "Notify election '%(election_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
-"Wyślij e-mail do głosujących w wyborach '%(election_name)s' %(suffix)s\n"
+"Powiadom głosujące w wyborach '%(election_name)s' %(suffix)s\n"
 
 msgid "The message will only be sent to the following voter:"
 msgstr "Ten komunikat będzie wysłany tylko do:"
 
-#, fuzzy
-#| msgid "Email subject"
 msgid "Email content"
-msgstr "Temat e-maila"
+msgstr "Treść e-maila"
 
 msgid "Email subject"
 msgstr "Temat e-maila"
 
 msgid "SMS content"
-msgstr ""
+msgstr "Treść SMSa"
 
 msgid "You can edit the contents of the message using the following form."
 msgstr "Możesz edytować treść komunikatu przy pomocy formularza."
@@ -1447,7 +1438,7 @@ msgid "Send"
 msgstr "Wyślij"
 
 msgid "Sending complete."
-msgstr "Wysyłka zakończona"
+msgstr "Wysyłka zakończona."
 
 msgid "Back to the polls"
 msgstr "Powrót do głosowań"
@@ -1475,7 +1466,7 @@ msgid ""
 msgstr ""
 "\n"
 "Upewnij się, że korzystasz dokładnie z takiego linka, jaki został wysłany w\n"
-"    e-mailu. Jeżeli problem nadal występuje, skontaktuj się z PKW."
+"    e-mailu. Jeżeli problem nadal występuje, skontaktuj się z PKW"
 
 msgid ""
 "For questions and comments regarding the Zeus platform you may contact us at "
@@ -1523,7 +1514,7 @@ msgid "Import ballots"
 msgstr "Importuj karty do głosowania"
 
 msgid "Count STV ballot box."
-msgstr "Przelicz urnę z kartami PGP"
+msgstr "Przelicz urnę z kartami PGP."
 
 msgid "Choose a file and press submit to count STV results"
 msgstr "Wybierz plik i naciśnij prześlij, aby obliczyć wyniki PGP"
@@ -1548,7 +1539,7 @@ msgid "Results files will be available from this url for a few minutes."
 msgstr "Plik wyników będzie dostępny pod tym adresem URL przez kilka minut."
 
 msgid "To restart the counting process click "
-msgstr "Aby ponownie uruchomić proces liczenia, kliknij"
+msgstr "Aby ponownie uruchomić proces liczenia, kliknij "
 
 msgid "Terms of use"
 msgstr "Warunki wykorzystania"

@@ -5,17 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"PO-Revision-Date: 2018-07-04 16:06+0200\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.8\n"
 
 msgid "Name"
 msgstr "Nazwa"
@@ -27,7 +28,7 @@ msgid "Disable account"
 msgstr "Wyłącz konto"
 
 msgid "Helpdesk user"
-msgstr ""
+msgstr "Użytkownik pomocy technicznej"
 
 msgid "User already exists"
 msgstr "Użytkowniczka już istnieje"
@@ -46,22 +47,20 @@ msgid "User %(uid)s was created with password %(password)s."
 msgstr "Utworzono użytkownika %(uid)s z hasłem %(password)s."
 
 msgid "Changes were successfully saved"
-msgstr "Zapisano zmiany."
+msgstr "Zapisano zmiany"
 
 msgid "Institution created."
 msgstr "Instytucja utworzona."
 
-#, fuzzy
-#| msgid "Changes on user were successfully saved"
 msgid "Changes on user group were successfully saved"
-msgstr "Zmiany użytkowniczki zostały zapisane"
+msgstr "Zmiany grupy użytkownika zostały zapisane"
 
 #, python-format
 msgid "Group %s was created"
-msgstr ""
+msgstr "Utworzono grupę %s"
 
 msgid "You didn't choose a user"
-msgstr "Nie wybrałaś użytkownika."
+msgstr "Nie wybrałaś użytkownika"
 
 #, python-format
 msgid "New password for user %(uid)s is %(new_pass)s"
