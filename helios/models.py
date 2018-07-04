@@ -1511,10 +1511,6 @@ class VoterFile(models.Model):
                     % voter['voter_id'])
             raise ValidationError(msg)
 
-        if voter['mobile'] and not self.poll.sms_enabled:
-            msg = _("Mobile backend is not set for this election")
-            raise ValidationError(msg)
-
     @transaction.atomic
     def process(self, linked=True, check_dupes=True, preferred_encoding=None):
         demo_voters = 0
