@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"POT-Creation-Date: 2018-07-04 16:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,6 +126,12 @@ msgstr "Μη έγκυρη λίστα μελών εφορευτικής επιτ�
 
 msgid "Choice"
 msgstr "Επιλογή"
+
+msgid "CSV file with answers"
+msgstr ""
+
+msgid "Attach a UTF-8 encoded file. Answers will replace the current list."
+msgstr ""
 
 msgid "Min answers"
 msgstr "Ελάχιστος αριθμός επιλογών"
