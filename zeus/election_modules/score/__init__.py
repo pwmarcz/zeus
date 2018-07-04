@@ -24,71 +24,19 @@ class ScoreBallotElection(ElectionModuleBase):
     csv_result = True
     pdf_result = True
 
+    max_questions_limit = 1
+
     module_params = {}
 
     messages = {}
 
-    def questions_update_view(self, request, election, poll):
-        from zeus.utils import poll_reverse
-        from zeus.forms import ScoresForm, RequiredFormset, DEFAULT_ANSWERS_COUNT
-
-        extra = 1
-        if poll.questions_data:
-            extra = 0
-
-        questions_formset = formset_factory(ScoresForm,
-                                            formset=RequiredFormset,
-                                            extra=extra,
-                                            can_delete=True,
-                                            can_order=True)
-        if request.method == 'POST':
-            formset = questions_formset(request.POST)
-            if formset.is_valid():
-                questions_data = []
-                for question in formset.cleaned_data:
-                    if not question:
-                        continue
-
-                    # force sort of answers by extracting index from answer key.
-                    # cast answer index to integer, otherwise answer_10 would
-                    # be placed before answer_2
-                    answer_index = lambda a: int(a[0].replace('answer_', ''))
-                    isanswer = lambda a: a[0].startswith('answer_')
-                    answer_values = list(filter(isanswer, iter(question.items())))
-                    sorted_answers = sorted(answer_values, key=answer_index)
-
-                    question['answers'] = [x[1] for x in sorted_answers]
-                    question['scores'] = [p for p in question['scores'] if p is not None]
-                    question['question_subtitle'] = ",".join(question['scores'])
-
-                    for k in list(question.keys()):
-                        if k in ['DELETE', 'ORDER']:
-                            del question[k]
-
-                    questions_data.append(question)
-
-                poll.questions_data = questions_data
-                poll.update_answers()
-                poll.logger.info("Poll ballot updated")
-                poll.save()
-
-                url = poll_reverse(poll, 'questions')
-                return HttpResponseRedirect(url)
-        else:
-            formset = questions_formset(initial=poll.questions_data)
-
-        context = {
-            'default_answers_count': DEFAULT_ANSWERS_COUNT,
-            'formset': formset,
-            'max_questions_limit': 1,
-            'election': election,
-            'poll': poll,
-            'module': self
-        }
-
-        set_menu('questions', context)
-        tpl = 'election_modules/simple/election_poll_questions_manage'
-        return render_template(request, tpl, context)
+    def questions_formset(self, extra):
+        from zeus.forms import ScoresForm, RequiredFormset
+        return formset_factory(ScoresForm,
+                               formset=RequiredFormset,
+                               extra=extra,
+                               can_delete=True,
+                               can_order=True)
 
     def update_answers(self):
         answers = []
