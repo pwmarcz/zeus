@@ -118,7 +118,8 @@ class ElectionModuleBase(ElectionHooks):
         questions_formset = self.questions_formset(extra)
         if request.method == 'POST':
             formset = questions_formset(request.POST, request.FILES, initial=poll.questions_data)
-            if formset.is_valid():
+            should_submit = not request.FILES and formset.is_valid()
+            if should_submit:
                 cleaned_data = formset.cleaned_data
                 questions_data = self.extract_question_data(cleaned_data)
 
