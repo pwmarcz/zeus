@@ -140,6 +140,7 @@ class SavElection(ElectionModuleBase):
         for lang in settings.LANGUAGES:
             self.generate_election_result_docs(lang)
             self.generate_election_csv_file(lang)
+            self.generate_election_zip_file(lang)
 
     def generate_result_docs(self, lang):
         poll_data = [
@@ -193,5 +194,3 @@ def count_sav_results(poll):
     candidate_data.sort(key=lambda x: x[1], reverse=True)
 
     return candidate_data
-
-

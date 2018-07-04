@@ -146,7 +146,19 @@ class ElectionModuleBase(ElectionHooks):
                                 (election, name, ext))
 
     def generate_json_file(self):
-        results_json = self.poll.zeus.get_results()
+        if self.module_id != "sav":
+            results_json = self.poll.zeus.get_results()
+        else:
+            results = count_sav_results(self.poll)
+            results_json = {
+                candidate: {
+                    "float_votes": float(votes),
+                    "fraction_numerator": votes.numerator,
+                    "fraction_denominator": votes.denominator,
+                }
+                for candidate, votes in results
+            }
+
         with open(self.get_poll_result_file_path('json', 'json'), 'w') as f:
             json.dump(results_json, f)
 
