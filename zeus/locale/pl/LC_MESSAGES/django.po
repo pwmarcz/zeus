@@ -342,9 +342,9 @@ msgstr "Wybierz typ wyborów"
 
 msgid "TRUSTEES_LIST_HELP_TEXT"
 msgstr ""
-"Lista powierniczek, np.\n"
-"\n"
-"Janina Kowalska,janina.kowalska@gmail.com\n"
+"Lista powierniczek, np.<br/>\n"
+"<br/>\n"
+"Janina Kowalska,janina.kowalska@gmail.com<br/>"
 "Partyjna Komisja Wyborcza,razem.pkw@gmail.com"
 
 msgid "Election description"
