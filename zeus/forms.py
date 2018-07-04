@@ -278,7 +278,10 @@ class QuestionBaseForm(forms.Form):
                                 'class': 'textarea'
                                }))
 
-    answers_file = forms.FileField(label=_('CSV file with answers'), required=False)
+    answers_file = forms.FileField(
+        label=_('CSV file with answers'),
+        help_text=_('Attach a UTF-8 encoded file. Answers will be added at the end of list.'),
+        required=False)
 
     def __init__(self, *args, **kwargs):
         super(QuestionBaseForm, self).__init__(*args, **kwargs)
@@ -489,20 +492,6 @@ class SavForm(QuestionBaseForm):
         super(SavForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
-        answers = len([k for k in self.data if k.startswith("%s-answer_" %
-                                                self.prefix)])
-        if not answers:
-            answers = len([k for k in self.initial if k.startswith("answer_")])
-        if answers == 0:
-            answers = DEFAULT_ANSWERS_COUNT
-
-        self.fields.clear()
-        for ans in range(answers):
-            field_key = 'answer_%d' % ans
-            self.fields[field_key] = forms.CharField(max_length=600,
-                                              required=True,
-                                              label=('Candidate'))
-            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
         elig_help_text = _("set minimal number of votes")
         label_text = _("Minimum votes")
@@ -532,6 +521,7 @@ class SavForm(QuestionBaseForm):
                 self._errors[field_key] = ErrorList([message])
             if '%' in answer:
                 raise forms.ValidationError(INVALID_CHAR_MSG)
+            candidates_list.append(answer)
 
         if len(candidates_list) > len(set(candidates_list)):
             raise forms.ValidationError(_("No duplicate choices allowed"))
@@ -555,9 +545,9 @@ class StvForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
         deps = kwargs['initial']['departments_data'].split('\n')
-        DEPARTMENT_CHOICES = []
+        self.department_choices = []
         for dep in deps:
-            DEPARTMENT_CHOICES.append((dep.strip(), dep.strip()))
+            self.department_choices.append((dep.strip(), dep.strip()))
 
         super(StvForm, self).__init__(*args, **kwargs)
 
@@ -569,14 +559,15 @@ class StvForm(QuestionBaseForm):
         if answers == 0:
             answers = DEFAULT_ANSWERS_COUNT
 
-        self.fields.clear()
+        for k in list(self.fields.keys()):
+            if k.startswith('answer_'):
+                del self.fields[k]
         for ans in range(answers):
             field_key = 'answer_%d' % ans
             self.fields[field_key] = forms.CharField(max_length=600,
                                               required=True,
-                                              widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
+                                              widget=CandidateWidget(departments=self.department_choices),
                                               label=('Candidate'))
-
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
         dep_lim_label = _("Constituency limit")
@@ -607,7 +598,34 @@ class StvForm(QuestionBaseForm):
     min_answers = None
     max_answers = None
 
+    def add_answer_from_row(self, row):
+        if len(row) == 0:
+            return
+        if len(row) < 2:
+            raise forms.ValidationError(f'too few columns: {row}')
+        if len(row) > 2:
+            raise forms.ValidationError(f'too many columns: {row}')
+
+        dep = None
+        for value, label in self.department_choices:
+            if row[1] == label:
+                dep = value
+                break
+        else:
+            raise forms.ValidationError(f'department not found: {row[1]}')
+
+        self.add_value('answer', row[0], dep)
+
+    def add_value(self, field_name, value0, value1):
+        i = 0
+        while self.add_prefix(f'{field_name}_{i}_0') in self.data:
+            i += 1
+        self.data[self.add_prefix(f'{field_name}_{i}_0')] = value0
+        self.data[self.add_prefix(f'{field_name}_{i}_1')] = value1
+
     def clean(self):
+        super().clean()
+
         from django.forms.utils import ErrorList
         message = _("This field is required.")
 
