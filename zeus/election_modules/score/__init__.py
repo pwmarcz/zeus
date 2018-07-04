@@ -3,12 +3,9 @@ from itertools import zip_longest
 
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.http import HttpResponseRedirect
 from django.conf import settings
 
 from zeus.election_modules import ElectionModuleBase, election_module
-from zeus.views.utils import set_menu
-from helios.view_utils import render_template
 
 
 @election_module
