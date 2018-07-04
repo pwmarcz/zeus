@@ -382,6 +382,7 @@ class PollFeatures(FeaturesMixin):
             self.feature_compute_results_error
         )
 
+
 class VoterFeatures(FeaturesMixin):
     pass
 

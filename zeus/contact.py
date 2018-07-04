@@ -24,7 +24,7 @@ class ContactBackend():
         self.data = data
 
     def can_notify(self, voter):
-        raise NotImplemented
+        raise NotImplementedError
 
     def render_template(self, tpl, tpl_vars):
         return render_template_raw(None, tpl, tpl_vars)

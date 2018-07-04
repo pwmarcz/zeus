@@ -11,6 +11,9 @@ from zeus.reports import csv_from_polls, csv_from_score_polls,\
                          csv_from_stv_polls
 from zeus.utils import get_filters, VOTER_TABLE_HEADERS, VOTER_SEARCH_FIELDS, \
     VOTER_BOOL_KEYS_MAP, VOTER_EXTRA_HEADERS
+from zeus.views.utils import set_menu
+from django.http import HttpResponseRedirect
+from helios.view_utils import render_template
 
 
 ELECTION_MODULES_CHOICES = []
@@ -59,6 +62,8 @@ class ElectionModuleBase(ElectionHooks):
     display_poll_results = True
     election_results_partial = None
 
+    max_questions_limit = None
+
     module_params = {}
 
     default_messages = {
@@ -99,16 +104,81 @@ class ElectionModuleBase(ElectionHooks):
         return self.poll.questions_count > 0
 
     def questions_list_view(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
-    def questions_update_view(self, request):
-        raise NotImplemented
+    def questions_update_view(self, request, election, poll):
+        from zeus.utils import poll_reverse
+        from zeus.forms import DEFAULT_ANSWERS_COUNT, \
+                MAX_QUESTIONS_LIMIT
+
+        extra = 1
+        if poll.questions_data:
+            extra = 0
+
+        questions_formset = self.questions_formset(extra)
+        if request.method == 'POST':
+            formset = questions_formset(request.POST, initial=poll.questions_data)
+            if formset.is_valid():
+                cleaned_data = formset.cleaned_data
+                questions_data = self.extract_question_data(cleaned_data)
+
+                poll.questions_data = questions_data
+                poll.update_answers()
+                poll.logger.info("Poll ballot updated")
+                self.update_poll_params(poll, formset.cleaned_data)
+                poll.save()
+
+                url = poll_reverse(poll, 'questions')
+                return HttpResponseRedirect(url)
+        else:
+            formset = questions_formset(initial=poll.questions_data)
+
+        context = {
+            'default_answers_count': DEFAULT_ANSWERS_COUNT,
+            'formset': formset,
+            'max_questions_limit': self.max_questions_limit or MAX_QUESTIONS_LIMIT,
+            'election': election,
+            'poll': poll,
+            'module': self
+        }
+        set_menu('questions', context)
+        tpl = f'election_modules/{self.module_id}/election_poll_questions_manage'
+        return render_template(request, tpl, context)
+
+    def update_poll_params(self, poll, cleaned_data):
+        pass
+
+    def questions_formset(self, extra):
+        raise NotImplementedError
+
+    def extract_question_data(self, questions):
+        questions_data = []
+        for question in questions:
+            if not question:
+                continue
+
+            # force sort of answers by extracting index from answer key.
+            # cast answer index to integer, otherwise answer_10 would
+            # be placed before answer_2
+            answer_index = lambda a: int(a[0].replace('answer_', ''))
+            isanswer = lambda a: a[0].startswith('answer_')
+            answer_values = list(filter(isanswer, iter(question.items())))
+            sorted_answers = sorted(answer_values, key=answer_index)
+
+            answers = [x[1] for x in sorted_answers]
+            question['answers'] = answers
+            for k in list(question.keys()):
+                if k in ['DELETE', 'ORDER']:
+                    del question[k]
+
+            questions_data.append(question)
+        return questions_data
 
     def calculate_results(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_booth_template(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
     def params(self):
