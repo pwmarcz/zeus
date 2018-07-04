@@ -101,7 +101,7 @@ class ElectionModuleBase(ElectionHooks):
         return self.poll.questions_count > 0
 
     def questions_list_view(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     def questions_update_view(self, request, election, poll):
         from zeus.utils import poll_reverse
@@ -146,7 +146,7 @@ class ElectionModuleBase(ElectionHooks):
         pass
 
     def questions_formset(self, extra):
-        raise NotImplemented
+        raise NotImplementedError
 
     def extract_question_data(self, questions):
         questions_data = []
@@ -172,10 +172,10 @@ class ElectionModuleBase(ElectionHooks):
         return questions_data
 
     def calculate_results(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_booth_template(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     @property
     def params(self):

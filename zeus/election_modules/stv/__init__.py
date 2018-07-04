@@ -197,4 +197,4 @@ class StvElection(ElectionModuleBase):
             self.generate_csv_file(lang)
 
     def get_booth_template(self, request):
-        raise NotImplemented
+        raise NotImplementedError

@@ -67,4 +67,4 @@ class SimpleElection(ElectionModuleBase):
             self.generate_election_zip_file(lang)
 
     def get_booth_template(self, request):
-        raise NotImplemented
+        raise NotImplementedError

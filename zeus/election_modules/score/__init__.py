@@ -86,10 +86,10 @@ class ScoreBallotElection(ElectionModuleBase):
                 q['score_indexes'][score] = poll_answers.index(str(100 * index+int(score)))
 
     def calculate_results(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     def get_booth_template(self, request):
-        raise NotImplemented
+        raise NotImplementedError
 
     def compute_results(self):
         self.generate_json_file()
