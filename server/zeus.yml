@@ -32,7 +32,7 @@
         - gettext
         # TODO configure Redis, set up a password
         - redis-server
-        - fonts-open-sans
+        # - fonts-open-sans
 
     - name: zeus database
       postgresql_db:
