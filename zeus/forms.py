@@ -495,6 +495,7 @@ class SavForm(QuestionBaseForm):
         super(SavForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
+        self.fields.pop('choice_type')
 
         elig_help_text = _("set minimal number of votes")
         label_text = _("Minimum votes")
@@ -555,6 +556,7 @@ class StvForm(QuestionBaseForm):
         super(StvForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
+        self.fields.pop('choice_type')
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)]) // 2
         if not answers:
