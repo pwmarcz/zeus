@@ -280,7 +280,7 @@ class QuestionBaseForm(forms.Form):
 
     answers_file = forms.FileField(
         label=_('CSV file with answers'),
-        help_text=_('Attach a UTF-8 encoded file. Answers will be added at the end of list.'),
+        help_text=_('Attach a UTF-8 encoded file. Answers will replace the current list.'),
         required=False)
 
     def __init__(self, *args, **kwargs):
@@ -325,9 +325,12 @@ class QuestionBaseForm(forms.Form):
 
         self.data = self.data.copy()
         reader = csv.reader(StringIO(s))
+        self.clear_answers()
+        i = 0
         for row in reader:
             try:
-                self.add_answer_from_row(row)
+                if self.add_answer_from_row(i, row):
+                    i += 1
             except forms.ValidationError as e:
                 self.answers_file_errors.append(e)
 
@@ -337,18 +340,18 @@ class QuestionBaseForm(forms.Form):
             self.add_error('answers_file', e)
         return data
 
-    def add_answer_from_row(self, row):
+    def clear_answers(self):
+        for k in list(self.data.keys()):
+            if k.startswith(self.add_prefix('answer_')):
+                del self.data[k]
+
+    def add_answer_from_row(self, i, row):
         if len(row) == 0:
-            return
+            return False
         if len(row) > 1:
             raise forms.ValidationError(f'too many columns: {row}')
-        self.add_value('answer', row[0])
-
-    def add_value(self, field_name, value):
-        i = 0
-        while self.add_prefix(f'{field_name}_{i}') in self.data:
-            i += 1
-        self.data[self.add_prefix(f'{field_name}_{i}')] = value
+        self.data[self.add_prefix(f'answer_{i}')] = row[0]
+        return True
 
     def clean_question(self):
         q = self.cleaned_data.get('question', '')
@@ -598,9 +601,9 @@ class StvForm(QuestionBaseForm):
     min_answers = None
     max_answers = None
 
-    def add_answer_from_row(self, row):
+    def add_answer_from_row(self, i, row):
         if len(row) == 0:
-            return
+            return False
         if len(row) < 2:
             raise forms.ValidationError(f'too few columns: {row}')
         if len(row) > 2:
@@ -614,14 +617,9 @@ class StvForm(QuestionBaseForm):
         else:
             raise forms.ValidationError(f'department not found: {row[1]}')
 
-        self.add_value('answer', row[0], dep)
-
-    def add_value(self, field_name, value0, value1):
-        i = 0
-        while self.add_prefix(f'{field_name}_{i}_0') in self.data:
-            i += 1
-        self.data[self.add_prefix(f'{field_name}_{i}_0')] = value0
-        self.data[self.add_prefix(f'{field_name}_{i}_1')] = value1
+        self.data[self.add_prefix(f'answer_{i}_0')] = row[0]
+        self.data[self.add_prefix(f'answer_{i}_1')] = dep
+        return True
 
     def clean(self):
         super().clean()
