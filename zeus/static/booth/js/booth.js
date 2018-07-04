@@ -17,12 +17,6 @@ if (!String.prototype.format) {
   };
 }
 
-$(document).ready(function(){
-  try {
-    $("title, #banner h1").content('PAGE_TITLE');
-  } catch (err) {}
-});
-
 BOOTH = {};
 BOOTH.debug = true;
 BOOTH.setup_templates = function(election) {
@@ -498,6 +492,7 @@ BOOTH.so_lets_go = function () {
     $.getScript(messages_url, function() {
       // gettext is loaded. vote.html content gets directly rendered to the browser.
       // There are many ugly ways to apply the content translations. Here is one of them
+      $("title, #banner h1").text(gettext('PAGE_TITLE'));
       $("[data-trans]").each(function() {
         var content = $(this).html();
         var translated = eval.call(window, content);

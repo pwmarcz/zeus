@@ -1,8 +1,10 @@
 - hosts: all
+  remote_user: "{{ remote_user }}"
   gather_facts: no
   become: yes
   vars:
     zeus_db_password: "{{ (lookup('file', 'secrets/zeus-secrets-{{ inventory_hostname }}.json') | from_json)['db_password'] }}"
+    is_ubuntu: "{{ ubuntu | default(false) }}"
   tasks:
 
     - name: zeus user
@@ -18,8 +20,10 @@
         append: yes
 
     - apt_repository: repo="ppa:deadsnakes/ppa"
+      when: is_ubuntu
 
     - apt: pkg={{ item }} state=latest
+      when: is_ubuntu
       with_items:
         - python3.6
         - python3.6-dev
@@ -32,14 +36,16 @@
         - gettext
         # TODO configure Redis, set up a password
         - redis-server
-        - fonts-open-sans
+        # - fonts-open-sans
 
     - name: zeus database
+      when: is_ubuntu
       postgresql_db:
         name: zeus
       become_user: postgres
 
     - name: zeus postgres user
+      when: is_ubuntu
       postgresql_user:
         name: zeus
         db: zeus
@@ -60,6 +66,7 @@
         owner: zeus
         group: zeus
         mode: 0770
+      notify: restart services
 
     - name: settings_local.py
       template:
@@ -68,6 +75,7 @@
         owner: zeus
         group: zeus
         mode: 0770
+      notify: restart services
 
     - name: uwsgi.ini
       template:
@@ -87,21 +95,27 @@
       template:
         src: templates/zeus-uwsgi.service
         dest: /etc/systemd/system/zeus-uwsgi.service
-      notify: systemctl daemon-reload
+      notify:
+        - systemctl daemon-reload
+        - restart services
 
     - name: worker service configuration
       template:
         src: templates/zeus-worker.service
         dest: /etc/systemd/system/zeus-worker.service
-      notify: systemctl daemon-reload
+      notify:
+        - systemctl daemon-reload
+        - restart services
 
     - name: nginx template
+      when: is_ubuntu
       template:
         src: templates/zeus-nginx.conf
         dest: /etc/nginx/sites-available/zeus
       notify: reload nginx
 
     - name: symlink nginx template
+      when: is_ubuntu
       file:
         src: /etc/nginx/sites-available/zeus
         dest: /etc/nginx/sites-enabled/zeus
@@ -229,3 +243,8 @@
       service: name=nginx state=reloaded
     - name: systemctl daemon-reload
       command: systemctl daemon-reload
+    - name: restart services
+      service: name="{{ item }}" state=restarted
+      with_items:
+        - zeus-uwsgi
+        - zeus-worker

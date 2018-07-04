@@ -5,6 +5,8 @@ Forms for Zeus
 
 import copy
 import json
+import csv
+from io import StringIO
 
 from collections import defaultdict
 from datetime import datetime
@@ -276,11 +278,19 @@ class QuestionBaseForm(forms.Form):
                                 'class': 'textarea'
                                }))
 
+    answers_file = forms.FileField(
+        label=_('CSV file with answers'),
+        help_text=_('Attach a UTF-8 encoded file. Answers will replace the current list.'),
+        required=False)
+
     def __init__(self, *args, **kwargs):
         super(QuestionBaseForm, self).__init__(*args, **kwargs)
         if len(self.fields['choice_type'].choices) == 1:
             self.fields['choice_type'].widget = forms.HiddenInput()
             self.fields['choice_type'].initial = 'choice'
+
+        self.answers_file_errors = []
+        self.update_answers_from_file()
 
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)])
@@ -298,6 +308,50 @@ class QuestionBaseForm(forms.Form):
             self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
 
         self._answers = answers
+
+    def update_answers_from_file(self):
+        file_key = self.add_prefix('answers_file')
+        if not (self.files and file_key in self.files):
+            return
+
+        content = self.files[file_key].read()
+        del self.files[file_key]
+
+        try:
+            s = content.decode()
+        except UnicodeDecodeError as e:
+            self.answers_file_errors.append(str(e))
+            return
+
+        self.data = self.data.copy()
+        reader = csv.reader(StringIO(s))
+        self.clear_answers()
+        i = 0
+        for row in reader:
+            try:
+                if self.add_answer_from_row(i, row):
+                    i += 1
+            except forms.ValidationError as e:
+                self.answers_file_errors.append(e)
+
+    def clean(self):
+        data = super().clean()
+        for e in self.answers_file_errors:
+            self.add_error('answers_file', e)
+        return data
+
+    def clear_answers(self):
+        for k in list(self.data.keys()):
+            if k.startswith(self.add_prefix('answer_')):
+                del self.data[k]
+
+    def add_answer_from_row(self, i, row):
+        if len(row) == 0:
+            return False
+        if len(row) > 1:
+            raise forms.ValidationError(f'too many columns: {row}')
+        self.data[self.add_prefix(f'answer_{i}')] = row[0]
+        return True
 
     def clean_question(self):
         q = self.cleaned_data.get('question', '')
@@ -324,8 +378,10 @@ class QuestionForm(QuestionBaseForm):
         self.fields['min_answers'].initial = 0
 
     def clean(self):
-        max_answers = int(self.cleaned_data.get('max_answers'))
-        min_answers = int(self.cleaned_data.get('min_answers'))
+        cleaned_data = super().clean()
+
+        max_answers = int(cleaned_data.get('max_answers'))
+        min_answers = int(cleaned_data.get('min_answers'))
         if min_answers > max_answers:
             raise forms.ValidationError(_("Max answers should be greater "
                                           "or equal to min answers"))
@@ -337,7 +393,7 @@ class QuestionForm(QuestionBaseForm):
                 answer_list.append(self.cleaned_data[key])
         if len(answer_list) > len(set(answer_list)):
             raise forms.ValidationError(_("No duplicate choices allowed"))
-        return self.cleaned_data
+        return cleaned_data
 
 
 class PartyForm(QuestionForm):
@@ -439,20 +495,7 @@ class SavForm(QuestionBaseForm):
         super(SavForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
-        answers = len([k for k in self.data if k.startswith("%s-answer_" %
-                                                self.prefix)])
-        if not answers:
-            answers = len([k for k in self.initial if k.startswith("answer_")])
-        if answers == 0:
-            answers = DEFAULT_ANSWERS_COUNT
-
-        self.fields.clear()
-        for ans in range(answers):
-            field_key = 'answer_%d' % ans
-            self.fields[field_key] = forms.CharField(max_length=600,
-                                              required=True,
-                                              label=('Candidate'))
-            self.fields[field_key].widget.attrs.update({'class': 'answer_input'})
+        self.fields.pop('choice_type')
 
         elig_help_text = _("set minimal number of votes")
         label_text = _("Minimum votes")
@@ -465,6 +508,8 @@ class SavForm(QuestionBaseForm):
     max_answers = None
 
     def clean(self):
+        super().clean()
+
         from django.forms.utils import ErrorList
         message = _("This field is required.")
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
@@ -480,6 +525,7 @@ class SavForm(QuestionBaseForm):
                 self._errors[field_key] = ErrorList([message])
             if '%' in answer:
                 raise forms.ValidationError(INVALID_CHAR_MSG)
+            candidates_list.append(answer)
 
         if len(candidates_list) > len(set(candidates_list)):
             raise forms.ValidationError(_("No duplicate choices allowed"))
@@ -503,13 +549,14 @@ class StvForm(QuestionBaseForm):
 
     def __init__(self, *args, **kwargs):
         deps = kwargs['initial']['departments_data'].split('\n')
-        DEPARTMENT_CHOICES = []
+        self.department_choices = []
         for dep in deps:
-            DEPARTMENT_CHOICES.append((dep.strip(), dep.strip()))
+            self.department_choices.append((dep.strip(), dep.strip()))
 
         super(StvForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
+        self.fields.pop('choice_type')
         answers = len([k for k in self.data if k.startswith("%s-answer_" %
                                                 self.prefix)]) // 2
         if not answers:
@@ -517,14 +564,15 @@ class StvForm(QuestionBaseForm):
         if answers == 0:
             answers = DEFAULT_ANSWERS_COUNT
 
-        self.fields.clear()
+        for k in list(self.fields.keys()):
+            if k.startswith('answer_'):
+                del self.fields[k]
         for ans in range(answers):
             field_key = 'answer_%d' % ans
             self.fields[field_key] = forms.CharField(max_length=600,
                                               required=True,
-                                              widget=CandidateWidget(departments=DEPARTMENT_CHOICES),
+                                              widget=CandidateWidget(departments=self.department_choices),
                                               label=('Candidate'))
-
         widget=forms.TextInput(attrs={'hidden': 'True'})
         dep_lim_help_text = _("maximum number of elected from the same constituency")
         dep_lim_label = _("Constituency limit")
@@ -555,7 +603,29 @@ class StvForm(QuestionBaseForm):
     min_answers = None
     max_answers = None
 
+    def add_answer_from_row(self, i, row):
+        if len(row) == 0:
+            return False
+        if len(row) < 2:
+            raise forms.ValidationError(f'too few columns: {row}')
+        if len(row) > 2:
+            raise forms.ValidationError(f'too many columns: {row}')
+
+        dep = None
+        for value, label in self.department_choices:
+            if row[1] == label:
+                dep = value
+                break
+        else:
+            raise forms.ValidationError(f'department not found: {row[1]}')
+
+        self.data[self.add_prefix(f'answer_{i}_0')] = row[0]
+        self.data[self.add_prefix(f'answer_{i}_1')] = dep
+        return True
+
     def clean(self):
+        super().clean()
+
         from django.forms.utils import ErrorList
         message = _("This field is required.")
 

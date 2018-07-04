@@ -76,7 +76,7 @@ class Oauth2Base(object):
         return (self.exchange_url, encoded_data)
 
     def exchange(self, url):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 @oauth2_module
@@ -168,4 +168,4 @@ class Oauth2Other(Oauth2Base):
         self.expires_in = data['expires_in']
 
     def confirm_email(self):
-        raise NotImplemented
+        raise NotImplementedError

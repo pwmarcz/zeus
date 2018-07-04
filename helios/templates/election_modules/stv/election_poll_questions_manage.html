@@ -6,14 +6,14 @@
 {% endblock %}
 {% block content %}
 
-<form class="prettyform questions" action="" method="POST" id="create_election_form">
+<form class="prettyform questions" action="" method="POST" id="create_election_form" enctype="multipart/form-data">
 <dl class="tabs contained">
   <dd class="add_new"><a href="#" style="color: green">
     <i class="general foundicon-plus"></i></a></dd>
   {% for form in formset %}
   <dd class="{% if forloop.counter == 1 %}active{% endif %} hide-for-small"><a
       href="#q{{ forloop.counter }}">
-      {% trans module.question_title_message %} 
+      {% trans module.question_title_message %}
       {{ forloop.counter}}</a></dd>
   {% endfor %}
   <dd class="remove_current" style="float: right"><a href="#"
@@ -38,11 +38,11 @@
 <script>
 /*
 window.onload = function(){
-    
+
     checkbox = document.getElementById("id_form-0-has_department_limit")
     elem = document.getElementById("id_form-0-department_limit")
 
-    
+
     if (checkbox.checked){
         elem.disabled = false
     }
@@ -82,12 +82,12 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function(){
-  var dohide = function(i, el) { 
+  var dohide = function(i, el) {
     var row = $(el).closest(".form-field")
     row.hide();
     row.next().hide();
   }
-  
+
   DEFAULT_ANSWERS_COUNT = {{ default_answers_count }};
   MAX_QUESTIONS_LIMIT = {{ max_questions_limit }};
 
@@ -102,7 +102,7 @@ $(document).ready(function(){
     this.content_container = this.form.find("ul.tabs-content");
     this.hide_inputs();
     this.update_answers_data(1);
-    
+
     var self = this;
     this.add_button.click(function(e){
       e.preventDefault();
@@ -163,7 +163,7 @@ $(document).ready(function(){
           var el = $(el);
           var label = $(el).closest(".form-field").find("label");
           var name = 'form-' + qi + '-answer_' + i;
-            
+
           var inputs = el.find("input,select,textarea");
           inputs.each(function(j, el) {
               var el = $(this);
@@ -200,7 +200,7 @@ $(document).ready(function(){
     get_form: function(num) {
       return $(this.forms().get(num));
     },
-    
+
     update_management_form: function() {
       var total = this.form.find("#id_form-TOTAL_FORMS");
       var initial = this.form.find("#id_form-INITIAL_FORMS");
@@ -214,7 +214,7 @@ $(document).ready(function(){
         $(t).find("a").text(self._get_question_title(i+1));
       })
     },
-    
+
     update_forms: function() {
       var self = this;
       this.forms().each(function(i, form){
@@ -248,7 +248,7 @@ $(document).ready(function(){
       }
 
     },
-    
+
     add_question: function() {
       if (this.forms().length >= MAX_QUESTIONS_LIMIT) {
           this.add_button.hide()
@@ -259,14 +259,14 @@ $(document).ready(function(){
       var newq = q.clone();
       var newtab = $(this.tabs()[0]).clone();
       var qindex = this.forms().length;
-    
+
       newtab.removeClass("error");
       newtab.find("a").text(this._get_question_title(parseInt(qindex)+1));
       newtab.find("a").attr({href:"#q" + (qindex+1)});
       newtab.removeClass("active");
       var last_tab = this.tabs().last();
       newtab.insertAfter(last_tab);
-      
+
       newq.find(".alert-box").remove();
       newq.find(".form-field").removeClass("error");
       newq.find(".form-field .alert").remove();
@@ -276,7 +276,7 @@ $(document).ready(function(){
       this._set_form_index(newq, qindex);
       newq.hide();
       this.content_container.append(newq);
-      
+
       window.location.hash = "q" + (qindex+1);
       this.forms().hide();
       this.tabs().removeClass("active");
@@ -292,7 +292,7 @@ $(document).ready(function(){
           return;
       }
     },
-    
+
     _get_question_title: function(index) {
         return "{{ module.question_title_message }} " + index;
     },
@@ -336,7 +336,7 @@ $(document).ready(function(){
       var label = el.find("label");
       var input = el.find("input");
       var name = 'form-' + qindex + '-answer_' + index;
-    
+
       label.text(this._get_answer_title(index+1))
       label.attr({'for': 'id_'+name})
       input.attr({
@@ -359,7 +359,7 @@ $(document).ready(function(){
       this.update_answers_data(1);
       this.update_limit_selections(qnum);
     },
-    
+
     update_limit_selections: function(qnum) {
       var select = this.max_answers_select(qnum);
       this.update_limit_selection(qnum, select);
@@ -403,10 +403,10 @@ $(document).ready(function(){
           last++;
           select.append('<option value="'+last+'">'+last+'</option>');
         }
-        
+
       }
     },
-  
+
     answers: function(qnum) {
       return this.get_form(qnum).find(".answer_input")
     },

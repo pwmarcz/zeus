@@ -1,13 +1,9 @@
 from django.utils.translation import ugettext_lazy as _
 from django.forms.formsets import formset_factory
-from django.http import HttpResponseRedirect
 from fractions import Fraction
 
 from zeus.election_modules import ElectionModuleBase, election_module
-from zeus.views.utils import set_menu
 from django.conf import settings
-
-from helios.view_utils import render_template
 from zeus.core import gamma_decode, to_absolute_answers
 
 
@@ -22,6 +18,7 @@ class SavElection(ElectionModuleBase):
     booth_questions_tpl = ''
     no_questions_added_message = _('No questions set')
     manage_questions_title = _('Manage questions')
+    max_questions_limit = 1
 
     def extract_question_data(self, questions):
         questions_data = []
@@ -46,66 +43,10 @@ class SavElection(ElectionModuleBase):
             questions_data.append(question)
         return questions_data
 
-    def questions_update_view(self, request, election, poll):
-        from zeus.utils import poll_reverse
-        from zeus.forms import SavForm, DEFAULT_ANSWERS_COUNT
-
-        if not poll.questions_data:
-            poll.questions_data = [{}]
-
-        extra = 1
-        if poll.questions_data:
-            extra = 0
-
-        questions_formset = formset_factory(SavForm, extra=extra,
-                                            can_delete=True, can_order=True)
-
-        if request.method == 'POST':
-            formset = questions_formset(request.POST)
-            if formset.is_valid():
-                questions_data = []
-                for question in formset.cleaned_data:
-                    if not question:
-                        continue
-
-                    # force sort of answers by extracting index from answer key.
-                    # cast answer index to integer, otherwise answer_10 would
-                    # be placed before answer_2
-                    answer_index = lambda a: int(a[0].replace('answer_', ''))
-                    isanswer = lambda a: a[0].startswith('answer_')
-                    answer_values = list(filter(isanswer, iter(question.items())))
-                    sorted_answers = sorted(answer_values, key=answer_index)
-
-                    question['answers'] = [x[1] for x in sorted_answers]
-
-                    for k in list(question.keys()):
-                        if k in ['DELETE', 'ORDER']:
-                            del question[k]
-
-                    questions_data.append(question)
-
-                poll.questions_data = questions_data
-                poll.update_answers()
-                poll.logger.info("Poll ballot updated")
-                poll.save()
-
-                url = poll_reverse(poll, 'questions')
-                return HttpResponseRedirect(url)
-        else:
-            formset = questions_formset(initial=poll.questions_data)
-
-        context = {
-            'default_answers_count': DEFAULT_ANSWERS_COUNT,
-            'formset': formset,
-            'max_questions_limit': 1,
-            'election': election,
-            'poll': poll,
-            'module': self
-        }
-        set_menu('questions', context)
-
-        tpl = 'election_modules/sav/election_poll_questions_manage'
-        return render_template(request, tpl, context)
+    def questions_formset(self, extra):
+        from zeus.forms import SavForm
+        return formset_factory(SavForm, extra=extra,
+                               can_delete=True, can_order=True)
 
     def update_answers(self):
         answers = []

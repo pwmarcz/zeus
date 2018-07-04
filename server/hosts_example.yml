@@ -7,3 +7,5 @@ all:
       zeus_git_repo: https://github.com/pwmarcz/zeus.git
       zeus_git_version: prod
       zeus_settings: prod
+      # remove to disable apt packages, postgres setup and nginx
+      ubuntu: yes
