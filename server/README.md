@@ -4,13 +4,12 @@ Here's how you deploy Zeus to a new server.
 
 ## Install software (`ansible`)
 
-You will need Python 3.6.
+See [Ansible documentation](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-the-control-machine)
+on how to install it. You can probably use your system's package repository
+(`apt install ansible`).
 
-First, install `pipenv` (see main `README.md`) and ensure packages are
-installed:
-
-    pipenv sync
-    pipenv shell
+Alternatively, install the latest version via `pip`:
+`pip3 install --user --upgrade ansible`.
 
 ## Prepare server
 
