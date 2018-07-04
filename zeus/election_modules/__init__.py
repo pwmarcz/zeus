@@ -12,6 +12,8 @@ from zeus.reports import csv_from_polls, csv_from_score_polls,\
 from zeus.utils import get_filters, VOTER_TABLE_HEADERS, VOTER_SEARCH_FIELDS, \
     VOTER_BOOL_KEYS_MAP, VOTER_EXTRA_HEADERS
 from zeus.views.utils import set_menu
+from django.http import HttpResponseRedirect
+from helios.view_utils import render_template
 
 
 ELECTION_MODULES_CHOICES = []
