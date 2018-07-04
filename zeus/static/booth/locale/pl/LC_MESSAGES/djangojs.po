@@ -274,3 +274,6 @@ msgstr ""
 
 msgid "SUBMIT_BALLOT"
 msgstr "Wyślij kartę"
+
+msgid "PAGE_TITLE"
+msgstr "Cyfrowe Wybory Zeus"

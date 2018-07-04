@@ -279,3 +279,6 @@ msgstr ""
 
 msgid "SUBMIT_BALLOT"
 msgstr "Υποβολή ψήφου"
+
+msgid "PAGE_TITLE"
+msgstr "Ηλεκτρονική κάλπη \"Ζευς\""
