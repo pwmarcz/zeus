@@ -236,6 +236,9 @@ def csv_from_polls(election, polls, lang, outfile=None):
 
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
+    from zeus.election_modules.stv import get_csv_ballots
+    from stv.parser import STVParser
+
     with translation.override(lang):
         if outfile is None:
             outfile = StringIO()
@@ -247,7 +250,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
             'elect': _('Elect'),
             'eliminate': _('Eliminated'),
             'quota': _('Eliminated due to quota restriction')}
-        from stv.parser import STVParser
+
         for poll in polls:
             writerow([])
             writerow([str(_("Poll name")), str(poll.name)])
@@ -293,6 +296,11 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
                     cand_name = cand_name.split(':')[0]
                     writerow([str(cand_name), str(votes),
                     str(draw), str(action)])
+
+            writerow([])
+            writerow([_("Ballots")])
+            for ballot in get_csv_ballots(poll):
+                writerow([indexed_cands[str(i)] for i in ballot])
 
 
 def csv_from_score_polls(election, polls, lang, outfile=None):
