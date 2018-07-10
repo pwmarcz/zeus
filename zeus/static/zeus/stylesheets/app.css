@@ -5400,6 +5400,33 @@ body ul.stv-choices li.choice-13:before { content: "Priorytet 14"; }
 body ul.stv-choices li.choice-14 { background: #d22; }
 body ul.stv-choices li.choice-14:before { content: "Priorytet 15"; }
 body ul.stv-choices li.choice-15 { background: #c00; }
+body ul.stv-choices li.choice-15:before { content: "Priorytet 16"; }
+body ul.stv-choices li.choice-16 { background: #c04; }
+body ul.stv-choices li.choice-16:before { content: "Priorytet 16"; }
+body ul.stv-choices li.choice-17 { background: #c18; }
+body ul.stv-choices li.choice-17:before { content: "Priorytet 17"; }
+body ul.stv-choices li.choice-18 { background: #c29; }
+body ul.stv-choices li.choice-18:before { content: "Priorytet 18"; }
+body ul.stv-choices li.choice-19 { background: #c3b; }
+body ul.stv-choices li.choice-19:before { content: "Priorytet 19"; }
+body ul.stv-choices li.choice-20 { background: #e4e; }
+body ul.stv-choices li.choice-20:before { content: "Priorytet 20"; }
+body ul.stv-choices li.choice-21 { background: #f5f; }
+body ul.stv-choices li.choice-21:before { content: "Priorytet 21"; }
+body ul.stv-choices li.choice-22 { background: #d5f; }
+body ul.stv-choices li.choice-22:before { content: "Priorytet 22"; }
+body ul.stv-choices li.choice-23 { background: #a4e; }
+body ul.stv-choices li.choice-23:before { content: "Priorytet 23"; }
+body ul.stv-choices li.choice-24 { background: #84e; }
+body ul.stv-choices li.choice-24:before { content: "Priorytet 24"; }
+body ul.stv-choices li.choice-25 { background: #63d; }
+body ul.stv-choices li.choice-25:before { content: "Priorytet 25"; }
+body ul.stv-choices li.choice-26 { background: #43d; }
+body ul.stv-choices li.choice-26:before { content: "Priorytet 26"; }
+body ul.stv-choices li.choice-27 { background: #23c; }
+body ul.stv-choices li.choice-27:before { content: "Priorytet 27"; }
+body ul.stv-choices li.choice-28 { background: #03c; }
+body ul.stv-choices li.choice-28:before { content: "Priorytet 28"; }
 
 body #stv_answer {
   display: none;
