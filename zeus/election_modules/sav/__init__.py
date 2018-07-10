@@ -20,6 +20,8 @@ class SavElection(ElectionModuleBase):
     manage_questions_title = _('Manage questions')
     max_questions_limit = 1
 
+    results_template = "election_modules/sav/results.html"
+
     def extract_question_data(self, questions):
         questions_data = []
         for question in questions:
