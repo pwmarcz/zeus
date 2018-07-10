@@ -174,7 +174,11 @@ BOOTH.setup_election = function(raw_json) {
     if (BOOTH.election.election_module == "simple") {
       prepend = 1;
     }
-    data['answers'].unshift(gettext("EMPTY_PARTY_CHOICE"));
+
+    if (BOOTH.election.election_module != 'sav') {
+      data['answers'].unshift(gettext("EMPTY_PARTY_CHOICE"));
+    }
+
     if (!BOOTH.election.module_params.count_empty_question) { prepend = 0 }
     answers_index = parseInt(answers_index) + data['answers'].length + prepend;
   });

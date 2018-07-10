@@ -386,6 +386,106 @@ def build_stv_doc(title, name, institution_name, voting_start, voting_end,
                   onLaterPages=make_later_pages_hf(pageinfo))
 
 
+def build_sav_doc(title, name, institution_name, voting_start, voting_end,
+              extended_until, data, language, filename="election_results.pdf", new_page=True):
+    with translation.override(language[0]):
+        pageinfo = _("Zeus Elections - Poll Results")
+        title = _('Results')
+        DATE_FMT = "%d/%m/%Y %H:%M"
+        if isinstance(voting_start, datetime.datetime):
+            voting_start = _('Start: %(date)s') % {'date':
+            voting_start.strftime(DATE_FMT)}
+
+        if isinstance(voting_end, datetime.datetime):
+            voting_end = _('End: %(date)s') % {'date':
+            voting_end.strftime(DATE_FMT)}
+
+        if extended_until and isinstance(extended_until, datetime.datetime):
+            extended_until = _('Extension: %(date)s') % {'date':
+            extended_until.strftime(DATE_FMT)}
+        else:
+            extended_until = ""
+
+        if not isinstance(data, list):
+            data = [(name, data)]
+
+        # reset pdfdoc timestamp in order to force a fresh one to be used in
+        # pdf document metadata.
+        pdfdoc._NOWT = None
+
+        elements = []
+
+        doc = SimpleDocTemplate(filename, pagesize=A4)
+
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='Zeus',
+                                  fontName=DEFAULT_FONT,
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+        styles.add(ParagraphStyle(name='ZeusBold',
+                                  fontName=DEFAULT_FONT,
+                                  fontSize=12,
+                                  leading=16,
+                                  alignment=TA_JUSTIFY))
+
+        styles.add(ParagraphStyle(name='ZeusSubHeading',
+                                  fontName=DEFAULT_FONT,
+                                  fontSize=14,
+                                  alignment=TA_JUSTIFY,
+                                  spaceAfter=16))
+
+        styles.add(ParagraphStyle(name='ZeusHeading',
+                                  fontName=DEFAULT_FONT,
+                                  fontSize=16,
+                                  alignment=TA_CENTER,
+                                  spaceAfter=16))
+        intro_contents = [
+            voting_start,
+            voting_end,
+            extended_until
+        ]
+
+        make_heading(elements, styles, [title, name, institution_name])
+        make_intro(elements, styles, intro_contents)
+
+        for poll_name, poll_results, questions, poll_voters in data:
+            poll_intro_contents = [
+                poll_name
+            ]
+
+            if new_page:
+                elements.append(PageBreak())
+            elements.append(Spacer(1, 12))
+            elements.append(Spacer(1, 12))
+            elements.append(Spacer(1, 12))
+            make_subheading(elements, styles, poll_intro_contents)
+            elements.append(Spacer(1, 12))
+            make_intro(elements, styles, intro_contents)
+            make_poll_voters(elements, styles, poll_voters)
+            elements.append(Spacer(1, 12))
+
+            lst = []
+            table_header = [_('Candidate'), _('Votes'), _('Fraction')]
+            lst.append(table_header)
+
+            for candidates, votes in poll_results:
+                lst.append([candidates, float(votes), f"{votes.numerator}/{votes.denominator}"])
+
+            t = Table(lst)
+
+            my_table_style = TableStyle([('FONT', (0, 0), (-1, -1), DEFAULT_FONT),
+                                         ('ALIGN', (1, 1), (-2, -2), 'LEFT'),
+                                         ('INNERGRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
+                                         ])
+            t.setStyle(my_table_style)
+            elements.append(t)
+
+        doc.build(elements, onFirstPage=make_first_page_hf,
+                  onLaterPages=make_later_pages_hf(pageinfo))
+
+
 def build_doc(title, name, institution_name, voting_start, voting_end,
               extended_until, data, language, filename="election_results.pdf",
               new_page=True, score=False, parties=False):

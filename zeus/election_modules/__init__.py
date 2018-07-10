@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from zeus.reports import csv_from_polls, csv_from_score_polls,\
-                         csv_from_stv_polls
+                         csv_from_stv_polls, csv_from_sav_polls
 from zeus.utils import get_filters, VOTER_TABLE_HEADERS, VOTER_SEARCH_FIELDS, \
     VOTER_BOOL_KEYS_MAP, VOTER_EXTRA_HEADERS
 from zeus.views.utils import set_menu
@@ -217,7 +217,19 @@ class ElectionModuleBase(ElectionHooks):
                                 (election, name, ext))
 
     def generate_json_file(self):
-        results_json = self.poll.zeus.get_results()
+        if self.module_id != "sav":
+            results_json = self.poll.zeus.get_results()
+        else:
+            results = count_sav_results(self.poll)
+            results_json = {
+                candidate: {
+                    "float_votes": float(votes),
+                    "fraction_numerator": votes.numerator,
+                    "fraction_denominator": votes.denominator,
+                }
+                for candidate, votes in results
+            }
+
         with open(self.get_poll_result_file_path('json', 'json'), 'w') as f:
             json.dump(results_json, f)
 
@@ -227,6 +239,8 @@ class ElectionModuleBase(ElectionHooks):
                 csv_from_score_polls(self.election, [self.poll], lang[0], f)
             elif self.module_id == "stv":
                 csv_from_stv_polls(self.election, [self.poll], lang[0], f)
+            elif self.module_id == "sav":
+                csv_from_sav_polls(self.election, [self.poll], lang[0], f)
             else:
                 csv_from_polls(self.election, [self.poll], lang[0], f)
 
@@ -237,6 +251,9 @@ class ElectionModuleBase(ElectionHooks):
                     lang[0], f)
             elif self.module_id == "stv":
                 csv_from_stv_polls(self.election, self.election.polls.all(),
+                                   lang[0], f)
+            elif self.module_id == "sav":
+                csv_from_sav_polls(self.election, self.election.polls.all(),
                                    lang[0], f)
             else:
                 csv_from_polls(self.election, self.election.polls.all(),

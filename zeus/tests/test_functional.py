@@ -1241,6 +1241,51 @@ class TestSTVElection(TestElectionBase):
         self.election_process()
 
 
+class TestSAVElection(TestElectionBase):
+    def setUp(self):
+        super().setUp()
+        self.election_type = 'sav'
+        self.doc_exts = {
+            'poll': ['pdf', 'csv', 'json'],
+            'el': ['pdf', 'csv', 'zip']
+            }
+
+    def test_election_process(self):
+        self.election_process()
+
+    def create_questions(self):
+
+        nr_candidates = randint(2, 10)
+        post_data = {
+            'form-MAX_NUM_FORMS': 1000,
+            'form-TOTAL_FORMS': 1,
+            'form-INITIAL_FORMS': 1,
+            'form-0-ORDER': 1,
+            'form-0-min_votes': 1,
+            }
+        post_data_with_duplicate_answers = post_data.copy()
+        extra_data = {}
+        duplicate_extra_data = {}
+
+        for i in range(0, nr_candidates):
+            extra_data['form-0-answer_%s' % i] = 'test candidate %s' % i
+            duplicate_extra_data['form-0-answer_%s' % i] = 'test candidate 0'
+
+        post_data_with_duplicate_answers.update(duplicate_extra_data)
+        post_data.update(extra_data)
+        # 1 is the number of max questions, used for assertion
+        return post_data, 1, post_data_with_duplicate_answers
+
+    def make_ballot(self, p_uuid):
+        p = Poll.objects.get(uuid=p_uuid)
+        nr_candidates = len(p.questions[0]['answers'])
+        indexed_candidates = [x for x in range(0, nr_candidates)]
+        nr_selection = randint(0, nr_candidates)
+        selection = sample(indexed_candidates, nr_selection)
+        print(selection, nr_candidates)
+        return selection, nr_candidates
+
+
 class TestWeightElection(TestSimpleElection):
 
     def get_voters_file(self):

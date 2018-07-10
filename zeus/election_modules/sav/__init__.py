@@ -3,7 +3,7 @@ from django.forms.formsets import formset_factory
 from fractions import Fraction
 
 from zeus.election_modules import ElectionModuleBase, election_module
-
+from django.conf import settings
 from zeus.core import gamma_decode, to_absolute_answers
 
 
@@ -19,6 +19,8 @@ class SavElection(ElectionModuleBase):
     no_questions_added_message = _('No questions set')
     manage_questions_title = _('Manage questions')
     max_questions_limit = 1
+
+    results_template = "election_modules/sav/results.html"
 
     def extract_question_data(self, questions):
         questions_data = []
@@ -72,16 +74,66 @@ class SavElection(ElectionModuleBase):
         self.poll.questions[0]['answers'] = answers
 
     def compute_results(self):
-        cands_data = self.poll.questions_data[0]['answers']
-        cands_count = len(cands_data)
-        ballots_data = self.poll.result[0]
-        candidates_dict = {candidate: 0 for candidate in cands_data}
 
-        for ballot in ballots_data:
-            if not ballot:
-                continue
-            ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
-                                         cands_count)
+        for lang in settings.LANGUAGES:
+            self.generate_result_docs(lang)
+            self.generate_csv_file(lang)
 
-            for i in ballot:
-                candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
+    def compute_election_results(self):
+        for lang in settings.LANGUAGES:
+            self.generate_election_result_docs(lang)
+            self.generate_election_csv_file(lang)
+            self.generate_election_zip_file(lang)
+
+    def generate_result_docs(self, lang):
+        poll_data = [
+            (self.poll.name, count_sav_results(self.poll), self.poll.questions,
+             self.poll.voters.all())
+            ]
+        from zeus.results_report import build_sav_doc
+        build_sav_doc(_('Results'), self.election.name,
+                    self.election.institution.name,
+                    self.election.voting_starts_at, self.election.voting_ends_at,
+                    self.election.voting_extended_until,
+                    poll_data,
+                    lang,
+                    self.get_poll_result_file_path('pdf', 'pdf', lang[0]))
+
+    def generate_election_result_docs(self, lang):
+        from zeus.results_report import build_sav_doc
+        pdfpath = self.get_election_result_file_path('pdf', 'pdf', lang[0])
+        polls_data = []
+
+        for poll in self.election.polls.filter():
+            polls_data.append((poll.name,
+                               count_sav_results(poll),
+                               poll.questions,
+                               poll.voters.all()))
+
+        build_sav_doc(_('Results'), self.election.name, self.election.institution.name,
+                self.election.voting_starts_at, self.election.voting_ends_at,
+                self.election.voting_extended_until,
+                polls_data,
+                lang,
+                pdfpath)
+
+
+def count_sav_results(poll):
+    cands_data = poll.questions_data[0]['answers']
+    cands_count = len(cands_data)
+    ballots_data = poll.result[0]
+    candidates_dict = {candidate: 0 for candidate in cands_data}
+
+    for ballot in ballots_data:
+        if not ballot:
+            continue
+        ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
+                                     cands_count)
+
+        for i in ballot:
+            candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
+
+    candidate_data = [(candidate, votes) for candidate, votes in candidates_dict.items()]
+    candidate_data.sort(key=lambda x: x[1], reverse=True)
+
+    return candidate_data
