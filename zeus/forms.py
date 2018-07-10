@@ -489,11 +489,8 @@ class CandidateWidget(MultiWidget):
 
 
 class SavForm(QuestionBaseForm):
-
-    min_answers = forms.IntegerField(label=_("Min answers"), min_value=1,
-                                     required=False)
-    max_answers = forms.IntegerField(label=_("Max answers"), min_value=1,
-                                     required=False)
+    # TODO modify counting to account for min_votes
+    # min_votes = forms.IntegerField(label=_("Min votes"), min_value=1, required=False)
 
     def __init__(self, *args, **kwargs):
 
