@@ -5367,6 +5367,40 @@ body ul.stv-list .stv-ballot-choice a {
 body ul.stv-list .stv-ballot-choice a span:hover {
   background-color: transparent !important;
 }
+
+body ul.stv-choices li { padding: 0 10px; }
+body ul.stv-choices li.choice-0 {  background: #0f0; }
+body ul.stv-choices li.choice-0:before { content: "Priorytet 1"; }
+body ul.stv-choices li.choice-1 {  background: #5e1; }
+body ul.stv-choices li.choice-1:before { content: "Priorytet 2"; }
+body ul.stv-choices li.choice-2 {  background: #8d2; }
+body ul.stv-choices li.choice-2:before { content: "Priorytet 3"; }
+body ul.stv-choices li.choice-3 {  background: #9d3; }
+body ul.stv-choices li.choice-3:before { content: "Priorytet 4"; }
+body ul.stv-choices li.choice-4 {  background: #cd4; }
+body ul.stv-choices li.choice-4:before { content: "Priorytet 5"; }
+body ul.stv-choices li.choice-5 {  background: #ed5; }
+body ul.stv-choices li.choice-5:before { content: "Priorytet 6"; }
+body ul.stv-choices li.choice-6 {  background: #fe5; }
+body ul.stv-choices li.choice-6:before { content: "Priorytet 7"; }
+body ul.stv-choices li.choice-7 {  background: #fc5; }
+body ul.stv-choices li.choice-7:before { content: "Priorytet 8"; }
+body ul.stv-choices li.choice-8 {  background: #fa6; }
+body ul.stv-choices li.choice-8:before { content: "Priorytet 9"; }
+body ul.stv-choices li.choice-9 {  background: #f97; }
+body ul.stv-choices li.choice-9:before { content: "Priorytet 10"; }
+body ul.stv-choices li.choice-10 { background: #e88; }
+body ul.stv-choices li.choice-10:before { content: "Priorytet 11"; }
+body ul.stv-choices li.choice-11 { background: #e77; }
+body ul.stv-choices li.choice-11:before { content: "Priorytet 12"; }
+body ul.stv-choices li.choice-12 { background: #e66; }
+body ul.stv-choices li.choice-12:before { content: "Priorytet 13"; }
+body ul.stv-choices li.choice-13 { background: #d44; }
+body ul.stv-choices li.choice-13:before { content: "Priorytet 14"; }
+body ul.stv-choices li.choice-14 { background: #d22; }
+body ul.stv-choices li.choice-14:before { content: "Priorytet 15"; }
+body ul.stv-choices li.choice-15 { background: #c00; }
+
 body #stv_answer {
   display: none;
 }
