@@ -490,22 +490,17 @@ class CandidateWidget(MultiWidget):
 
 class SavForm(QuestionBaseForm):
 
+    min_answers = forms.IntegerField(label=_("Min answers"), min_value=1,
+                                     required=False)
+    max_answers = forms.IntegerField(label=_("Max answers"), min_value=1,
+                                     required=False)
+
     def __init__(self, *args, **kwargs):
 
         super(SavForm, self).__init__(*args, **kwargs)
 
         self.fields.pop('question')
         self.fields.pop('choice_type')
-
-        elig_help_text = _("set minimal number of votes")
-        label_text = _("Minimum votes")
-        ordered_dict_prepend(self.fields, 'min_votes',
-                             forms.CharField(
-                                 label=label_text,
-                                 help_text=elig_help_text))
-
-    min_answers = None
-    max_answers = None
 
     def clean(self):
         super().clean()
@@ -531,18 +526,6 @@ class SavForm(QuestionBaseForm):
             raise forms.ValidationError(_("No duplicate choices allowed"))
 
         return self.cleaned_data
-
-    def clean_eligibles(self):
-        message = _("Value must be a positive integer")
-        eligibles = self.cleaned_data.get('min_votes')
-        try:
-            eligibles = int(eligibles)
-            if eligibles > 0:
-                return eligibles
-            else:
-                raise forms.ValidationError(message)
-        except ValueError as TypeError:
-            raise forms.ValidationError(message)
 
 
 class StvForm(QuestionBaseForm):
