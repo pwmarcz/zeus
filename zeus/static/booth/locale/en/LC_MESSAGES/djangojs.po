@@ -233,8 +233,10 @@ msgstr "Candidates"
 
 msgid "STV_BALLOT_HELP_TEXT"
 msgstr ""
-"Click on the candidates names on the left to fill your ballot. If you want "
-"to remove a choice click over the candidate name on the right column."
+"Click on the candidates names on the left to fill your ballot "
+"(ORDERING FROM BEST TO WORST). "
+"If you want "
+"to remove a choice, click over the candidate name on the right column."
 
 msgid "STV_BALLOT_CANDIDATES_HEADER"
 msgstr "Candidates"

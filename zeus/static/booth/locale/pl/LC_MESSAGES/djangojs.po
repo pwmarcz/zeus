@@ -235,7 +235,9 @@ msgstr "Kandydatury"
 
 msgid "STV_BALLOT_HELP_TEXT"
 msgstr ""
-"Klikaj na kandydatury po lewej, aby przenieść je na kartę do głosowania. "
+"Klikaj na kandydatury po lewej (W KOLEJNOŚCI OD NAJLEPSZEJ DO NAJGORSZEJ), "
+"aby przenieść je na kartę do głosowania. "
+"Kandydatury powinny być uszeregowane według preferencji. "
 "Jeżeli chcesz usunąć jakiś wybór, kliknij na nazwisko kandydatki w prawej "
 "kolumnie."
 

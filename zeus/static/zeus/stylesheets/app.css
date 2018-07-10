@@ -5367,6 +5367,67 @@ body ul.stv-list .stv-ballot-choice a {
 body ul.stv-list .stv-ballot-choice a span:hover {
   background-color: transparent !important;
 }
+
+body ul.stv-choices li { padding: 0 10px; }
+body ul.stv-choices li.choice-0 {  background: #0f0; }
+body ul.stv-choices li.choice-0:before { content: "Priorytet 1"; }
+body ul.stv-choices li.choice-1 {  background: #5e1; }
+body ul.stv-choices li.choice-1:before { content: "Priorytet 2"; }
+body ul.stv-choices li.choice-2 {  background: #8d2; }
+body ul.stv-choices li.choice-2:before { content: "Priorytet 3"; }
+body ul.stv-choices li.choice-3 {  background: #9d3; }
+body ul.stv-choices li.choice-3:before { content: "Priorytet 4"; }
+body ul.stv-choices li.choice-4 {  background: #cd4; }
+body ul.stv-choices li.choice-4:before { content: "Priorytet 5"; }
+body ul.stv-choices li.choice-5 {  background: #ed5; }
+body ul.stv-choices li.choice-5:before { content: "Priorytet 6"; }
+body ul.stv-choices li.choice-6 {  background: #fe5; }
+body ul.stv-choices li.choice-6:before { content: "Priorytet 7"; }
+body ul.stv-choices li.choice-7 {  background: #fc5; }
+body ul.stv-choices li.choice-7:before { content: "Priorytet 8"; }
+body ul.stv-choices li.choice-8 {  background: #fa6; }
+body ul.stv-choices li.choice-8:before { content: "Priorytet 9"; }
+body ul.stv-choices li.choice-9 {  background: #f97; }
+body ul.stv-choices li.choice-9:before { content: "Priorytet 10"; }
+body ul.stv-choices li.choice-10 { background: #e88; }
+body ul.stv-choices li.choice-10:before { content: "Priorytet 11"; }
+body ul.stv-choices li.choice-11 { background: #e77; }
+body ul.stv-choices li.choice-11:before { content: "Priorytet 12"; }
+body ul.stv-choices li.choice-12 { background: #e66; }
+body ul.stv-choices li.choice-12:before { content: "Priorytet 13"; }
+body ul.stv-choices li.choice-13 { background: #d44; }
+body ul.stv-choices li.choice-13:before { content: "Priorytet 14"; }
+body ul.stv-choices li.choice-14 { background: #d22; }
+body ul.stv-choices li.choice-14:before { content: "Priorytet 15"; }
+body ul.stv-choices li.choice-15 { background: #c00; }
+body ul.stv-choices li.choice-15:before { content: "Priorytet 16"; }
+body ul.stv-choices li.choice-16 { background: #c04; }
+body ul.stv-choices li.choice-16:before { content: "Priorytet 17"; }
+body ul.stv-choices li.choice-17 { background: #c18; }
+body ul.stv-choices li.choice-17:before { content: "Priorytet 18"; }
+body ul.stv-choices li.choice-18 { background: #c29; }
+body ul.stv-choices li.choice-18:before { content: "Priorytet 19"; }
+body ul.stv-choices li.choice-19 { background: #c3b; }
+body ul.stv-choices li.choice-19:before { content: "Priorytet 20"; }
+body ul.stv-choices li.choice-20 { background: #e4e; }
+body ul.stv-choices li.choice-20:before { content: "Priorytet 21"; }
+body ul.stv-choices li.choice-21 { background: #f5f; }
+body ul.stv-choices li.choice-21:before { content: "Priorytet 22"; }
+body ul.stv-choices li.choice-22 { background: #d5f; }
+body ul.stv-choices li.choice-22:before { content: "Priorytet 23"; }
+body ul.stv-choices li.choice-23 { background: #a4e; }
+body ul.stv-choices li.choice-23:before { content: "Priorytet 24"; }
+body ul.stv-choices li.choice-24 { background: #84e; }
+body ul.stv-choices li.choice-24:before { content: "Priorytet 25"; }
+body ul.stv-choices li.choice-25 { background: #63d; }
+body ul.stv-choices li.choice-25:before { content: "Priorytet 26"; }
+body ul.stv-choices li.choice-26 { background: #43d; }
+body ul.stv-choices li.choice-26:before { content: "Priorytet 27"; }
+body ul.stv-choices li.choice-27 { background: #23c; }
+body ul.stv-choices li.choice-27:before { content: "Priorytet 28"; }
+body ul.stv-choices li.choice-28 { background: #03c; }
+body ul.stv-choices li.choice-28:before { content: "Priorytet 29"; }
+
 body #stv_answer {
   display: none;
 }

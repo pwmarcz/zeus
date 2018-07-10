@@ -145,7 +145,6 @@ class StvElection(ElectionModuleBase):
     def compute_results(self):
 
         cands_data = self.poll.questions_data[0]['answers']
-        cands_count = len(cands_data)
         constituencies = {}
         count_id = 0
 
@@ -161,13 +160,9 @@ class StvElection(ElectionModuleBase):
             quota_limit = self.poll.department_limit
         else:
             quota_limit = 0
-        ballots_data = self.poll.result[0]
+
         ballots = []
-        for ballot in ballots_data:
-            if not ballot:
-                continue
-            ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
-                                         cands_count)
+        for ballot in get_csv_ballots(self.poll):
             ballot = [str(i) for i in ballot]
             ballots.append(Ballot(ballot))
 
@@ -195,3 +190,18 @@ class StvElection(ElectionModuleBase):
 
     def get_booth_template(self, request):
         raise NotImplementedError
+
+
+def get_csv_ballots(poll):
+    cands_data = poll.questions_data[0]['answers']
+    cands_count = len(cands_data)
+
+    ballots_data = poll.result[0]
+    ballots = []
+    for ballot in ballots_data:
+        if not ballot:
+            continue
+        ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
+                                     cands_count)
+        ballots.append(ballot)
+    return ballots

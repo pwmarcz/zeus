@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 ExecStart=/srv/zeus/virtualenv/bin/uwsgi \
-        --ini /srv/zeus/uwsgi.ini
+        --master --ini /srv/zeus/uwsgi.ini
 User=www-data
 Group=www-data
 Restart=on-failure
