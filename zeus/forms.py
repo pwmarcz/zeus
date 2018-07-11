@@ -580,6 +580,12 @@ class StvForm(QuestionBaseForm):
                                  label=label_text,
                                  help_text=elig_help_text))
 
+        ordered_dict_prepend(self.fields, 'shuffle_answers',
+                             forms.BooleanField(
+                                 required=False,
+                                 label=_('Shuffle answers'),
+                                 help_text=('Reorder answers when voting')))
+
     min_answers = None
     max_answers = None
 

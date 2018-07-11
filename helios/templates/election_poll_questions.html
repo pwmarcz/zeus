@@ -30,6 +30,9 @@
         {% trans "Min answers" %} : {{q.min_answers}}<br>
         {% trans "Max answers" %} : {{q.max_answers}}<br>
     {% endif %}
+    {% if q.shuffle_answers %}
+        {% trans "Shuffle answers" %}<br>
+    {% endif %}
     <br>
     <ol>
       {% if q.answers_display %}
@@ -51,7 +54,7 @@
         {{ module.no_questions_added_message }}
     </span>
     {% endfor %}
-    
+
 </div>
 <div style="text-align: right">
 {% if admin and poll.feature_can_manage_questions %}
