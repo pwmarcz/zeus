@@ -8,7 +8,7 @@ function show(q) {
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) { 
+    return this.replace(/{(\d+)}/g, function(match, number) {
       return typeof args[number] != 'undefined'
         ? args[number]
         : match
@@ -24,7 +24,7 @@ BOOTH.setup_templates = function(election) {
         return;
 
     var cache_bust = "?cb=" + new Date().getTime();
-    
+
     var tpldata = election.module_params;
 
     $('#header').setTemplateURL("templates/header.html" + cache_bust);
@@ -46,7 +46,7 @@ BOOTH.setup_templates = function(election) {
 BOOTH.started_p = false;
 
 window.onbeforeunload = function(evt) {
-  
+
   if (BOOTH.debug) { return; }
 
   if (!BOOTH.started_p)
@@ -146,7 +146,7 @@ function escape_html(content) {
 }
 
 BOOTH.setup_election = function(raw_json) {
-  
+
   // TODO: how to resolve url dynamically ???
   BOOTH.logout_url = '/auth/auth/logout?return_url=';
 
@@ -159,7 +159,7 @@ BOOTH.setup_election = function(raw_json) {
   if (!BOOTH.election.questions_data || !BOOTH.election.questions_data.length) {
       BOOTH.election.questions_data = [{'max_answers': BOOTH.election.questions[0].answers.length}];
   }
-    
+
     var msg = gettext("BROWSER_NOT_SUPPORTED_ALERT");
     if ($.browser.msie) {
             alert(interpolate(msg, BOOTH.election.help_phone));
@@ -234,9 +234,9 @@ BOOTH.validate_question = function(question_num) {
 
       var answer = BOOTH.ballot.answers[question_num];
       var question = BOOTH.election.questions[question_num];
-        
+
       if (answer.length > 0) {
-        
+
         var message = BOOTH.module.validate();
         if (message !== true) {
           alert(message);
@@ -259,7 +259,7 @@ BOOTH.validate_question = function(question_num) {
           }
           return true;
         });
-        
+
         if (valid_choices.length < answer[0].length) {
           alert('Invalid selection');
           return false;
@@ -273,7 +273,7 @@ BOOTH.validate_question = function(question_num) {
       return false;
     }
   }
-  
+
     // if we need to launch the worker, let's do it
     if (!BOOTH.synchronous) {
        // we need a unique ID for this to ensure that old results
@@ -324,13 +324,13 @@ BOOTH.show_question = function(question_num) {
   }
 
   BOOTH.show_progress('1');
-  
+
   var tpl_questions_data = _.clone(BOOTH.election.questions_data);
   BOOTH.show($('#question_stv_div')).processTemplate({'question_num' : question_num,
                       'last_question_num' : BOOTH.election.questions.length - 1,
                       'data': tpl_questions_data,
                       'election': BOOTH.election,
-                      'question' : BOOTH.election.questions[question_num], 
+                      'question' : BOOTH.election.questions[question_num],
                       'show_reviewall' : BOOTH.all_questions_seen
                 });
 
@@ -363,7 +363,7 @@ BOOTH.stv_updated = function(question_num, answer) {
   BOOTH.dirty[question_num] = true;
   answer = $.trim(answer).toString();
 
-  if (!answer || answer == "") { 
+  if (!answer || answer == "") {
     BOOTH.ballot.answers[question_num] = [];
   } else {
     answer = answer.toString().split(",");
@@ -425,7 +425,7 @@ BOOTH.setup_help_link = function() {
     var mailto = "mailto:" +
       election.help_email + "?" +
       "subject= " + subject +
-      "&body=" + body + 
+      "&body=" + body +
       "\" (" + election.uuid + ")\n";
 
     $("#footer .help").attr("href", mailto)
@@ -447,8 +447,8 @@ BOOTH.load_and_setup_election = function(election_url, messages_url) {
           if (USE_SJCL) {
             // get more randomness from server
             $.ajax({
-              'url': election_url + "/get-randomness?token=1", 
-              'data': {}, 
+              'url': election_url + "/get-randomness?token=1",
+              'data': {},
               'success': function(result) {
                 sjcl.random.addEntropy(result.randomness);
                 sjcl.random.__entropySet = true
@@ -456,8 +456,8 @@ BOOTH.load_and_setup_election = function(election_url, messages_url) {
                 window.WORKER_ENTROPY = result.randomness;
                 BOOTH.csrf = result.token;
                 prep();
-              }, 
-              'error': function(err){ 
+              },
+              'error': function(err){
                 //window.location = '/';
               }
             });
@@ -495,7 +495,7 @@ BOOTH.so_lets_go = function () {
     $.getScript(messages_url, function() {
       // gettext is loaded. vote.html content gets directly rendered to the browser.
       // There are many ugly ways to apply the content translations. Here is one of them
-      $("title, #banner h1").text(gettext('PAGE_TITLE'));
+      $("title, #banner h1").text(gettext("PAGE_TITLE"));
       $("[data-trans]").each(function() {
         var content = $(this).html();
         var translated = eval.call(window, content);
@@ -556,21 +556,21 @@ BOOTH.check_encryption_status = function() {
 
 BOOTH._after_ballot_encryption = function() {
     // if already serialized, use that, otherwise serialize
-    BOOTH.encrypted_vote_json = BOOTH.encrypted_ballot_serialized || 
+    BOOTH.encrypted_vote_json = BOOTH.encrypted_ballot_serialized ||
         JSON.stringify(BOOTH.encrypted_ballot.toJSONObject());
 
     var do_hash = function() {
        BOOTH.encrypted_ballot_hash = b64_sha256(BOOTH.encrypted_vote_json); // BOOTH.encrypted_ballot.get_hash();
        window.setTimeout(show_cast, 0);
     };
-    
+
     var choices;
     if (BOOTH.module.pretty_choices) {
       choices = BOOTH.module.pretty_choices(BOOTH.ballot);
     } else {
       choices = BALLOT.pretty_choices(BOOTH.election, BOOTH.ballot);
     }
-      
+
     var show_cast = function() {
       $('#seal_div').processTemplate({'cast_url': BOOTH.election.cast_url,
         'encrypted_vote_json': BOOTH.encrypted_vote_json,
@@ -586,7 +586,7 @@ BOOTH._after_ballot_encryption = function() {
       BOOTH.show_progress('2');
       BOOTH.encrypted_vote_json = null;
     };
-  
+
     window.setTimeout(do_hash, 0);
 };
 
@@ -604,7 +604,7 @@ BOOTH.wait_for_ciphertexts = function() {
       alert(gettext("ENCRYPTION_PROCESS_FAILED"));
       return;
     }
-    
+
     if (percentage_done < 100) {
       setTimeout(BOOTH.wait_for_ciphertexts, 500);
       $('#percent_done').html(percentage_done + '');
@@ -667,14 +667,14 @@ BOOTH.audit_ballot = function() {
 };
 
 BOOTH.post_audited_ballot = function() {
-  $.post(BOOTH.election_url.replace('.json', '') + "/post-audited-ballot", 
+  $.post(BOOTH.election_url.replace('.json', '') + "/post-audited-ballot",
          {
-           'csrfmiddlewaretoken': BOOTH.csrf, 
+           'csrfmiddlewaretoken': BOOTH.csrf,
            'audited_ballot': BOOTH.audit_trail
          }, function(result) {
 
 
-    var recipe_text = interpolate(gettext("AUDIT_BALLOT_CAST_COMPLETE"), ['' + result.audit_id]); 
+    var recipe_text = interpolate(gettext("AUDIT_BALLOT_CAST_COMPLETE"), ['' + result.audit_id]);
     $(".audited_ballot_recipe").html(recipe_text);
     BOOTH.reset_ciphertexts();
     //BOOTH.show_question(0);
