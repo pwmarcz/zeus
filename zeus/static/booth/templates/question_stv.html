@@ -11,10 +11,10 @@
   <div class="columns five stv-candidates">
     <h6>{gettext("STV_BALLOT_CANDIDATES_HEADER")}</h6>
     <ul class="stv-candidates stv-list">
-      {#foreach $T.question.answers as answer}
-      <li class="stv-choice choice-{$T.answer$index}">
+      {#foreach $T.question.ordered as answer}
+      <li class="stv-choice choice-{$T.answer.orig}">
       <a href="#" class="button enabled small"
-        data-absolute-index="{$T.answer$index}" data-question="0">{$T.answer}</a></li>
+        data-absolute-index="{$T.answer.orig}" data-question="0">{$T.answer.val}</a></li>
       {#/foreach}
     </ul>
   </div>
@@ -38,7 +38,7 @@
 {#if $T.show_reviewall}
 <div class="row">
   <div class="columns twelve">
-  <input style="float:right" id="submit-stv" class="button medium success" type="button" 
+  <input style="float:right" id="submit-stv" class="button medium success" type="button"
   onclick="BOOTH.validate_and_confirm({$T.question_num});" value="Συνέχεια" />
   <br />
   <a class="show-audit-form" href="#">{gettext("AUDIT_BALLOT_SUBMIT")}</a>

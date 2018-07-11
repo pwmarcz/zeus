@@ -4,6 +4,16 @@ function show(q) {
   return $("<span></span>").text(q).text().replace(/\n/g, "<br />");
 }
 
+function shuffle(arr) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    let j = Math.random()*i | 0;
+    let tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr;
+}
+
 //first, checks if it isn't implemented yet
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -326,11 +336,20 @@ BOOTH.show_question = function(question_num) {
   BOOTH.show_progress('1');
 
   var tpl_questions_data = _.clone(BOOTH.election.questions_data);
+  var question = BOOTH.election.questions[question_num];
+  question.ordered = [];
+  for (let i = 0; i < question.answers.length; ++i) {
+    question.ordered[i] = {val: question.answers[i], orig: i};
+  }
+  if (BOOTH.election.questions_data[question_num] && BOOTH.election.questions_data[question_num].shuffle_answers) {
+    shuffle(question.ordered);
+  }
+
   BOOTH.show($('#question_stv_div')).processTemplate({'question_num' : question_num,
                       'last_question_num' : BOOTH.election.questions.length - 1,
                       'data': tpl_questions_data,
                       'election': BOOTH.election,
-                      'question' : BOOTH.election.questions[question_num],
+                      'question' : question,
                       'show_reviewall' : BOOTH.all_questions_seen
                 });
 
