@@ -4,6 +4,20 @@ function show(q) {
   return $("<span></span>").text(q).text().replace(/\n/g, "<br />");
 }
 
+function fy_shuffle(arr) {
+  let tmp, ix2, ix1 = arr.length;
+  let copy = [];
+  for (i = 0; i < arr.length; ++i)
+      copy[i] = {val: arr[i], orig: i};
+  while (ix1) {
+    ix2 = Math.random()*ix1--|0;
+    tmp = copy[ix1];
+    copy[ix1] = copy[ix2];
+    copy[ix2] = tmp;
+  }
+  return copy
+}
+
 //first, checks if it isn't implemented yet
 if (!String.prototype.format) {
   String.prototype.format = function() {
@@ -326,11 +340,14 @@ BOOTH.show_question = function(question_num) {
   BOOTH.show_progress('1');
   
   var tpl_questions_data = _.clone(BOOTH.election.questions_data);
+  var question = BOOTH.election.questions[question_num];
+  question.shuffled = fy_shuffle(question.answers.slice());
+
   BOOTH.show($('#question_stv_div')).processTemplate({'question_num' : question_num,
                       'last_question_num' : BOOTH.election.questions.length - 1,
                       'data': tpl_questions_data,
                       'election': BOOTH.election,
-                      'question' : BOOTH.election.questions[question_num], 
+                      'question' : question,
                       'show_reviewall' : BOOTH.all_questions_seen
                 });
 
