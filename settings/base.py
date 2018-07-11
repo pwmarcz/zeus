@@ -299,6 +299,9 @@ ZEUS_RESULTS_FONT_BOLD_PATH = DEFAULT_BOLD_FONT
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Necessary for uploading decryption factors.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 30 * 1024 * 1024
+
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
 SMS_BACKEND = "mybsms"
