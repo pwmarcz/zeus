@@ -352,6 +352,9 @@ BOOTH.show_question = function(question_num) {
                       'question' : question,
                       'show_reviewall' : BOOTH.all_questions_seen
                 });
+  $('li.stv-ballot-choice').each(function(i, elem){
+    elem.style.backgroundColor = "hsl(" + (120 - 250 * i / question.answers.length) + ",80%,50%)";
+  });
 
   // fake clicking through the answers, to trigger the disabling if need be
   // first we remove the answers array

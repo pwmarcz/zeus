@@ -247,6 +247,9 @@ msgstr "Kandydatury"
 msgid "STV_BALLOT_CANDIDATES_SELECT_HEADER"
 msgstr "Wybrane kandydatury"
 
+msgid "STV_ANSWER_PRIORITY"
+msgstr "Priorytet %s"
+
 msgid "STV_BALLOT_CHOICE"
 msgstr "Wybrano na karcie"
 

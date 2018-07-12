@@ -23,6 +23,7 @@
     <ul class="stv-choices stv-list">
       {#foreach $T.question.answers as answer}
       <li class="stv-ballot-choice choice-{$T.answer$index}">
+      {interpolate(gettext("STV_ANSWER_PRIORITY"), ['' + ($T.answer$index+1)])}
       <a class="button secondary disabled clearfix small">
         <span class="index-num">{gettext("STV_BALLOT_CHOICE")} {$T.answer$index+1}</span>
         <span class="value"></span>
