@@ -3,7 +3,7 @@ Description=%i Celery worker
 After=syslog.target
 
 [Service]
-ExecStart=/srv/zeus/virtualenv/bin/celery worker -A zeus.celery -l INFO
+ExecStart=/srv/zeus/virtualenv/bin/celery worker -A zeus.celery -l INFO --concurrency 1 --pool solo
 WorkingDirectory=/srv/zeus/install
 User=www-data
 Group=www-data
