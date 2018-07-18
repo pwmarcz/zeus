@@ -87,7 +87,7 @@ class SavElection(ElectionModuleBase):
 
     def generate_result_docs(self, lang):
         poll_data = [
-            (self.poll.name, count_sav_results(self.poll), self.poll.questions,
+            (self.poll.name, count_sav_results_for_poll(self.poll), self.poll.questions,
              self.poll.voters.all())
             ]
         from zeus.results_report import build_sav_doc
@@ -106,7 +106,7 @@ class SavElection(ElectionModuleBase):
 
         for poll in self.election.polls.filter():
             polls_data.append((poll.name,
-                               count_sav_results(poll),
+                               count_sav_results_for_poll(poll),
                                poll.questions,
                                poll.voters.all()))
 
@@ -118,22 +118,29 @@ class SavElection(ElectionModuleBase):
                 pdfpath)
 
 
-def count_sav_results(poll):
+def count_sav_results(ballots, cands_data):
+    candidates_dict = {candidate: 0 for candidate in cands_data}
+
+    for ballot in ballots:
+        for i in ballot:
+            candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
+    candidate_data = [(candidate, votes) for candidate, votes in candidates_dict.items()]
+    candidate_data.sort(key=lambda x: (-x[1], x[0]))
+
+    return candidate_data
+
+
+def count_sav_results_for_poll(poll):
     cands_data = poll.questions_data[0]['answers']
     cands_count = len(cands_data)
     ballots_data = poll.result[0]
-    candidates_dict = {candidate: 0 for candidate in cands_data}
+    ballots = []
 
     for ballot in ballots_data:
         if not ballot:
             continue
         ballot = to_absolute_answers(gamma_decode(ballot, cands_count, cands_count),
                                      cands_count)
+        ballots.append(ballot)
 
-        for i in ballot:
-            candidates_dict[cands_data[i]] += Fraction(len(cands_data), len(ballot))
-
-    candidate_data = [(candidate, votes) for candidate, votes in candidates_dict.items()]
-    candidate_data.sort(key=lambda x: x[1], reverse=True)
-
-    return candidate_data
+    return count_sav_results_for_poll(ballots, cands_data)

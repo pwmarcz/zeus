@@ -578,8 +578,8 @@ class ZeusDjangoElection(ZeusCoreElection):
 
         if self.poll.get_module().module_id == 'sav':
             # we expect cached stv results
-            from zeus.election_modules.sav import count_sav_results
-            return count_sav_results(self.poll)
+            from zeus.election_modules.sav import count_sav_results_for_poll
+            return count_sav_results_for_poll(self.poll)
 
         return gamma_count_parties(self.do_get_results(), self.do_get_candidates())
 

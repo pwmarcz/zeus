@@ -304,7 +304,7 @@ def csv_from_stv_polls(election, polls, lang, outfile=None):
 
 
 def csv_from_sav_polls(election, polls, lang, outfile=None):
-    from zeus.election_modules.sav import count_sav_results
+    from zeus.election_modules.sav import count_sav_results_for_poll
 
     with translation.override(lang):
         if outfile is None:
@@ -317,7 +317,7 @@ def csv_from_sav_polls(election, polls, lang, outfile=None):
         for poll in polls:
             writerow([])
             writerow([str(_("Poll name")), str(poll.name)])
-            results = count_sav_results(poll)
+            results = count_sav_results_for_poll(poll)
 
             for candidate, votes in results:
                 writerow([str(candidate), float(votes), str(votes.numerator), str(votes.denominator)])

@@ -220,7 +220,7 @@ class ElectionModuleBase(ElectionHooks):
         if self.module_id != "sav":
             results_json = self.poll.zeus.get_results()
         else:
-            results = count_sav_results(self.poll)
+            results = count_sav_results_for_poll(self.poll)
             results_json = {
                 candidate: {
                     "float_votes": float(votes),
