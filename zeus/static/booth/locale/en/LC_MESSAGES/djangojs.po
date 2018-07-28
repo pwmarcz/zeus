@@ -244,6 +244,9 @@ msgstr "Candidates"
 msgid "STV_BALLOT_CANDIDATES_SELECT_HEADER"
 msgstr "Candidates choices"
 
+msgid "STV_ANSWER_PRIORITY"
+msgstr "Priority %s"
+
 msgid "STV_BALLOT_CHOICE"
 msgstr "Ballot choices"
 
