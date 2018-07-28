@@ -489,7 +489,11 @@ class CandidateWidget(MultiWidget):
 
 
 class SavForm(QuestionBaseForm):
-    min_votes = forms.IntegerField(label=_("Min votes"), min_value=1, required=False)
+    min_votes = forms.IntegerField(
+        label=_("Min votes"),
+        help_text=_("Shorter ballots will be accepted, but the votes will not be counted any higher."),
+        min_value=1,
+        required=False)
 
     def __init__(self, *args, **kwargs):
 
