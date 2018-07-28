@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
+"POT-Creation-Date: 2018-07-28 18:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -158,19 +158,16 @@ msgstr ""
 "Ο αριθμός απαντήσεων πρέπει να είναι μεγαλύτερος ή ίσως του μέγιστου αριθμού "
 "απαντήσεων"
 
-msgid "set minimal number of votes"
+msgid "Min votes"
 msgstr ""
 
-msgid "Minimum votes"
+msgid ""
+"Shorter ballots will be accepted, but the votes will not be counted any "
+"higher."
 msgstr ""
 
 msgid "This field is required."
 msgstr "Αυτό το πεδίο είναι απαραίτητο."
-
-#, fuzzy
-#| msgid "Value must be a positve integer"
-msgid "Value must be a positive integer"
-msgstr "Η τιμή πρέπει να είναι θετικός ακέραιος"
 
 msgid "maximum number of elected from the same constituency"
 msgstr "μέγιστος αριθμός εκλεγόμενων από την ίδια Σχολή ή Ανεξάρτητο Τμήμα"
@@ -189,6 +186,15 @@ msgstr "το πλήθος των εκλεγόμενων"
 
 msgid "Eligibles count"
 msgstr "Πλήθος εκλεγόμενων"
+
+msgid "Shuffle answers"
+msgstr ""
+
+msgid "Reorder answers when voting"
+msgstr ""
+
+msgid "Value must be a positive integer"
+msgstr "Η τιμή πρέπει να είναι θετικός ακέραιος"
 
 msgid "Username"
 msgstr "Όνομα χρήστη"
@@ -497,6 +503,11 @@ msgstr "ΟΧΙ"
 msgid "YES"
 msgstr "ΝΑΙ"
 
+#, fuzzy
+#| msgid "Ballot"
+msgid "Ballots"
+msgstr "Ψηφοδέλτιο"
+
 msgid "RANKING"
 msgstr "ΒΑΘΜΟΛΟΓΙΚΗ ΚΑΤΑΤΑΞΗ"
 
@@ -561,6 +572,9 @@ msgstr "Λήξη: %(date)s"
 #, python-format
 msgid "Extension: %(date)s"
 msgstr "Παράταση: %(date)s"
+
+msgid "Fraction"
+msgstr ""
 
 msgid "Are you sure ?"
 msgstr "Επιβεβαιώστε"

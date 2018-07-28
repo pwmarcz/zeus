@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-04 16:28+0200\n"
+"POT-Creation-Date: 2018-07-28 18:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,9 +228,6 @@ msgstr ""
 
 #, python-format
 msgid "Voter [%s]: Provide at least one of the email and mobile fields."
-msgstr ""
-
-msgid "Mobile backend is not set for this election"
 msgstr ""
 
 #, python-format
@@ -587,6 +584,15 @@ msgstr ""
 msgid "SAVE"
 msgstr ""
 
+msgid "Candidate"
+msgstr ""
+
+msgid "Votes"
+msgstr ""
+
+msgid "Votes (fraction)"
+msgstr ""
+
 msgid "votes cast"
 msgstr ""
 
@@ -638,6 +644,12 @@ msgid "Min answers"
 msgstr ""
 
 msgid "Max answers"
+msgstr ""
+
+msgid "Shuffle answers"
+msgstr ""
+
+msgid "Min votes"
 msgstr ""
 
 msgid "Manage questions"

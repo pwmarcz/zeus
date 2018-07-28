@@ -489,8 +489,11 @@ class CandidateWidget(MultiWidget):
 
 
 class SavForm(QuestionBaseForm):
-    # TODO modify counting to account for min_votes
-    # min_votes = forms.IntegerField(label=_("Min votes"), min_value=1, required=False)
+    min_votes = forms.IntegerField(
+        label=_("Min votes"),
+        help_text=_("Shorter ballots will be accepted, but the votes will not be counted any higher."),
+        min_value=1,
+        required=False)
 
     def __init__(self, *args, **kwargs):
 
@@ -584,7 +587,7 @@ class StvForm(QuestionBaseForm):
                              forms.BooleanField(
                                  required=False,
                                  label=_('Shuffle answers'),
-                                 help_text=('Reorder answers when voting')))
+                                 help_text=_('Reorder answers when voting')))
 
     min_answers = None
     max_answers = None

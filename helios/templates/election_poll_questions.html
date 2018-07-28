@@ -33,6 +33,9 @@
     {% if q.shuffle_answers %}
         {% trans "Shuffle answers" %}<br>
     {% endif %}
+    {% if q.min_votes %}
+        {% trans "Min votes" %} : {{ q.min_votes }}<br>
+    {% endif %}
     <br>
     <ol>
       {% if q.answers_display %}

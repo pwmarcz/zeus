@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"POT-Creation-Date: 2018-07-28 18:17+0200\n"
 "PO-Revision-Date: 2018-07-04 16:27+0200\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
+"Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.0.8\n"
 
 msgid "Unresolved"
@@ -226,9 +226,6 @@ msgid "Voter [%s]: Provide at least one of the email and mobile fields."
 msgstr ""
 "Wyborczyni [%s]: Podaj co najmniej jedno z pól: e-mail lub telefon komórkowy."
 
-msgid "Mobile backend is not set for this election"
-msgstr "Dla tych wyborów nie ustawiono silnika obsługi SMSów"
-
 #, python-format
 msgid "Duplicate voter id : %s"
 msgstr "Duplikat identyfikatora głosującej: %s"
@@ -275,11 +272,11 @@ msgstr "Zamknij mieszanie"
 msgid "Cancel election"
 msgstr "Anuluj wybory"
 
-msgid "Recompute results"
-msgstr "Oblicz ponownie wyniki"
-
 msgid "Save results"
 msgstr "Zapisz wyniki"
+
+msgid "Recompute results"
+msgstr "Oblicz ponownie wyniki"
 
 #, python-format
 msgid ""
@@ -560,6 +557,15 @@ msgstr "Nowe hasło zostało ustawione."
 msgid "SAVE"
 msgstr "ZAPISZ"
 
+msgid "Candidate"
+msgstr "Kandydatka"
+
+msgid "Votes"
+msgstr "Głosy"
+
+msgid "Votes (fraction)"
+msgstr "Głosy (ułamek)"
+
 msgid "votes cast"
 msgstr "oddano głosów"
 
@@ -611,6 +617,12 @@ msgstr "Minimum odpowiedzi"
 
 msgid "Max answers"
 msgstr "Maksymalnie odpowiedzi"
+
+msgid "Shuffle answers"
+msgstr "Tasuj odpowiedzi"
+
+msgid "Min votes"
+msgstr "Minimum głosów"
 
 msgid "Manage questions"
 msgstr "Zarządzaj odpowiedziami"
@@ -1398,9 +1410,6 @@ msgstr ""
 "Powiadom głosującą %(voter_name)s (%(voter_id)s)\n"
 
 #, python-format
-#| msgid ""
-#| "\n"
-#| "Send email to poll '%(poll_name)s' voters %(suffix)s\n"
 msgid ""
 "\n"
 "Notify poll '%(poll_name)s' voters %(suffix)s\n"
@@ -1409,9 +1418,6 @@ msgstr ""
 "Powiadom głosujące w głosowaniu '%(poll_name)s' %(suffix)s\n"
 
 #, python-format
-#| msgid ""
-#| "\n"
-#| "Send email to election '%(election_name)s' voters %(suffix)s\n"
 msgid ""
 "\n"
 "Notify election '%(election_name)s' voters %(suffix)s\n"
@@ -1543,6 +1549,9 @@ msgstr "Aby ponownie uruchomić proces liczenia, kliknij "
 
 msgid "Terms of use"
 msgstr "Warunki wykorzystania"
+
+#~ msgid "Mobile backend is not set for this election"
+#~ msgstr "Dla tych wyborów nie ustawiono silnika obsługi SMSów"
 
 #~ msgid "Email body"
 #~ msgstr "Treść e-maila"
