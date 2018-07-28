@@ -41,3 +41,19 @@ def test_sav_results_fractions():
         ("C", Fraction(4, 3)),
         ("D", Fraction(0, 1)),
     ]
+
+
+def test_minimal_number_of_votes():
+    cands_data = ["A", "B", "C", "D", "E"]
+    minimal = 3
+    ballots = [[0], [2, 3]]
+
+    results = count_sav_results(ballots, cands_data, minimal)
+
+    assert results == [
+        ("A", Fraction(5, 3)),
+        ("C", Fraction(5, 3)),
+        ("D", Fraction(5, 3)),
+        ("B", Fraction(0, 1)),
+        ("E", Fraction(0, 1)),
+    ]
