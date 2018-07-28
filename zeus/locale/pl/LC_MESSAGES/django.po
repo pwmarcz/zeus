@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-02 20:53+0200\n"
+"POT-Creation-Date: 2018-07-28 18:17+0200\n"
 "PO-Revision-Date: 2018-07-04 16:56+0200\n"
 "Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
+"Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.0.8\n"
 
 msgid "Simple election with one or more questions"
@@ -124,14 +124,14 @@ msgstr "Nieprawidłowa data przedłużenia głosowania"
 msgid "Invalid trustees format"
 msgstr "Nieprawidłowy format powierniczek"
 
+msgid "Choice"
+msgstr "Wybrana odpowiedź"
+
 msgid "CSV file with answers"
 msgstr "Plik CSV z odpowiedziami"
 
 msgid "Attach a UTF-8 encoded file. Answers will replace the current list."
 msgstr "Załącz plik w kodowaniu UTF-8. Lista odpowiedzi zostanie zastąpiona."
-
-msgid "Choice"
-msgstr "Wybrana odpowiedź"
 
 msgid "Min answers"
 msgstr "Minimum odpowiedzi"
@@ -155,17 +155,18 @@ msgid "Number of answers must be equal or bigger than max answers"
 msgstr ""
 "Liczba odpowiedzi musi być większa lub równa maksymalnej liczbie odpowiedzi"
 
-msgid "set minimal number of votes"
-msgstr "ustaw minimalną liczbę głosów"
-
-msgid "Minimum votes"
+msgid "Min votes"
 msgstr "Minimum głosów"
+
+msgid ""
+"Shorter ballots will be accepted, but the votes will not be counted any "
+"higher."
+msgstr ""
+"Krótsze listy kandydatek będą zaakceptowane, ale głosy na nich nie zostaną "
+"policzone jako ważniejsze."
 
 msgid "This field is required."
 msgstr "To pole jest wymagane."
-
-msgid "Value must be a positive integer"
-msgstr "Wartość musi być liczbą dodatnią"
 
 msgid "maximum number of elected from the same constituency"
 msgstr "maksymalna liczba osób wybranych z tej samej grupy"
@@ -184,6 +185,15 @@ msgstr "ustaw liczbę mandatów w wyborach"
 
 msgid "Eligibles count"
 msgstr "Liczba mandatów"
+
+msgid "Shuffle answers"
+msgstr "Tasuj odpowiedzi"
+
+msgid "Reorder answers when voting"
+msgstr "Zmień kolejność odpowiedzi podczas głosowania"
+
+msgid "Value must be a positive integer"
+msgstr "Wartość musi być liczbą dodatnią"
 
 msgid "Username"
 msgstr "Nazwa użytkownika"
@@ -344,8 +354,8 @@ msgid "TRUSTEES_LIST_HELP_TEXT"
 msgstr ""
 "Lista powierniczek, np.<br/>\n"
 "<br/>\n"
-"Janina Kowalska,janina.kowalska@gmail.com<br/>"
-"Partyjna Komisja Wyborcza,razem.pkw@gmail.com"
+"Janina Kowalska,janina.kowalska@gmail.com<br/>Partyjna Komisja Wyborcza,"
+"razem.pkw@gmail.com"
 
 msgid "Election description"
 msgstr "Opis wyborów"
@@ -486,6 +496,9 @@ msgstr "NIE"
 msgid "YES"
 msgstr "TAK"
 
+msgid "Ballots"
+msgstr "Karty do głosowania"
+
 msgid "RANKING"
 msgstr "RANGA"
 
@@ -519,7 +532,6 @@ msgstr "Oficjalne"
 msgid "Total"
 msgstr "W sumie"
 
-#| msgid "Total votes: %d"
 msgid "Total rounded"
 msgstr "W sumie zaokrąglono"
 
@@ -551,6 +563,9 @@ msgstr "Koniec: %(date)s"
 #, python-format
 msgid "Extension: %(date)s"
 msgstr "Przedłużenie: %(date)s"
+
+msgid "Fraction"
+msgstr "Ułamek"
 
 msgid "Are you sure ?"
 msgstr "Jesteś pewna?"
@@ -712,6 +727,9 @@ msgstr "Wystąpił błąd. Zawiadom administratora serwera."
 
 msgid "The requested page was not found."
 msgstr "Nie znaleziono żądanej strony."
+
+#~ msgid "set minimal number of votes"
+#~ msgstr "ustaw minimalną liczbę głosów"
 
 #~ msgid "English"
 #~ msgstr "Angielski"

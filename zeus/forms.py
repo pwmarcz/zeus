@@ -587,7 +587,7 @@ class StvForm(QuestionBaseForm):
                              forms.BooleanField(
                                  required=False,
                                  label=_('Shuffle answers'),
-                                 help_text=('Reorder answers when voting')))
+                                 help_text=_('Reorder answers when voting')))
 
     min_answers = None
     max_answers = None
