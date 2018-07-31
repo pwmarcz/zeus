@@ -234,6 +234,22 @@ def csv_from_polls(election, polls, lang, outfile=None):
                 for candidate in candidates:
                     writerow([counter, party, str(": ".join(candidate)), valid])
 
+            writerow([])
+            writerow([str(_('BALLOTS (SINGLE ROWS)'))])
+            writerow([str(_('ID')), str(_('VALID/INVALID/BLANK')), str(_('CANDIDATES'))])
+            counter = 0
+            for i, ballot in enumerate(party_results['ballots'], 1):
+                if not ballot['valid']:
+                    writerow([i, invalid])
+                    continue
+
+                candidates = ballot['candidates']
+                if not candidates:
+                    writerow([i, empty])
+                    continue
+
+                writerow([i, valid] + [str(": ".join(candidate)) for candidate in candidates])
+
 
 def csv_from_stv_polls(election, polls, lang, outfile=None):
     from zeus.election_modules.stv import get_csv_ballots
