@@ -258,12 +258,16 @@ def recompute_results(request, election):
     election.completed_at = None
     election.save()
 
+    # Create a correct closure with pk.
+    def recompute(pk):
+        return lambda: poll_compute_results.delay(pk)
+
     for poll in election.polls.all():
         poll.compute_results_started_at = None
         poll.compute_results_finished_at = None
         poll.compute_results_status = 'waiting'
         poll.save()
-        transaction.on_commit(lambda: poll_compute_results.delay(poll.pk))
+        transaction.on_commit(recompute(poll.pk))
 
     url = election_reverse(election, 'index')
     return HttpResponseRedirect(url)
