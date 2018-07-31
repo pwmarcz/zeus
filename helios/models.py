@@ -44,8 +44,6 @@ from helios import utils as heliosutils
 from helios import datatypes
 from helios import exceptions
 from helios.datatypes.djangofield import LDObjectField
-from helios.utils import force_utf8
-
 
 from heliosauth.models import SMSBackendData, User
 from heliosauth.jsonfield import JSONField
@@ -1107,17 +1105,19 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
             if voter.excluded_at:
                 vote_field += str(_("(EXCLUDED)"))
 
-            fields = [voter.voter_login_id,
-                                             voter.voter_email,
-                                             voter.voter_name or '',
-                                             voter.voter_surname or '',
-                                             voter.voter_fathername or '',
-                                             voter.voter_mobile or '',
-                                             str(voter.voter_weight)
-                                             ]
+            fields = [
+                voter.voter_login_id,
+                voter.voter_email,
+                voter.voter_name,
+                voter.voter_surname,
+                voter.voter_fathername,
+                voter.voter_mobile,
+                voter.voter_weight,
+            ]
             if include_vote_field:
                 fields.append(vote_field)
-            writer.writerow(list(map(force_utf8, fields)))
+            writer.writerow([(str(val) if val is not None else '')
+                             for val in fields])
         return to
 
     def last_voter_visit(self):
