@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-31 20:15+0200\n"
+"POT-Creation-Date: 2018-08-08 11:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -516,6 +516,12 @@ msgstr "ΝΑΙ"
 msgid "Ballots"
 msgstr "Ψηφοδέλτιο"
 
+msgid "Votes (numerator)"
+msgstr ""
+
+msgid "Votes (denominator)"
+msgstr ""
+
 msgid "RANKING"
 msgstr "ΒΑΘΜΟΛΟΓΙΚΗ ΚΑΤΑΤΑΞΗ"
 
@@ -581,7 +587,7 @@ msgstr "Λήξη: %(date)s"
 msgid "Extension: %(date)s"
 msgstr "Παράταση: %(date)s"
 
-msgid "Fraction"
+msgid "Votes (fraction)"
 msgstr ""
 
 msgid "Are you sure ?"

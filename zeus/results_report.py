@@ -466,7 +466,7 @@ def build_sav_doc(title, name, institution_name, voting_start, voting_end,
             elements.append(Spacer(1, 12))
 
             lst = []
-            table_header = [_('Candidate'), _('Votes'), _('Fraction')]
+            table_header = [_('Candidate'), _('Votes'), _('Votes (fraction)')]
             lst.append(table_header)
 
             for candidates, votes in poll_results:
