@@ -333,10 +333,12 @@ def csv_from_sav_polls(election, polls, lang, outfile=None):
         for poll in polls:
             writerow([])
             writerow([_("Poll name"), str(poll.name)])
-            results = count_sav_results_for_poll(poll)
+            min_votes = poll.questions_data[0]['min_votes'] or 1
+            writerow([_("Min votes"), min_votes])
 
             writerow([])
             writerow([_('Candidate'), _('Votes'), _('Votes (numerator)'), _('Votes (denominator)')])
+            results = count_sav_results_for_poll(poll)
             for candidate, votes in results:
                 writerow([str(candidate), float(votes), str(votes.numerator), str(votes.denominator)])
 
