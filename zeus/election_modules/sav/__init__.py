@@ -132,11 +132,17 @@ def count_sav_results(ballots, cands_data, minimal=1):
 
 
 def count_sav_results_for_poll(poll):
+    cands_data, ballots = get_sav_ballots(poll)
+    minimal = poll.questions_data[0]['min_votes'] or 1
+
+    return count_sav_results(ballots, cands_data, minimal)
+
+
+def get_sav_ballots(poll):
     cands_data = poll.questions_data[0]['answers']
     cands_count = len(cands_data)
     ballots_data = poll.result[0]
     ballots = []
-    minimal = poll.questions_data[0]['min_votes'] or 1
 
     for ballot in ballots_data:
         if not ballot:
@@ -145,4 +151,4 @@ def count_sav_results_for_poll(poll):
                                      cands_count)
         ballots.append(ballot)
 
-    return count_sav_results(ballots, cands_data, minimal)
+    return cands_data, ballots
