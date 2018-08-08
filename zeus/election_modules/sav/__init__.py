@@ -122,9 +122,9 @@ def count_sav_results(ballots, cands_data, minimal=1):
     candidates_dict = {candidate: 0 for candidate in cands_data}
 
     for ballot in ballots:
-        denominator = max(len(ballot), minimal)
+        weight = Fraction(1, max(len(ballot), minimal))
         for i in ballot:
-            candidates_dict[cands_data[i]] += Fraction(len(cands_data), denominator)
+            candidates_dict[cands_data[i]] += weight
     candidate_data = [(candidate, votes) for candidate, votes in candidates_dict.items()]
     candidate_data.sort(key=lambda x: (-x[1], x[0]))
 

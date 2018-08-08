@@ -1,4 +1,4 @@
-from zeus.election_modules import count_sav_results
+from zeus.election_modules.sav import count_sav_results
 from fractions import Fraction
 
 
@@ -9,9 +9,9 @@ def test_sav_results_no_votes_for_one():
     results = count_sav_results(ballots, cands_data)
 
     assert results == [
-        ("C", Fraction(6, 1)),
-        ("B", Fraction(3, 1)),
-        ("A", Fraction(0, 1))
+        ("C", 2),
+        ("B", 1),
+        ("A", 0),
     ]
 
 
@@ -22,10 +22,10 @@ def test_sav_results_tie():
     results = count_sav_results(ballots, cands_data)
 
     assert results == [
-        ("C", Fraction(6, 1)),
-        ("D", Fraction(6, 1)),
-        ("A", Fraction(4, 1)),
-        ("B", Fraction(4, 1))
+        ("C", 1.5),
+        ("D", 1.5),
+        ("A", 1),
+        ("B", 1),
     ]
 
 
@@ -36,10 +36,10 @@ def test_sav_results_fractions():
     results = count_sav_results(ballots, cands_data)
 
     assert results == [
-        ("A", Fraction(16, 3)),
-        ("B", Fraction(4, 3)),
-        ("C", Fraction(4, 3)),
-        ("D", Fraction(0, 1)),
+        ("A", Fraction(4, 3)),
+        ("B", Fraction(1, 3)),
+        ("C", Fraction(1, 3)),
+        ("D", 0),
     ]
 
 
@@ -51,9 +51,9 @@ def test_minimal_number_of_votes():
     results = count_sav_results(ballots, cands_data, minimal)
 
     assert results == [
-        ("A", Fraction(5, 3)),
-        ("C", Fraction(5, 3)),
-        ("D", Fraction(5, 3)),
-        ("B", Fraction(0, 1)),
-        ("E", Fraction(0, 1)),
+        ("A", Fraction(1, 3)),
+        ("C", Fraction(1, 3)),
+        ("D", Fraction(1, 3)),
+        ("B", 0),
+        ("E", 0),
     ]
