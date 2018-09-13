@@ -8,6 +8,7 @@ from functools import wraps
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 
 from helios.models import Election, Poll, Trustee, Voter
 from heliosauth.models import User
@@ -267,13 +268,17 @@ class ZeusUser(object):
 
         if self.is_trustee:
             key = TRUSTEE_SESSION_KEY
+            expiry = settings.TRUSTEE_SESSION_AGE
         if self.is_admin:
             key = USER_SESSION_KEY
+            expiry = settings.USER_SESSION_AGE
         if self.is_voter:
             key = VOTER_SESSION_KEY
+            expiry = settings.VOTER_SESSION_AGE
 
         self._clear_session(request)
         session[key] = self._user.pk
+        session.set_expiry(expiry)
 
     def logout(self, request):
         self._clear_session(request)

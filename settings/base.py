@@ -357,3 +357,11 @@ LOGGING = {
         'propagate': True,
     },
 }
+
+
+# Session age for users, in seconds.
+VOTER_SESSION_AGE = 1 * 60 * 60
+TRUSTEE_SESSION_AGE = 2 * 60 * 60
+USER_SESSION_AGE = 14 * 24 * 60 * 60
+
+SESSION_COOKIE_AGE = USER_SESSION_AGE
