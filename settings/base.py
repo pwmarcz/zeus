@@ -360,7 +360,7 @@ LOGGING = {
 
 
 # Session age for users, in seconds.
-VOTER_SESSION_AGE = 1 * 60 * 60
+VOTER_SESSION_AGE = 10 * 60
 TRUSTEE_SESSION_AGE = 2 * 60 * 60
 USER_SESSION_AGE = 14 * 24 * 60 * 60
 
