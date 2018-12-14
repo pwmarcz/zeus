@@ -7,8 +7,8 @@ ignore =
     E121, E122, E123, E124, E125, E126, E127, E128, E129, E130, E131
     # missing whitespace around operator
     E225, E226, E227, E228,
-    # line break before binary operator
-    W503,
+    # line break before/after binary operator
+    W503, W504,
     # issues with comments
     E116, E261, E265, E266
     # do not assign a lambda expression, use a def (TODO fix)
