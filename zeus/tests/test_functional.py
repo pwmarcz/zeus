@@ -28,15 +28,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
     def setUp(self):
         super(TestElectionBase, self).setUp()
         self.local_verbose = os.environ.get('ZEUS_TESTS_VERBOSE', None)
-        self.celebration = (
-            " _________ ___  __\n"
-            "|\   __  \|\  \|\  \\\n"
-            "\ \  \ \  \ \  \/  /_\n"
-            " \ \  \ \  \ \   ___ \\\n"
-            "  \ \  \_\  \ \  \\\ \ \\ \n"
-            "   \ \_______\ \__\\\ \_\\\n"
-            "    \|_______|\|__| \|_|\n"
-            )
 
     def verbose(self, message):
         if self.local_verbose:
@@ -845,8 +836,6 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         self.check_docs_exist(self.doc_exts)
         self.view_returns_result_files(self.doc_exts)
         self.zip_contains_files(self.doc_exts)
-        if self.local_verbose:
-            print(self.celebration)
 
     def broken_mix_election_process(self):
         self.admin_can_submit_election_form()
