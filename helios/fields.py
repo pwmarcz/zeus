@@ -126,6 +126,6 @@ class TextSeparatedValuesField(BaseSeparatedValuesField, models.TextField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^separatedvaluesfield\.models\.SeparatedValuesField"])
+    add_introspection_rules([], [r"^separatedvaluesfield\.models\.SeparatedValuesField"])
 except ImportError:
     pass
