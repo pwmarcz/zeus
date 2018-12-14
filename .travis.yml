@@ -20,10 +20,11 @@ matrix:
         - pipenv run codecov
 
     - language: python
+      cache: pip
       env: NAME=flake8
       python: "3.6"
       install:
-        pip install flake8
+        pip install flake8==3.6.0
 
       script:
         - flake8 --config=.flake8
