@@ -41,11 +41,6 @@ class Command(BaseCommand):
                            help='By default messages are printed to the ' +
                                 'screen. Set this flag to actually send ' +
                                 'messages using the sms API')
-#parser.add_argument('--async',
-#action='store_true',
-#dest='async',
-#default=False,
-#help='Send messages asynchronously')
         parser.add_argument('--list',
                            action='store_true',
                            dest='list_voters',
@@ -90,7 +85,6 @@ class Command(BaseCommand):
         voter_id = options.get('voter_id')
         dry = options.get('dry')
         list = options.get('list_voters')
-        async = options.get('async')
         template = options.get('template')
         send_to_arg = options.get('send_to')
         resend = options.get('resend')
@@ -196,9 +190,6 @@ class Command(BaseCommand):
             task = tasks.send_voter_sms
             if status:
                 task = tasks.check_sms_status
-
-            if async:
-                task = task.delay
 
             if status:
                 if not voter.last_sms_code:

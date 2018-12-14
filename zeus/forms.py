@@ -650,7 +650,7 @@ class StvForm(QuestionBaseForm):
                 return eligibles
             else:
                 raise forms.ValidationError(message)
-        except ValueError as TypeError:
+        except ValueError:
             raise forms.ValidationError(message)
 
     def clean_department_limit(self):

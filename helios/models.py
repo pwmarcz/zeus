@@ -212,7 +212,7 @@ class PollMix(models.Model):
 
         try:
             self._do_mix()
-        except Exception as e:
+        except Exception:
             self.status = 'error'
             self.mix_error = traceback.format_exc()
             self.parts.all().delete()
@@ -1174,7 +1174,7 @@ class Poll(PollTasks, HeliosModel, PollFeatures):
 
         try:
             self.zeus.add_mix(remote_mix)
-        except Exception as e:
+        except Exception:
             logging.exception("Remote mix failed")
             status = 'error'
             error = traceback.format_exc()
