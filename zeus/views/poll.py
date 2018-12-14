@@ -801,7 +801,7 @@ def voter_exclude(request, election, poll, voter_uuid):
             try:
                 p.zeus.exclude_voter(linked_voter.uuid, reason)
                 p.logger.info("Poll voter '%s' excluded", linked_voter.voter_login_id)
-            except Exception as e:
+            except Exception:
                 pass
     return HttpResponseRedirect(poll_reverse(poll, 'voters'))
 

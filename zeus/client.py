@@ -176,7 +176,7 @@ def cast_vote(voter_url, choices=None):
     parties = None
     try:
         parties, nr_groups = parties_from_candidates(candidates)
-    except FormatError as e:
+    except FormatError:
         pass
 
     if parties:
@@ -222,7 +222,7 @@ def main_random_cast_thread(inqueue, outqueue):
             o = inqueue.get_nowait()
             if not o:
                 break
-        except Empty as e:
+        except Empty:
             break
         i, total, voter_url = o
         print("%d/%d" % (i+1, total))
@@ -260,7 +260,7 @@ def main_random_cast(voter_url_file, plaintexts_file, nr_threads=2):
 
 
 def main_show(url):
-    raise NotImplemented()
+    raise NotImplementedError()
     '''
     conn, cast_path, token, headers, answers, p, g, q, y = get_election(url)
     for i, c in enumerate(answers):
