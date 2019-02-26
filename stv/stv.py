@@ -197,10 +197,11 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
 
     quota_exceeded = False
     # If there is a quota limit, check if it is exceeded
-    if quota_limit > 0 and candidate in constituencies:
+    if candidate in constituencies:
         current_constituency = constituencies[candidate]
-        if constituencies_elected[current_constituency] >= quota_limit:
-            quota_exceeded = True
+        if quota_limit[current_constituency] > 0:
+            if constituencies_elected[current_constituency] >= quota_limit[current_constituency]:
+                quota_exceeded = True
     # If the quota limit has been exceeded, reject the candidate
     if quota_exceeded:
         rejected.append((candidate, current_round, vote_count[candidate]))
@@ -464,7 +465,7 @@ def main(cmd=None):
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
                                                  constituencies,
-                                                 args.quota,
+                                                 {0:2, 1:5},
                                                  args.random,
                                                  logger=logger)
 
