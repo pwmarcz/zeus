@@ -16,7 +16,7 @@ def temp_dir():
         shutil.rmtree(d)
 
 
-def run_stv(ballots, constituencies=None, seats=1, quota=0, random=None):
+def run_stv(ballots, constituencies=None, seats=1, quota=0, separate_quota=None, random=None):
     if constituencies is None:
         constituencies = []
     if random is None:
@@ -40,6 +40,8 @@ def run_stv(ballots, constituencies=None, seats=1, quota=0, random=None):
         ]
         if random:
             args += ['--random'] + random
+        if separate_quota:
+            args += ['--separate-quota', ','.join(str(n) for n in separate_quota)]
         result = main(args)
 
     # Round the vote count
@@ -97,6 +99,11 @@ def test_constituencies():
     assert run_stv(ballots, constituencies, seats=2, quota=1) == [
         ('A', 1, 10),
         ('C', 3, 1),
+    ]
+    # With a quota of 2 for first and 1 for second constituency, A and B win again.
+    assert run_stv(ballots, constituencies, seats=2, separate_quota=[2, 1]) == [
+        ('A', 1, 10),
+        ('B', 2, 9),
     ]
 
 

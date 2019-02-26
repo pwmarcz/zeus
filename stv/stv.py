@@ -197,9 +197,14 @@ def elect_reject(candidate, vote_count, constituencies, quota_limit,
 
     quota_exceeded = False
     # If there is a quota limit, check if it is exceeded
-    if quota_limit > 0 and candidate in constituencies:
+    if quota_limit and candidate in constituencies:
         current_constituency = constituencies[candidate]
-        if constituencies_elected[current_constituency] >= quota_limit:
+        if isinstance(quota_limit, list):
+            effective_limit = quota_limit[current_constituency]
+        else:
+            effective_limit = quota_limit
+
+        if constituencies_elected[current_constituency] >= effective_limit:
             quota_exceeded = True
     # If the quota limit has been exceeded, reject the candidate
     if quota_exceeded:
@@ -251,8 +256,11 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
     otherwise it is calculated according to the following formula:
             threshold = int(math.ceil(1 + len(ballots) / (seats + 1.0)))
     The constituencies argument is a map of candidates to constituencies, if
-    any. The quota_limit, if different than zero, is the limit of candidates
-    that can be elected by a constituency.
+    any.
+
+    The quota_limit, if different than zero, is the limit of candidates that
+    can be elected by a constituency. It can also be a list of per-constituency
+    limits.
     """
 
     allocated = {} # The allocation of ballots to candidates
@@ -419,7 +427,7 @@ def read_constituencies(f):
         for candidate in constituency:
             constituencies[candidate] = constituency_id
         constituency_id += 1
-    return constituencies
+    return constituency_id, constituencies
 
 
 def main(cmd=None):
@@ -435,6 +443,8 @@ def main(cmd=None):
                         help='input constituencies file')
     parser.add_argument('-q', '--quota', type=int, default=0,
                         dest='quota', help='constituency quota')
+    parser.add_argument('--separate-quota', type=str, default='', metavar='Q1,Q2,Q3...',
+                        dest='separate_quota', help='quota per constituency, as a list of ints')
     parser.add_argument('-r', '--random', nargs='*',
                         dest='random', help='random selection results')
     parser.add_argument('-l', '--loglevel', default=logging.INFO,
@@ -460,11 +470,24 @@ def main(cmd=None):
     constituencies = {}
     if args.constituencies_file:
         with open(args.constituencies_file) as f:
-            constituencies = read_constituencies(f)
+            n_constituencies, constituencies = read_constituencies(f)
+
+    if args.quota:
+        quota = args.quota
+    elif args.separate_quota:
+        quota_strings = args.separate_quota.split(',')
+        if len(quota_strings) != n_constituencies:
+            raise ValueError(
+                f'separate_quota: expecting {n_constituencies} values, '
+                f'got {len(quota_strings)}'
+            )
+        quota = [int(s) for s in quota_strings]
+    else:
+        quota = 0
 
     (elected, vote_count, full_data) = count_stv(ballots, args.seats, args.droop,
                                                  constituencies,
-                                                 args.quota,
+                                                 quota,
                                                  args.random,
                                                  logger=logger)
 
