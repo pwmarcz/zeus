@@ -352,7 +352,7 @@ def count_stv(ballots, seats, droop=True, constituencies=None,
             if not was_elected:
                 redistribute_ballots(best_candidate, 1.0, hopefuls, allocated,
                                      vote_count, logger=logger)
-            if surplus > 0:
+            if was_elected and surplus > 0:
                 # Calculate the weight for this round
                 weight = float(surplus) / vote_count[best_candidate]
                 # Find the next eligible preference for each one of the ballots
