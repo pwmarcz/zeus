@@ -25,7 +25,7 @@ class LDObjectField(models.TextField):
         self.type_hint = type_hint
         super(LDObjectField, self).__init__(**kwargs)
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.to_python(value)
 
     def to_python(self, value):
