@@ -6,7 +6,6 @@ from django.db import models
 from django.core import validators
 from django.core import exceptions
 from django.forms.fields import MultipleChoiceField
-from django.utils import six
 from django.utils.text import capfirst
 
 
@@ -30,7 +29,7 @@ class Creator(object):
 class BaseSeparatedValuesField(object):
     def __init__(self, *args, **kwargs):
         self.token = kwargs.pop('token', ',')
-        self.cast = kwargs.pop('cast', six.text_type)
+        self.cast = kwargs.pop('cast', str)
         super(BaseSeparatedValuesField, self).__init__(*args, **kwargs)
 
     def contribute_to_class(self, cls, name, **kwargs):
@@ -74,7 +73,7 @@ class BaseSeparatedValuesField(object):
             return None
 
         values = value
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             values = value.split(self.token)
 
         return [self.cast(v) for v in values]
