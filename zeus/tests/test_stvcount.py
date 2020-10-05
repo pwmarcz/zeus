@@ -34,7 +34,7 @@ class TestSTVCountView(TestCase):
         data['voting_ends'] = "25/12/2015 07:33 "
         resp = self.client.post(self.form_url)
         form = resp.context['form']
-        assert resp.status_code is 200
+        assert resp.status_code == 200
         assert 'voting_starts' in form.errors
         assert 'voting_ends' in form.errors
         assert resp.context['ballots_form'] is None
@@ -57,7 +57,7 @@ class TestSTVCountView(TestCase):
         resp = self.client.post(self.form_url, data)
         assert resp.status_code == 200
         assert resp.context['form'].errors == {}
-        assert resp.context['form'].cleaned_data.get('elected_limit') is 2
+        assert resp.context['form'].cleaned_data.get('elected_limit') == 2
         assert resp.context['ballots_form'] is not None
 
         data['submit_ballots'] = "1"
