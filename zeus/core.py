@@ -11,7 +11,7 @@ from math import log
 from bisect import bisect_right
 import Crypto.Util.number as number
 from Crypto import Random
-from billiard import Pool
+from loky import get_reusable_executor
 import json
 from json import load as json_load
 from time import time
@@ -2111,7 +2111,8 @@ def compute_decryption_factors(modulus, generator, order, secret, ciphers,
 
     public = pow(generator, secret, modulus)
     nr_ciphers = len(ciphers)
-    pool = Pool(nr_parallel, Random.atfork)
+    executor = get_reusable_executor(max_workers=nr_parallel,
+                                     initializer=Random.atfork)
 
     d, q = divmod(nr_ciphers, nr_parallel)
     if not d:
@@ -2122,12 +2123,10 @@ def compute_decryption_factors(modulus, generator, order, secret, ciphers,
             (modulus, generator, order, secret, public, ciphers[i])
             for i in range(nr_ciphers)
         ]
-        for r in pool.imap(_compute_decryption_factor, args, d):
+        for r in executor.map(_compute_decryption_factor, args, chunksize=d):
             teller.advance()
             factors.append(r)
 
-    pool.terminate()
-    pool.join()
     return factors
 
 
@@ -2167,7 +2166,8 @@ def verify_decryption_factors(modulus, generator, order, public,
     nr_ciphers = len(ciphers)
     if nr_ciphers != len(factors):
         return 0
-    pool = Pool(nr_parallel, Random.atfork)
+    executor = get_reusable_executor(max_workers=nr_parallel,
+                                     initializer=Random.atfork)
 
     d, q = divmod(nr_ciphers, nr_parallel)
     if not d:
@@ -2177,15 +2177,11 @@ def verify_decryption_factors(modulus, generator, order, public,
             (modulus, generator, order, public, ciphers[i], factors[i])
             for i in range(nr_ciphers)
         ]
-        for r in pool.imap(_verify_decryption_factor, args, d):
+        for r in executor.map(_verify_decryption_factor, args, chunksize=d):
             if not r:
-                pool.terminate()
-                pool.join()
                 return 0
             teller.advance()
 
-    pool.terminate()
-    pool.join()
     return 1
 
 

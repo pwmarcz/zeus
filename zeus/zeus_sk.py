@@ -3,7 +3,7 @@ from zeus.core import (
         ZeusError, pow, sha256, ALPHA, BETA,
         get_random_int, bit_iterator, get_random_permutation,
         MIN_MIX_ROUNDS, _teller)
-from billiard import Pool
+from loky import get_reusable_executor
 from Crypto import Random
 
 
@@ -100,19 +100,16 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
     total = nr_ciphers * nr_rounds
     with teller.task('Producing ciphers for proof', total=total):
         if nr_parallel > 0:
-            pool = Pool(nr_parallel, Random.atfork)
-            try:
-                data = [
-                    (p, g, q, y, original_ciphers)
-                    for _ in range(nr_rounds)
-                ]
-                collections = []
-                for r in pool.imap(_shuffle_ciphers, data):
-                    teller.advance()
-                    collections.append(r)
-            finally:
-                pool.terminate()
-                pool.join()
+            executor = get_reusable_executor(max_workers=nr_parallel,
+                                             initializer=Random.atfork)
+            data = [
+                (p, g, q, y, original_ciphers)
+                for _ in range(nr_rounds)
+            ]
+            collections = []
+            for r in executor.map(_shuffle_ciphers, data):
+                teller.advance()
+                collections.append(r)
         else:
             collections = [shuffle_ciphers(p, g, q, y,
                                            original_ciphers, teller=teller)
@@ -282,13 +279,10 @@ def verify_cipher_mix(cipher_mix, teller=_teller, nr_parallel=0):
                 verify_mix_round(*args, teller=teller)
 
         else:
-            pool = Pool(nr_parallel, Random.atfork)
-            try:
-                for count in pool.imap(_verify_mix_round, data):
-                    teller.advance(count)
-            finally:
-                pool.terminate()
-                pool.join()
+            executor = get_reusable_executor(max_workers=nr_parallel,
+                                             initializer=Random.atfork)
+            for count in executor.map(_verify_mix_round, data):
+                teller.advance(count)
 
     teller.finish('Verifying mixing')
     return 1

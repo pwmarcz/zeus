@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0e405ed4e61e3f8423ef3c9ccea056741f15605f9c4e26072049515e9d55f076"
+            "sha256": "888d7dff12af7feed541d67dcb8b7011a7361fe5883a9b5ebea6721f1255e13e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -42,7 +42,6 @@
                 "sha256:bff575450859a6e0fbc2f9877d9b715b0bbc07c3565bb7ed2280526a0cdf5ede",
                 "sha256:d91725ce6425f33a97dfa72fb6bfef0e47d4652acd98a032bd1a7fbf06d5fa6a"
             ],
-            "index": "pypi",
             "version": "==3.6.3.0"
         },
         "celery": {
@@ -72,6 +71,13 @@
                 "sha256:b9f29d52abc4d6059f8e276132a111ab8d94980afe6a5432b9d996544afa95d5"
             ],
             "version": "==0.1.6"
+        },
+        "cloudpickle": {
+            "hashes": [
+                "sha256:3a32d0eb0bc6f4d0c57fbc4f3e3780f7a81e6fee0fa935072884d58ae8e1cc7c",
+                "sha256:9bc994f9e9447593bd0a45371f0e7ac7333710fcf64a4eb9834bf149f4ef2f32"
+            ],
+            "version": "==1.6.0"
         },
         "decorator": {
             "hashes": [
@@ -140,6 +146,14 @@
                 "sha256:f4965fba0a4718d47d470beeb5d6446e3357a62402b16c510b6a2f251e05ac3c"
             ],
             "version": "==5.0.2"
+        },
+        "loky": {
+            "hashes": [
+                "sha256:15f5bf77d0fc306c0ba3de242bc4ab614d47362a3a2b9564781b3c8d6afd976e",
+                "sha256:4a9bf0644b6c2bc2db0faf7e12211a4919f8f4feb17b2ccc36cc6b2b3649c5bf"
+            ],
+            "index": "pypi",
+            "version": "==2.9.0"
         },
         "parso": {
             "hashes": [

@@ -13,7 +13,7 @@ pycryptodome = "*"
 reportlab = "*"
 pyyaml = "*"
 ipython = "<7.1.0"
-billiard = "*"
+loky = "*"
 traitlets = "<5.0.0"
 
 [dev-packages]
