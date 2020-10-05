@@ -212,6 +212,9 @@ class User(models.Model):
         else:
             return False
 
+    def __hash__(self):
+        return super().__hash__()
+
     @property
     def pretty_name(self):
         if self.name:
