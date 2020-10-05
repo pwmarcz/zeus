@@ -614,7 +614,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
                 self.view_returns_poll_proofs_file(self.c, e.uuid, poll.uuid)
                 self.view_returns_poll_results(self.c, e.uuid, poll.uuid)
                 for ext in p_exts:
-                    if ext is not 'json':
+                    if ext != 'json':
                         address = ('/elections/%s/polls/%s/results-%s.%s'
                                    % (self.e_uuid, poll.uuid, lang[0], ext))
                     else:
@@ -652,7 +652,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
             for poll in e.polls.all():
                 p_module = poll.get_module()
                 for ext in poll_exts:
-                    if ext is not 'json':
+                    if ext != 'json':
                         path = p_module.get_poll_result_file_path(
                             ext,
                             ext,
