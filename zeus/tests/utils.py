@@ -76,7 +76,7 @@ class SetUpAdminAndClientMixin():
             'help_email': 'test@test.com',
             'help_phone': 6988888888,
             'communication_language': conf.get('com_lang', 'en'),
-            'official': None,
+            'official': '',
             'departments': 'Department of Test',
             'election_module': 'simple',
             }
