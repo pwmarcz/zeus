@@ -1689,8 +1689,6 @@ class Voter(HeliosModel, VoterFeatures):
     class Meta:
         unique_together = (('poll', 'voter_login_id'), ('poll', 'voter_password'))
 
-    user = None
-
     @property
     def contact_methods(self):
         methods_attr_map = (
@@ -1716,11 +1714,15 @@ class Voter(HeliosModel, VoterFeatures):
 
     def __init__(self, *args, **kwargs):
         super(Voter, self).__init__(*args, **kwargs)
+        self._user = None
 
+    @property
+    def user(self):
         # stub the user so code is not full of IF statements
-        if not self.user:
-            self.user = User(user_type='password', user_id=self.voter_email,
-                             name="%s %s" % (self.voter_name, self.voter_surname))
+        if not self._user:
+            self._user = User(user_type='password', user_id=self.voter_email,
+                              name="%s %s" % (self.voter_name, self.voter_surname))
+        return self._user
 
     @property
     def login_code(self):
