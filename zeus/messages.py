@@ -1,5 +1,5 @@
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 VOTER_REMOVE_CONFIRM = _("Confirm voter removal: {{ voter.voter_name}} "

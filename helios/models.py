@@ -31,7 +31,7 @@ from django.db.models.query import QuerySet
 from django.db.models import Count
 from django.conf import settings
 from django.core.mail import send_mail, mail_admins
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email as django_validate_email
 from django.forms import ValidationError
 from django.urls import reverse

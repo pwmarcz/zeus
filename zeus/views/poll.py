@@ -11,7 +11,7 @@ import logging
 from django.urls import reverse
 from django.forms import ValidationError
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db import connection
 from django.db.models import Max
 from django.template.context_processors import csrf

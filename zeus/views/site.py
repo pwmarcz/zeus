@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotAllowed, FileRespon
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext_lazy as _, get_language
 from django.contrib import messages
 from django.conf import settings
 from django.views.i18n import set_language

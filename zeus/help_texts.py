@@ -1,5 +1,5 @@
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 trial = _("This is a trial election")
 election_module = _("Choose the type of the election")

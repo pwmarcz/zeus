@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import render
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email, ValidationError
 if six.PY2:
     from backports.csv import (Sniffer, excel, Error as csvError,

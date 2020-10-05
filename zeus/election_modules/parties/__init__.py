@@ -1,6 +1,6 @@
 
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.forms.formsets import formset_factory
 from django.conf import settings
 

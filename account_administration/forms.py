@@ -1,7 +1,7 @@
 
 from django import forms
 from django.forms import ModelForm
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
 
 from heliosauth.models import User, UserGroup, election_types_choices

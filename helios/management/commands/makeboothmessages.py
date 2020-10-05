@@ -200,7 +200,7 @@ def process_file(file, dirpath, potfile, domain, verbosity,
         cmd = (
             'xgettext -d %s -L Python %s %s --keyword=gettext_noop '
             '--keyword=gettext_lazy --keyword=ngettext_lazy:1,2 '
-            '--keyword=ugettext_noop --keyword=ugettext_lazy '
+            '--keyword=gettext_noop --keyword=gettext_lazy '
             '--keyword=ungettext_lazy:1,2 --keyword=pgettext:1c,2 '
             '--keyword=npgettext:1c,2,3 --keyword=pgettext_lazy:1c,2 '
             '--keyword=npgettext_lazy:1c,2,3 --from-code UTF-8 '

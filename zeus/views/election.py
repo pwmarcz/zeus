@@ -25,7 +25,7 @@ from django.contrib import messages
 from django.core import serializers
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.http import require_http_methods
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from helios.view_utils import render_template
 from helios.models import Voter

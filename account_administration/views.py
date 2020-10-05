@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.shortcuts import get_object_or_404
 
 from helios.view_utils import render_template

@@ -5,7 +5,7 @@ import os
 import zipfile
 
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from zeus.reports import csv_from_polls, csv_from_score_polls,\
                          csv_from_stv_polls, csv_from_sav_polls
