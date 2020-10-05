@@ -65,11 +65,13 @@ if getattr(settings, 'DEBUG', False) or getattr(settings, 'ZEUS_SERVE_STATIC', F
 
     urlpatterns += static_urls
 
+'''
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+'''
 
 handler500 = 'zeus.views.site.handler500'
 handler400 = 'zeus.views.site.handler400'

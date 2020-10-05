@@ -21,7 +21,7 @@ pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
 mock = "*"
-django-debug-toolbar = "*"
+# django-debug-toolbar = "*"
 pytest-xdist = "*"
 "flake8" = "*"
 
