@@ -12,8 +12,9 @@ pycryptodome = "*"
 "gmpy2" = "*"
 reportlab = "*"
 pyyaml = "*"
-ipython = "*"
+ipython = "<7.1.0"
 billiard = "*"
+traitlets = "<5.0.0"
 
 [dev-packages]
 codecov = "*"
