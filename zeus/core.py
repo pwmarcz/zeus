@@ -2126,7 +2126,7 @@ def compute_decryption_factors(modulus, generator, order, secret, ciphers,
             teller.advance()
             factors.append(r)
 
-    pool.close()
+    pool.terminate()
     pool.join()
     return factors
 
@@ -2184,7 +2184,7 @@ def verify_decryption_factors(modulus, generator, order, public,
                 return 0
             teller.advance()
 
-    pool.close()
+    pool.terminate()
     pool.join()
     return 1
 

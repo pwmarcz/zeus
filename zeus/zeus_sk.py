@@ -101,16 +101,18 @@ def mix_ciphers(ciphers_for_mixing, nr_rounds=MIN_MIX_ROUNDS,
     with teller.task('Producing ciphers for proof', total=total):
         if nr_parallel > 0:
             pool = Pool(nr_parallel, Random.atfork)
-            data = [
-                (p, g, q, y, original_ciphers)
-                for _ in range(nr_rounds)
-            ]
-            collections = []
-            for r in pool.imap(_shuffle_ciphers, data):
-                teller.advance()
-                collections.append(r)
-            pool.close()
-            pool.join()
+            try:
+                data = [
+                    (p, g, q, y, original_ciphers)
+                    for _ in range(nr_rounds)
+                ]
+                collections = []
+                for r in pool.imap(_shuffle_ciphers, data):
+                    teller.advance()
+                    collections.append(r)
+            finally:
+                pool.terminate()
+                pool.join()
         else:
             collections = [shuffle_ciphers(p, g, q, y,
                                            original_ciphers, teller=teller)
