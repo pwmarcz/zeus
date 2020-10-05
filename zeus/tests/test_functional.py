@@ -17,7 +17,7 @@ from django.core import mail
 from helios import datatypes
 from helios.crypto import algs
 from helios.models import Election, Voter, Poll, Trustee
-from zeus.tests.utils import SetUpAdminAndClientMixin
+from zeus.tests.utils import SetUpAdminAndClientMixin, non_empty
 from zeus.core import to_relative_answers, gamma_encode, prove_encryption
 from zeus import auth
 from zeus.views.common import ELGAMAL_PARAMS
@@ -181,7 +181,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
         form = r.context['form']
-        data = form.initial
+        data = non_empty(form.initial)
         r = self.c.post(edit_url, data)
         expected_url = '/elections/{}/polls/'.format(self.e_uuid)
         self.assertRedirects(r, expected_url)
@@ -192,7 +192,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         r = self.c.get('/elections/{}/edit'.format(self.e_uuid),
                        follow=True)
         form = r.context['form']
-        data = form.initial
+        data = non_empty(form.initial)
         # need to split date and hours again for form
         start = data['voting_starts_at']
         end = data['voting_ends_at']
@@ -265,7 +265,7 @@ class TestElectionBase(SetUpAdminAndClientMixin, TestCase):
         edit_url = '/elections/{}/polls/{}/edit'.format(e.uuid, p_uuid)
         r = self.c.get(edit_url)
         form = r.context['form']
-        data = form.initial
+        data = non_empty(form.initial)
         data['name'] = 'changed_poll_name'
         self.c.post(edit_url, data)
         poll = Poll.objects.get(uuid=p_uuid)

@@ -115,3 +115,7 @@ def get_messages_from_response(response):
     for item in response.context['messages']:
         messages.append(str(item))
     return messages
+
+
+def non_empty(d):
+    return {k: v for k, v in d.items() if v is not None}
