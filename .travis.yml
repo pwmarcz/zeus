@@ -1,32 +1,29 @@
+language: python
 python:
   - "3.6"
   - "3.8"
-matrix:
+cache: pip
+services:
+  - postgresql
+install:
+  - sudo apt-get install libpq-dev libgmp-dev libmpfr-dev libmpc-dev
+  - sudo -u postgres createuser -s `whoami` || true
+  - createdb zeus_test
+  - pip install pipenv
+  - pipenv sync --dev
+
+script:
+  - pipenv run ./compile-translations.sh
+  - pipenv run pytest -v --cov -n 2
+
+after_success:
+  - pipenv run codecov
+
+jobs:
   include:
-    - language: python
-      cache: pip
-      env: NAME=tests
-      services:
-        - postgresql
-      install:
-        - sudo apt-get install libpq-dev libgmp-dev libmpfr-dev libmpc-dev
-        - sudo -u postgres createuser -s `whoami` || true
-        - createdb zeus_test
-        - pip install pipenv
-        - pipenv sync --dev
-
-      script:
-        - pipenv run ./compile-translations.sh
-        - pipenv run pytest -v --cov -n 2
-
-      after_success:
-        - pipenv run codecov
-
-    - language: python
-      cache: pip
-      env: NAME=flake8
+    - name: flake8
       install:
         pip install flake8==3.6.0
-
+      services: []
       script:
         - flake8 --config=.flake8
