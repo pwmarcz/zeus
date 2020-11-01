@@ -347,12 +347,12 @@ def handler500(request):
     return error(request, 500, msg)
 
 
-def handler400(request):
+def handler400(request, exception):
     msg = _("An error has been occured. Please notify the server admin.")
     return error(request, 400, msg)
 
 
-def handler404(request):
+def handler404(request, exception):
     msg = _("The requested page was not found.")
     return error(request, 404, msg)
 

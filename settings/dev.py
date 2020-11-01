@@ -1,6 +1,10 @@
+from django.utils.translation import gettext_lazy as _
+
 from .base import *  # noqa
 
 DEBUG = True
+
+LANGUAGES = [('pl', _('Polish')), ('en', _('English'))]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

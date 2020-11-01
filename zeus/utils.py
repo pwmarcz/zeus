@@ -316,7 +316,12 @@ class CSVReader(object):
         self.reader = imported_csv_reader(f, dialect)
 
     def __next__(self):
-        row = next(self.reader)
+        # Skip over empty lines
+        while True:
+            row = next(self.reader)
+            if len(row) > 0:
+                break
+
         if len(row) < self.min_fields or len(row) > self.max_fields:
             raise CSVCellError(len(row), self.min_fields, self.max_fields)
         row += [''] * (self.max_fields - len(row))
