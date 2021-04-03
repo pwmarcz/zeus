@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-08 11:39+0200\n"
-"PO-Revision-Date: 2018-07-04 16:27+0200\n"
-"Last-Translator: Leszek Karlik <leszek.karlik@gmail.com>\n"
+"PO-Revision-Date: 2021-04-03 22:46+0200\n"
+"Last-Translator: Tsuki 'sech1p' Semeniuk <sech1p@disroot.org>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.8\n"
+"X-Generator: Poedit 2.4.2\n"
 
 msgid "Unresolved"
 msgstr "Nierozwiązane"
@@ -71,15 +71,15 @@ msgid "Cast consent test"
 msgstr "Tekst zgody do oddania głosu"
 
 msgid "Add at least one trustee"
-msgstr "Dodaj co najmniej jedną powierniczkę"
+msgstr "Dodaj co najmniej jedną osobę powierniczą"
 
 #, python-format
 msgid "Have trustee %s generate a keypair"
-msgstr "Powierniczka '%s' musi wygenerować parę kluczy"
+msgstr "Osoba powiernicza '%s' musi wygenerować parę kluczy"
 
 #, python-format
 msgid "Have trustee %s verify his key"
-msgstr "Powierniczka '%s' musi zweryfikować swój klucz"
+msgstr "Osoba powiernicza '%s' musi zweryfikować swój klucz"
 
 msgid "Canceled"
 msgstr "Anulowanie"
@@ -173,7 +173,7 @@ msgid "Prepare poll questions"
 msgstr "Przygotuj pytania w głosowaniu"
 
 msgid "Import voters list"
-msgstr "Importuj listę głosujących"
+msgstr "Importuj listę osób głosujących"
 
 msgid "Waiting for all partial decryptions to finish"
 msgstr "Oczekiwanie na zakończenie częściowych odszyfrowań"
@@ -188,7 +188,7 @@ msgid "No questions set"
 msgstr "Nie ustawiono pytań"
 
 msgid "No voters set"
-msgstr "Nie ustawiono głosujących"
+msgstr "Nie ustawiono osób głosujących"
 
 msgid "Ready to freeze"
 msgstr "Gotowe do sfinalizowania"
@@ -224,20 +224,21 @@ msgstr "Nieprawidłowe dane głosującej w linii %s"
 #, python-format
 msgid "Voter [%s]: Provide at least one of the email and mobile fields."
 msgstr ""
-"Wyborczyni [%s]: Podaj co najmniej jedno z pól: e-mail lub telefon komórkowy."
+"Osoba głosująca [%s]: Podaj co najmniej jedno z pól: e-mail lub telefon "
+"komórkowy."
 
 #, python-format
 msgid "Duplicate voter id : %s"
-msgstr "Duplikat identyfikatora głosującej: %s"
+msgstr "Duplikat identyfikatora osoby głosującej: %s"
 
 msgid "No email set"
 msgstr "Nie ustawiono e-maila"
 
 msgid "Create trustee key"
-msgstr "Utwórz klucz powierniczki"
+msgstr "Utwórz klucz osoby powierniczej"
 
 msgid "Verify trustee key"
-msgstr "Zweryfikuj klucz powierniczki"
+msgstr "Zweryfikuj klucz osoby powierniczej"
 
 msgid "Partially decrypt votes"
 msgstr "Dokonaj częściowego odszyfrowania głosów"
@@ -292,7 +293,7 @@ msgid "Save"
 msgstr "Zapisz"
 
 msgid "Voters count"
-msgstr "Liczba głosujących"
+msgstr "Liczba osób głosujących"
 
 msgid "Polls count"
 msgstr "Liczba głosowań"
@@ -301,13 +302,13 @@ msgid "Edit poll"
 msgstr "Edytuj głosowanie"
 
 msgid "Voters"
-msgstr "Głosujący"
+msgstr "Osoby głosujące"
 
 msgid "Election information"
 msgstr "Informacje o wyborach"
 
 msgid "Trustees list"
-msgstr "Lista powierniczek"
+msgstr "Lista osób powierniczych"
 
 msgid "Audited ballots"
 msgstr "Zweryfikowane karty do głosowania"
@@ -316,7 +317,7 @@ msgid "Edit election"
 msgstr "Edycja wyborów"
 
 msgid "Election admin actions"
-msgstr "Działania administratora wyborów"
+msgstr "Działania osoby administrującej wyborów"
 
 msgid "Information"
 msgstr "Informacja"
@@ -331,7 +332,7 @@ msgid "Enter voting booth"
 msgstr "Otwórz kabinę wyborczą"
 
 msgid "No cast yet"
-msgstr "Jeszcze nie głosowałaś"
+msgstr "Jeszcze nie głosował*ś"
 
 msgid "Voting date passed."
 msgstr "Data głosowania minęła."
@@ -372,7 +373,7 @@ msgid "Cancel"
 msgstr "Anuluj"
 
 msgid "No trustees are set for the election."
-msgstr "Dla wyborów nie ustawiono powierniczek."
+msgstr "Dla wyborów nie ustawiono osób powierniczych."
 
 msgid ""
 "The election is about to be frozen.\n"
@@ -383,7 +384,7 @@ msgstr ""
 "Wybory zaraz zostaną sfinalizowane.\n"
 "  Będą gotowe do głosowania,\n"
 "  i większość zmian nie będzie możliwa.\n"
-"  Czy jesteś pewna?"
+"  Czy jesteś pewn*?"
 
 msgid "Confirm freeze"
 msgstr "Potwierdź finalizację"
@@ -398,7 +399,7 @@ msgid "Recompute election results"
 msgstr "Oblicz ponownie wyniki wyborów"
 
 msgid "Are you sure you want to recompute election results?"
-msgstr "Czy jesteś pewna, że chcesz obliczyć ponownie wyniki wyborów?"
+msgstr "Czy jesteś pewn*, że chcesz obliczyć ponownie wyniki wyborów?"
 
 msgid "This will replace the existing reports."
 msgstr "Istniejące raporty zostaną zastąpione."
@@ -437,7 +438,7 @@ msgid "The final ballots are ready to be decrypted."
 msgstr "Końcowe karty do głosowania czekają na odszyfrowanie."
 
 msgid "Insert your trustee key"
-msgstr "Podaj swój klucz powierniczki"
+msgstr "Podaj swój klucz osoby powierniczej"
 
 msgid "Perform partial decryption"
 msgstr "Przeprowadź odszyfrowanie częściowe"
@@ -465,16 +466,16 @@ msgid "Yes, I confirm!"
 msgstr "Tak, potwierdzam!"
 
 msgid "Insitution has users, can't be deleted."
-msgstr "Instytucja ma użytkowników, nie można jej usunąć."
+msgstr "Instytucja ma osoby użytkownicze, nie można jej usunąć."
 
 msgid "You didn't choose an institution."
-msgstr "Nie wybrałaś instytucji."
+msgstr "Nie wybrał*ś instytucji."
 
 msgid "Please confirm the deletion of user"
-msgstr "Potwierdź usuwanie użytkowniczki"
+msgstr "Potwierdź usuwanie osoby użytkowniczej"
 
 msgid "You didn't choose a user."
-msgstr "Nie wybrałaś użytkowniczki."
+msgstr "Nie wybrał*ś osoby użytkowniczej."
 
 msgid "Institution"
 msgstr "Instytucja"
@@ -489,13 +490,13 @@ msgid "Name"
 msgstr "Nazwa"
 
 msgid "Users"
-msgstr "Użytkownicy"
+msgstr "Osoby użytkownicze"
 
 msgid "Edit"
 msgstr "Edytuj"
 
 msgid "Create User"
-msgstr "Utwórz użytkownika"
+msgstr "Utwórz osobę użytkowniczą"
 
 msgid "No results found"
 msgstr "Nie znaleziono wyników"
@@ -504,16 +505,16 @@ msgid "Election types"
 msgstr "Typy wyborów"
 
 msgid "Users count"
-msgstr "Liczba użytkowniczek"
+msgstr "Liczba osób użytkowniczych"
 
 msgid "Actions"
 msgstr "Działania"
 
 msgid "User Groups"
-msgstr "Grupy użytkowników"
+msgstr "Grupy osób użytkowniczych"
 
 msgid "Is helpdesk user"
-msgstr "Jest użytkownikiem pomocy technicznej"
+msgstr "Jest osobą użytkowniczą pomocy technicznej"
 
 msgid "Elections Held"
 msgstr "Przeprowadzone wybory"
@@ -531,7 +532,7 @@ msgid "Create Group"
 msgstr "Utwórz grupę"
 
 msgid "Please confirm the password reset of user "
-msgstr "Potwierdź zresetowanie hasła użytkowniczki "
+msgstr "Potwierdź zresetowanie hasła osoby użytkowniczej "
 
 msgid "SMS backend"
 msgstr "Silnik obsługi SMSów"
@@ -558,7 +559,7 @@ msgid "SAVE"
 msgstr "ZAPISZ"
 
 msgid "Candidate"
-msgstr "Kandydatka"
+msgstr "Osoba kandydująca"
 
 msgid "Votes"
 msgstr "Głosy"
@@ -637,7 +638,7 @@ msgid "Total voters count"
 msgstr "Całkowita liczba głosujących"
 
 msgid "Excluded Voters"
-msgstr "Głosujący wyłączeni"
+msgstr "Wykluczone osoby głosujące"
 
 msgid "Votes cast"
 msgstr "Oddano głosów"
@@ -648,22 +649,22 @@ msgid ""
 "Are you sure ?"
 msgstr ""
 "To działanie zostanie wykonane dla the %(voters_list_count)s odfiltrowanych "
-"głosujących. Jesteś pewna?"
+"osób głosujących. Jesteś pewn*?"
 
 msgid "Voter list actions"
-msgstr "Działania listy głosujących"
+msgstr "Działania listy osób głosujących"
 
 msgid "Import voters"
-msgstr "Importuj głosujących"
+msgstr "Importuj osoby głosujące"
 
 msgid "Notify voters"
-msgstr "Powiadom głosujące"
+msgstr "Powiadom osoby głosujące"
 
 msgid "Export voter list to CSV"
 msgstr "Eksportuj listę głosujących do CSV"
 
 msgid "Delete all voters"
-msgstr "Skasuj wszystkie głosujące"
+msgstr "Skasuj wszystkie osoby głosujące"
 
 #, python-format
 msgid ""
@@ -696,10 +697,10 @@ msgid "Exclude voter"
 msgstr "Wyłącz osobę głosującą"
 
 msgid "No voters added"
-msgstr "Nie dodano głosujących"
+msgstr "Nie dodano osób głosujących"
 
 msgid "Enroll voters for poll"
-msgstr "Zarejestruj głosujących do głosowania"
+msgstr "Zarejestruj osoby głosujące do głosowania"
 
 msgid ""
 "Please, prepare a simple text file with the voters in CSV form, as in the "
@@ -752,7 +753,8 @@ msgstr ""
 "do głosowania.\n"
 "    Kilka zarejestrowanych pozycji może mieć ten sam adres e-mail,\n"
 "    jeżeli ta sama osoba ma prawo oddać kilka głosów\n"
-"    (np. jeżeli jest przedstawicielem kilku osób wykluczonych cyfrowo)."
+"    (np. jeżeli jest osobą przedstawicielską kilku osób wykluczonych "
+"cyfrowo)."
 
 msgid "The voter's given name"
 msgstr "Imię osoby głosującej"
@@ -832,15 +834,15 @@ msgid ""
 "The voters above will be enrolled. Note that you can also review and\n"
 "  edit the complete voter list from the control panel."
 msgstr ""
-"Podane powyżej głosujące zostaną uwzględnione w głosowaniu. Pamiętaj, że "
-"pełną \n"
+"Podane powyżej osoby głosujące zostaną uwzględnione w głosowaniu. Pamiętaj, "
+"że pełną \n"
 "listę głosujących możesz również sprawdzać i edytować z panelu sterowania."
 
 msgid "Confirm voters"
-msgstr "Potwierdź głosujące"
+msgstr "Potwierdź osoby głosujące"
 
 msgid "Cancel voter enrollment"
-msgstr "Anuluj rejestrację głosujących"
+msgstr "Anuluj rejestrację osób głosujących"
 
 msgid "Batch polls actions"
 msgstr "Grupowe działania na głosowaniach"
@@ -855,13 +857,13 @@ msgid "ballot size"
 msgstr "rozmiar karty do głosowania"
 
 msgid "voters registered"
-msgstr "głosujących zarejestrowano"
+msgstr "osoby głosujące zarejestrowano"
 
 msgid "voters invited"
-msgstr "głosujących zaproszono"
+msgstr "osoby głosujące zaproszono"
 
 msgid "voters voted"
-msgstr "głosujących zagłosowało"
+msgstr "osoby głosujące zagłosowało"
 
 msgid "votes"
 msgstr "głosy"
@@ -873,7 +875,7 @@ msgid "select action"
 msgstr "wybierz działanie"
 
 msgid "Manage voters"
-msgstr "Zarządzaj głosującymi"
+msgstr "Zarządzaj osobami głosującymi"
 
 msgid "Delete poll"
 msgstr "Usuń głosowanie"
@@ -888,25 +890,25 @@ msgid "Please try again"
 msgstr "Spróbuj ponownie"
 
 msgid "Error in verifying your trustee key, please try again."
-msgstr "Błąd przy weryfikacji klucza powierniczki, spróbuj ponownie."
+msgstr "Błąd przy weryfikacji klucza osoby powierniczej, spróbuj ponownie."
 
 msgid "Your trustee key has been verified!"
-msgstr "Twój klucz powierniczki został zweryfikowany!"
+msgstr "Twój klucz osoby powierniczej został zweryfikowany!"
 
 msgid "Your trustee key could not be verified."
-msgstr "Nie mogliśmy zweryfikować klucza powierniczki."
+msgstr "Nie mogliśmy zweryfikować klucza osoby powierniczej."
 
 msgid "The fingerprint for the public part of your trustee key is:"
-msgstr "Odcisk publicznej części Twojego klucza powierniczki to:"
+msgstr "Odcisk publicznej części Twojego klucza osoby powierniczej to:"
 
 msgid "Loading cryptographic functions..."
 msgstr "Wczytuję funkcje kryptograficzne..."
 
 msgid "Select your trustee key file and press 'Verify'."
-msgstr "Wybierz plik klucza powierniczki i naciśnij \"Sprawdź\"."
+msgstr "Wybierz plik klucza osoby powierniczej i naciśnij \"Sprawdź\"."
 
 msgid "To verify your trustee key, paste it here:"
-msgstr "Aby sprawdzić klucz powierniczki, wklej go tutaj:"
+msgstr "Aby sprawdzić klucz osoby powierniczej, wklej go tutaj:"
 
 msgid ""
 "\n"
@@ -915,18 +917,18 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    Po sprawdzeniu klucza powierniczki, zostaniesz \n"
-"    automatycznie wylogowana.\n"
+"    Po sprawdzeniu klucza osoby powierniczej, zostaniesz \n"
+"    automatycznie wylogowan*.\n"
 "    "
 
 msgid "Verify"
 msgstr "Sprawdź"
 
 msgid "Verifying private trustee key..."
-msgstr "Sprawdzanie prywatnego klucza powierniczki..."
+msgstr "Sprawdzanie prywatnego klucza osoby powierniczej..."
 
 msgid "The public part of your trustee key has been successfully uploaded."
-msgstr "Publiczna część klucza powierniczki została przesłana."
+msgstr "Publiczna część klucza osoby powierniczej została przesłana."
 
 msgid ""
 "After voting is over, you must revisit this page to decrypt the results."
@@ -938,10 +940,10 @@ msgid "Please,"
 msgstr "Upewnij się, że"
 
 msgid "confirm you indeed possess the trustee key"
-msgstr "na pewno posiadasz klucz powierniczki"
+msgstr "na pewno posiadasz klucz osoby powierniczej"
 
 msgid "if you haven't."
-msgstr "jeżeli jeszcze tego nie zrobiłaś."
+msgstr "jeżeli jeszcze tego nie zrobił*ś."
 
 msgid "Confirm key possession"
 msgstr "Potwierdź posiadanie klucza"
@@ -950,41 +952,42 @@ msgid "Key last verified at"
 msgstr "Klucz ostatnio zweryfikowano o"
 
 msgid "generate trustee key"
-msgstr "wygeneruj klucz powierniczki"
+msgstr "wygeneruj klucz osoby powierniczej"
 
 msgid "Your partial decryption has been successfully uploaded."
 msgstr "Częściowe odszyfrowanie zostało wysłane."
 
 msgid "Invalid trustee key."
-msgstr "Nieprawidłowy klucz powierniczki."
+msgstr "Nieprawidłowy klucz osoby powierniczej."
 
 msgid "Trustee Key"
-msgstr "Klucz powierniczki"
+msgstr "Klucz osoby powierniczej"
 
 msgid "Please confirm that you have saved your trustee key."
-msgstr "Potwierdź, że zapisałaś klucz powierniczki."
+msgstr "Potwierdź, że zapisał*ś klucz osoby powierniczej."
 
 msgid "Your trustee key has been activated."
-msgstr "Twój klucz powierniczki jest teraz aktywny."
+msgstr "Twój klucz osoby powierniczej jest teraz aktywny."
 
 msgid "Error in trustee key activation."
-msgstr "Błąd aktywacji klucza powierniczki."
+msgstr "Błąd aktywacji klucza osoby powierniczej."
 
 msgid "As an election trustee you have to generate your"
-msgstr "Jako powierniczka wyborów musisz wygenerować swój"
+msgstr "Jako osoba powiernicza wyborów musisz wygenerować swój"
 
 msgid "trustee key"
-msgstr "klucz powierniczki"
+msgstr "klucz osoby powierniczej"
 
 msgid "Generate trustee key"
-msgstr "Wygeneruj klucz powierniczki"
+msgstr "Wygeneruj klucz osoby powierniczej"
 
 msgid "My trustee key has been saved and secured. Please continue."
 msgstr ""
-"Mój klucz powierniczki został zapisany i zabezpieczony. Można przejść dalej."
+"Mój klucz osoby powierniczej został zapisany i zabezpieczony. Można przejść "
+"dalej."
 
 msgid "Activate trustee key"
-msgstr "Aktywuj klucz powierniczki"
+msgstr "Aktywuj klucz osoby powierniczej"
 
 msgid ""
 "\n"
@@ -993,12 +996,12 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"    Po udanej aktywacji Twojego klucza powierniczki,\n"
-"    zostaniesz automatycznie wylogowana.\n"
+"    Po udanej aktywacji Twojego klucza osoby powierniczej,\n"
+"    zostaniesz automatycznie wylogowan*.\n"
 "    "
 
 msgid "Save your trustee key"
-msgstr "Zapisz swój klucz powierniczki"
+msgstr "Zapisz swój klucz osoby powierniczej"
 
 msgid ""
 "\n"
@@ -1008,34 +1011,35 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"\t  Jeżeli Twoja przeglądarka wyświetla treść Twojego klucza powierniczki w "
-"nowym oknie,\n"
+"\t  Jeżeli Twoja przeglądarka wyświetla treść Twojego klucza osoby "
+"powierniczej w nowym oknie,\n"
 "\t  przełącz się do tego nowego okna i wciśnij Ctrl+S aby go zapisać.\n"
 "          "
 
 msgid "Your trustee key has been generated. If you want, you can"
-msgstr "Twój klucz powierniczki został już wygenerowany, jeżeli chcesz, możesz"
+msgstr ""
+"Twój klucz osoby powierniczej został już wygenerowany, jeżeli chcesz, możesz"
 
 msgid "remove it from memory and start over."
 msgstr "go usunąć z pamięci i zacząć od nowa."
 
 msgid "If you already have a trustee key you can"
-msgstr "Jeżeli masz już klucz powierniczki, możesz"
+msgstr "Jeżeli masz już klucz osoby powierniczej, możesz"
 
 msgid "reuse it"
 msgstr "go ponownie wykorzystać"
 
 msgid "Reuse trustee key"
-msgstr "Wykorzystaj ponownie klucz powierniczki"
+msgstr "Wykorzystaj ponownie klucz osoby powierniczej"
 
 msgid "Insert your trustee key below"
-msgstr "Wklej swój klucz powierniczki poniżej"
+msgstr "Wklej swój klucz osoby powierniczej poniżej"
 
 msgid "Continue"
 msgstr "Kontynuuj"
 
 msgid "The public part of your trustee key"
-msgstr "Część publiczna klucza powierniczki"
+msgstr "Część publiczna klucza osoby powierniczej"
 
 msgid ""
 "Now you have to upload the public part of your trustee key to the Zeus "
@@ -1050,14 +1054,14 @@ msgid ""
 "The trustees below are responsible for the decryption of the ballots\n"
 msgstr ""
 "\n"
-"Podane poniżej powierniczki są odpowiedzialne za odszyfrowanie kart do "
+"Podane poniżej osoby powiernicze są odpowiedzialne za odszyfrowanie kart do "
 "głosowania\n"
 
 msgid "Trustee election identifier"
-msgstr "Identyfikator powierniczki wyborów"
+msgstr "Identyfikator osoby powierniczej wyborów"
 
 msgid "Trustee key not verified"
-msgstr "Klucz powierniczki nie został zweryfikowany"
+msgstr "Klucz osoby powierniczej nie został zweryfikowany"
 
 msgid "key verified"
 msgstr "klucz zweryfikowany"
@@ -1069,25 +1073,25 @@ msgid "No polls decrypted"
 msgstr "Nie odszyfrowano głosowań"
 
 msgid "No trustee election key set"
-msgstr "Nie ustawiono klucza powierniczki wyborów"
+msgstr "Nie ustawiono klucza osoby powierniczej wyborów"
 
 msgid "Send trustee login url"
 msgstr "Wyślij powierniczce URL do logowania"
 
 msgid "Delete trustee"
-msgstr "Usuń powierniczkę"
+msgstr "Usuń osobę powierniczą"
 
 msgid "Trustee last notified at"
-msgstr "Powierniczka zawiadomiona ostatnio o"
+msgstr "Osoba powiernicza zawiadomiona ostatnio o"
 
 msgid "Trustee key last verified at"
-msgstr "Klucz powierniczki ostatnio zweryfikowano o"
+msgstr "Klucz osoby powierniczej ostatnio zweryfikowano o"
 
 msgid "Trustee completed partial decryption"
-msgstr "Powierniczka zakończyła częściowe odszyfrowanie"
+msgstr "Osoba powiernicza zakończyła częściowe odszyfrowanie"
 
 msgid "Pending partial decryption from trustee"
-msgstr "Oczekujemy na częściowe odszyfrowanie przez powierniczkę"
+msgstr "Oczekujemy na częściowe odszyfrowanie przez osoby powierniczej"
 
 #, python-format
 msgid ""
@@ -1183,7 +1187,7 @@ msgid "Demo account for"
 msgstr "Konto demonstracyjne dla"
 
 msgid "Legitimate recipient:"
-msgstr "Uprawniona odbiorczyni:"
+msgstr "Uprawniona osoba odbiorcza:"
 
 msgid "Dear voter,"
 msgstr "Szanowna osobo głosująca,"
@@ -1195,13 +1199,13 @@ msgid "Zeus Elections"
 msgstr "PKW Partii Razem"
 
 msgid "Intended recipient"
-msgstr "Docelowa odbiorczyni"
+msgstr "Docelowa osoba odbiorcza"
 
 msgid "Voting link"
 msgstr "Łącze do głosowania"
 
 msgid "You are invited to vote in the poll:"
-msgstr "Zostałaś zaproszona do głosowania:"
+msgstr "Został*ś zaproszon* do głosowania:"
 
 msgid "starting"
 msgstr "zaczynającego się o"
@@ -1210,7 +1214,7 @@ msgid "and ending"
 msgstr "i kończącego"
 
 msgid "Your registration ID is:"
-msgstr "Identyfikator wyborczyni to:"
+msgstr "Identyfikator osoby głosującej to:"
 
 msgid "To submit your vote, follow the link below"
 msgstr "Aby zagłosować, kliknij na łącze poniżej"
@@ -1295,8 +1299,8 @@ msgid ""
 "Voters have to use the link sent to them via email or SMS.\n"
 msgstr ""
 "\n"
-"To formularz logowania wyłącznie dla administratorów wyborów.\n"
-"Głosujący muszą wykorzystać łącze wysłane do nich e-mailem lub SMSem.\n"
+"To formularz logowania wyłącznie dla osób administrujących wyborów.\n"
+"Osoby głosujące muszą wykorzystać łącze wysłane do nich e-mailem lub SMSem.\n"
 
 #, python-format
 msgid ""
@@ -1313,8 +1317,8 @@ msgid ""
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
 "%(custom_message_sms)s"
 msgstr ""
-"WYBORY ZEUS %(election_name)s GŁOSOWANIE PRZEDŁUŻONO DO %(ext_date)s: "
-"WYBORCZYNI Z KODEM REJESTRACJI %(voter_login_id)s\n"
+"WYBORY ZEUS %(election_name)s GŁOSOWANIE PRZEDŁUŻONO DO %(ext_date)s: OSOBA "
+"GŁOSUJĄCA Z KODEM REJESTRACJI %(voter_login_id)s\n"
 "GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
 "%(custom_message_sms)s"
 
@@ -1324,13 +1328,13 @@ msgid ""
 "VOTES TO %(voter_url)s - LOGIN CODE: %(voter_login_code)s"
 "%(custom_message_sms)s"
 msgstr ""
-"WYBORY ZEUS %(election_name)s: WYBORCZYNI Z KODEM REJESTRACJI "
+"WYBORY ZEUS %(election_name)s: OSOBA GŁOSUJĄCA Z KODEM REJESTRACJI "
 "%(voter_login_id)s\n"
 "GŁOSUJE DO %(voter_url)s - KOD LOGOWANIA: %(voter_login_code)s"
 "%(custom_message_sms)s"
 
 msgid "As a trustee for the election"
-msgstr "Jesteś powierniczką tych wyborów"
+msgstr "Jesteś osobą powierniczą tych wyborów"
 
 msgid "please visit your control panel and follow the instructions"
 msgstr ""
@@ -1343,13 +1347,13 @@ msgid "actions required, step"
 msgstr "wymagane działania, etap"
 
 msgid "trustee dashboard"
-msgstr "panel powierniczki"
+msgstr "panel osoby powierniczej"
 
 msgid "Trustee actions"
-msgstr "Działania powierniczki"
+msgstr "Działania osoby powierniczej"
 
 msgid "You are logged in as election administrator"
-msgstr "Jesteś zalogowana jako administratorka wyborów"
+msgstr "Jesteś zalogowan* jako osoba administrująca wyborów"
 
 msgid "control panel"
 msgstr "panel sterowania"
@@ -1373,13 +1377,13 @@ msgid "proceed to election site"
 msgstr "przejść na stronę wyborów"
 
 msgid "You are logged in as trustee"
-msgstr "Jesteś zalogowana jako powierniczka"
+msgstr "Jesteś zalogowana jako osoba powiernicza"
 
 msgid "Your web browser is not supported for trustee functions."
-msgstr "Twoja przeglądarka nie umożliwia obsługi funkcji powierniczki."
+msgstr "Twoja przeglądarka nie umożliwia obsługi funkcji osoby powierniczej."
 
 msgid "Voter login"
-msgstr "Logowanie głosującej"
+msgstr "Logowanie osoby głosującej"
 
 msgid ""
 "\n"
@@ -1407,7 +1411,7 @@ msgid ""
 "Notify voter %(voter_name)s (%(voter_id)s)\n"
 msgstr ""
 "\n"
-"Powiadom głosującą %(voter_name)s (%(voter_id)s)\n"
+"Powiadom osobę głosującą %(voter_name)s (%(voter_id)s)\n"
 
 #, python-format
 msgid ""
@@ -1415,7 +1419,7 @@ msgid ""
 "Notify poll '%(poll_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
-"Powiadom głosujące w głosowaniu '%(poll_name)s' %(suffix)s\n"
+"Powiadom osoby głosujące w głosowaniu '%(poll_name)s' %(suffix)s\n"
 
 #, python-format
 msgid ""
@@ -1423,7 +1427,7 @@ msgid ""
 "Notify election '%(election_name)s' voters %(suffix)s\n"
 msgstr ""
 "\n"
-"Powiadom głosujące w wyborach '%(election_name)s' %(suffix)s\n"
+"Powiadom osoby głosujące w wyborach '%(election_name)s' %(suffix)s\n"
 
 msgid "The message will only be sent to the following voter:"
 msgstr "Ten komunikat będzie wysłany tylko do:"
