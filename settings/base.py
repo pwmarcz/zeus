@@ -31,8 +31,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'helios'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE', 'zeus'),
+        'USER': os.environ.get('PGUSER', 'zeus'),
+        'PASS': os.environ.get('PGPASSWORD', ''),
+        'HOST': os.environ.get('PGHOST', ''),
+        'PORT': os.environ.get('PGPORT', '5432'),
     }
 }
 
@@ -104,6 +108,7 @@ TEMPLATES = [
 
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -227,13 +232,8 @@ EMAIL_USE_TLS = False
     #format = '%(asctime)s %(levelname)s %(message)s'
 #)
 
-CELERY_BROKER_URL = 'redis://'
-CELERY_RESULT_BACKEND = 'redis://'
-
-# for testing
-CELERY_TASK_ALWAYS_EAGER = True
-CELERY_TASK_EAGER_PROPAGATES = True
-
+CELERY_BROKER_URL = 'redis://redis'
+CELERY_RESULT_BACKEND = 'redis://broker'
 
 BOOTH_STATIC_PATH = ROOT_PATH + '/zeus/static/booth/'
 
@@ -329,12 +329,14 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'syslog': {
-            'level': 'INFO',
-            'class': 'logging.handlers.SysLogHandler',
-            'address': '/dev/log',
-            'formatter': 'verbose'
-        },
+        # disabled under Docker
+        #
+        # 'syslog': {
+        #    'level': 'INFO',
+        #    'class': 'logging.handlers.SysLogHandler',
+        #    'address': '/dev/log',
+        #    'formatter': 'verbose'
+        # },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
@@ -352,7 +354,7 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'syslog'],
+        'handlers': ['console'],
         'level': 'DEBUG',
         'propagate': True,
     },

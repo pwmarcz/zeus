@@ -1,5 +1,5 @@
 [flake8]
-exclude = docs
+exclude = docs, env
 ignore =
     # line too long
     E501,

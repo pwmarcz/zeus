@@ -68,7 +68,7 @@ def _confirm_action(context, label, url, confirm_msg="", icon="",
         'method': method,
         'form_cls': form_cls,
         'confirm_code': confirm_code,
-        'confirm_msg': confirm_msg,
+        #'confirm_msg': confirm_msg,
         'csrf_token': csrf_token,
         'onclick': onclick
     }
@@ -205,7 +205,7 @@ def menu_confirm_action(context, label, url, confirm_msg="", icon="",
         'icon': icon_cls,
         'method': method,
         'confirm_code': confirm_code,
-        'confirm_msg': confirm_msg,
+        #'confirm_msg': confirm_msg,
         'csrf_token': csrf_token,
         'q_hidden_field': q_field,
     }

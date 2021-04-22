@@ -60,7 +60,7 @@ class Command(BaseCommand):
     help = 'load up voters from unprocessed voter files'
 
     def handle(self, *args, **options):
-            # load up the voter files in order of last uploaded
+        # load up the voter files in order of last uploaded
         files_to_process = VoterFile.objects.filter(processing_started_at=None).order_by('uploaded_at')
 
         for file_to_process in files_to_process:

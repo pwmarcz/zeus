@@ -6,10 +6,12 @@ pycryptodome
 gmpy2
 reportlab
 pyyaml
-ipython<7.1.0
+ipython
 loky
 traitlets<5.0.0
 importlib-metadata
+uwsgi
+whitenoise
 
 pip-tools
 codecov

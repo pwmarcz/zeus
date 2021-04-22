@@ -18,68 +18,67 @@ This is a fork of Ben Adida's Helios server. The differences from Helios are as 
   implementation](http://static.usenix.org/events/sec08/tech/full_papers/adida/adida.pdf) than Helios v. 3.
 
 
-## Install
+## Installation
 
-Install Postgres (`postgres-server`, `libpq-dev`).
+Here is how to set up Zeus and database on your local machine.
 
-Install the following libraries:
+1. Set up environment variables: copy `.env.template` to `.env`, customize.
 
-    libgmp-dev libmpfr-dev libmpc-dev
+2. If necessary: install PostgreSQL (e.g. `sudo apt install postgresql`),
+   create user and database:
 
-If necessary, create a Postgres user. Then create a database:
+        sudo -u postgres createuser zeus --pwprompt
+        createdb zeus --owner zeus
 
-    sudo -u postgres createuser -s $(whoami)
-    createdb helios
+3. Make sure PostgreSQL accepts connections from Docker:
 
-Ensure you have Python 3.6 or later installed.
+   * In `/etc/postgresql/.../main/postgresql.conf`, add Docker interface
+     address (172.17.0.1) to `listen_addresses`, e.g.:
 
-Then, do the following:
+        listen_addresses = 'localhost,172.17.0.1'
 
-    python3 -m venv env/
-    . env/bin/activate
-    pip install -r requirements.txt
+   * In `/etc/postgresql/.../main/pg_hba.conf`, add a line for Zeus to be able
+     to connect from all Docker's networks:
 
-This will create a virtualenv for you, activate it, and install all the
-required packages.
+        # TYPE  DATABASE   USER  ADDRESS      METHOD
+        ...
+        host    zeus       zeus  172.0.0.0/8  md5
 
-Create a local Django settings file. This will be an unversioned file that you
-can then customize.
+   * Restart Postgres:
 
-    cp settings/local_template.py settings/local.py
+        sudo systemctl restart postgresql.service
 
-Run migrations:
+   * Verify if you can connect from Docker:
 
-    python manage.py migrate
+        docker run --rm -it postgres:latest psql -h 172.17.0.1 -U zeus zeus
 
-Create an institution and admin user:
+5. Set up the initial database: run migrations, create user and institution:
 
-    python manage.py manage_users --create-institution "ZEUS"
-    python manage.py manage_users --create-user <username> --institution=1 --superuser
+        docker-compose run --rm dev bash
 
-## Run
+        # inside the container:
+        python manage.py manage_users --create-institution "ZEUS"
+        python manage.py manage_users --create-user <username> --institution=1 --superuser
 
-    python manage.py runserver 0.0.0.0:8000
+## Run (development)
 
-### Celery
+To run Zeus locally:
 
-By default, in development all Celery tasks run synchronously. If you
-want to run a Celery worker, first disable this behaviour by editing
-`settings/local.py`:
+    docker-compose up
 
-    CELERY_TASK_ALWAYS_EAGER = False
+This will run a Django development server under `localhost:8000`. It should
+reload automatically as you edit the code. The files will be mounted from host,
+so that all changes will be visible inside the container.
 
-You need to also install `redis` and make sure it's running on
-localhost.
+To open a shell in the Docker container, for running additional commands:
 
-Then, run:
+    docker-compose run --rm dev sh
 
-    celery worker -A zeus.celery -l INFO
+## Run tests
 
-## Test
+    docker-compose run --rm dev pytest -v
 
-    pytest -v
-
-## Python packages
+## Manage Python packages
 
 We use [pip-tools](https://github.com/jazzband/pip-tools) to manage dependencies:
 
@@ -91,5 +90,29 @@ We use [pip-tools](https://github.com/jazzband/pip-tools) to manage dependencies
 In order to install a new package:
 
 - add it to `requirements.in`
-- run `pip-compile` to regenerate the list of packages (`requirements.txt`)
-- run `pip-sync` to reinstall them
+- regenerate the list of packages (`requirements.txt`):
+
+        docker-compose run --rm dev pip-compile
+
+- rebuild the container to install new packages:
+
+        docker-compose build
+
+## Run (production)
+
+1. Build the containers:
+
+        docker-compose -f docker-compose-prod.yml build
+
+2. Make sure to edit `.env` and set the right parameters.
+
+3. Run:
+
+        docker-compose -f docker-compose-prod.yml up
+
+This will serve Zeus under `localhost:8000`. You can proxy it from outside, add
+SSL, etc.
+
+If you update the code, execute database migrations before restarting:
+
+    docker-compose -f docker-compose-prod.yml run --rm prod python manage.py migrate

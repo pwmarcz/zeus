@@ -65,7 +65,7 @@ iniconfig==1.1.1
     # via pytest
 ipython-genutils==0.2.0
     # via traitlets
-ipython==7.0.1
+ipython==7.22.0
     # via -r requirements.in
 jedi==0.18.0
     # via ipython
@@ -91,7 +91,7 @@ pip-tools==6.1.0
     # via -r requirements.in
 pluggy==0.13.1
     # via pytest
-prompt-toolkit==2.0.10
+prompt-toolkit==3.0.18
     # via
     #   click-repl
     #   ipython
@@ -140,12 +140,9 @@ reportlab==3.5.67
     # via -r requirements.in
 requests==2.25.1
     # via codecov
-simplegeneric==0.8.1
-    # via ipython
 six==1.15.0
     # via
     #   click-repl
-    #   prompt-toolkit
     #   traitlets
 sqlparse==0.4.1
     # via django
@@ -159,12 +156,16 @@ traitlets==4.3.3
     #   ipython
 urllib3==1.26.4
     # via requests
+uwsgi==2.0.19.1
+    # via -r requirements.in
 vine==5.0.0
     # via
     #   amqp
     #   celery
 wcwidth==0.2.5
     # via prompt-toolkit
+whitenoise==5.2.0
+    # via -r requirements.in
 zipp==3.4.1
     # via importlib-metadata
 

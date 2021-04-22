@@ -1,42 +1,58 @@
-FROM debian:jessie
-MAINTAINER Kostas Papadimitriou "kpap@grnet.gr"
+#####
+# zeus_dev (for mounting the source code)
+#####
 
-RUN find /var/lib/apt -type f -exec rm {} \+
-RUN apt-get -y update
-RUN apt-get -y install vim git lsb-release wget multitail
-RUN wget https://apt.puppetlabs.com/puppetlabs-release-pc1-jessie.deb
-RUN apt-get -y install puppet puppet-module-puppetlabs-apt puppet-module-puppetlabs-stdlib
+FROM ubuntu:20.04 AS zeus_dev
 
-RUN puppet module install puppetlabs-apache --version 1.11.0
-RUN puppet module install puppetlabs-postgresql --version 4.9.0
-RUN puppet module install "stankevich/python" --version 1.18.2
+ENV PYTHONUNBUFFERED=1
+ENV DEBIAN_FRONTEND=noninteractive
 
-ADD deploy/packages.pp /srv/deploy/packages.pp
-RUN cd /srv/deploy && puppet apply -v packages.pp
+RUN apt-get -y update && apt-get -yy install \
+    build-essential \
+    python3.8 \
+    python3.8-dev \
+    python3-venv \
+    libgmp-dev \
+    libmpfr-dev \
+    libmpc-dev \
+    postgresql-client-12 \
+    moreutils \
+    gettext
 
-ADD deploy/hiera.yaml /etc/puppet/hiera.yaml
-RUN mkdir /srv/zeus_app
+RUN useradd --create-home --shell /bin/bash user
 
+USER user
+WORKDIR /home/user
 
-ADD . /srv/zeus_app
-ADD deploy/config.yaml /etc/puppet/hieraconf/common.yaml
+# Create and activate virtualenv
+ENV VIRTUAL_ENV=/home/user/env
+RUN python3.8 -m venv "$VIRTUAL_ENV"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY deploy/grnet-zeus /etc/puppet/modules/zeus
+RUN mkdir zeus
+WORKDIR /home/user/zeus
 
-ADD deploy/zeus.pp /srv/deploy/zeus.pp
-RUN cd /srv/deploy && puppet apply -v zeus.pp
+# Install Python packages
+COPY --chown=user:user requirements.txt .
+RUN pip install -r requirements.txt
 
-RUN service gunicorn stop
-RUN service postgresql stop
-RUN service apache2 stop
-RUN /etc/init.d/python-celery stop
+EXPOSE 8000
 
-ADD deploy/boot.sh /srv/deploy/boot.sh
-RUN chmod +x /srv/deploy/boot.sh
+#####
+# zeus_prod (source code copied, files built)
+#####
 
-VOLUME /srv/data
-VOLUME /srv/static
+FROM zeus_dev AS zeus_prod
 
-EXPOSE 80
+# Copy the rest of Zeus sources
+COPY --chown=user:user . .
 
-CMD ["/bin/bash", "/srv/deploy/boot.sh"]
+# Use 'settings.prod' as default Django settings, docker-compose-prod.yml will
+# override it
+ENV DJANGO_SETTINGS_MODULE=settings.prod
+
+# Compile translations
+RUN ./compile-translations.sh
+
+# Collect static files
+RUN python manage.py collectstatic --noinput

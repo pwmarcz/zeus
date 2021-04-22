@@ -28,3 +28,4 @@ sitestatic/
 *,cover
 htmlcov/
 env/
+.env

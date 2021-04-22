@@ -21,20 +21,20 @@ def _d_to_dl(d):
     return html
 
 
-def _l_to_table(l):
-    if not len(l):
+def _l_to_table(l_):
+    if not len(l_):
         return "<table></table>"
 
     html = "<table>"
 
-    if isinstance(l[0], dict):
-        values = l
+    if isinstance(l_[0], dict):
+        values = l_
         html += "<thead><tr>"
-        for key in list(l[0].keys()):
+        for key in list(l_[0].keys()):
             html += "<th>%s</th>" % _(key)
         html += "</thead></tr>"
     else:
-        values = [{'value': v} for v in l]
+        values = [{'value': v} for v in l_]
 
     html += "<tbody>"
     for entry in values:
@@ -58,8 +58,8 @@ as_dl.is_safe = True
 
 
 @register.filter
-def as_table(l):
-    return _l_to_table(l)
+def as_table(l_):
+    return _l_to_table(l_)
 
 
 as_dl.is_safe = True

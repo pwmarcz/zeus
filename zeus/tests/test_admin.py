@@ -223,7 +223,7 @@ class TestHomeView(SetUpAdminAndClientMixin, TestCase):
         # at least one comma
         assert response['Content-Disposition'] == 'attachment; filename=elections_report_%s.csv' % (date)
         assert response.content.decode().find(',') > -1
-        lines = [l for l in csv.reader(StringIO(str(response.content.decode())))]
+        lines = [line for line in csv.reader(StringIO(str(response.content.decode())))]
         assert len(lines) == 2
         assert lines[0] == ['Institution', 'Electors', 'Voters', 'Start', 'End', 'uuid', 'Name', 'Polls', 'Administrator', 'Official']
 

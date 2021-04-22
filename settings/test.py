@@ -1,8 +1,5 @@
 
-try:
-    from .local import *  # noqa
-except ImportError:
-    from .dev import *  # noqa
+from .dev import *  # noqa
 
 import os
 import errno
@@ -21,29 +18,10 @@ LANGUAGE_CODE = 'en'
 
 ZEUS_TESTS_ELECTION_PARAMS = {}
 
-ZEUS_TEST_DB = os.environ.get('ZEUS_DB')
-if os.environ.get('ZEUS_TEST_DATABASE'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get('ZEUS_DB', 'zeus_test'),
-            'USER': os.environ.get('ZEUS_DB_USER', 'zeus_test'),
-            'PASSWORD': os.environ.get('ZEUS_DB_PASSWORD', 'zeus_test'),
-            'HOST': os.environ.get('ZEUS_DB_HOST', 'localhost'),
-            'PORT': 5432 # in memory post
-        }
-    }
-
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
 
 SOUTH_TESTS_MIGRATE = False
-#DATABASES = {
-    #'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': ':memory:'
-    #}
-#}
 
 ZEUS_MIXNET_NR_PARALLEL = billiard.cpu_count()
 ZEUS_MIXNET_NR_ROUNDS = 16

@@ -317,7 +317,7 @@ def make_messages(locale=None, domain='django', verbosity=1, all=False,
         locales.append(locale)
     elif all:
         locale_dirs = list(filter(os.path.isdir, glob.glob('%s/*' % localedir)))
-        locales = [os.path.basename(l) for l in locale_dirs]
+        locales = [os.path.basename(d) for d in locale_dirs]
 
     wrap = '--no-wrap' if no_wrap else ''
     location = '--no-location' if no_location else ''

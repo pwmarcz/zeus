@@ -1,0 +1,40 @@
+version: "3.7"
+services:
+  redis:
+    image: redis:latest
+
+  dev:
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+
+    build:
+      context: .
+      target: zeus_dev
+    volumes:
+      - .:/home/user/zeus:rw
+    working_dir: /home/user/zeus
+    environment:
+      - PGHOST
+      - PGDATABASE
+      - PGUSER
+      - PGPASSWORD
+    depends_on:
+      - redis
+
+  dev_celery:
+    command: celery -A zeus.celery worker -l INFO --concurrency 1 --pool solo
+
+    build:
+      context: .
+      target: zeus_dev
+    volumes:
+      - .:/home/user/zeus:rw
+    working_dir: /home/user/zeus
+    environment:
+      - PGHOST
+      - PGDATABASE
+      - PGUSER
+      - PGPASSWORD
+    depends_on:
+      - redis
