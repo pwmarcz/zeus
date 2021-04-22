@@ -31,20 +31,16 @@ If necessary, create a Postgres user. Then create a database:
     sudo -u postgres createuser -s $(whoami)
     createdb helios
 
-Ensure you have Python 3.6 and [pipenv](https://docs.pipenv.org/)
-installed. You can install `pipenv` by running `pip install --user
-pipenv`, but make sure it ends up in your `PATH` (e.g. add `export
-PATH=$PATH:$HOME/.local/bin` to your `.bashrc`).
+Ensure you have Python 3.6 or later installed.
 
 Then, do the following:
 
-    pipenv --python python3.6
-    pipenv sync --dev
-    pipenv shell
+    python3 -m venv env/
+    . env/bin/activate
+    pip install -r requirements.txt
 
-This will create a virtualenv for you, install all the required packages
-(including the ones needed for development) and activate the virtual
-environment.
+This will create a virtualenv for you, activate it, and install all the
+required packages.
 
 Create a local Django settings file. This will be an unversioned file that you
 can then customize.
@@ -85,14 +81,15 @@ Then, run:
 
 ## Python packages
 
-We use [pipenv](https://docs.pipenv.org/) to manage dependencies:
+We use [pip-tools](https://github.com/jazzband/pip-tools) to manage dependencies:
 
-- `Pipfile` - contains a list of direct dependencies, with version specifiers
-- `Pipfile.lock` - auto-generated from `Pipfile`, all packages, all
-  versions pinned together with their checksums
+- `requirements.in` - contains a list of direct dependencies, with version
+  specifiers if necessary
+- `requirements.txt` - auto-generated from `requirements.in`, all packages, all
+  versions pinned
 
 In order to install a new package:
 
-- `pipenv install <package>`
-- look into `Pipfile` to make sure the right package was added
-- test the change and commit all files
+- add it to `requirements.in`
+- run `pip-compile` to regenerate the list of packages (`requirements.txt`)
+- run `pip-sync` to reinstall them

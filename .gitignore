@@ -27,3 +27,4 @@ settings/local.py
 sitestatic/
 *,cover
 htmlcov/
+env/

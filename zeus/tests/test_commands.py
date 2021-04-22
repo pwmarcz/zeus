@@ -1,7 +1,7 @@
 
 from django.test import TestCase
 from django.core.management import call_command
-import mock
+from unittest import mock
 
 from heliosauth.models import User, UserGroup
 from zeus.models import Institution
