@@ -35,22 +35,30 @@ Here is how to set up Zeus and database on your local machine.
    * In `/etc/postgresql/.../main/postgresql.conf`, add Docker interface
      address (172.17.0.1) to `listen_addresses`, e.g.:
 
-        listen_addresses = 'localhost,172.17.0.1'
+     ```
+     listen_addresses = 'localhost,172.17.0.1'
+     ```
 
    * In `/etc/postgresql/.../main/pg_hba.conf`, add a line for Zeus to be able
      to connect from all Docker's networks:
 
-        # TYPE  DATABASE   USER  ADDRESS      METHOD
-        ...
-        host    zeus       zeus  172.0.0.0/8  md5
+     ```
+     # TYPE  DATABASE   USER  ADDRESS      METHOD
+     ...
+     host    zeus       zeus  172.0.0.0/8  md5
+     ```
 
    * Restart Postgres:
 
-        sudo systemctl restart postgresql.service
+     ```
+     sudo systemctl restart postgresql.service
+     ```
 
    * Verify if you can connect from Docker:
 
-        docker run --rm -it postgres:latest psql -h 172.17.0.1 -U zeus zeus
+     ```
+     docker run --rm -it postgres:latest psql -h 172.17.0.1 -U zeus zeus
+     ```
 
 5. Set up the initial database: run migrations, create user and institution:
 
