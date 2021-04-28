@@ -34,5 +34,10 @@ ZEUS_PROD_HOST = os.environ.get('ZEUS_PROD_HOST', 'localhost')
 
 ALLOWED_HOSTS = ['localhost', ZEUS_PROD_HOST]
 SITE_DOMAIN = ZEUS_PROD_HOST
-URL_HOST = 'https://' + ZEUS_PROD_HOST
-SECURE_URL_HOST = 'https://' + ZEUS_PROD_HOST
+
+if os.environ.get('ZEUS_PROD_USE_HTTPS', '0') == '1':
+    prefix = 'https://'
+else:
+    prefix = 'http://'
+
+URL_HOST = SECURE_URL_HOST = prefix + ZEUS_PROD_HOST
