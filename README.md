@@ -1,8 +1,7 @@
 # The Zeus election server
 
-[![Build Status](https://travis-ci.org/pwmarcz/zeus.svg?branch=master)](https://travis-ci.org/pwmarcz/zeus)
-[![codecov](https://codecov.io/gh/pwmarcz/zeus/branch/master/graph/badge.svg)](https://codecov.io/gh/pwmarcz/zeus)
-[![Requirements Status](https://requires.io/github/pwmarcz/zeus/requirements.svg?branch=master)](https://requires.io/github/pwmarcz/zeus/requirements/?branch=master)
+[![pipeline status](https://gitlab.com/partia_razem_public/zeus/badges/master/pipeline.svg)](https://gitlab.com/partia_razem_public/zeus/-/commits/master)
+[![codecov](https://codecov.io/gh/pwmarcz/zeus/branch/master/graph/badge.svg)](https://codecov.io/gl/partia_razem_public/zeus)
 
 LICENCE: This code is released under the GPL v3 or later
 
