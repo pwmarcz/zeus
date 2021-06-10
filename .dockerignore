@@ -1,6 +1,0 @@
-./data/
-./sitestatic/
-__pycache__/
-.pytest_cache/
-./env/
-.git/

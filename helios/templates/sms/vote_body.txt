@@ -1,2 +1,0 @@
-{% load i18n %}{% url "voter_quick_login" as voter_url %}{% blocktrans with election_name=election.name|truncatechars:50 voter_login_id=voter.voter_login_id voter_url=SECURE_URL_HOST|add:voter_url voter_login_code=voter.login_code custom_message_sms=custom_message_sms|safe %}ZEUS ELECTION {{ election_name }}: VOTER WITH REG CODE {{ voter_login_id }}
-VOTES TO {{ voter_url }} - LOGIN CODE: {{ voter_login_code }}{{ custom_message_sms }}{% endblocktrans %}
